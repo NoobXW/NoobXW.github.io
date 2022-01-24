@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <meta name="description" content="知识点常见搭建平台脚本启用
+域名 IP 目录解析安全问题 
+常见文件后缀解析对应安全 
+常见安全测试中的安全防护 
+WEB 后门与用户及文件权限
+
+1.ASP,PHP,ASPX,JSP,PY,JAVAWEB 等环境 
+2.WEB 源码中敏感文件 后台路径，数据库配置文件，备份文件等 
+3.IP 或域" />
+  
+
+  
+  
+  
+  
+  
+  
+  <title>搭建安全拓展 | 小白</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="知识点常见搭建平台脚本启用 域名 IP 目录解析安全问题  常见文件后缀解析对应安全  常见安全测试中的安全防护  WEB 后门与用户及文件权限  1.ASP,PHP,ASPX,JSP,PY,JAVAWEB 等环境  2.WEB 源码中敏感文件 后台路径，数据库配置文件，备份文件等  3.IP 或域名解析 WEB 源码目录对应下的存在的安全问题 域名访问，IP 访问（结合类似备份文件目录） 4.脚">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建安全拓展">
+<meta property="og:url" content="http://noobxw.github.io/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/index.html">
+<meta property="og:site_name" content="小白">
+<meta property="og:description" content="知识点常见搭建平台脚本启用 域名 IP 目录解析安全问题  常见文件后缀解析对应安全  常见安全测试中的安全防护  WEB 后门与用户及文件权限  1.ASP,PHP,ASPX,JSP,PY,JAVAWEB 等环境  2.WEB 源码中敏感文件 后台路径，数据库配置文件，备份文件等  3.IP 或域名解析 WEB 源码目录对应下的存在的安全问题 域名访问，IP 访问（结合类似备份文件目录） 4.脚">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-01-24T13:36:09.000Z">
+<meta property="article:modified_time" content="2022-01-24T14:55:20.438Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  
+  <!-- baidu webmaster push -->
+  <script src='//push.zhanzhang.baidu.com/push.js'></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+<body class="home blog custom-background custom-font-enabled single-author">
+  <div id="page" class="hfeed site">
+      <header id="masthead" class="site-header" role="banner">
+    <hgroup>
+      <h1 class="site-title">
+        <a href="/" title="小白" rel="home">小白</a>
+      </h1>
+      
+        <h2 class="site-description hitokoto"></h2>
+        <script type="text/javascript" src="https://v1.hitokoto.cn/?encode=js"></script>
+      
+    </hgroup>
+
+    <nav id="site-navigation" class="main-navigation" role="navigation">
+            <button class="menu-toggle">菜单</button>
+            <a class="assistive-text" href="/#content" title="跳至内容">跳至内容</a><!--TODO-->
+            <div class="menu-main-container">
+                <ul id="menu-main" class="nav-menu">
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/">Home</a></li>
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archives">Archives</a></li>
+                
+                </ul>
+            </div>
+    </nav>
+</header>
+
+      <div id="main" class="wrapper">
+        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-搭建安全拓展" class="post-搭建安全拓展 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title article-title">
+      搭建安全拓展
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/" data-id="ckysvc1hp0007w4maadj95aif" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>常见搭建平台脚本启用</p>
+<p>域名 IP 目录解析安全问题 </p>
+<p>常见文件后缀解析对应安全 </p>
+<p>常见安全测试中的安全防护 </p>
+<p>WEB 后门与用户及文件权限</p>
+<hr>
+<p>1.ASP,PHP,ASPX,JSP,PY,JAVAWEB 等环境 </p>
+<p>2.WEB 源码中敏感文件 后台路径，数据库配置文件，备份文件等 </p>
+<p>3.IP 或域名解析 WEB 源码目录对应下的存在的安全问题 域名访问，IP 访问（结合类似备份文件目录）</p>
+<p>4.脚本后缀对应解析（其他格式可相同-上传安全）</p>
+<p>5.存在下载或为解析问题 </p>
+<p>6.常见防护中的 IP 验证，域名验证等 </p>
+<p>7.后门是否给予执行权限 </p>
+<p>8.后门是否给予操作目录或文件权限 </p>
+<p>9.后门是否给予其他用户权限</p>
+<h3 id="IP访问网站和域名访问网站的区别"><a href="#IP访问网站和域名访问网站的区别" class="headerlink" title="IP访问网站和域名访问网站的区别"></a>IP访问网站和域名访问网站的区别</h3><p>搭建好的一个网站，如果使用IP去访问，会访问到其根目录，使用域名访问，指向其根目录下的一个文件。</p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/">
+    <time datetime="2022-01-24T13:36:09.000Z" class="entry-date">
+        2022-01-24
+    </time>
+</a>
+    
+    
+    </footer>
+</article>
+
+
+    
+<nav class="nav-single">
+    <h3 class="assistive-text">文章导航</h3>
+    
+    
+        <span class="nav-next"><a href="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/" rel="next">墨者学院-投票系统程序设计缺陷分析 <span class="meta-nav">→</span></a></span>
+    
+</nav><!-- .nav-single -->
+
+
+
+
+
+
+
+</div></div>
+        <div id="secondary" class="widget-area" role="complementary">
+  
+    <aside id="search" class="widget widget_search"><form role="search" method="get" accept-charset="utf-8" id="searchform" class="searchform" action="//google.com/search">
+    <div>
+        <input type="text" value="" name="s" id="s" />
+        <input type="submit" id="searchsubmit" value="搜索" />
+    </div>
+</form></aside>
+  
+    
+  
+    
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget-content">
+      <ul>
+        
+          <li>
+            <a href="/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/">搭建安全拓展</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/">墨者学院-投票系统程序设计缺陷分析</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/">墨者学院-HTTP动作练习</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/">墨者学院-浏览器信息伪造</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%9D%A5%E6%BA%90%E9%A1%B5%E4%BC%AA%E9%80%A0/">墨者学院-来源页伪造</a>
+          </li>
+        
+      </ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-content">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/" rel="tag">利用burpsuite进行referer伪造</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-content tagcloud">
+      <a href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/" style="font-size: 10px;">利用burpsuite进行referer伪造</a>
+    </div>
+  </aside>
+
+  
+</div>
+      </div>
+      <footer id="colophon" role="contentinfo">
+    <p>&copy; 2022 John Doe
+    All rights reserved.</p>
+    <p>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></p>
+</footer>
+    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/js/share.js'];</script>
+
+<script src="/js/jquery-3.3.1.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/navigation.js"></script>
+
+<div id="bg"></div>
+
+  </div>
+</body>
+</html>
