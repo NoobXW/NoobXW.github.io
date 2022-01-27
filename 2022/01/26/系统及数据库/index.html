@@ -5,9 +5,10 @@
   
   
   <meta name="description" content="前言除去搭建平台中间件，网站源码外，容易受到攻击的还有操作系统，数据库等，第三方软件平台等，其中此类攻击也能直接影响到WEB或 服务器的安全，导致网站或服务器权限的获取。
-![](系统及数据库/系统及数据库等 .png)
+
 操作系统层面识别操作系统常见方法：
-如过对方有网站，可以通过网站识别；如果没网" />
+如过对方有网站，可以通过网站识别；如果没网站，就通过一些工具的扫描识别；
+从网站上判断：w" />
   
 
   
@@ -18,17 +19,19 @@
   
   <title>系统及数据库 | 小白</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言除去搭建平台中间件，网站源码外，容易受到攻击的还有操作系统，数据库等，第三方软件平台等，其中此类攻击也能直接影响到WEB或 服务器的安全，导致网站或服务器权限的获取。 ![](系统及数据库&#x2F;系统及数据库等 .png) 操作系统层面识别操作系统常见方法： 如过对方有网站，可以通过网站识别；如果没网站，就通过一些工具的扫描识别； 从网站上判断：window系统一般情况不区分大小写；Linux系统区">
+  <meta name="description" content="前言除去搭建平台中间件，网站源码外，容易受到攻击的还有操作系统，数据库等，第三方软件平台等，其中此类攻击也能直接影响到WEB或 服务器的安全，导致网站或服务器权限的获取。  操作系统层面识别操作系统常见方法： 如过对方有网站，可以通过网站识别；如果没网站，就通过一些工具的扫描识别； 从网站上判断：window系统一般情况不区分大小写；Linux系统区别大小写。 通过TTL值判断：默认系统的TTL（">
 <meta property="og:type" content="article">
 <meta property="og:title" content="系统及数据库">
 <meta property="og:url" content="http://noobxw.github.io/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/index.html">
 <meta property="og:site_name" content="小白">
-<meta property="og:description" content="前言除去搭建平台中间件，网站源码外，容易受到攻击的还有操作系统，数据库等，第三方软件平台等，其中此类攻击也能直接影响到WEB或 服务器的安全，导致网站或服务器权限的获取。 ![](系统及数据库&#x2F;系统及数据库等 .png) 操作系统层面识别操作系统常见方法： 如过对方有网站，可以通过网站识别；如果没网站，就通过一些工具的扫描识别； 从网站上判断：window系统一般情况不区分大小写；Linux系统区">
+<meta property="og:description" content="前言除去搭建平台中间件，网站源码外，容易受到攻击的还有操作系统，数据库等，第三方软件平台等，其中此类攻击也能直接影响到WEB或 服务器的安全，导致网站或服务器权限的获取。  操作系统层面识别操作系统常见方法： 如过对方有网站，可以通过网站识别；如果没网站，就通过一些工具的扫描识别； 从网站上判断：window系统一般情况不区分大小写；Linux系统区别大小写。 通过TTL值判断：默认系统的TTL（">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://noobxw.github.io/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/image-20220127235003546.png">
 <meta property="article:published_time" content="2022-01-26T11:09:57.000Z">
-<meta property="article:modified_time" content="2022-01-27T15:48:07.740Z">
+<meta property="article:modified_time" content="2022-01-27T15:50:12.956Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://noobxw.github.io/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/image-20220127235003546.png">
   
   
     <link rel="icon" href="/css/images/favicon.ico">
@@ -86,14 +89,14 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="ckyx5i9aq000cv8ma48wrgtrh" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="ckyx5kqwe000bgcma4sda7tvr" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
     <div class="entry-content">
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>除去搭建平台中间件，网站源码外，容易受到攻击的还有操作系统，数据库等，第三方软件平台等，其中此类攻击也能直接影响到WEB或 服务器的安全，导致网站或服务器权限的获取。</p>
-<p>![](系统及数据库/系统及数据库等 .png)</p>
+<p><img src="/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/image-20220127235003546.png" alt="image-20220127235003546"></p>
 <h3 id="操作系统层面"><a href="#操作系统层面" class="headerlink" title="操作系统层面"></a>操作系统层面</h3><p><strong>识别操作系统常见方法：</strong></p>
 <p>如过对方有网站，可以通过网站识别；如果没网站，就通过一些工具的扫描识别；</p>
 <p>从网站上判断：window系统一般情况不区分大小写；Linux系统区别大小写。</p>
