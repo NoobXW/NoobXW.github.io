@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <meta name="description" content="前言在安全测试中，信息收集是非常重要的一个环节，此环节的信息将影响 到后续的成功几率，掌握信息的多少将决定发现漏洞机会大小，换言之决定着是否能完成目标的测试任务。渗透测试的思路 就是从信息收集这里开始。
+
+所谓信息搜集，其实就是为了扩大攻击面，信息搜集的越多，攻击的范围越大。
+站点搭建分析1.**搭" />
+  
+
+  
+  
+  
+  
+  
+  
+  <title>架构，搭建，WAF等 | 小白</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言在安全测试中，信息收集是非常重要的一个环节，此环节的信息将影响 到后续的成功几率，掌握信息的多少将决定发现漏洞机会大小，换言之决定着是否能完成目标的测试任务。渗透测试的思路 就是从信息收集这里开始。  所谓信息搜集，其实就是为了扩大攻击面，信息搜集的越多，攻击的范围越大。 站点搭建分析1.**搭建习惯-目录型站点 **：主站是一套程序，加一个目录打开后又是一套程序；两套程序会有两个漏洞形式（扫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="架构，搭建，WAF等">
+<meta property="og:url" content="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/index.html">
+<meta property="og:site_name" content="小白">
+<meta property="og:description" content="前言在安全测试中，信息收集是非常重要的一个环节，此环节的信息将影响 到后续的成功几率，掌握信息的多少将决定发现漏洞机会大小，换言之决定着是否能完成目标的测试任务。渗透测试的思路 就是从信息收集这里开始。  所谓信息搜集，其实就是为了扩大攻击面，信息搜集的越多，攻击的范围越大。 站点搭建分析1.**搭建习惯-目录型站点 **：主站是一套程序，加一个目录打开后又是一套程序；两套程序会有两个漏洞形式（扫">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/image-20220128201243759.png">
+<meta property="article:published_time" content="2022-01-28T11:21:46.000Z">
+<meta property="article:modified_time" content="2022-01-28T14:13:51.527Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/image-20220128201243759.png">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  
+  <!-- baidu webmaster push -->
+  <script src='//push.zhanzhang.baidu.com/push.js'></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+<body class="home blog custom-background custom-font-enabled single-author">
+  <div id="page" class="hfeed site">
+      <header id="masthead" class="site-header" role="banner">
+    <hgroup>
+      <h1 class="site-title">
+        <a href="/" title="小白" rel="home">小白</a>
+      </h1>
+      
+        <h2 class="site-description hitokoto"></h2>
+        <script type="text/javascript" src="https://v1.hitokoto.cn/?encode=js"></script>
+      
+    </hgroup>
+
+    <nav id="site-navigation" class="main-navigation" role="navigation">
+            <button class="menu-toggle">菜单</button>
+            <a class="assistive-text" href="/#content" title="跳至内容">跳至内容</a><!--TODO-->
+            <div class="menu-main-container">
+                <ul id="menu-main" class="nav-menu">
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/">Home</a></li>
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archives">Archives</a></li>
+                
+                </ul>
+            </div>
+    </nav>
+</header>
+
+      <div id="main" class="wrapper">
+        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-架构，搭建，WAF等" class="post-架构，搭建，WAF等 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title article-title">
+      架构，搭建，WAF等
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/" data-id="ckyyhl1vq000ehgmadueh84q8" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在安全测试中，信息收集是非常重要的一个环节，此环节的信息将影响 到后续的成功几率，掌握信息的多少将决定发现漏洞机会大小，换言之决定着是否能完成目标的测试任务。渗透测试的思路 就是从信息收集这里开始。</p>
+<p><img src="/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/image-20220128201243759.png" alt="image-20220128201243759"></p>
+<p>所谓信息搜集，其实就是为了扩大攻击面，信息搜集的越多，攻击的范围越大。</p>
+<h2 id="站点搭建分析"><a href="#站点搭建分析" class="headerlink" title="站点搭建分析"></a>站点搭建分析</h2><p>1.**搭建习惯-目录型站点 **：主站是一套程序，加一个目录打开后又是一套程序；两套程序会有两个漏洞形式（扫描目录或其他方法）；</p>
+<p>2.<strong>搭建习惯-端口类站点</strong> ：网站管理员通过端口名使网站应用分开，例如：主站装在80端口，或其他端口配置其他服务，但是都在同一台服务器，若其中端口出现了问题，例如80端口出现漏洞，会影响其他端口（扫描端口或其他方法）；</p>
+<p>3.<strong>搭建习惯-子域名站点</strong> ：子站和主站不在一台服务器上，如果在一个网段的话，会出现内网安全隐患；</p>
+<p>如果不同网段的话，搜集子站其他关于主站的信息再进行主站测试；</p>
+<p>4.<strong>搭建习惯-类似域名站点</strong> ：域名的后缀不同或者域名的名字有所修改等，可以自己写个工具跑一下类似域名；</p>
+<p>5.<strong>搭建习惯-旁注,C 段站点</strong> ：</p>
+<p><strong>旁注</strong>：同服务器，不同站点；例如：有 a站，b站等网站（多个站点服务器），我的目标的是b站，我通过查询又知道了有a站和其他站的存在，b站由于技术有限找不到漏洞；再找a站或其他站的权限问题再去获取到b站的权限；</p>
+<p><strong>C段</strong>：同网段，不同服务器，不同站点；例如：有a站，b站，c站和d站；目标是a站，查询网段信息，比如查询到了c站的网段，这个网段下有个多个网站，拿到其中一个站的权限，在通过提权获取到这个服务器的权限，由于目标主机处于同一内网下，再实施内网安全的测试方法获取到指定网站的服务器权限；</p>
+<p>6.<strong>搭建习惯-搭建软件特征站点</strong> ：例如：phpstudy除新版本外采用root/root作为数据库的默认密码；还有phpmyadmin文件夹，可以进入phpmyadmin文件夹使用默认数据库密码进入数据库</p>
+<p>##WAF 防护分析</p>
+<p>1.什么是WAF应用：</p>
+<p>Web应用防护系统（也称为：<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BD%91%E7%AB%99/155722">网站</a>应用级入侵防御系统。英文：Web Application Firewall，简称： WAF）。利用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%9B%BD%E9%99%85/766689">国际</a>上公认的一种说法：Web应用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%98%B2%E7%81%AB%E5%A2%99">防火墙</a>是通过执行一系列针对HTTP/HTTPS的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5/2890163">安全策略</a>来专门为<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/Web/150564">Web</a>应用提供保护的一款产品。</p>
+<p>2.如何快速识别WAF：wafw00f或者手工识别；部分网站数据包有此字段：X-Powered-By: WAF</p>
+<p>3.识别WAF对于安全测试的意义：了解是什么WAF，进行下一步。</p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/">
+    <time datetime="2022-01-28T11:21:46.000Z" class="entry-date">
+        2022-01-28
+    </time>
+</a>
+    
+    
+    </footer>
+</article>
+
+
+    
+<nav class="nav-single">
+    <h3 class="assistive-text">文章导航</h3>
+    
+    
+        <span class="nav-next"><a href="/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/" rel="next">CDN绕过技术 <span class="meta-nav">→</span></a></span>
+    
+</nav><!-- .nav-single -->
+
+
+
+
+
+
+
+</div></div>
+        <div id="secondary" class="widget-area" role="complementary">
+  
+    <aside id="search" class="widget widget_search"><form role="search" method="get" accept-charset="utf-8" id="searchform" class="searchform" action="//google.com/search">
+    <div>
+        <input type="text" value="" name="s" id="s" />
+        <input type="submit" id="searchsubmit" value="搜索" />
+    </div>
+</form></aside>
+  
+    
+  
+    
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget-content">
+      <ul>
+        
+          <li>
+            <a href="/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/">架构，搭建，WAF等</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/">CDN绕过技术</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/">加密编码算法</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/">系统及数据库</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/">WEB源码拓展</a>
+          </li>
+        
+      </ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-content">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/" rel="tag">利用burpsuite进行referer伪造</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-content tagcloud">
+      <a href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/" style="font-size: 10px;">利用burpsuite进行referer伪造</a>
+    </div>
+  </aside>
+
+  
+</div>
+      </div>
+      <footer id="colophon" role="contentinfo">
+    <p>&copy; 2022 John Doe
+    All rights reserved.</p>
+    <p>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></p>
+</footer>
+    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/js/share.js'];</script>
+
+<script src="/js/jquery-3.3.1.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/navigation.js"></script>
+
+<div id="bg"></div>
+
+  </div>
+</body>
+</html>

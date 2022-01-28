@@ -64,6 +64,65 @@
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main">
   
+    <article id="post-架构，搭建，WAF等" class="post-架构，搭建，WAF等 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/">架构，搭建，WAF等</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/" data-id="ckyyhl1vq000ehgmadueh84q8" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在安全测试中，信息收集是非常重要的一个环节，此环节的信息将影响 到后续的成功几率，掌握信息的多少将决定发现漏洞机会大小，换言之决定着是否能完成目标的测试任务。渗透测试的思路 就是从信息收集这里开始。</p>
+<p><img src="/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/image-20220128201243759.png" alt="image-20220128201243759"></p>
+<p>所谓信息搜集，其实就是为了扩大攻击面，信息搜集的越多，攻击的范围越大。</p>
+<h2 id="站点搭建分析"><a href="#站点搭建分析" class="headerlink" title="站点搭建分析"></a>站点搭建分析</h2><p>1.**搭建习惯-目录型站点 **：主站是一套程序，加一个目录打开后又是一套程序；两套程序会有两个漏洞形式（扫描目录或其他方法）；</p>
+<p>2.<strong>搭建习惯-端口类站点</strong> ：网站管理员通过端口名使网站应用分开，例如：主站装在80端口，或其他端口配置其他服务，但是都在同一台服务器，若其中端口出现了问题，例如80端口出现漏洞，会影响其他端口（扫描端口或其他方法）；</p>
+<p>3.<strong>搭建习惯-子域名站点</strong> ：子站和主站不在一台服务器上，如果在一个网段的话，会出现内网安全隐患；</p>
+<p>如果不同网段的话，搜集子站其他关于主站的信息再进行主站测试；</p>
+<p>4.<strong>搭建习惯-类似域名站点</strong> ：域名的后缀不同或者域名的名字有所修改等，可以自己写个工具跑一下类似域名；</p>
+<p>5.<strong>搭建习惯-旁注,C 段站点</strong> ：</p>
+<p><strong>旁注</strong>：同服务器，不同站点；例如：有 a站，b站等网站（多个站点服务器），我的目标的是b站，我通过查询又知道了有a站和其他站的存在，b站由于技术有限找不到漏洞；再找a站或其他站的权限问题再去获取到b站的权限；</p>
+<p><strong>C段</strong>：同网段，不同服务器，不同站点；例如：有a站，b站，c站和d站；目标是a站，查询网段信息，比如查询到了c站的网段，这个网段下有个多个网站，拿到其中一个站的权限，在通过提权获取到这个服务器的权限，由于目标主机处于同一内网下，再实施内网安全的测试方法获取到指定网站的服务器权限；</p>
+<p>6.<strong>搭建习惯-搭建软件特征站点</strong> ：例如：phpstudy除新版本外采用root/root作为数据库的默认密码；还有phpmyadmin文件夹，可以进入phpmyadmin文件夹使用默认数据库密码进入数据库</p>
+<p>##WAF 防护分析</p>
+<p>1.什么是WAF应用：</p>
+<p>Web应用防护系统（也称为：<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BD%91%E7%AB%99/155722">网站</a>应用级入侵防御系统。英文：Web Application Firewall，简称： WAF）。利用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%9B%BD%E9%99%85/766689">国际</a>上公认的一种说法：Web应用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%98%B2%E7%81%AB%E5%A2%99">防火墙</a>是通过执行一系列针对HTTP/HTTPS的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5/2890163">安全策略</a>来专门为<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/Web/150564">Web</a>应用提供保护的一款产品。</p>
+<p>2.如何快速识别WAF：wafw00f或者手工识别；部分网站数据包有此字段：X-Powered-By: WAF</p>
+<p>3.识别WAF对于安全测试的意义：了解是什么WAF，进行下一步。</p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/">
+    <time datetime="2022-01-28T11:21:46.000Z" class="entry-date">
+        2022-01-28
+    </time>
+</a>
+    
+    
+    </footer>
+</article>
+
+
+
+
+
+
+  
     <article id="post-CDN绕过技术" class="post-CDN绕过技术 post type-post status-publish format-standard hentry">
     <!---->
 
@@ -79,7 +138,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/" data-id="ckyy12wml0000ggmadfmx4exl" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/" data-id="ckyyhl1v00000hgma2uqdc2gv" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -147,7 +206,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/" data-id="ckyy12wmt0002ggma5n6o76c4" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/" data-id="ckyyhl1ve0004hgmabovq4ccs" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -214,7 +273,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="ckyy12wn5000dggma6sc05gdq" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="ckyyhl1vp000dhgma1bl77fsf" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -297,7 +356,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/" data-id="ckyy12wmr0001ggmadp4wef3x" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/" data-id="ckyyhl1vd0003hgmahdzfeusw" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -375,7 +434,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/" data-id="ckyy12wn1000aggmag8yyd7de" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/" data-id="ckyyhl1vn000ahgma4j7le3zl" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -433,7 +492,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/" data-id="ckyy12wmv0005ggmae1ql8908" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/" data-id="ckyyhl1vg0006hgmabryp0dt3" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -509,7 +568,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/" data-id="ckyy12wmv0004ggma0t2t3oqt" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/" data-id="ckyyhl1vc0002hgma6av6cmdq" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -612,7 +671,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/" data-id="ckyy12wmx0007ggma86787y0m" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/" data-id="ckyyhl1vj0008hgmacri54ii7" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -673,7 +732,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%9D%A5%E6%BA%90%E9%A1%B5%E4%BC%AA%E9%80%A0/" data-id="ckyy12wmw0006ggmaflhq7477" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%9D%A5%E6%BA%90%E9%A1%B5%E4%BC%AA%E9%80%A0/" data-id="ckyyhl1vf0005hgma9856c556" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -717,114 +776,6 @@
 
 
   
-    <article id="post-数据包拓展" class="post-数据包拓展 post type-post status-publish format-standard hentry">
-    <!---->
-
-      <header class="entry-header">
-        
-        
-  
-    <h1 class="entry-title">
-      <a class="article-title" href="/2022/01/23/%E6%95%B0%E6%8D%AE%E5%8C%85%E6%8B%93%E5%B1%95/">数据包拓展</a>
-    </h1>
-  
-
-        
-        <div class="comments-link">
-            
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/23/%E6%95%B0%E6%8D%AE%E5%8C%85%E6%8B%93%E5%B1%95/" data-id="ckyy12wn4000bggmaf9ds5eno" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
-        </div><!-- .comments-link -->
-      </header><!-- .entry-header -->
-
-    <div class="entry-content">
-      
-        <h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><p>当从浏览器访问时，使用代理(Proxy)可以抓取请求数据包(Request)进行分析，或者从Web Server返回数据包(Response)进行分析；BurpSuit其实就很典型，可以作为代理服务器，实现上述作用。</p>
-<h2 id="Http和Https"><a href="#Http和Https" class="headerlink" title="Http和Https"></a>Http和Https</h2><p>http包抓到后一般都是明文的，https通常是密文的，加密的。</p>
-<p><strong>http简要通信过程：</strong></p>
-<p>1.浏览器建立与web服务器之间的连接</p>
-<p>2.浏览器将请求数据打包（生成请求数据包）并发送到web服务器</p>
-<p>3.web服务器将处理结果打包（生成响应数据包）并发送给浏览器</p>
-<p>4.web服务器关闭连接</p>
-<p><strong>https简要通信过程</strong></p>
-<p>1.https请求</p>
-<p>2.服务器响应</p>
-<p>3.证书校验，生成密码，公钥加密</p>
-<p>4.加密信息</p>
-<p>5.私钥解密，解密握手 消息，验证HASH</p>
-<p>6.加密信息</p>
-<p>7.解密握手消息，验证HASH</p>
-<p>8.正常加密通信</p>
-<h1 id="Request请求数据包格式"><a href="#Request请求数据包格式" class="headerlink" title="Request请求数据包格式"></a>Request请求数据包格式</h1><p>1.请求行：请求类型/请求资源路径、协议的版本和类型</p>
-<p> 2.请求头：一些键值对，浏览器与 web 服务器之间都可以发送，特定的某种含义</p>
-<p>3.空行：请求头与请求体之间用一个空行隔开</p>
-<p> 4.请求体：要发送的数据(一般 post 提交会使用)；例：user=123&amp;pass=123</p>
-<p>###请求行</p>
-<p>请求行由三个标记组成：请求方法、请求 URL 和 HTTP 版本，它们用空格分享。 </p>
-<p>例如：</p>
-<p>GET /index.html HTTP/1.1 HTTP 规划定义了 8 种可能的请求方法：</p>
-<p> GET：检索 URL 中标识资源的一个简单请求</p>
-<p> HEAD：与 GET 方法相同，服务器只返回状态行和头标，并不返回请求文档 </p>
-<p>POST：服务器接受被写入客户端输出流中的数据的请求</p>
-<p> PUT：服务器保存请求数据作为指定 URL 新内容的请求</p>
-<p> DELETE：服务器删除 URL 中命令的资源的请求 </p>
-<p>OPTIONS：关于服务器支持的请求方法信息的请求 </p>
-<p>TRACE：web 服务器反馈 Http 请求和其头标的请求 </p>
-<p>CONNECT ：已文档化，但当前未实现的一个方法，预留做隧道处理</p>
-<h3 id="请求头"><a href="#请求头" class="headerlink" title="请求头"></a>请求头</h3><p>由关键字/值对组成，每行一对，关键字和值用冒号分享。请求头标通知服务器腾于客户端的功能和标识。 </p>
-<p><strong>HOST</strong>: 主机或域名地址 </p>
-<p>Accept：指浏览器或其他客户可以接爱的 MIME 文件格式。</p>
-<p>Servlet 可以根据它判断并返回适当的文件格 式。</p>
-<p> User-Agent：是客户浏览器名称</p>
-<p><strong>Host</strong>：对应网址 URL 中的 Web 名称和端口号。 </p>
-<p>Accept-Langeuage：指出浏览器可以接受的语言种类，如 en 或 en-us，指英语。 </p>
-<p>connection：用来告诉服务器是否可以维持固定的 HTTP 连接。http 是无连接的，HTTP/1.1 使用 Keep-Alive 为默认值，这样，当浏览器需要多个文件时(比如一个 HTML 文件和相关的图形文件)，不需要每次都建立 连接</p>
-<p> <strong>Cookie</strong>：浏览器用这个属性向服务器发送 Cookie。Cookie 是在浏览器中寄存的小型数据体，它可以记载 和服务器相关的用户信息，也可以用来实现会话功能。 </p>
-<p><strong>Referer</strong> ： 表 明 产 生 请 求 的 网 页 URL 。 如 比 从 网 页 /icconcept/index.jsp 中 点 击 一 个 链 接 到 网 页 /icwork/search ， 在 向 服 务 器 发 送 的 GET/icwork/search 中 的 请 求 中 ， Referer 是 <a target="_blank" rel="noopener" href="http://hostname:8080/icconcept/index.jsp%E3%80%82%E8%BF%99%E4%B8%AA%E5%B1%9E%E6%80%A7%E5%8F%AF%E4%BB%A5%E7%94%A8%E6%9D%A5%E8%B7%9F%E8%B8%AA">http://hostname:8080/icconcept/index.jsp。这个属性可以用来跟踪</a> Web 请求是从什么网站来的。</p>
-<p> Content-Type：用来表名 request 的内容类型。可以用 HttpServletRequest 的 getContentType()方法取得。 </p>
-<p>Accept-Charset：指出浏览器可以接受的字符编码。英文浏览器的默认值是 ISO-8859-1. Accept-Encoding：指出浏览器可以接受的编码方式。编码方式不同于文件格式，它是为了压缩文件并加 速文件传递速度。浏览器在接收到 Web 响应之后先解码，然后再检查文件格式。</p>
-<p><strong>X-Forwarded-For</strong>： 是一个 HTTP 扩展头部。HTTP/1.1（RFC 2616）协议并没有对它的定义，它最开始是由 Squid 这个缓存代理软件引入，用来表示 HTTP 请求端真实 IP。</p>
-<p> X-Real-IP：这又是一个自定义头部字段。X-Real-IP 通常被 HTTP 代理用来表示与它产生 TCP 连接的设备 IP，这个设备可能是其他代理，也可能是真正的请求端。需要注意的是，X-Real-IP 目前并不属于任何标准，代理和 Web 应用之间可以约定用任何自定义头来传递这个信息。</p>
-<h3 id="请求空行"><a href="#请求空行" class="headerlink" title="请求空行"></a>请求空行</h3><p>最后一个请求头标之后是空行，发送回车符和退行，通知服务器以下不再有头标。</p>
-<p>用于分割POST请求的请求头，和请求体。</p>
-<h3 id="请求数据"><a href="#请求数据" class="headerlink" title="请求数据"></a>请求数据</h3><p>使用 POST 传送，最常使用的是 Content-Type 和 Content-Length 头标。</p>
-<p>封装POST请求消息的请求参数。</p>
-<h2 id="Response返回数据包数据格式"><a href="#Response返回数据包数据格式" class="headerlink" title="Response返回数据包数据格式"></a>Response返回数据包数据格式</h2><p>一个响应由四个部分组成；状态行、响应头标、空行、响应数据。</p>
-<p>1.状态行：协议版本、数字形式的状态代码和状态描述，个元素之间以空格分隔 </p>
-<p>2.响应头标：包含服务器类型、日期、长度、内容类型等 </p>
-<p>3.空行：响应头与响应体之间用空行隔开 </p>
-<p>4.响应数据：浏览器会将实体内容中的数据取出来，生成相应的页面</p>
-<p>HTTP 响应码：</p>
-<p> 1xx：信息，请求收到，继续处理</p>
-<p> 2xx：成功，行为被成功地接受、理解和采纳 </p>
-<p>3xx：重定向，为了完成请求，必须进一步执行的动作 </p>
-<p>4xx：客户端错误 </p>
-<p>5xx：服务器错误</p>
-<p>200  存在文件</p>
-<p>403  存在文件夹</p>
-<p>3xx  均可能存在</p>
-<p>404  不存在文件及文件夹 </p>
-<p>500  均可能存在</p>
-
-      
-    </div><!-- .entry-content -->
-
-    <footer class="entry-meta">
-    <a href="/2022/01/23/%E6%95%B0%E6%8D%AE%E5%8C%85%E6%8B%93%E5%B1%95/">
-    <time datetime="2022-01-23T10:36:42.000Z" class="entry-date">
-        2022-01-23
-    </time>
-</a>
-    
-    
-    </footer>
-</article>
-
-
-
-
-
-
-  
   
     <nav id="pagination">
       <nav id="page-nav">
@@ -854,6 +805,10 @@
       <ul>
         
           <li>
+            <a href="/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/">架构，搭建，WAF等</a>
+          </li>
+        
+          <li>
             <a href="/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/">CDN绕过技术</a>
           </li>
         
@@ -867,10 +822,6 @@
         
           <li>
             <a href="/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/">WEB源码拓展</a>
-          </li>
-        
-          <li>
-            <a href="/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/">搭建安全拓展</a>
           </li>
         
       </ul>
