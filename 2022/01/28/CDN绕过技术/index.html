@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <meta name="description" content="CDN绕过CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。但在安全测试过程中" />
+  
+
+  
+  
+  
+  
+  
+  
+  <title>CDN绕过技术 | 小白</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="CDN绕过CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。但在安全测试过程中，若目标存在CDN服务，将会影响到后续的安全测试过程。  若对网站做安全测试的时候，对网站进行扫描的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CDN绕过技术">
+<meta property="og:url" content="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/index.html">
+<meta property="og:site_name" content="小白">
+<meta property="og:description" content="CDN绕过CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。但在安全测试过程中，若目标存在CDN服务，将会影响到后续的安全测试过程。  若对网站做安全测试的时候，对网站进行扫描的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/image-20220128105333115.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/image-20220128112456727.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/image-20220128112437182.png">
+<meta property="article:published_time" content="2022-01-28T02:50:43.000Z">
+<meta property="article:modified_time" content="2022-01-28T06:31:52.078Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/image-20220128105333115.png">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  
+  <!-- baidu webmaster push -->
+  <script src='//push.zhanzhang.baidu.com/push.js'></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+<body class="home blog custom-background custom-font-enabled single-author">
+  <div id="page" class="hfeed site">
+      <header id="masthead" class="site-header" role="banner">
+    <hgroup>
+      <h1 class="site-title">
+        <a href="/" title="小白" rel="home">小白</a>
+      </h1>
+      
+        <h2 class="site-description hitokoto"></h2>
+        <script type="text/javascript" src="https://v1.hitokoto.cn/?encode=js"></script>
+      
+    </hgroup>
+
+    <nav id="site-navigation" class="main-navigation" role="navigation">
+            <button class="menu-toggle">菜单</button>
+            <a class="assistive-text" href="/#content" title="跳至内容">跳至内容</a><!--TODO-->
+            <div class="menu-main-container">
+                <ul id="menu-main" class="nav-menu">
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/">Home</a></li>
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archives">Archives</a></li>
+                
+                </ul>
+            </div>
+    </nav>
+</header>
+
+      <div id="main" class="wrapper">
+        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-CDN绕过技术" class="post-CDN绕过技术 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title article-title">
+      CDN绕过技术
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/" data-id="ckyy12wml0000ggmadfmx4exl" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <h2 id="CDN绕过"><a href="#CDN绕过" class="headerlink" title="CDN绕过"></a>CDN绕过</h2><p>CDN的全称是Content Delivery Network，即<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%86%85%E5%AE%B9%E5%88%86%E5%8F%91%E7%BD%91%E7%BB%9C/4034265">内容分发网络</a>。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，<strong>使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。</strong>但在安全测试过程中，若目标存在CDN服务，将会影响到后续的安全测试过程。</p>
+<p><img src="/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/image-20220128105333115.png" alt="image-20220128105333115"></p>
+<p>若对网站做安全测试的时候，对网站进行扫描的话，不能对CDN节点进行扫描；因为CDN节点主要目的为了用户提供访问速度，并且CDN节点只是一个缓存，缓存和真实的地方有很大区别，缓存具有时效性，不能与真实的网站最新内容相同步；所以对CDN进行网站扫描或漏洞利用或后门控制的话，只是一个虚拟的缓存网站，不是真实的网站；这就是为什么要进行CDN绕过。</p>
+<h2 id="如何判断目标存在CDN服务"><a href="#如何判断目标存在CDN服务" class="headerlink" title="如何判断目标存在CDN服务"></a>如何判断目标存在CDN服务</h2><p>利用多节点技术进行请求返回判断</p>
+<p>当去Ping优酷网站时可以看到，出现多个不同的IP地址，这表明存在CDN节点；若出现都是相同IP表明不存在CDN节点。</p>
+<p><img src="/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/image-20220128112456727.png" alt="image-20220128112456727"></p>
+<p><img src="/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/image-20220128112437182.png" alt="image-20220128112437182"></p>
+<h2 id="常见的-CDN-绕过技术"><a href="#常见的-CDN-绕过技术" class="headerlink" title="常见的 CDN 绕过技术"></a>常见的 CDN 绕过技术</h2><p>1.子域名查询 ：</p>
+<p>CDN不便宜，导致很多站长可能只会对主站或者流量大的子站点做了 CDN，而很多子站点又跟主站在同一台服务器或者同一个C段内，此时就可以通过查询子域名对应的 IP 来辅助查找网站的真实IP。</p>
+<p>2.邮件服务查询 ：根据对方邮件服务器给自己发送的邮件来判断对方邮件服务器的地址，这个地址可能就是网站服务器地址，或者反推主站服务器IP。邮件源码测试对比第三方查询（地区分析）</p>
+<p>3.国外地址请求：由于国外一般不设置CDN，所以使用国外地址请求国内服务器大概率会获取到真实IP。</p>
+<p>4.遗留文件，扫描全网：遗留文件类似于phpinfo.php文件（php配置文件）可能会有真实IP；扫描全网就是对全世界的网络进行响应，通过返回的IP地址进行搜集整理，再从这些IP中分析那个是真实IP；<strong>这是由于不是所有地区都有CDN，可能分析出的IP就是真实IP</strong></p>
+<p>5.黑暗引擎搜索特定文件：傻蛋，钟馗之眼，fofa</p>
+<p>6.dns 历史记录，以量打量：查询DNS记录获取真实IP；以量打量，通过DDOS攻击使CDN上的流量耗尽，再访问就会访问到真实网站IP。<strong>这是由于CDN也是使用流量，其流量也会使用殆尽</strong></p>
+<h2 id="利用子域名请求获取真实-IP"><a href="#利用子域名请求获取真实-IP" class="headerlink" title="利用子域名请求获取真实 IP"></a>利用子域名请求获取真实 IP</h2><p>子域名小技巧：</p>
+<p>网站在设置的时候主站一般会设置成：</p>
+<p>*域名.com和www.域名.com</p>
+<p>这时当你在浏览器访问的时候不管你加不加www.都会解析出网站；</p>
+<p>而网站使用CDN节点时，若CDN节点只针对www.域名.com进行了设置，就会有多个IP，此时若查询域名.com就会查询到主站IP。(<strong>主要由于网站解析设置和在浏览器解析时会出现</strong>)</p>
+<p>###利用国外地址请求获取真实 IP</p>
+<p>使用该网站：<a target="_blank" rel="noopener" href="https://asm.ca.com/en/ping.php">https://asm.ca.com/en/ping.php</a></p>
+<h2 id="网站地址"><a href="#网站地址" class="headerlink" title="网站地址"></a>网站地址</h2><p>shodan：<a target="_blank" rel="noopener" href="https://www.shodan.io/">https://www.shodan.io/</a></p>
+<p>超级Ping：<a target="_blank" rel="noopener" href="http://ping.chinaz.com/">http://ping.chinaz.com/</a></p>
+<p>第三方查询：<a target="_blank" rel="noopener" href="https://www.get-site-ip.com/">https://www.get-site-ip.com/</a></p>
+<p>​                       <a target="_blank" rel="noopener" href="https://asm.ca.com/en/ping.php">https://asm.ca.com/en/ping.php</a></p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/">
+    <time datetime="2022-01-28T02:50:43.000Z" class="entry-date">
+        2022-01-28
+    </time>
+</a>
+    
+    
+    </footer>
+</article>
+
+
+    
+<nav class="nav-single">
+    <h3 class="assistive-text">文章导航</h3>
+    
+    
+        <span class="nav-next"><a href="/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/" rel="next">加密编码算法 <span class="meta-nav">→</span></a></span>
+    
+</nav><!-- .nav-single -->
+
+
+
+
+
+
+
+</div></div>
+        <div id="secondary" class="widget-area" role="complementary">
+  
+    <aside id="search" class="widget widget_search"><form role="search" method="get" accept-charset="utf-8" id="searchform" class="searchform" action="//google.com/search">
+    <div>
+        <input type="text" value="" name="s" id="s" />
+        <input type="submit" id="searchsubmit" value="搜索" />
+    </div>
+</form></aside>
+  
+    
+  
+    
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget-content">
+      <ul>
+        
+          <li>
+            <a href="/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/">CDN绕过技术</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/">加密编码算法</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/">系统及数据库</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/">WEB源码拓展</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/">搭建安全拓展</a>
+          </li>
+        
+      </ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-content">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/" rel="tag">利用burpsuite进行referer伪造</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-content tagcloud">
+      <a href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/" style="font-size: 10px;">利用burpsuite进行referer伪造</a>
+    </div>
+  </aside>
+
+  
+</div>
+      </div>
+      <footer id="colophon" role="contentinfo">
+    <p>&copy; 2022 John Doe
+    All rights reserved.</p>
+    <p>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></p>
+</footer>
+    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/js/share.js'];</script>
+
+<script src="/js/jquery-3.3.1.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/navigation.js"></script>
+
+<div id="bg"></div>
+
+  </div>
+</body>
+</html>
