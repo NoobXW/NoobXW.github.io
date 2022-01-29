@@ -26,8 +26,9 @@
 <meta property="og:description" content="前言在安全测试中，信息收集是非常重要的一个环节，此环节的信息将影响 到后续的成功几率，掌握信息的多少将决定发现漏洞机会大小，换言之决定着是否能完成目标的测试任务。渗透测试的思路 就是从信息收集这里开始。  所谓信息搜集，其实就是为了扩大攻击面，信息搜集的越多，攻击的范围越大。 站点搭建分析1.**搭建习惯-目录型站点 **：主站是一套程序，加一个目录打开后又是一套程序；两套程序会有两个漏洞形式（扫">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/image-20220128201243759.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/image-20220129220745739.png">
 <meta property="article:published_time" content="2022-01-28T11:21:46.000Z">
-<meta property="article:modified_time" content="2022-01-28T14:13:51.527Z">
+<meta property="article:modified_time" content="2022-01-29T14:39:33.183Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/image-20220128201243759.png">
@@ -88,7 +89,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/" data-id="ckyyhl1vq000ehgmadueh84q8" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/" data-id="ckyzzv21u000e9cmaha2o6a7a" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -101,9 +102,9 @@
 <p>2.<strong>搭建习惯-端口类站点</strong> ：网站管理员通过端口名使网站应用分开，例如：主站装在80端口，或其他端口配置其他服务，但是都在同一台服务器，若其中端口出现了问题，例如80端口出现漏洞，会影响其他端口（扫描端口或其他方法）；</p>
 <p>3.<strong>搭建习惯-子域名站点</strong> ：子站和主站不在一台服务器上，如果在一个网段的话，会出现内网安全隐患；</p>
 <p>如果不同网段的话，搜集子站其他关于主站的信息再进行主站测试；</p>
-<p>4.<strong>搭建习惯-类似域名站点</strong> ：域名的后缀不同或者域名的名字有所修改等，可以自己写个工具跑一下类似域名；</p>
+<p>4.<strong>搭建习惯-类似域名站点</strong> ：域名的后缀不同或者域名的名字有所修改等，可以自己写个工具跑一下类似域名；可以在搜索引擎搜索 <strong>域名+php</strong> 或直接搜索域名找<strong>类似站点</strong>搜集更多信息。</p>
 <p>5.<strong>搭建习惯-旁注,C 段站点</strong> ：</p>
-<p><strong>旁注</strong>：同服务器，不同站点；例如：有 a站，b站等网站（多个站点服务器），我的目标的是b站，我通过查询又知道了有a站和其他站的存在，b站由于技术有限找不到漏洞；再找a站或其他站的权限问题再去获取到b站的权限；</p>
+<p><strong>旁注</strong>：同服务器，不同站点；例如：有 a站，b站等网站（多个站点服务器），我的目标的是b站，我通过查询又知道了有a站和其他站的存在，b站由于技术有限找不到漏洞；再找a站或其他站的权限问题再去获取到b站的权限；旁注查询：<a target="_blank" rel="noopener" href="https://www.webscan.cc/">https://www.webscan.cc/</a></p>
 <p><strong>C段</strong>：同网段，不同服务器，不同站点；例如：有a站，b站，c站和d站；目标是a站，查询网段信息，比如查询到了c站的网段，这个网段下有个多个网站，拿到其中一个站的权限，在通过提权获取到这个服务器的权限，由于目标主机处于同一内网下，再实施内网安全的测试方法获取到指定网站的服务器权限；</p>
 <p>6.<strong>搭建习惯-搭建软件特征站点</strong> ：例如：phpstudy除新版本外采用root/root作为数据库的默认密码；还有phpmyadmin文件夹，可以进入phpmyadmin文件夹使用默认数据库密码进入数据库</p>
 <p>##WAF 防护分析</p>
@@ -111,6 +112,28 @@
 <p>Web应用防护系统（也称为：<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BD%91%E7%AB%99/155722">网站</a>应用级入侵防御系统。英文：Web Application Firewall，简称： WAF）。利用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%9B%BD%E9%99%85/766689">国际</a>上公认的一种说法：Web应用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%98%B2%E7%81%AB%E5%A2%99">防火墙</a>是通过执行一系列针对HTTP/HTTPS的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5/2890163">安全策略</a>来专门为<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/Web/150564">Web</a>应用提供保护的一款产品。</p>
 <p>2.如何快速识别WAF：wafw00f或者手工识别；部分网站数据包有此字段：X-Powered-By: WAF</p>
 <p>3.识别WAF对于安全测试的意义：了解是什么WAF，进行下一步。</p>
+<h2 id="APP及其他资产等"><a href="#APP及其他资产等" class="headerlink" title="APP及其他资产等"></a>APP及其他资产等</h2><p>在安全测试中，若 WEB 无法取得进展或无 WEB 的情况下，我们需要 借助 APP 或其他资产在进行信息收集，从而开展后续渗透。</p>
+<h3 id="APP-提取及抓包及后续配合"><a href="#APP-提取及抓包及后续配合" class="headerlink" title="APP 提取及抓包及后续配合"></a>APP 提取及抓包及后续配合</h3><p>APP如果涉及WEB，按照WEB思路继续渗透；</p>
+<p>APP如果不涉及WEB：</p>
+<p><strong>各种端口一顿乱扫</strong>-思路 </p>
+<p><strong>各种接口一顿乱扫</strong>-思路 </p>
+<p><strong>接口部分一顿测试</strong>-思路</p>
+<p>利用黑暗引擎搜索–乱扫：</p>
+<p><a target="_blank" rel="noopener" href="https://fofa.so/">https://fofa.so/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.shodan.io/">https://www.shodan.io/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zoomeye.org/">https://www.zoomeye.org/</a></p>
+<p>乱扫的目的是为了搜集更广泛的信息，扩大攻击面，为后续的渗透奠定坚实的基础。</p>
+<h2 id="资产监控拓展"><a href="#资产监控拓展" class="headerlink" title="资产监控拓展"></a>资产监控拓展</h2><p>域名搜集途径：</p>
+<p><img src="/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/image-20220129220745739.png" alt="image-20220129220745739"></p>
+<p>##各种子域名查询</p>
+<p>1.DNS,备案,证书：利用站长工具进行搜集</p>
+<p>2.全球节点请求 cdn</p>
+<p>3.枚举爆破或解析子域名对应</p>
+<p>4.便于发现管理员相关的注册信息</p>
+<p>##Github 监控</p>
+<p>1.便于收集整理最新 exp 或 poc</p>
+<p>2.便于发现相关测试目标的资产</p>
+<p>（需要导入一个python脚本进行微信推送）</p>
 
       
     </div><!-- .entry-content -->
