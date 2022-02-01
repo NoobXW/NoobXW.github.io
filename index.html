@@ -64,6 +64,75 @@
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main">
   
+    <article id="post-SQL注入-文件读写操作" class="post-SQL注入-文件读写操作 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/">SQL注入-文件读写操作</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/" data-id="ckz3weiqr0002qkmafcd64yk0" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <h2 id="SQL注入文件读写及导出"><a href="#SQL注入文件读写及导出" class="headerlink" title="SQL注入文件读写及导出"></a>SQL注入文件读写及导出</h2><p>这里的load_file()和into outfile或into dumpfile函数都是Mysql数据库的内置函数。</p>
+<p><strong>load_file():读取函数</strong>：</p>
+<p>将以下代码代入数据库执行可进行文件读取：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select load_file(&#x27;d:/test.txt&#x27;);</span><br></pre></td></tr></table></figure>
+
+<p>这里的d:/test.txt文件路径中的斜杠要用 / ,由于在sql语句中 \n是换行符，所以为了避免，这里的读取路径要使用 / 。</p>
+<p><strong>into outfile或into dumpfile:导出函数</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select &#x27;CTF&#x27; into outfile &#x27;d:/test1.txt&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>这里的写入语句，要写入的东西和路径都需要加 ‘’ 。</p>
+<p><strong>文件读取操作必须要知道文件的具体路径。</strong></p>
+<h2 id="路径获取的常见方法"><a href="#路径获取的常见方法" class="headerlink" title="路径获取的常见方法"></a>路径获取的常见方法</h2><p>报错显示：通过扫描工具或手工探测报错网页，会爆出该网站的真实路径；</p>
+<p>遗留文件：例如 phpinfo.php文件，可以找到网站路径</p>
+<p>漏洞报错：在搜索引擎根据网站使用的什么程序去搜索网站所在的爆路径的漏洞</p>
+<p>平台配置文件：配置文件里会有网站的路径信息。</p>
+<p>​                          敏感文件文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30292843/article/details/99381669">https://blog.csdn.net/weixin_30292843/article/details/99381669</a></p>
+<p>爆破：很难找到路径信息，按照常规思路去爆破。这是由于搭建网站的时候会有常见的路径，</p>
+<p>​            例如：windows：                                              linux：</p>
+<p>​                                           d:/www/……                                     /var/www/……</p>
+<h2 id="魔术引号"><a href="#魔术引号" class="headerlink" title="魔术引号"></a>魔术引号</h2><p><strong>魔术引号开关：magic_quotes_gpc</strong>这个文件在php.ini目录下的文件</p>
+<p><strong>魔术引号是为了防止任意文件读取的SQL注入。</strong></p>
+<p>什么是魔术引号：当打开时，所有的 ‘（单引号），”（双引号），\（反斜线）和 NULL 字符都会被自动加上一个反斜线进行转义。这和 <a target="_blank" rel="noopener" href="https://www.jb51.net/shouce/php5/zh/function.addslashes.html"><strong>addslashes()</strong></a> 作用完全相同。一个自动将进入 PHP 脚本的数据进行转义的过程。最好在编码时不要转义而在运行时根据需要而转义。</p>
+<h3 id="魔术引号的绕过："><a href="#魔术引号的绕过：" class="headerlink" title="魔术引号的绕过："></a>魔术引号的绕过：</h3><p>利用编码或宽字节绕过。</p>
+<h2 id="防注入策略"><a href="#防注入策略" class="headerlink" title="防注入策略"></a>防注入策略</h2><p>1.自带防御：魔术引导</p>
+<p>2.内置函数;int等</p>
+<p>3.自定义关键字：select，会对select,and,or等关键字进行过滤。（大小写混合可以尝试绕过过滤）</p>
+<p>4.WAF防护软件：安全狗，宝塔等</p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/">
+    <time datetime="2022-02-01T04:55:10.000Z" class="entry-date">
+        2022-02-01
+    </time>
+</a>
+    
+    
+    </footer>
+</article>
+
+
+
+
+
+
+  
     <article id="post-SQL注入字符型和数字型判断" class="post-SQL注入字符型和数字型判断 post type-post status-publish format-standard hentry">
     <!---->
 
@@ -79,7 +148,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/" data-id="ckz30tetn0003n4ma0w2j1chr" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/" data-id="ckz3weiqt0003qkma665ngur4" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -216,7 +285,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/Less1-Less4/" data-id="ckz30tetk0001n4maekwb936c" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/Less1-Less4/" data-id="ckz3weiqi0000qkmaac9v47rf" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -413,7 +482,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5/" data-id="ckz30teu1000gn4ma8k9d0fjx" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5/" data-id="ckz3weirf000iqkmabf9p1vac" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -533,7 +602,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/WEB%E6%BC%8F%E6%B4%9E%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="ckz30tetq0007n4ma1h2ifwge" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/WEB%E6%BC%8F%E6%B4%9E%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="ckz3weiqv0005qkmade8g5sng" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -599,7 +668,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/" data-id="ckz30teu2000hn4ma6xc5ctda" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/" data-id="ckz3weire000hqkma9b66bng3" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -684,7 +753,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/" data-id="ckz30tetg0000n4ma8q9bhljc" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/" data-id="ckz3weiqp0001qkma3akn8jop" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -755,7 +824,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/" data-id="ckz30tetr0008n4mae952hx5n" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/" data-id="ckz3weiqw0006qkmaglp66vfl" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -822,7 +891,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="ckz30teu3000in4maf1tg2wuj" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="ckz3weirh000jqkmah6836dyf" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -905,7 +974,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/" data-id="ckz30tetm0002n4ma456t9i4k" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/" data-id="ckz3weiqu0004qkma5c4cf6xu" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -968,64 +1037,6 @@
 
 
   
-    <article id="post-搭建安全拓展" class="post-搭建安全拓展 post type-post status-publish format-standard hentry">
-    <!---->
-
-      <header class="entry-header">
-        
-        
-  
-    <h1 class="entry-title">
-      <a class="article-title" href="/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/">搭建安全拓展</a>
-    </h1>
-  
-
-        
-        <div class="comments-link">
-            
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/" data-id="ckz30tety000cn4ma1thh2e43" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
-        </div><!-- .comments-link -->
-      </header><!-- .entry-header -->
-
-    <div class="entry-content">
-      
-        <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>常见搭建平台脚本启用</p>
-<p>域名 IP 目录解析安全问题 </p>
-<p>常见文件后缀解析对应安全 </p>
-<p>常见安全测试中的安全防护 </p>
-<p>WEB 后门与用户及文件权限</p>
-<hr>
-<p>1.ASP,PHP,ASPX,JSP,PY,JAVAWEB 等环境 </p>
-<p>2.WEB 源码中敏感文件 后台路径，数据库配置文件，备份文件等 </p>
-<p>3.IP 或域名解析 WEB 源码目录对应下的存在的安全问题 域名访问，IP 访问（结合类似备份文件目录）</p>
-<p>4.脚本后缀对应解析（其他格式可相同-上传安全）</p>
-<p>5.存在下载或为解析问题 </p>
-<p>6.常见防护中的 IP 验证，域名验证等 </p>
-<p>7.后门是否给予执行权限 </p>
-<p>8.后门是否给予操作目录或文件权限 </p>
-<p>9.后门是否给予其他用户权限</p>
-<h3 id="IP访问网站和域名访问网站的区别"><a href="#IP访问网站和域名访问网站的区别" class="headerlink" title="IP访问网站和域名访问网站的区别"></a>IP访问网站和域名访问网站的区别</h3><p>搭建好的一个网站，如果使用IP去访问，会访问到其根目录，使用域名访问，指向其根目录下的一个文件。</p>
-
-      
-    </div><!-- .entry-content -->
-
-    <footer class="entry-meta">
-    <a href="/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/">
-    <time datetime="2022-01-24T13:36:09.000Z" class="entry-date">
-        2022-01-24
-    </time>
-</a>
-    
-    
-    </footer>
-</article>
-
-
-
-
-
-
-  
   
     <nav id="pagination">
       <nav id="page-nav">
@@ -1055,6 +1066,10 @@
       <ul>
         
           <li>
+            <a href="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/">SQL注入-文件读写操作</a>
+          </li>
+        
+          <li>
             <a href="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/">SQL注入字符型和数字型判断</a>
           </li>
         
@@ -1068,10 +1083,6 @@
         
           <li>
             <a href="/2022/01/30/WEB%E6%BC%8F%E6%B4%9E%E7%9F%A5%E8%AF%86%E7%82%B9/">WEB漏洞知识点</a>
-          </li>
-        
-          <li>
-            <a href="/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/">架构，搭建，WAF等</a>
           </li>
         
       </ul>
