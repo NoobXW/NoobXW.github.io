@@ -5,9 +5,9 @@
   
   
   <meta name="description" content="SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfile函数都是Mysql数据库的内置函数。
-load_file():读取函数：
-将以下代码代入数据库执行可进行文件读取：
-1select load_file(&amp;#x27;d:/test.txt&amp;#x2" />
+1、load_file():读取函数：
+以下代码实在数据库执行的源码进行文件读取：
+1select load_file(&amp;#x27;D:/1.txt&amp;#x2" />
   
 
   
@@ -18,17 +18,21 @@ load_file():读取函数：
   
   <title>SQL注入-文件读写操作 | 小白</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfile函数都是Mysql数据库的内置函数。 load_file():读取函数： 将以下代码代入数据库执行可进行文件读取： 1select load_file(&amp;#x27;d:&#x2F;test.txt&amp;#x27;);  这里的d:&#x2F;test.txt文件路径中的斜杠要用 &#x2F; ,由于在sql语句中 \n是换行符">
+  <meta name="description" content="SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfile函数都是Mysql数据库的内置函数。 1、load_file():读取函数： 以下代码实在数据库执行的源码进行文件读取： 1select load_file(&amp;#x27;D:&#x2F;1.txt&amp;#x27;);这里的D可以用小写d  这里的d:&#x2F;1.txt文件路径中的斜杠要用 &#x2F; ,由于在sql语句中">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SQL注入-文件读写操作">
 <meta property="og:url" content="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/index.html">
 <meta property="og:site_name" content="小白">
-<meta property="og:description" content="SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfile函数都是Mysql数据库的内置函数。 load_file():读取函数： 将以下代码代入数据库执行可进行文件读取： 1select load_file(&amp;#x27;d:&#x2F;test.txt&amp;#x27;);  这里的d:&#x2F;test.txt文件路径中的斜杠要用 &#x2F; ,由于在sql语句中 \n是换行符">
+<meta property="og:description" content="SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfile函数都是Mysql数据库的内置函数。 1、load_file():读取函数： 以下代码实在数据库执行的源码进行文件读取： 1select load_file(&amp;#x27;D:&#x2F;1.txt&amp;#x27;);这里的D可以用小写d  这里的d:&#x2F;1.txt文件路径中的斜杠要用 &#x2F; ,由于在sql语句中">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201182045161.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201183145889.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201183319837.png">
 <meta property="article:published_time" content="2022-02-01T04:55:10.000Z">
-<meta property="article:modified_time" content="2022-02-01T09:07:11.015Z">
+<meta property="article:modified_time" content="2022-02-01T10:59:19.258Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201182045161.png">
   
   
     <link rel="icon" href="/css/images/favicon.ico">
@@ -86,23 +90,36 @@ load_file():读取函数：
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/" data-id="ckz3weiqr0002qkmafcd64yk0" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/" data-id="ckz40elwt0002swma4l52190v" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
     <div class="entry-content">
       
         <h2 id="SQL注入文件读写及导出"><a href="#SQL注入文件读写及导出" class="headerlink" title="SQL注入文件读写及导出"></a>SQL注入文件读写及导出</h2><p>这里的load_file()和into outfile或into dumpfile函数都是Mysql数据库的内置函数。</p>
-<p><strong>load_file():读取函数</strong>：</p>
-<p>将以下代码代入数据库执行可进行文件读取：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select load_file(&#x27;d:/test.txt&#x27;);</span><br></pre></td></tr></table></figure>
+<p>1、<strong>load_file():读取函数</strong>：</p>
+<p>以下代码实在数据库执行的源码进行文件读取：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select load_file(&#x27;D:/1.txt&#x27;);这里的D可以用小写d</span><br></pre></td></tr></table></figure>
 
-<p>这里的d:/test.txt文件路径中的斜杠要用 / ,由于在sql语句中 \n是换行符，所以为了避免，这里的读取路径要使用 / 。</p>
-<p><strong>into outfile或into dumpfile:导出函数</strong>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select &#x27;CTF&#x27; into outfile &#x27;d:/test1.txt&#x27;;</span><br></pre></td></tr></table></figure>
+<p>这里的d:/1.txt文件路径中的斜杠要用 / ,由于在sql语句中 \n是换行符，所以为了避免，这里的读取路径要使用 / ；另一种可以通过\进行转义出  \ 。</p>
+<p>执行如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=-1&#x27; union select 1,load_file(&#x27;D:/1.txt&#x27;),3 --+</span><br></pre></td></tr></table></figure>
+
+<p>可以看到已读取出1.txt文件的内容。</p>
+<p><img src="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201182045161.png" alt="image-20220201182045161"></p>
+<p>2、<strong>into outfile或into dumpfile:导出函数</strong>：</p>
+<p>源码执行语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select &#x27;CTF1&#x27; into outfile &#x27;D:/2.txt&#x27;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=-1&#x27; union select 1,2,&#x27;CTF1&#x27;  into outfile &#x27;D:/2.txt&#x27; --+</span><br></pre></td></tr></table></figure>
 
 <p>这里的写入语句，要写入的东西和路径都需要加 ‘’ 。</p>
+<p>可以看到页面返回异常，但返回D盘查看文件，已将CTF1写入文件2.txt</p>
+<p><img src="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201183145889.png" alt="image-20220201183145889"></p>
+<p><img src="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201183319837.png" alt="image-20220201183319837"></p>
+<p>SQL注入任意文件读取，这样的漏洞一旦出发，可以读取数据库管理员的账号密码，也可以通过写入操作将后门植入，提高权限。</p>
 <p><strong>文件读取操作必须要知道文件的具体路径。</strong></p>
+<hr>
 <h2 id="路径获取的常见方法"><a href="#路径获取的常见方法" class="headerlink" title="路径获取的常见方法"></a>路径获取的常见方法</h2><p>报错显示：通过扫描工具或手工探测报错网页，会爆出该网站的真实路径；</p>
 <p>遗留文件：例如 phpinfo.php文件，可以找到网站路径</p>
 <p>漏洞报错：在搜索引擎根据网站使用的什么程序去搜索网站所在的爆路径的漏洞</p>
@@ -111,10 +128,14 @@ load_file():读取函数：
 <p>爆破：很难找到路径信息，按照常规思路去爆破。这是由于搭建网站的时候会有常见的路径，</p>
 <p>​            例如：windows：                                              linux：</p>
 <p>​                                           d:/www/……                                     /var/www/……</p>
+<hr>
 <h2 id="魔术引号"><a href="#魔术引号" class="headerlink" title="魔术引号"></a>魔术引号</h2><p><strong>魔术引号开关：magic_quotes_gpc</strong>这个文件在php.ini目录下的文件</p>
 <p><strong>魔术引号是为了防止任意文件读取的SQL注入。</strong></p>
 <p>什么是魔术引号：当打开时，所有的 ‘（单引号），”（双引号），\（反斜线）和 NULL 字符都会被自动加上一个反斜线进行转义。这和 <a target="_blank" rel="noopener" href="https://www.jb51.net/shouce/php5/zh/function.addslashes.html"><strong>addslashes()</strong></a> 作用完全相同。一个自动将进入 PHP 脚本的数据进行转义的过程。最好在编码时不要转义而在运行时根据需要而转义。</p>
+<p><strong>魔术引号 【Warning：本特性已自 PHP 5.3.0 起废弃并将自 PHP 5.4.0 起移除。】</strong></p>
+<hr>
 <h3 id="魔术引号的绕过："><a href="#魔术引号的绕过：" class="headerlink" title="魔术引号的绕过："></a>魔术引号的绕过：</h3><p>利用编码或宽字节绕过。</p>
+<hr>
 <h2 id="防注入策略"><a href="#防注入策略" class="headerlink" title="防注入策略"></a>防注入策略</h2><p>1.自带防御：魔术引导</p>
 <p>2.内置函数;int等</p>
 <p>3.自定义关键字：select，会对select,and,or等关键字进行过滤。（大小写混合可以尝试绕过过滤）</p>
