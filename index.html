@@ -64,6 +64,60 @@
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main">
   
+    <article id="post-SQL注入-Less8-Less10" class="post-SQL注入-Less8-Less10 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/">SQL注入-Less8-Less10</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/" data-id="ckz77wuja0000l4ma7m4z6ajv" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>记录一下Less-8—Less10盲注遇到的一些问题</p>
+<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>首先8-10关最大特点就是没有报错回显，导致开始注入的时候都是利用报错注入，结果统统失败，后来查看源码发现，报错回显被注释掉了，那这几关报错盲注就不能用了，只能用布尔盲注和时间盲注。</p>
+<p><img src="/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/image-20220204003814683.png" alt="image-20220204003814683"></p>
+<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>其次就是注入点的问题，Less-8是单引号的布尔盲注，Less-9是单引号的时间盲注，Less-10是双引号的时间盲注，每次注入的时候探测注入很关键，这也是每次注入的时候我老是忽略的问题。</p>
+<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>然后就是对于布尔盲注和时间盲注时，猜表名和猜列名遇到的问题；由于猜表名的时候根据以往的回显表示：子查询超过一行的报错，以至于这几关每次注入的时候老是缺少<code>limit</code>字段，而且又是盲注的无回显，导致每次出问题都不知道在哪里，仔细一看才知道没加<code>limit</code>字段。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-8/?id=1&#x27; and if(ascii(substr((select table_name from information_schema.tables where table_schema=&#x27;security&#x27; limit 1,1),1,1))=116,1,sleep(5)) --+</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>Less-9和Less-10最大的特点就是：时间盲注的时候，不管怎么注入都只出现You are in………..，但是浏览器会响应，如图：</p>
+<p><img src="/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/image-20220204005121825.png" alt="image-20220204005121825"></p>
+<p>看到等待sqli-labs-master的响应…才明白sleep()函数被执行了，但页面会保持不变。</p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/">
+    <time datetime="2022-02-03T16:35:17.000Z" class="entry-date">
+        2022-02-04
+    </time>
+</a>
+    
+    
+    </footer>
+</article>
+
+
+
+
+
+
+  
     <article id="post-文件导入导出-SQL靶场" class="post-文件导入导出-SQL靶场 post type-post status-publish format-standard hentry">
     <!---->
 
@@ -79,7 +133,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckz757epc000j8omaboqudaa3" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckz77wujy000jl4magbmsf2pm" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -150,7 +204,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckz757epd000k8oma6tra4yzo" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckz77wuk1000ll4ma3dug3ed2" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -448,7 +502,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/" data-id="ckz757eox00038omahjje21ot" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/" data-id="ckz77wujj0004l4madvni9mln" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -557,7 +611,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/" data-id="ckz757eow00028oma1w0s7amc" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/" data-id="ckz77wujh0002l4ma788p16ab" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -643,7 +697,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/" data-id="ckz757eoy00048omafk3hftub" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/" data-id="ckz77wujk0005l4ma6hz70fw2" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -780,7 +834,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/Less1-Less4/" data-id="ckz757eou00018oma8dvnet0h" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/Less1-Less4/" data-id="ckz77wuji0003l4ma966u9wge" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -977,7 +1031,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5/" data-id="ckz757epe000m8omafwqd84ix" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5/" data-id="ckz77wuk1000ml4ma4ufcg9t1" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1097,7 +1151,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/WEB%E6%BC%8F%E6%B4%9E%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="ckz757ep000078oma004tcl6o" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/WEB%E6%BC%8F%E6%B4%9E%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="ckz77wujm0007l4ma6jw33jqw" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1163,7 +1217,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/" data-id="ckz757epa000g8oma8cqr4aiy" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/" data-id="ckz77wuk0000kl4ma5k2needq" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1233,77 +1287,6 @@
 
 
   
-    <article id="post-CDN绕过技术" class="post-CDN绕过技术 post type-post status-publish format-standard hentry">
-    <!---->
-
-      <header class="entry-header">
-        
-        
-  
-    <h1 class="entry-title">
-      <a class="article-title" href="/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/">CDN绕过技术</a>
-    </h1>
-  
-
-        
-        <div class="comments-link">
-            
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/" data-id="ckz757eoq00008omadwwr7req" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
-        </div><!-- .comments-link -->
-      </header><!-- .entry-header -->
-
-    <div class="entry-content">
-      
-        <h2 id="CDN绕过"><a href="#CDN绕过" class="headerlink" title="CDN绕过"></a>CDN绕过</h2><p>CDN的全称是Content Delivery Network，即<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%86%85%E5%AE%B9%E5%88%86%E5%8F%91%E7%BD%91%E7%BB%9C/4034265">内容分发网络</a>。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，<strong>使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。</strong>但在安全测试过程中，若目标存在CDN服务，将会影响到后续的安全测试过程。</p>
-<p><img src="/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/image-20220128105333115.png" alt="image-20220128105333115"></p>
-<p>若对网站做安全测试的时候，对网站进行扫描的话，不能对CDN节点进行扫描；因为CDN节点主要目的为了用户提供访问速度，并且CDN节点只是一个缓存，缓存和真实的地方有很大区别，缓存具有时效性，不能与真实的网站最新内容相同步；所以对CDN进行网站扫描或漏洞利用或后门控制的话，只是一个虚拟的缓存网站，不是真实的网站；这就是为什么要进行CDN绕过。</p>
-<h2 id="如何判断目标存在CDN服务"><a href="#如何判断目标存在CDN服务" class="headerlink" title="如何判断目标存在CDN服务"></a>如何判断目标存在CDN服务</h2><p>利用多节点技术进行请求返回判断</p>
-<p>当去Ping优酷网站时可以看到，出现多个不同的IP地址，这表明存在CDN节点；若出现都是相同IP表明不存在CDN节点。</p>
-<p><img src="/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/image-20220128112456727.png" alt="image-20220128112456727"></p>
-<p><img src="/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/image-20220128112437182.png" alt="image-20220128112437182"></p>
-<h2 id="常见的-CDN-绕过技术"><a href="#常见的-CDN-绕过技术" class="headerlink" title="常见的 CDN 绕过技术"></a>常见的 CDN 绕过技术</h2><p>1.子域名查询 ：</p>
-<p>CDN不便宜，导致很多站长可能只会对主站或者流量大的子站点做了 CDN，而很多子站点又跟主站在同一台服务器或者同一个C段内，此时就可以通过查询子域名对应的 IP 来辅助查找网站的真实IP。</p>
-<p>2.邮件服务查询 ：根据对方邮件服务器给自己发送的邮件来判断对方邮件服务器的地址，这个地址可能就是网站服务器地址，或者反推主站服务器IP。邮件源码测试对比第三方查询（地区分析）</p>
-<p>3.国外地址请求：由于国外一般不设置CDN，所以使用国外地址请求国内服务器大概率会获取到真实IP。</p>
-<p>4.遗留文件，扫描全网：遗留文件类似于phpinfo.php文件（php配置文件）可能会有真实IP；扫描全网就是对全世界的网络进行响应，通过返回的IP地址进行搜集整理，再从这些IP中分析那个是真实IP；<strong>这是由于不是所有地区都有CDN，可能分析出的IP就是真实IP</strong></p>
-<p>5.黑暗引擎搜索特定文件：傻蛋，钟馗之眼，fofa</p>
-<p>6.dns 历史记录，以量打量：查询DNS记录获取真实IP；以量打量，通过DDOS攻击使CDN上的流量耗尽，再访问就会访问到真实网站IP。<strong>这是由于CDN也是使用流量，其流量也会使用殆尽</strong></p>
-<h2 id="利用子域名请求获取真实-IP"><a href="#利用子域名请求获取真实-IP" class="headerlink" title="利用子域名请求获取真实 IP"></a>利用子域名请求获取真实 IP</h2><p>子域名小技巧：</p>
-<p>网站在设置的时候主站一般会设置成：</p>
-<p>*域名.com和www.域名.com</p>
-<p>这时当你在浏览器访问的时候不管你加不加www.都会解析出网站；</p>
-<p>而网站使用CDN节点时，若CDN节点只针对www.域名.com进行了设置，就会有多个IP，此时若查询域名.com就会查询到主站IP。(<strong>主要由于网站解析设置和在浏览器解析时会出现</strong>)</p>
-<p>###利用国外地址请求获取真实 IP</p>
-<p>使用该网站：<a target="_blank" rel="noopener" href="https://asm.ca.com/en/ping.php">https://asm.ca.com/en/ping.php</a></p>
-<h2 id="网站地址"><a href="#网站地址" class="headerlink" title="网站地址"></a>网站地址</h2><p>shodan：<a target="_blank" rel="noopener" href="https://www.shodan.io/">https://www.shodan.io/</a></p>
-<p>超级Ping：<a target="_blank" rel="noopener" href="http://ping.chinaz.com/">http://ping.chinaz.com/</a></p>
-<p>第三方查询：<a target="_blank" rel="noopener" href="https://www.get-site-ip.com/">https://www.get-site-ip.com/</a></p>
-<p>​                       <a target="_blank" rel="noopener" href="https://asm.ca.com/en/ping.php">https://asm.ca.com/en/ping.php</a></p>
-<p>​                       <a target="_blank" rel="noopener" href="https://wepcc.com/">https://wepcc.com/</a></p>
-<p>全球CDN服务查询：<a target="_blank" rel="noopener" href="http://tools.ipip.net/cdn.php">http://tools.ipip.net/cdn.php</a></p>
-<p>查询DNS解析记录：<a target="_blank" rel="noopener" href="https://securitytrails.com/">https://securitytrails.com/</a></p>
-<p>​                                   <a target="_blank" rel="noopener" href="https://dnsdb.io/zh-cn/">https://dnsdb.io/zh-cn/</a></p>
-
-      
-    </div><!-- .entry-content -->
-
-    <footer class="entry-meta">
-    <a href="/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/">
-    <time datetime="2022-01-28T02:50:43.000Z" class="entry-date">
-        2022-01-28
-    </time>
-</a>
-    
-    
-    </footer>
-</article>
-
-
-
-
-
-
-  
   
     <nav id="pagination">
       <nav id="page-nav">
@@ -1333,6 +1316,10 @@
       <ul>
         
           <li>
+            <a href="/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/">SQL注入-Less8-Less10</a>
+          </li>
+        
+          <li>
             <a href="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/">文件导入导出-SQL靶场</a>
           </li>
         
@@ -1346,10 +1333,6 @@
         
           <li>
             <a href="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/">SQL注入-文件读写操作</a>
-          </li>
-        
-          <li>
-            <a href="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/">SQL注入字符型和数字型判断</a>
           </li>
         
       </ul>
