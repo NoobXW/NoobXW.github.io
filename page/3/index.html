@@ -64,6 +64,82 @@
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main">
   
+    <article id="post-墨者学院-投票系统程序设计缺陷分析" class="post-墨者学院-投票系统程序设计缺陷分析 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/">墨者学院-投票系统程序设计缺陷分析</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/" data-id="ckzecdvca000hzsma9neffanh" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>启动靶场进入靶场的投票页面：</p>
+<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124134028395.png" alt="image-20220124134028395"></p>
+<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124134148994.png" alt="image-20220124134148994"></p>
+<p>页面提示每个IP每天只限投一次票</p>
+<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>先抓个包看看：<br><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124134339926.png" alt="image-20220124134339926"></p>
+<p>为ggg投完票后显示id=7，且返回结果0；</p>
+<p>再给ggg投票抓包看结果：</p>
+<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124134523763.png" alt="image-20220124134523763"></p>
+<p>结果返回-1，并提示投票机会用完<br><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124134554092.png" alt="image-20220124134554092"></p>
+<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>根据提示信息：</p>
+<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124134757069.png" alt="image-20220124134757069"></p>
+<p>应该是<strong>利用X-Forwarded-For伪造IP</strong>进行投票</p>
+<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>重新抓包随便构造IP</p>
+<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124142954500.png" alt="image-20220124142954500"></p>
+<p><strong>标注一下</strong>：</p>
+<p>这步我自己其实耗费了很长时间，知道怎么去爆破，但遗漏了一个知识点，导致花费了很长时间才完成，如下：</p>
+<p>Request请求数据包格式：</p>
+<p>1.请求行：请求类型/请求资源路径、协议的版本和类型</p>
+<p>2.请求头：一些键值对，浏览器与 web 服务器之间都可以发送，特定的某种含义</p>
+<p>3**.空行**：请求头与请求体之间用一个空行隔开</p>
+<p>4.请求体：要发送的数据(一般 post 提交会使用)；例：user=123&amp;pass=123</p>
+<p>由下图可知请求数据包的最后一个字段是请求体并且是POST方式，请求体上一行有一行空格，导致我爆破的时候，将XFF放在了<strong>空行</strong>的位置上，导致爆破的时候一直返回无效的HTTP请求。最后才发现数据包的格式错误。<strong>请求体上一行的一定是空行，什么都不能填</strong></p>
+<p>之后在BP中的Intruder中选择爆破类型，选择爆破参数，这里的爆破参数为网段位和主机位</p>
+<p>（只要票数得了第一就好，爆破参数随便几位）</p>
+<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124143029228.png" alt="image-20220124143029228"></p>
+<h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>之后BP中 的Payloads中修改Payload set和Payload type，类型一定是Numbers，然后这里我设置的是从1到200，每次增加1票</p>
+<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124144505974.png" alt="image-20220124144505974"></p>
+<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124144438838.png" alt="image-20220124144438838"></p>
+<h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>如图爆破的每个数据回应包都返回是0，而上面抓包可知重复IP投票返回的结果是-1，则证明投票成功。</p>
+<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124144743018.png" alt="image-20220124144743018"></p>
+<h2 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h2><p>最后返回投票页面刷新页面得到KEY</p>
+<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124143255045.png" alt="image-20220124143255045"></p>
+<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124145042114.png" alt="image-20220124145042114"></p>
+<p>完成靶场。</p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/">
+    <time datetime="2022-01-24T05:39:13.000Z" class="entry-date">
+        2022-01-24
+    </time>
+</a>
+    
+    
+    </footer>
+</article>
+
+
+
+
+
+
+  
     <article id="post-墨者学院-HTTP动作练习" class="post-墨者学院-HTTP动作练习 post type-post status-publish format-standard hentry">
     <!---->
 
@@ -79,7 +155,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/" data-id="ckzcsxa3g000dwgmafe7ff2ja" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/" data-id="ckzecdvc9000fzsmahrovgacg" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -182,7 +258,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/" data-id="ckzcsxa3q000jwgma6dq9eess" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/" data-id="ckzecdvcf000jzsmab946bcnj" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -243,7 +319,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%9D%A5%E6%BA%90%E9%A1%B5%E4%BC%AA%E9%80%A0/" data-id="ckzcsxa3k000gwgmac4ivgv2y" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%9D%A5%E6%BA%90%E9%A1%B5%E4%BC%AA%E9%80%A0/" data-id="ckzecdvca000gzsma5e3xg9xr" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -302,7 +378,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/23/%E6%95%B0%E6%8D%AE%E5%8C%85%E6%8B%93%E5%B1%95/" data-id="ckzcsxa3s000lwgma3tzndvnt" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/23/%E6%95%B0%E6%8D%AE%E5%8C%85%E6%8B%93%E5%B1%95/" data-id="ckzecdvch000nzsma9z2o62sz" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -410,7 +486,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/22/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E6%A6%82%E5%BF%B5%E5%90%8D%E8%AF%8D/" data-id="ckzcsxa3h000ewgmagpr84c7q" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/22/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E6%A6%82%E5%BF%B5%E5%90%8D%E8%AF%8D/" data-id="ckzecdvc9000ezsmae3tx2loy" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -518,7 +594,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/22/%E5%B0%8F%E7%99%BD%E7%9A%84%E7%BD%91%E5%AE%89%E4%B9%8B%E8%B7%AF/" data-id="ckzcsxa3l000hwgmagjnn8976" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/22/%E5%B0%8F%E7%99%BD%E7%9A%84%E7%BD%91%E5%AE%89%E4%B9%8B%E8%B7%AF/" data-id="ckzecdvcg000kzsmad74t1r0d" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -577,6 +653,10 @@
       <ul>
         
           <li>
+            <a href="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/">SQL注入-关键字过滤的注入</a>
+          </li>
+        
+          <li>
             <a href="/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/">SQL注入-Oracle等注入</a>
           </li>
         
@@ -590,10 +670,6 @@
         
           <li>
             <a href="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/">SQL注入-POST注入</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/">SQL注入-Less8-Less10</a>
           </li>
         
       </ul>

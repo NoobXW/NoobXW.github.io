@@ -64,6 +64,143 @@
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main">
   
+    <article id="post-SQL注入字符型和数字型判断" class="post-SQL注入字符型和数字型判断 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/">SQL注入字符型和数字型判断</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/" data-id="ckzecdvc5000azsmae0vphybv" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>在SQL注入中如何判断字符型注入还是数字型注入很重要，这里自己记录一下。</p>
+<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p><strong>数字型判定</strong></p>
+<p>1、<strong>and或者or</strong></p>
+<p>假设数据库的执行语句是：select * from table where id=$id</p>
+<p>这里我以自己本地的sql靶场为例。</p>
+<p>此时执行语句为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=1</span><br></pre></td></tr></table></figure>
+
+<p>返回正常页面</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220131235010309.png" alt="image-20220131235010309"></p>
+<p>若执行语句为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=1 and 1=2#</span><br></pre></td></tr></table></figure>
+
+<p>页面异常</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220131235143197.png" alt="image-20220131235143197"></p>
+<p>这是因为这时数据库执行的语句为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=1 and 1=2</span><br></pre></td></tr></table></figure>
+
+<p>语句正确，逻辑错误。</p>
+<hr>
+<p>若执行语句为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=1 or 1=2#</span><br></pre></td></tr></table></figure>
+
+<p>返回页面正常</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220131235620782.png" alt="image-20220131235620782"></p>
+<p>这时数据库执行的语句就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=1 or 1=2</span><br></pre></td></tr></table></figure>
+
+<p>语句正确，逻辑正确，页面返回正常。</p>
+<p><strong>因此，可以使用and或or来判断字段是否是数字型，但因为字段型的and和or返回的结果都为正常页面，我们就不好通过or来进行比较，一般习惯于用and 1=2,如果是数字型，返回错误，但如果是字符型，返回正确，这样两者之间就有了不同，有了比较。</strong></p>
+<p>2、<strong>单引号判断</strong></p>
+<p>假如此时语句为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=1&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>这时数据库执行的语句就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=1’</span><br></pre></td></tr></table></figure>
+
+<p><strong>单引号不匹配</strong>，语句正确，页面返回错误。</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220201000053200.png" alt="image-20220201000053200"></p>
+<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p><strong>字符型判定</strong></p>
+<p>1、<strong>and或or</strong></p>
+<p>假设数据库的执行语句是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=’$id’</span><br></pre></td></tr></table></figure>
+
+<p>执行以下语句时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=1</span><br></pre></td></tr></table></figure>
+
+<p>数据库执行的是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=‘1’</span><br></pre></td></tr></table></figure>
+
+<p>页面返回正常</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220201000539553.png" alt="image-20220201000539553"></p>
+<p>若执行and语句时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=1 and 1=2#</span><br></pre></td></tr></table></figure>
+
+<p>这时数据库执行的语句就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=‘1 and 1=2’</span><br></pre></td></tr></table></figure>
+
+<p>页面返回正常</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220201000811749.png" alt="image-20220201000811749"></p>
+<hr>
+<p>若执行or时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=3 or 1=2#</span><br></pre></td></tr></table></figure>
+
+<p>这时数据库执行的语句就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=‘3 or 1=2’</span><br></pre></td></tr></table></figure>
+
+<p>页面返回正常</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220201001024957.png" alt="image-20220201001024957"></p>
+<p>对于字符型注入，不管是and或者or，执行结果都是一样的，都会返回id=1的页面，这是由于数据库中id的类型是数值型，比如int型，而<strong>MySQL数据库在执行语句时是会自动进行类型转换的</strong>，输入的字符<strong>3 or 1=2</strong>会在执行时被自动转换成int型的3，所以最终的执行语句还是<strong>select * from table where id=‘3’</strong>，这是数据库的特性问题，后面的字符可以是<strong>任意的</strong>，不会影响查询，我们在3后面加上任意字符，比如3ctf，最后都会被转换为3来进行语句执行。</p>
+<p>如图：<br><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220201002020011.png" alt="image-20220201002020011"></p>
+<p>此时的执行语句是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=4ctf #</span><br></pre></td></tr></table></figure>
+
+<p>可以看到此时返回页面的变化。</p>
+<p><strong>如果id本身就是varchar类型的，那么数据库查询的时候就会进行精准的匹配，这样子’4ctf’等类似的数据由于数据库里没有匹配项,查询结果为空。</strong></p>
+<p>所以，如果字段是字符型的，那么我们使用<strong>and或者or</strong>来测试时页面返回都是正常的</p>
+<p>2、<strong>单引号判断</strong></p>
+<p>当执行一下语句时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=1&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>SQL语句就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=‘1’’</span><br></pre></td></tr></table></figure>
+
+<p>单引号不匹配，语句错误，页面错误</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220201002452436.png" alt="image-20220201002452436"></p>
+<p>注释多余的 ‘ 后：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=1&#x27; --+</span><br></pre></td></tr></table></figure>
+
+<p>执行的SQL语句就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=‘1’ --+’</span><br></pre></td></tr></table></figure>
+
+<p>语句正确，页面正常</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220201002733573.png" alt="image-20220201002733573"></p>
+<p>这里与数字型判断不同的是，<strong>数字型判定尽管加上注释符，执行的SQL语句是select * from table where id=1’ –+’ 因为单引号还是不匹配，语句还是错误的，页面还是返回错误。</strong></p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/">
+    <time datetime="2022-01-31T15:43:00.000Z" class="entry-date">
+        2022-01-31
+    </time>
+</a>
+    
+    
+    </footer>
+</article>
+
+
+
+
+
+
+  
     <article id="sqli-labs-Less1-Less4" class="sqli-labs-Less1-Less4 post type-post status-publish format-standard hentry">
     <!---->
 
@@ -79,7 +216,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/Less1-Less4/" data-id="ckzcsxa2u0001wgma689p6qih" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/Less1-Less4/" data-id="ckzecdvbw0001zsmafq307968" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -276,7 +413,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5/" data-id="ckzcsxa3w000rwgmahdgg4txr" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5/" data-id="ckzecdvcm000rzsma42mi03fj" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -396,7 +533,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/WEB%E6%BC%8F%E6%B4%9E%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="ckzcsxa3c000bwgmagpeh1qb6" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/30/WEB%E6%BC%8F%E6%B4%9E%E7%9F%A5%E8%AF%86%E7%82%B9/" data-id="ckzecdvc7000czsma9f4bgxtn" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -462,7 +599,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/" data-id="ckzcsxa3t000owgma0e997o6n" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/" data-id="ckzecdvck000pzsmaaqo76k68" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -547,7 +684,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/" data-id="ckzcsxa2n0000wgma2rmfg3r0" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/" data-id="ckzecdvbr0000zsma8567f6ip" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -618,7 +755,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/" data-id="ckzcsxa3e000cwgmaadnrehn2" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/" data-id="ckzecdvc8000dzsma4lvegeji" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -685,7 +822,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="ckzcsxa3v000qwgmabwlk0dv9" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="ckzecdvcm000szsma7ruz4ppc" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -768,7 +905,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/" data-id="ckzcsxa38000awgmaatmz5kk6" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/" data-id="ckzecdvc7000bzsma1gun8snn" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -846,7 +983,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/" data-id="ckzcsxa3r000kwgma9no80nj4" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/" data-id="ckzecdvch000lzsma8vy18llx" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -875,82 +1012,6 @@
     <footer class="entry-meta">
     <a href="/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/">
     <time datetime="2022-01-24T13:36:09.000Z" class="entry-date">
-        2022-01-24
-    </time>
-</a>
-    
-    
-    </footer>
-</article>
-
-
-
-
-
-
-  
-    <article id="post-墨者学院-投票系统程序设计缺陷分析" class="post-墨者学院-投票系统程序设计缺陷分析 post type-post status-publish format-standard hentry">
-    <!---->
-
-      <header class="entry-header">
-        
-        
-  
-    <h1 class="entry-title">
-      <a class="article-title" href="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/">墨者学院-投票系统程序设计缺陷分析</a>
-    </h1>
-  
-
-        
-        <div class="comments-link">
-            
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/" data-id="ckzcsxa3i000fwgma7ensabov" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
-        </div><!-- .comments-link -->
-      </header><!-- .entry-header -->
-
-    <div class="entry-content">
-      
-        <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>启动靶场进入靶场的投票页面：</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124134028395.png" alt="image-20220124134028395"></p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124134148994.png" alt="image-20220124134148994"></p>
-<p>页面提示每个IP每天只限投一次票</p>
-<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>先抓个包看看：<br><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124134339926.png" alt="image-20220124134339926"></p>
-<p>为ggg投完票后显示id=7，且返回结果0；</p>
-<p>再给ggg投票抓包看结果：</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124134523763.png" alt="image-20220124134523763"></p>
-<p>结果返回-1，并提示投票机会用完<br><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124134554092.png" alt="image-20220124134554092"></p>
-<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>根据提示信息：</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124134757069.png" alt="image-20220124134757069"></p>
-<p>应该是<strong>利用X-Forwarded-For伪造IP</strong>进行投票</p>
-<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>重新抓包随便构造IP</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124142954500.png" alt="image-20220124142954500"></p>
-<p><strong>标注一下</strong>：</p>
-<p>这步我自己其实耗费了很长时间，知道怎么去爆破，但遗漏了一个知识点，导致花费了很长时间才完成，如下：</p>
-<p>Request请求数据包格式：</p>
-<p>1.请求行：请求类型/请求资源路径、协议的版本和类型</p>
-<p>2.请求头：一些键值对，浏览器与 web 服务器之间都可以发送，特定的某种含义</p>
-<p>3**.空行**：请求头与请求体之间用一个空行隔开</p>
-<p>4.请求体：要发送的数据(一般 post 提交会使用)；例：user=123&amp;pass=123</p>
-<p>由下图可知请求数据包的最后一个字段是请求体并且是POST方式，请求体上一行有一行空格，导致我爆破的时候，将XFF放在了<strong>空行</strong>的位置上，导致爆破的时候一直返回无效的HTTP请求。最后才发现数据包的格式错误。<strong>请求体上一行的一定是空行，什么都不能填</strong></p>
-<p>之后在BP中的Intruder中选择爆破类型，选择爆破参数，这里的爆破参数为网段位和主机位</p>
-<p>（只要票数得了第一就好，爆破参数随便几位）</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124143029228.png" alt="image-20220124143029228"></p>
-<h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>之后BP中 的Payloads中修改Payload set和Payload type，类型一定是Numbers，然后这里我设置的是从1到200，每次增加1票</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124144505974.png" alt="image-20220124144505974"></p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124144438838.png" alt="image-20220124144438838"></p>
-<h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>如图爆破的每个数据回应包都返回是0，而上面抓包可知重复IP投票返回的结果是-1，则证明投票成功。</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124144743018.png" alt="image-20220124144743018"></p>
-<h2 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h2><p>最后返回投票页面刷新页面得到KEY</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124143255045.png" alt="image-20220124143255045"></p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/image-20220124145042114.png" alt="image-20220124145042114"></p>
-<p>完成靶场。</p>
-
-      
-    </div><!-- .entry-content -->
-
-    <footer class="entry-meta">
-    <a href="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/">
-    <time datetime="2022-01-24T05:39:13.000Z" class="entry-date">
         2022-01-24
     </time>
 </a>
@@ -994,6 +1055,10 @@
       <ul>
         
           <li>
+            <a href="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/">SQL注入-关键字过滤的注入</a>
+          </li>
+        
+          <li>
             <a href="/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/">SQL注入-Oracle等注入</a>
           </li>
         
@@ -1007,10 +1072,6 @@
         
           <li>
             <a href="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/">SQL注入-POST注入</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/">SQL注入-Less8-Less10</a>
           </li>
         
       </ul>
