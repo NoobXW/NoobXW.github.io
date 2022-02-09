@@ -64,6 +64,92 @@
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main">
   
+    <article id="post-SQL注入-文件读写操作" class="post-SQL注入-文件读写操作 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/">SQL注入-文件读写操作</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/" data-id="ckzecdvc20007zsmahdzrb2nx" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <h2 id="SQL注入文件读写及导出"><a href="#SQL注入文件读写及导出" class="headerlink" title="SQL注入文件读写及导出"></a>SQL注入文件读写及导出</h2><p>这里的load_file()和into outfile或into dumpfile函数都是Mysql数据库的内置函数。</p>
+<p>1、<strong>load_file():读取函数</strong>：</p>
+<p>以下代码实在数据库执行的源码进行文件读取：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select load_file(&#x27;D:/1.txt&#x27;);这里的D可以用小写d</span><br></pre></td></tr></table></figure>
+
+<p>这里的d:/1.txt文件路径中的斜杠要用 / ,由于在sql语句中 \n是换行符，所以为了避免，这里的读取路径要使用 / ；另一种可以通过\进行转义出  \ 。</p>
+<p>执行如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=-1&#x27; union select 1,load_file(&#x27;D:/1.txt&#x27;),3 --+</span><br></pre></td></tr></table></figure>
+
+<p>可以看到已读取出1.txt文件的内容。</p>
+<p><img src="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201182045161.png" alt="image-20220201182045161"></p>
+<p>2、<strong>into outfile或into dumpfile:导出函数</strong>：</p>
+<p>源码执行语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select &#x27;CTF1&#x27; into outfile &#x27;D:/2.txt&#x27;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=-1&#x27; union select 1,2,&#x27;CTF1&#x27;  into outfile &#x27;D:/2.txt&#x27; --+</span><br></pre></td></tr></table></figure>
+
+<p>这里的写入语句，要写入的东西和路径都需要加 ‘’ 。</p>
+<p>可以看到页面返回异常，但返回D盘查看文件，已将CTF1写入文件2.txt</p>
+<p><img src="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201183145889.png" alt="image-20220201183145889"></p>
+<p><img src="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201183319837.png" alt="image-20220201183319837"></p>
+<p>SQL注入任意文件读取，这样的漏洞一旦出发，可以读取数据库管理员的账号密码，也可以通过写入操作将后门植入，提高权限。</p>
+<p><strong>文件读取操作必须要知道文件的具体路径。</strong></p>
+<hr>
+<h2 id="路径获取的常见方法"><a href="#路径获取的常见方法" class="headerlink" title="路径获取的常见方法"></a>路径获取的常见方法</h2><p>报错显示：通过扫描工具或手工探测报错网页，会爆出该网站的真实路径；</p>
+<p>遗留文件：例如 phpinfo.php文件，可以找到网站路径</p>
+<p>漏洞报错：在搜索引擎根据网站使用的什么程序去搜索网站所在的爆路径的漏洞</p>
+<p>平台配置文件：配置文件里会有网站的路径信息。</p>
+<p>​                          敏感文件文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30292843/article/details/99381669">https://blog.csdn.net/weixin_30292843/article/details/99381669</a></p>
+<p>爆破：很难找到路径信息，按照常规思路去爆破。这是由于搭建网站的时候会有常见的路径，</p>
+<p>​            例如：windows：                                              linux：</p>
+<p>​                                           d:/www/……                                     /var/www/……</p>
+<hr>
+<h2 id="魔术引号"><a href="#魔术引号" class="headerlink" title="魔术引号"></a>魔术引号</h2><p><strong>魔术引号开关：magic_quotes_gpc</strong>这个文件在php.ini目录下的文件</p>
+<p><strong>魔术引号是为了防止任意文件读取的SQL注入。</strong></p>
+<p>什么是魔术引号：当打开时，所有的 ‘（单引号），”（双引号），\（反斜线）和 NULL 字符都会被自动加上一个反斜线进行转义。这和 <a target="_blank" rel="noopener" href="https://www.jb51.net/shouce/php5/zh/function.addslashes.html"><strong>addslashes()</strong></a> 作用完全相同。一个自动将进入 PHP 脚本的数据进行转义的过程。最好在编码时不要转义而在运行时根据需要而转义。</p>
+<p><strong>魔术引号 【Warning：本特性已自 PHP 5.3.0 起废弃并将自 PHP 5.4.0 起移除。】</strong></p>
+<hr>
+<h3 id="魔术引号的绕过："><a href="#魔术引号的绕过：" class="headerlink" title="魔术引号的绕过："></a>魔术引号的绕过：</h3><p>利用编码或宽字节绕过。</p>
+<hr>
+<h2 id="防注入策略"><a href="#防注入策略" class="headerlink" title="防注入策略"></a>防注入策略</h2><p>1.自带防御：魔术引导</p>
+<p>2.内置函数;int等</p>
+<p>3.自定义关键字：select，会对select,and,or等关键字进行过滤。（大小写混合可以尝试绕过过滤）</p>
+<p>4.WAF防护软件：安全狗，宝塔等</p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/">
+    <time datetime="2022-02-01T04:55:10.000Z" class="entry-date">
+        2022-02-01
+    </time>
+</a>
+    
+    
+    </footer>
+</article>
+
+
+
+
+
+
+  
     <article id="post-SQL注入字符型和数字型判断" class="post-SQL注入字符型和数字型判断 post type-post status-publish format-standard hentry">
     <!---->
 
@@ -968,64 +1054,6 @@
 
 
   
-    <article id="post-搭建安全拓展" class="post-搭建安全拓展 post type-post status-publish format-standard hentry">
-    <!---->
-
-      <header class="entry-header">
-        
-        
-  
-    <h1 class="entry-title">
-      <a class="article-title" href="/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/">搭建安全拓展</a>
-    </h1>
-  
-
-        
-        <div class="comments-link">
-            
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/" data-id="ckzecdvch000lzsma8vy18llx" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
-        </div><!-- .comments-link -->
-      </header><!-- .entry-header -->
-
-    <div class="entry-content">
-      
-        <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>常见搭建平台脚本启用</p>
-<p>域名 IP 目录解析安全问题 </p>
-<p>常见文件后缀解析对应安全 </p>
-<p>常见安全测试中的安全防护 </p>
-<p>WEB 后门与用户及文件权限</p>
-<hr>
-<p>1.ASP,PHP,ASPX,JSP,PY,JAVAWEB 等环境 </p>
-<p>2.WEB 源码中敏感文件 后台路径，数据库配置文件，备份文件等 </p>
-<p>3.IP 或域名解析 WEB 源码目录对应下的存在的安全问题 域名访问，IP 访问（结合类似备份文件目录）</p>
-<p>4.脚本后缀对应解析（其他格式可相同-上传安全）</p>
-<p>5.存在下载或为解析问题 </p>
-<p>6.常见防护中的 IP 验证，域名验证等 </p>
-<p>7.后门是否给予执行权限 </p>
-<p>8.后门是否给予操作目录或文件权限 </p>
-<p>9.后门是否给予其他用户权限</p>
-<h3 id="IP访问网站和域名访问网站的区别"><a href="#IP访问网站和域名访问网站的区别" class="headerlink" title="IP访问网站和域名访问网站的区别"></a>IP访问网站和域名访问网站的区别</h3><p>搭建好的一个网站，如果使用IP去访问，会访问到其根目录，使用域名访问，指向其根目录下的一个文件。</p>
-
-      
-    </div><!-- .entry-content -->
-
-    <footer class="entry-meta">
-    <a href="/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/">
-    <time datetime="2022-01-24T13:36:09.000Z" class="entry-date">
-        2022-01-24
-    </time>
-</a>
-    
-    
-    </footer>
-</article>
-
-
-
-
-
-
-  
   
     <nav id="pagination">
       <nav id="page-nav">
@@ -1055,6 +1083,10 @@
       <ul>
         
           <li>
+            <a href="/2022/02/09/POST%E6%B3%A8%E5%85%A5-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/">POST注入-二次注入</a>
+          </li>
+        
+          <li>
             <a href="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/">SQL注入-关键字过滤的注入</a>
           </li>
         
@@ -1068,10 +1100,6 @@
         
           <li>
             <a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/">POST注入--基于Password的注入</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/">SQL注入-POST注入</a>
           </li>
         
       </ul>
