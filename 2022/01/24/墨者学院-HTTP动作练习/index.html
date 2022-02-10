@@ -1,28 +1,18 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  
-  
-  <meta name="description" content="0x00首先启动靶场
+    
+    <title>墨者学院-HTTP动作练习 - 小白</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
 
-
-返回结果是由于请求的URL太长，给的提示也是url这么长，GET合适么？说明请求的方式是GET
-0x01先抓个包验证一下是不是GET方式
-
-由包来看确实是GET方式，并且内容很多
-0x02由于HTTP中GET请求方式和POST请求方式两者有区别，并且提示使用POST方式提交" />
-  
-
-  
-  
-  
-  
-  
-  
-  <title>墨者学院-HTTP动作练习 | 小白</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="0x00首先启动靶场   返回结果是由于请求的URL太长，给的提示也是url这么长，GET合适么？说明请求的方式是GET 0x01先抓个包验证一下是不是GET方式  由包来看确实是GET方式，并且内容很多 0x02由于HTTP中GET请求方式和POST请求方式两者有区别，并且提示使用POST方式提交  0x03那就改成POST请求方式提交内容，在BP里改成POST方式，如图： 右键点击Change">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="0x00首先启动靶场   返回结果是由于请求的URL太长，给的提示也是url这么长，GET合适么？说明请求的方式是GET 0x01先抓个包验证一下是不是GET方式  由包来看确实是GET方式，并且内容很多 0x02由于HTTP中GET请求方式和POST请求方式两者有区别，并且提示使用POST方式提交  0x03那就改成POST请求方式提交内容，在BP里改成POST方式，如图： 右键点击Change">
 <meta property="og:type" content="article">
 <meta property="og:title" content="墨者学院-HTTP动作练习">
 <meta property="og:url" content="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/index.html">
@@ -42,87 +32,145 @@
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124125408694.png">
-  
-  
-    <link rel="icon" href="/css/images/favicon.ico">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-
-  
-  <!-- baidu webmaster push -->
-  <script src='//push.zhanzhang.baidu.com/push.js'></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css?v=233" crossorigin>
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1644490101540">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1644490101540">
+    <link rel="stylesheet" href="/css/style.css?v=1644490101540">
+     
+    
 <meta name="generator" content="Hexo 6.0.0"></head>
-<body class="home blog custom-background custom-font-enabled single-author">
-  <div id="page" class="hfeed site">
-      <header id="masthead" class="site-header" role="banner">
-    <hgroup>
-      <h1 class="site-title">
-        <a href="/" title="小白" rel="home">小白</a>
-      </h1>
-      
-        <h2 class="site-description hitokoto"></h2>
-        <script type="text/javascript" src="https://v1.hitokoto.cn/?encode=js"></script>
-      
-    </hgroup>
 
-    <nav id="site-navigation" class="main-navigation" role="navigation">
-            <button class="menu-toggle">菜单</button>
-            <a class="assistive-text" href="/#content" title="跳至内容">跳至内容</a><!--TODO-->
-            <div class="menu-main-container">
-                <ul id="menu-main" class="nav-menu">
-                
-                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/">Home</a></li>
-                
-                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archives">Archives</a></li>
-                
-                </ul>
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="John Doe" class="mdui-btn mdui-btn-icon"><img src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/avatar.png" alt="John Doe"></a>
             </div>
-    </nav>
-</header>
-
-      <div id="main" class="wrapper">
-        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-墨者学院-HTTP动作练习" class="post-墨者学院-HTTP动作练习 post type-post status-publish format-standard hentry">
-    <!---->
-
-      <header class="entry-header">
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="John Doe">
+            <img src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/avatar.png" alt="John Doe" alt="John Doe">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>Articles</span>30</div>
+        <div><span>Tags</span>1</div>
+        <div><span>Categories</span>0</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
         
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
         
-  
-    <h1 class="entry-title article-title">
-      墨者学院-HTTP动作练习
-    </h1>
-  
-
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
         
-        <div class="comments-link">
-            
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/" data-id="ckzgrjevz000iq8ma9r242l8y" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
-        </div><!-- .comments-link -->
-      </header><!-- .entry-header -->
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="Search"></label>
+            </form>
+         
+    </div>
+</div>
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://jq.qq.com/?_wv=1027&k=5CfKHun" target="_blank" mdui-tooltip="{content: 'QQ群'}" style="color: rgb(249, 174, 8);background-color: rgba(249, 174, 8, .1);">
+            <i class="nexmoefont icon-QQ"></i>
+        </a><a class="mdui-ripple" href="https://space.bilibili.com/20238211" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/nexmoe/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+    
+    
 
-    <div class="entry-content">
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/" style="font-size: 10px;">利用burpsuite进行referer伪造</a>
+    </div>
+    
+  </div>
+
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 John Doe
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        <br><a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://i.dawnlab.me/c0268c1e6cfd0863d6ba35be1575941a.png" width="150px"></a><script data-ad-client="ca-pub-2058306854838448" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
       
-        <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>首先启动靶场</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124125408694.png" alt="image-20220124125408694"></p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124125427719.png" alt="image-20220124125427719"></p>
+          <div class="nexmoe-post-cover" style="padding-bottom: 66.66666666666666%;"> 
+              <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="墨者学院-HTTP动作练习" class="lazyload">
+              <h1>墨者学院-HTTP动作练习</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年01月24日</a>
+</div>
+
+      
+
+      <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>首先启动靶场</p>
+<p><img data-fancybox="gallery" data-sizes="auto" data-src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124125408694.png" alt="image-20220124125408694" class="lazyload"></p>
+<p><img data-fancybox="gallery" data-sizes="auto" data-src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124125427719.png" alt="image-20220124125427719" class="lazyload"></p>
 <p>返回结果是由于请求的URL太长，给的提示也是url这么长，GET合适么？说明请求的方式是GET</p>
 <h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>先抓个包验证一下是不是GET方式</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124125713127.png" alt="image-20220124125713127"></p>
+<p><img data-fancybox="gallery" data-sizes="auto" data-src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124125713127.png" alt="image-20220124125713127" class="lazyload"></p>
 <p>由包来看确实是GET方式，并且内容很多</p>
 <h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>由于HTTP中GET请求方式和POST请求方式两者有区别，并且提示使用POST方式提交</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124125917492.png" alt="image-20220124125917492"></p>
+<p><img data-fancybox="gallery" data-sizes="auto" data-src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124125917492.png" alt="image-20220124125917492" class="lazyload"></p>
 <h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>那就改成POST请求方式提交内容，在BP里改成POST方式，如图：</p>
 <p>右键点击Change request method</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124130055977.png" alt="image-20220124130055977"></p>
+<p><img data-fancybox="gallery" data-sizes="auto" data-src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124130055977.png" alt="image-20220124130055977" class="lazyload"></p>
 <p>改完之后的包：</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124130113880.png" alt="image-20220124130113880"></p>
+<p><img data-fancybox="gallery" data-sizes="auto" data-src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124130113880.png" alt="image-20220124130113880" class="lazyload"></p>
 <p>这里最重要的就是GET请求有长度限制，而POST请求没有长度限制。</p>
 <h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>提交之后得到KEY</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124130304850.png" alt="image-20220124130304850"></p>
-<h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124130515150.png" alt="image-20220124130515150"></p>
+<p><img data-fancybox="gallery" data-sizes="auto" data-src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124130304850.png" alt="image-20220124130304850" class="lazyload"></p>
+<h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p><img data-fancybox="gallery" data-sizes="auto" data-src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/image-20220124130515150.png" alt="image-20220124130515150" class="lazyload"></p>
 <p>完成靶场。</p>
 <h1 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h1><p>GET和POST两种请求方式的区别：</p>
 <p><strong>GET：</strong></p>
@@ -167,129 +215,97 @@
 </li>
 </ul>
 
+  </article>
+
+  
       
-    </div><!-- .entry-content -->
-
-    <footer class="entry-meta">
-    <a href="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/">
-    <time datetime="2022-01-24T04:51:02.000Z" class="entry-date">
-        2022-01-24
-    </time>
-</a>
-    
-    
-    </footer>
-</article>
-
-
-    
-<nav class="nav-single">
-    <h3 class="assistive-text">文章导航</h3>
-    
-        <span class="nav-previous"><a href="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/" rel="prev"><span class="meta-nav">←</span> 墨者学院-投票系统程序设计缺陷分析</a></span>
-    
-    
-        <span class="nav-next"><a href="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/" rel="next">墨者学院-浏览器信息伪造 <span class="meta-nav">→</span></a></span>
-    
-</nav><!-- .nav-single -->
-
-
-
-
-
-
-
-</div></div>
-        <div id="secondary" class="widget-area" role="complementary">
-  
-    <aside id="search" class="widget widget_search"><form role="search" method="get" accept-charset="utf-8" id="searchform" class="searchform" action="//google.com/search">
-    <div>
-        <input type="text" value="" name="s" id="s" />
-        <input type="submit" id="searchsubmit" value="搜索" />
+    <div class="nexmoe-post-copyright">
+        <strong>Author：</strong>John Doe<br>
+        <strong>Link：</strong><a href="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/" title="http:&#x2F;&#x2F;noobxw.github.io&#x2F;2022&#x2F;01&#x2F;24&#x2F;%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;noobxw.github.io&#x2F;2022&#x2F;01&#x2F;24&#x2F;%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
     </div>
-</form></aside>
-  
-    
-  
-    
-  
-    
-  <aside class="widget">
-    <h3 class="widget-title">Recents</h3>
-    <div class="widget-content">
-      <ul>
-        
-          <li>
-            <a href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/">SQL注入-宽字节注入</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/">SQL注入-HPP</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/09/POST%E6%B3%A8%E5%85%A5-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/">POST注入-二次注入</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/">SQL注入-关键字过滤的注入</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/">SQL注入-Oracle等注入</a>
-          </li>
-        
-      </ul>
-    </div>
-  </aside>
+
 
   
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
     
-  <aside class="widget">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget-content">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/" rel="tag">利用burpsuite进行referer伪造</a><span class="tag-list-count">1</span></li></ul>
-    </div>
-  </aside>
+    
+</div>
 
   
-    
-  <aside class="widget">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget-content tagcloud">
-      <a href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/" style="font-size: 10px;">利用burpsuite进行referer伪造</a>
-    </div>
-  </aside>
-
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'nexmoe.github.io',
+        owner: 'nexmoe',
+        admin: 'nexmoe'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
   
 </div>
-      </div>
-      <footer id="colophon" role="contentinfo">
-    <p>&copy; 2022 John Doe
-    All rights reserved.</p>
-    <p>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></p>
-</footer>
-    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/js/share.js'];</script>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="Search" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
 
-<script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 
+ 
 
-  
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-
-  
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-
+<script async src="/js/app.js?v=1644490101541"></script>
 
 
 
-<script src="/js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
 
 
-<script src="/js/navigation.js"></script>
+    
 
-<div id="bg"></div>
 
-  </div>
+
+
+
 </body>
+
 </html>

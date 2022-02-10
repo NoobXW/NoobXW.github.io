@@ -1,24 +1,18 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  
-  
-  <meta name="description" content="前言在安全测试中，信息收集是非常重要的一个环节，此环节的信息将影响 到后续的成功几率，掌握信息的多少将决定发现漏洞机会大小，换言之决定着是否能完成目标的测试任务。渗透测试的思路 就是从信息收集这里开始。
+    
+    <title>架构，搭建，WAF等 - 小白</title>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    
+    
 
-所谓信息搜集，其实就是为了扩大攻击面，信息搜集的越多，攻击的范围越大。
-站点搭建分析1.**搭" />
-  
-
-  
-  
-  
-  
-  
-  
-  <title>架构，搭建，WAF等 | 小白</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言在安全测试中，信息收集是非常重要的一个环节，此环节的信息将影响 到后续的成功几率，掌握信息的多少将决定发现漏洞机会大小，换言之决定着是否能完成目标的测试任务。渗透测试的思路 就是从信息收集这里开始。  所谓信息搜集，其实就是为了扩大攻击面，信息搜集的越多，攻击的范围越大。 站点搭建分析1.**搭建习惯-目录型站点 **：主站是一套程序，加一个目录打开后又是一套程序；两套程序会有两个漏洞形式（扫">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="前言在安全测试中，信息收集是非常重要的一个环节，此环节的信息将影响 到后续的成功几率，掌握信息的多少将决定发现漏洞机会大小，换言之决定着是否能完成目标的测试任务。渗透测试的思路 就是从信息收集这里开始。  所谓信息搜集，其实就是为了扩大攻击面，信息搜集的越多，攻击的范围越大。 站点搭建分析1.**搭建习惯-目录型站点 **：主站是一套程序，加一个目录打开后又是一套程序；两套程序会有两个漏洞形式（扫">
 <meta property="og:type" content="article">
 <meta property="og:title" content="架构，搭建，WAF等">
 <meta property="og:url" content="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/index.html">
@@ -32,71 +26,129 @@
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/image-20220128201243759.png">
-  
-  
-    <link rel="icon" href="/css/images/favicon.ico">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
-
-  
-  <!-- baidu webmaster push -->
-  <script src='//push.zhanzhang.baidu.com/push.js'></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css?v=233" crossorigin>
+    
+    <link rel="stylesheet" href="/lib/mdui_043tiny/css/mdui.css?v=1644490101528">
+    <link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1644490101528">
+    <link rel="stylesheet" href="/css/style.css?v=1644490101528">
+     
+    
 <meta name="generator" content="Hexo 6.0.0"></head>
-<body class="home blog custom-background custom-font-enabled single-author">
-  <div id="page" class="hfeed site">
-      <header id="masthead" class="site-header" role="banner">
-    <hgroup>
-      <h1 class="site-title">
-        <a href="/" title="小白" rel="home">小白</a>
-      </h1>
-      
-        <h2 class="site-description hitokoto"></h2>
-        <script type="text/javascript" src="https://v1.hitokoto.cn/?encode=js"></script>
-      
-    </hgroup>
 
-    <nav id="site-navigation" class="main-navigation" role="navigation">
-            <button class="menu-toggle">菜单</button>
-            <a class="assistive-text" href="/#content" title="跳至内容">跳至内容</a><!--TODO-->
-            <div class="menu-main-container">
-                <ul id="menu-main" class="nav-menu">
-                
-                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/">Home</a></li>
-                
-                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archives">Archives</a></li>
-                
-                </ul>
+<body class="mdui-drawer-body-left">
+    
+    <div id="nexmoe-background">
+        <div class="nexmoe-bg" style="background-image: url(https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg)"></div>
+        <div class="mdui-appbar mdui-shadow-0">
+            <div class="mdui-toolbar">
+                <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
+                <div class="mdui-toolbar-spacer"></div>
+                <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
+                <a href="/" title="John Doe" class="mdui-btn mdui-btn-icon"><img src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/avatar.png" alt="John Doe"></a>
             </div>
-    </nav>
-</header>
-
-      <div id="main" class="wrapper">
-        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-架构，搭建，WAF等" class="post-架构，搭建，WAF等 post type-post status-publish format-standard hentry">
-    <!---->
-
-      <header class="entry-header">
+        </div>
+    </div>
+    <div id="nexmoe-header">
+        <div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="John Doe">
+            <img src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/avatar.png" alt="John Doe" alt="John Doe">
+        </a>
+    </div>
+    <div class="nexmoe-count">
+        <div><span>Articles</span>30</div>
+        <div><span>Tags</span>1</div>
+        <div><span>Categories</span>0</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
         
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
         
-  
-    <h1 class="entry-title article-title">
-      架构，搭建，WAF等
-    </h1>
-  
-
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about.html" title="关于博客">
+            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
+            <div class="mdui-list-item-content">
+                关于博客
+            </div>
+        </a>
         
-        <div class="comments-link">
-            
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/" data-id="ckzgrjew9000sq8ma2yy0h5x2" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
-        </div><!-- .comments-link -->
-      </header><!-- .entry-header -->
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/PY.html" title="我的朋友">
+            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
+            <div class="mdui-list-item-content">
+                我的朋友
+            </div>
+        </a>
+        
+    </div>
+    <aside id="nexmoe-sidebar">
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="Search"></label>
+            </form>
+         
+    </div>
+</div>
+    
+    <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-social">
+        <a class="mdui-ripple" href="https://jq.qq.com/?_wv=1027&k=5CfKHun" target="_blank" mdui-tooltip="{content: 'QQ群'}" style="color: rgb(249, 174, 8);background-color: rgba(249, 174, 8, .1);">
+            <i class="nexmoefont icon-QQ"></i>
+        </a><a class="mdui-ripple" href="https://space.bilibili.com/20238211" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
+            <i class="nexmoefont icon-bilibili"></i>
+        </a><a class="mdui-ripple" href="https://github.com/nexmoe/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
+            <i class="nexmoefont icon-github"></i>
+        </a>
+    </div>
+</div>
+    
+    
 
-    <div class="entry-content">
+    
+    
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/" style="font-size: 10px;">利用burpsuite进行referer伪造</a>
+    </div>
+    
+  </div>
+
+    
+</aside>
+    <div class="nexmoe-copyright">
+        &copy; 2022 John Doe
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        <br><a target="_blank" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><img src="https://i.dawnlab.me/c0268c1e6cfd0863d6ba35be1575941a.png" width="150px"></a><script data-ad-client="ca-pub-2058306854838448" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    </div>
+</div><!-- .nexmoe-drawer -->
+    </div>
+    <div id="nexmoe-content">
+        <div class="nexmoe-primary">
+            <div class="nexmoe-post">
+
+  <article>
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在安全测试中，信息收集是非常重要的一个环节，此环节的信息将影响 到后续的成功几率，掌握信息的多少将决定发现漏洞机会大小，换言之决定着是否能完成目标的测试任务。渗透测试的思路 就是从信息收集这里开始。</p>
-<p><img src="/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/image-20220128201243759.png" alt="image-20220128201243759"></p>
+          <div class="nexmoe-post-cover" style="padding-bottom: 66.66666666666666%;"> 
+              <img data-src="https://cdn.jsdelivr.net/gh/nexmoe/nexmoe.github.io@latest/images/cover/5c3aec85a4343.jpg" data-sizes="auto" alt="架构，搭建，WAF等" class="lazyload">
+              <h1>架构，搭建，WAF等</h1>
+          </div>
+      
+      
+      <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
+    <a><i class="nexmoefont icon-calendar-fill"></i>2022年01月28日</a>
+</div>
+
+      
+
+      <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在安全测试中，信息收集是非常重要的一个环节，此环节的信息将影响 到后续的成功几率，掌握信息的多少将决定发现漏洞机会大小，换言之决定着是否能完成目标的测试任务。渗透测试的思路 就是从信息收集这里开始。</p>
+<p><img data-fancybox="gallery" data-sizes="auto" data-src="/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/image-20220128201243759.png" alt="image-20220128201243759" class="lazyload"></p>
 <p>所谓信息搜集，其实就是为了扩大攻击面，信息搜集的越多，攻击的范围越大。</p>
 <h2 id="站点搭建分析"><a href="#站点搭建分析" class="headerlink" title="站点搭建分析"></a>站点搭建分析</h2><p>1.**搭建习惯-目录型站点 **：主站是一套程序，加一个目录打开后又是一套程序；两套程序会有两个漏洞形式（扫描目录或其他方法）；</p>
 <p>2.<strong>搭建习惯-端口类站点</strong> ：网站管理员通过端口名使网站应用分开，例如：主站装在80端口，或其他端口配置其他服务，但是都在同一台服务器，若其中端口出现了问题，例如80端口出现漏洞，会影响其他端口（扫描端口或其他方法）；</p>
@@ -124,7 +176,7 @@
 <p><a target="_blank" rel="noopener" href="https://www.zoomeye.org/">https://www.zoomeye.org/</a></p>
 <p>乱扫的目的是为了搜集更广泛的信息，扩大攻击面，为后续的渗透奠定坚实的基础。</p>
 <h2 id="资产监控拓展"><a href="#资产监控拓展" class="headerlink" title="资产监控拓展"></a>资产监控拓展</h2><p>域名搜集途径：</p>
-<p><img src="/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/image-20220129220745739.png" alt="image-20220129220745739"></p>
+<p><img data-fancybox="gallery" data-sizes="auto" data-src="/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/image-20220129220745739.png" alt="image-20220129220745739" class="lazyload"></p>
 <p>##各种子域名查询</p>
 <p>1.DNS,备案,证书：利用站长工具进行搜集</p>
 <p>2.全球节点请求 cdn</p>
@@ -139,129 +191,97 @@
 <p>​                                   <a target="_blank" rel="noopener" href="https://dnsdb.io/zh-cn/">https://dnsdb.io/zh-cn/</a></p>
 <p>(更多查看思维导图)</p>
 
+  </article>
+
+  
       
-    </div><!-- .entry-content -->
-
-    <footer class="entry-meta">
-    <a href="/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/">
-    <time datetime="2022-01-28T11:21:46.000Z" class="entry-date">
-        2022-01-28
-    </time>
-</a>
-    
-    
-    </footer>
-</article>
-
-
-    
-<nav class="nav-single">
-    <h3 class="assistive-text">文章导航</h3>
-    
-        <span class="nav-previous"><a href="/2022/01/30/WEB%E6%BC%8F%E6%B4%9E%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="prev"><span class="meta-nav">←</span> WEB漏洞知识点</a></span>
-    
-    
-        <span class="nav-next"><a href="/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/" rel="next">CDN绕过技术 <span class="meta-nav">→</span></a></span>
-    
-</nav><!-- .nav-single -->
-
-
-
-
-
-
-
-</div></div>
-        <div id="secondary" class="widget-area" role="complementary">
-  
-    <aside id="search" class="widget widget_search"><form role="search" method="get" accept-charset="utf-8" id="searchform" class="searchform" action="//google.com/search">
-    <div>
-        <input type="text" value="" name="s" id="s" />
-        <input type="submit" id="searchsubmit" value="搜索" />
+    <div class="nexmoe-post-copyright">
+        <strong>Author：</strong>John Doe<br>
+        <strong>Link：</strong><a href="http://noobxw.github.io/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/" title="http:&#x2F;&#x2F;noobxw.github.io&#x2F;2022&#x2F;01&#x2F;28&#x2F;%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89&#x2F;" target="_blank" rel="noopener">http:&#x2F;&#x2F;noobxw.github.io&#x2F;2022&#x2F;01&#x2F;28&#x2F;%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+        
     </div>
-</form></aside>
-  
-    
-  
-    
-  
-    
-  <aside class="widget">
-    <h3 class="widget-title">Recents</h3>
-    <div class="widget-content">
-      <ul>
-        
-          <li>
-            <a href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/">SQL注入-宽字节注入</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/">SQL注入-HPP</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/09/POST%E6%B3%A8%E5%85%A5-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/">POST注入-二次注入</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/">SQL注入-关键字过滤的注入</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/">SQL注入-Oracle等注入</a>
-          </li>
-        
-      </ul>
-    </div>
-  </aside>
+
 
   
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
     
-  <aside class="widget">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget-content">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/" rel="tag">利用burpsuite进行referer伪造</a><span class="tag-list-count">1</span></li></ul>
-    </div>
-  </aside>
+    
+</div>
 
   
-    
-  <aside class="widget">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget-content tagcloud">
-      <a href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/" style="font-size: 10px;">利用burpsuite进行referer伪造</a>
-    </div>
-  </aside>
-
+      <div class="nexmoe-post-footer">
+          <section class="nexmoe-comment">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.css">
+<div id="gitalk"></div>
+<script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script>
+<script type="text/javascript">
+    var gitalk = new Gitalk({
+        clientID: '80b2453b6d5f37ad6225',
+        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
+        id: window.location.pathname,
+        repo: 'nexmoe.github.io',
+        owner: 'nexmoe',
+        admin: 'nexmoe'
+    })
+    gitalk.render('gitalk')
+</script>
+</section>
+      </div>
   
 </div>
-      </div>
-      <footer id="colophon" role="contentinfo">
-    <p>&copy; 2022 John Doe
-    All rights reserved.</p>
-    <p>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></p>
-</footer>
-    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/js/share.js'];</script>
+            <div class="nexmoe-post-right">
+              <div class="nexmoe-fixed">
+                  <div class="nexmoe-tool"> 
+                    
+                      
+                    
+                      <a href="#nexmoe-content" class="toc-link" aria-label="回到顶部" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+     
+    <div id="nexmoe-search-space">
+        <div class="search-container">
+            <div class="search-header">
+                <div class="search-input-container">
+                    <input class="search-input" type="text" placeholder="Search" oninput="sinput();">
+                </div>
+                <a class="search-close" onclick="sclose();">×</a>
+            </div>
+            <div class="search-body"></div>
+        </div>
+    </div>
 
-<script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 
+ 
 
-  
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-
-  
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-
+<script async src="/js/app.js?v=1644490101529"></script>
 
 
 
-<script src="/js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js"></script>
+<script>
+	$(".justified-gallery").justifiedGallery({
+		rowHeight: 160,
+		margins: 10,
+	});
+</script>
 
 
-<script src="/js/navigation.js"></script>
+    
 
-<div id="bg"></div>
 
-  </div>
+
+
+
 </body>
+
 </html>
