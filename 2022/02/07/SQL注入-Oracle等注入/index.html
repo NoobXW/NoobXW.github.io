@@ -1,141 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="keyword"  content="">
-    <link rel="shortcut icon" href="/img/favicon.ico">
+  <meta charset="utf-8">
+  
+  
+  <meta name="description" content="##数据库注入
+除Access数据库之外，其他类型数据库注入流程：
 
-    <title>
-        
-        SQL注入-Oracle等注入 - undefined
-        
-    </title>
+什么决定网站注入点的用户权限？
+SQL的配置文件用户名
 
-    <!-- Custom CSS -->
-    
-<link rel="stylesheet" href="/css/aircloud.css">
+Access注入（特殊）####Access数据结构
+​               表名
+​                       列名
+​            " />
+  
 
-    
-<link rel="stylesheet" href="/css/gitment.css">
+  
+  
+  
+  
+  
+  
+  <title>SQL注入-Oracle等注入 | 小白</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="##数据库注入 除Access数据库之外，其他类型数据库注入流程：  什么决定网站注入点的用户权限？ SQL的配置文件用户名  Access注入（特殊）####Access数据结构 ​               表名 ​                       列名 ​                               数据 注意：1、Access数据库只有一个数据库； ​">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL注入-Oracle等注入">
+<meta property="og:url" content="http://noobxw.github.io/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="小白">
+<meta property="og:description" content="##数据库注入 除Access数据库之外，其他类型数据库注入流程：  什么决定网站注入点的用户权限？ SQL的配置文件用户名  Access注入（特殊）####Access数据结构 ​               表名 ​                       列名 ​                               数据 注意：1、Access数据库只有一个数据库； ​">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://noobxw.github.io/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/image-20220207191425163.png">
+<meta property="article:published_time" content="2022-02-07T10:57:10.000Z">
+<meta property="article:modified_time" content="2022-02-07T14:39:35.392Z">
+<meta property="article:author" content="小白">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://noobxw.github.io/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/image-20220207191425163.png">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
-    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
-    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
-    <!-- ga & ba script hoook -->
-    <script></script>
+  
+
+  
+  <!-- baidu webmaster push -->
+  <script src='//push.zhanzhang.baidu.com/push.js'></script>
 <meta name="generator" content="Hexo 6.0.0"></head>
+<body class="home blog custom-background custom-font-enabled single-author">
+  <div id="page" class="hfeed site">
+      <header id="masthead" class="site-header" role="banner">
+    <hgroup>
+      <h1 class="site-title">
+        <a href="/" title="小白" rel="home">小白</a>
+      </h1>
+      
+        <h2 class="site-description hitokoto"></h2>
+        <script type="text/javascript" src="https://v1.hitokoto.cn/?encode=js"></script>
+      
+    </hgroup>
 
-<body>
+    <nav id="site-navigation" class="main-navigation" role="navigation">
+            <button class="menu-toggle">菜单</button>
+            <a class="assistive-text" href="/#content" title="跳至内容">跳至内容</a><!--TODO-->
+            <div class="menu-main-container">
+                <ul id="menu-main" class="nav-menu">
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/">Home</a></li>
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archives">Archives</a></li>
+                
+                </ul>
+            </div>
+    </nav>
+</header>
 
-<div class="site-nav-toggle" id="site-nav-toggle">
-    <button>
-        <span class="btn-bar"></span>
-        <span class="btn-bar"></span>
-        <span class="btn-bar"></span>
-    </button>
-</div>
+      <div id="main" class="wrapper">
+        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-SQL注入-Oracle等注入" class="post-SQL注入-Oracle等注入 post type-post status-publish format-standard hentry">
+    <!---->
 
-<div class="index-about">
-    <i>  </i>
-</div>
-
-<div class="index-container">
-    
-    <div class="index-left">
+      <header class="entry-header">
         
-<div class="nav" id="nav">
-    <div class="avatar-name">
-        <div class="avatar ">
-            <img src="/" />
-        </div>
-        <div class="name">
-            <i>小白</i>
-        </div>
-    </div>
-    <div class="contents" id="nav-content">
-        <ul>
-            <li >
-                <a href="/">
-                    <i class="iconfont icon-shouye1"></i>
-                    <span>HOME</span>
-                </a>
-            </li>
-            <li >
-                <a href="/tags">
-                    <i class="iconfont icon-biaoqian1"></i>
-                    <span>TAGS</span>
-                </a>
-            </li>
-            <li >
-                <a href="/archives">
-                    <i class="iconfont icon-guidang2"></i>
-                    <span>ARCHIVES</span>
-                </a>
-            </li>
-            <li >
-                <a href="/about/">
-                    <i class="iconfont icon-guanyu2"></i>
-                    <span>ABOUT</span>
-                </a>
-            </li>
+        
+  
+    <h1 class="entry-title article-title">
+      SQL注入-Oracle等注入
+    </h1>
+  
+
+        
+        <div class="comments-link">
             
-            <li>
-                <a id="search">
-                    <i class="iconfont icon-sousuo1"></i>
-                    <span>SEARCH</span>
-                </a>
-            </li>
-            
-        </ul>
-    </div>
-    
-        <div id="toc" class="toc-article">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Access%E6%B3%A8%E5%85%A5%EF%BC%88%E7%89%B9%E6%AE%8A%EF%BC%89"><span class="toc-text">Access注入（特殊）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E5%85%A5%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="toc-text">注入方法：</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%81%94%E5%90%88%E6%B3%A8%E5%85%A5%EF%BC%9A"><span class="toc-text">联合注入：</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MSSQL-SQL-Server-%E6%B3%A8%E5%85%A5"><span class="toc-text">MSSQL(SQL Server)注入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Oracle%E6%B3%A8%E5%85%A5"><span class="toc-text">Oracle注入</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E5%85%A5%E8%AF%AD%E5%8F%A5%EF%BC%9A"><span class="toc-text">注入语句：</span></a></li></ol></li></ol></li></ol>
-</div>
-    
-</div>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/" data-id="ckzh15m1d0007ywmab0spdgkr" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
 
-
-<div class="search-field" id="search-field">
-    <div class="search-container">
-        <div class="search-input">
-            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
-            <input id="search-input"/>
-            <span id="begin-search">search</span>
-        </div>
-        <div class="search-result-container" id="search-result-container">
-
-        </div>
-    </div>
-</div>
-
-        <div class="index-about-mobile">
-            <i>  </i>
-        </div>
-    </div>
-    
-    <div class="index-middle">
-        <!-- Main Content -->
-        
-
-
-<div class="post-container">
-    <div class="post-title">
-        SQL注入-Oracle等注入
-    </div>
-
-    <div class="post-meta">
-        <span class="attr">Post：<span>2022-02-07 18:57:10</span></span>
-        
-        </span>
-        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
-</span>
-</span>
-    </div>
-    <div class="post-content ">
+    <div class="entry-content">
+      
         <p>##数据库注入</p>
 <p>除Access数据库之外，其他类型数据库注入流程：</p>
 <p><img src="/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/image-20220207191425163.png" alt="image-20220207191425163"></p>
@@ -274,65 +238,129 @@
 
 <p>其盲注语句和OOB等，参考文章：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/R0ser1/p/15387539.html">https://www.cnblogs.com/R0ser1/p/15387539.html</a></p>
 
-        
-        <br />
-        <div id="comment-container">
-        </div>
-        <div id="disqus_thread"></div>
+      
+    </div><!-- .entry-content -->
 
-        <div id="lv-container">
-        </div>
-
-    </div>
-</div>
-
-    </div>
-</div>
-
-
-<footer class="footer">
-    <ul class="list-inline text-center">
-        
-        
-
-        
-
-        
-
-        
-
-        
-
-    </ul>
+    <footer class="entry-meta">
+    <a href="/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/">
+    <time datetime="2022-02-07T10:57:10.000Z" class="entry-date">
+        2022-02-07
+    </time>
+</a>
     
-    <p>
-        <span id="busuanzi_container_site_pv">
-            <span id="busuanzi_value_site_pv"></span>PV
-        </span>
-        <span id="busuanzi_container_site_uv">
-            <span id="busuanzi_value_site_uv"></span>UV
-        </span>
-        Created By <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>  Theme <a target="_blank" rel="noopener" href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+    
+    </footer>
+</article>
+
+
+    
+<nav class="nav-single">
+    <h3 class="assistive-text">文章导航</h3>
+    
+        <span class="nav-previous"><a href="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/" rel="prev"><span class="meta-nav">←</span> SQL注入-关键字过滤的注入</a></span>
+    
+    
+        <span class="nav-next"><a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/" rel="next">POST注入-HTTP头注入 <span class="meta-nav">→</span></a></span>
+    
+</nav><!-- .nav-single -->
+
+
+
+
+
+
+
+</div></div>
+        <div id="secondary" class="widget-area" role="complementary">
+  
+    <aside id="search" class="widget widget_search"><form role="search" method="get" accept-charset="utf-8" id="searchform" class="searchform" action="//google.com/search">
+    <div>
+        <input type="text" value="" name="s" id="s" />
+        <input type="submit" id="searchsubmit" value="搜索" />
+    </div>
+</form></aside>
+  
+    
+  
+    
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget-content">
+      <ul>
+        
+          <li>
+            <a href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5/">SQL注入-堆叠注入</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/">SQL注入-宽字节注入</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/">SQL注入-HPP</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/09/POST%E6%B3%A8%E5%85%A5-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/">POST注入-二次注入</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/">SQL注入-关键字过滤的注入</a>
+          </li>
+        
+      </ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-content">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/" rel="tag">利用burpsuite进行referer伪造</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-content tagcloud">
+      <a href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/" style="font-size: 10px;">利用burpsuite进行referer伪造</a>
+    </div>
+  </aside>
+
+  
+</div>
+      </div>
+      <footer id="colophon" role="contentinfo">
+    <p>&copy; 2022 小白
+    All rights reserved.</p>
+    <p>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></p>
 </footer>
+    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/js/share.js'];</script>
+
+<script src="/js/jquery-3.3.1.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
 
 
 
 
+<script src="/js/script.js"></script>
+
+
+<script src="/js/navigation.js"></script>
+
+<div id="bg"></div>
+
+  </div>
 </body>
-
-<script>
-    // We expose some of the variables needed by the front end
-    window.hexo_search_path = "search.xml"
-    window.hexo_root = "/"
-    window.isPost = true
-</script>
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-
-<script src="/js/index.js"></script>
-
-<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-
-
 </html>
