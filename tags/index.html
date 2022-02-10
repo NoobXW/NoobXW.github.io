@@ -4,7 +4,7 @@
 <head>
   <meta name="generator" content="Hexo 6.0.0">
   <meta charset="utf-8">
-  
+  <meta name="robots" content="noindex,follow">
 
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
@@ -17,12 +17,12 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
-  <title>小白</title>
+  <title>Tags - 小白</title>
 
   
     <meta property="og:type" content="website">
-<meta property="og:title" content="小白">
-<meta property="og:url" content="http://noobxw.github.io/page/2/index.html">
+<meta property="og:title" content="Tags">
+<meta property="og:url" content="http://noobxw.github.io/tags/index.html">
 <meta property="og:site_name" content="小白">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="小白">
@@ -49,7 +49,7 @@
 
 
   <div class='l_body' id='start'>
-    <aside class='l_left' layout=''>
+    <aside class='l_left' layout='tags'>
     
 
 
@@ -80,16 +80,17 @@
 
       
 
-
+  
+  
   <div class='nav-wrap'>
   <nav class='sub post cap'>
     
-      <a class='active' href='/'>Recent</a>
+      <a href='/'>Recent</a>
     
     
     
       
-        <a href='/tags'>Tags</a>
+        <a class='active' href='/tags'>Tags</a>
       
     
     
@@ -100,94 +101,15 @@
   </nav>
 </div>
 
-  <div class="post-list post"><a class="post-card post " href="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/"><article class="md">
-<h2 class="post-title">文件导入导出-SQL靶场</h2><div class="excerpt"><p>0x00Load_file(file_name):读取文件并返回该文件的内容作为一个字符串。
- 使用条件：
- A、必须有权限读取并且文件必须完全可读 
-​       and (select count(*) from mysql.user)&gt;0/* 如果结果返回正常,说明具有读写权限。 
-​       and (select count(*)  from mysql.user)&g...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-02-03T14:57:29.000Z">2022-02-03</time></span><div>
-</article></a><a class="post-card post " href="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/"><article class="md">
-<h2 class="post-title">盲注-SQL靶场</h2><div class="excerpt"><p>0x00Less-5和Less-6关看了很多文章，总的下来就是布尔盲注，报错注入和时间盲注，通过各种函数进行注入，在这里记录以下。
-0x01（floor()报错）首先，开始注入的时候先是按照1-4关的注入方式探测了以下注入点，又看了一下源码，发现源码当中只能输出You are in……….
-
-这时候才发现1-4关的注入方式已经在5关用不了了。
-但这里还是可以判断出字段数的：
-1http://...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-02-02T12:12:53.000Z">2022-02-02</time></span><div>
-</article></a><a class="post-card post " href="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/"><article class="md">
-<h2 class="post-title">SQL注入-盲注</h2><div class="excerpt"><p>SQL盲注概述盲注，通俗易懂一点，就是在页面没有提供明显信息的情况执行的注入方式。
-1.如果数据库运行返回结果时只反馈对错不会返回数据库中的信息 此时可以采用逻辑判断是否正确的          盲注来获取信息。2.盲注是不能通过直接显示的途径来获取数据库数据的方法。
-盲注的分类1、布尔盲注
-2、时间盲注
-3、报错型盲注
-SQL盲注常用的函数1、length()：返回字符串的长度
-2、sub...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-02-02T07:08:10.000Z">2022-02-02</time></span><div>
-</article></a><a class="post-card post " href="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/"><article class="md">
-<h2 class="post-title">SQL注入-文件读写操作</h2><div class="excerpt"><p>SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfile函数都是Mysql数据库的内置函数。
-1、load_file():读取函数：
-以下代码实在数据库执行的源码进行文件读取：
-1select load_file(&#x27;D:/1.txt&#x27;);这里的D可以用小写d
-
-这里的d:/1.txt文件路径中的斜杠要用 / ,由于在sql...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-02-01T04:55:10.000Z">2022-02-01</time></span><div>
-</article></a><a class="post-card post " href="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/"><article class="md">
-<h2 class="post-title">SQL注入字符型和数字型判断</h2><div class="excerpt"><p>0x00在SQL注入中如何判断字符型注入还是数字型注入很重要，这里自己记录一下。
-0x01数字型判定
-1、and或者or
-假设数据库的执行语句是：select * from table where id=$id
-这里我以自己本地的sql靶场为例。
-此时执行语句为：
-1http://sqli-labs-master/Less-2/?id=1
-
-返回正常页面
-
-若执行语句为：
-1http://s...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-01-31T15:43:00.000Z">2022-01-31</time></span><div>
-</article></a><a class="post-card post " href="/2022/01/30/Less1-Less4/"><article class="md">
-<h2 class="post-title">Less1-Less4</h2><div class="excerpt"><p>###Less-1（字符型注入）
-0x00首先注入：
-1?id=1
-
-正常返回结果
-
-由于要判断注入点，如图：
-
-添加 ‘ 报错，证明有注入点，字符型，id=1’报错是由于源码当中接收值的时候本身自己就是id=’’的闭合形式，但由于我们自己强行在输入1的时候添加了1’，导致闭合之后形成了id=’1’’，导致报错。
-0x01执行下列语句进行绕过：
-1http://sqli-labs-maste...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-01-30T15:59:34.000Z">2022-01-30</time></span><div>
-</article></a><a class="post-card post " href="/2022/01/30/%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5/"><article class="md">
-<h2 class="post-title">简要SQL注入</h2><div class="excerpt"><p>前言SQL 注入漏洞将是重点部分，其中 SQL 注入 又非常复杂，区分各种数据库类型，提交方法，数据类型等注入等，此类漏洞是 WEB 安全中严重的安全漏洞，学习如何利用，挖掘，修复。
-SQL注入图解
-手工注入原理手工注入：构造不同的sql语句，用户输入的数据拼接到原本的语句之后带入数据库执行。
-数据库各种各样，但是：都用sql语句调用  （不同的数据库，同样的操作，语句会有些许些许不同）这些...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-01-30T13:05:54.000Z">2022-01-30</time></span><div>
-</article></a><a class="post-card post " href="/2022/01/30/WEB%E6%BC%8F%E6%B4%9E%E7%9F%A5%E8%AF%86%E7%82%B9/"><article class="md">
-<h2 class="post-title">WEB漏洞知识点</h2><div class="excerpt"><p>##前言
-WEB层面涉及的漏洞关系到渗透过程中的方方面面，漏洞的危害等级以及影响的范围等，要明白各个漏洞的形成原理，并且要明白如何去发现，如何去利用。
-
-常见漏洞原理
-SQL注入：简称注入攻击、SQL注入，被广泛用于非法获取网站控制权，是发生在应用程序的数据库层上的安全漏洞。在设计程序，忽略了对输入字符串中夹带的SQL指令的检查，被数据库误认为是正常的SQL指令而运行，从而使数据库受到攻击，...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-01-30T07:21:56.000Z">2022-01-30</time></span><div>
-</article></a><a class="post-card post " href="/2022/01/28/%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%90%AD%E5%BB%BA%EF%BC%8CWAF%E7%AD%89/"><article class="md">
-<h2 class="post-title">架构，搭建，WAF等</h2><div class="excerpt"><p>前言在安全测试中，信息收集是非常重要的一个环节，此环节的信息将影响 到后续的成功几率，掌握信息的多少将决定发现漏洞机会大小，换言之决定着是否能完成目标的测试任务。渗透测试的思路 就是从信息收集这里开始。
-
-所谓信息搜集，其实就是为了扩大攻击面，信息搜集的越多，攻击的范围越大。
-站点搭建分析1.**搭建习惯-目录型站点 **：主站是一套程序，加一个目录打开后又是一套程序；两套程序会有两个漏洞形...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-01-28T11:21:46.000Z">2022-01-28</time></span><div>
-</article></a><a class="post-card post " href="/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/"><article class="md">
-<h2 class="post-title">CDN绕过技术</h2><div class="excerpt"><p>CDN绕过CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。但在安全测试过程中，若目标存在CDN服务，将会影响到后续的安全测试过程。
-
-若对网站做安全测试的时候，对网站进行...</p></div><div class="meta cap"><span class="cap" id="post-meta">Posted on&nbsp;<time datetime="2022-01-28T02:50:43.000Z">2022-01-28</time></span><div>
-</article></a></div>
-  
-  <div class='paginator-wrap dis-select'>
-    <a class='paginator prev' href='/'>
-      <img src='https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/arrow/f049bbd4e88ec.svg'/>
-    </a>
-    <div class='paginator current'>
-      2<span class='sep'></span>4
-    </div>
-    <a class='paginator next' href='/page/3/'>
-      <img src='https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/arrow/064b95430caf4.svg'/>
-    </a>
+  <div class='post-list'>
+    <article class='' id='tags'>
+      
+        <a class='tag' href="/tags/%E5%88%A9%E7%94%A8burpsuite%E8%BF%9B%E8%A1%8Creferer%E4%BC%AA%E9%80%A0/">
+          <span class='name'>利用burpsuite进行referer伪造</span>
+        </a>
+      
+    </article>
   </div>
-
-
 
 
       
