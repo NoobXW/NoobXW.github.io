@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        SQL注入字符型和数字型判断 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar ">
+            <img src="/" />
+        </div>
+        <div class="name">
+            <i>小白</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00"><span class="toc-text">0x00</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01"><span class="toc-text">0x01</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02"><span class="toc-text">0x02</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        SQL注入字符型和数字型判断
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2022-01-31 23:43:00</span></span>
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>在SQL注入中如何判断字符型注入还是数字型注入很重要，这里自己记录一下。</p>
+<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p><strong>数字型判定</strong></p>
+<p>1、<strong>and或者or</strong></p>
+<p>假设数据库的执行语句是：select * from table where id=$id</p>
+<p>这里我以自己本地的sql靶场为例。</p>
+<p>此时执行语句为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=1</span><br></pre></td></tr></table></figure>
+
+<p>返回正常页面</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220131235010309.png" alt="image-20220131235010309"></p>
+<p>若执行语句为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=1 and 1=2#</span><br></pre></td></tr></table></figure>
+
+<p>页面异常</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220131235143197.png" alt="image-20220131235143197"></p>
+<p>这是因为这时数据库执行的语句为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=1 and 1=2</span><br></pre></td></tr></table></figure>
+
+<p>语句正确，逻辑错误。</p>
+<hr>
+<p>若执行语句为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=1 or 1=2#</span><br></pre></td></tr></table></figure>
+
+<p>返回页面正常</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220131235620782.png" alt="image-20220131235620782"></p>
+<p>这时数据库执行的语句就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=1 or 1=2</span><br></pre></td></tr></table></figure>
+
+<p>语句正确，逻辑正确，页面返回正常。</p>
+<p><strong>因此，可以使用and或or来判断字段是否是数字型，但因为字段型的and和or返回的结果都为正常页面，我们就不好通过or来进行比较，一般习惯于用and 1=2,如果是数字型，返回错误，但如果是字符型，返回正确，这样两者之间就有了不同，有了比较。</strong></p>
+<p>2、<strong>单引号判断</strong></p>
+<p>假如此时语句为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=1&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>这时数据库执行的语句就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=1’</span><br></pre></td></tr></table></figure>
+
+<p><strong>单引号不匹配</strong>，语句正确，页面返回错误。</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220201000053200.png" alt="image-20220201000053200"></p>
+<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p><strong>字符型判定</strong></p>
+<p>1、<strong>and或or</strong></p>
+<p>假设数据库的执行语句是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=’$id’</span><br></pre></td></tr></table></figure>
+
+<p>执行以下语句时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=1</span><br></pre></td></tr></table></figure>
+
+<p>数据库执行的是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=‘1’</span><br></pre></td></tr></table></figure>
+
+<p>页面返回正常</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220201000539553.png" alt="image-20220201000539553"></p>
+<p>若执行and语句时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=1 and 1=2#</span><br></pre></td></tr></table></figure>
+
+<p>这时数据库执行的语句就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=‘1 and 1=2’</span><br></pre></td></tr></table></figure>
+
+<p>页面返回正常</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220201000811749.png" alt="image-20220201000811749"></p>
+<hr>
+<p>若执行or时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=3 or 1=2#</span><br></pre></td></tr></table></figure>
+
+<p>这时数据库执行的语句就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=‘3 or 1=2’</span><br></pre></td></tr></table></figure>
+
+<p>页面返回正常</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220201001024957.png" alt="image-20220201001024957"></p>
+<p>对于字符型注入，不管是and或者or，执行结果都是一样的，都会返回id=1的页面，这是由于数据库中id的类型是数值型，比如int型，而<strong>MySQL数据库在执行语句时是会自动进行类型转换的</strong>，输入的字符<strong>3 or 1=2</strong>会在执行时被自动转换成int型的3，所以最终的执行语句还是<strong>select * from table where id=‘3’</strong>，这是数据库的特性问题，后面的字符可以是<strong>任意的</strong>，不会影响查询，我们在3后面加上任意字符，比如3ctf，最后都会被转换为3来进行语句执行。</p>
+<p>如图：<br><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220201002020011.png" alt="image-20220201002020011"></p>
+<p>此时的执行语句是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=4ctf #</span><br></pre></td></tr></table></figure>
+
+<p>可以看到此时返回页面的变化。</p>
+<p><strong>如果id本身就是varchar类型的，那么数据库查询的时候就会进行精准的匹配，这样子’4ctf’等类似的数据由于数据库里没有匹配项,查询结果为空。</strong></p>
+<p>所以，如果字段是字符型的，那么我们使用<strong>and或者or</strong>来测试时页面返回都是正常的</p>
+<p>2、<strong>单引号判断</strong></p>
+<p>当执行一下语句时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=1&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>SQL语句就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=‘1’’</span><br></pre></td></tr></table></figure>
+
+<p>单引号不匹配，语句错误，页面错误</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220201002452436.png" alt="image-20220201002452436"></p>
+<p>注释多余的 ‘ 后：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=1&#x27; --+</span><br></pre></td></tr></table></figure>
+
+<p>执行的SQL语句就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table where id=‘1’ --+’</span><br></pre></td></tr></table></figure>
+
+<p>语句正确，页面正常</p>
+<p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220201002733573.png" alt="image-20220201002733573"></p>
+<p>这里与数字型判断不同的是，<strong>数字型判定尽管加上注释符，执行的SQL语句是select * from table where id=1’ –+’ 因为单引号还是不匹配，语句还是错误的，页面还是返回错误。</strong></p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>  Theme <a target="_blank" rel="noopener" href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.xml"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

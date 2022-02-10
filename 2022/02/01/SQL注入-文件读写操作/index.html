@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        SQL注入-文件读写操作 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar ">
+            <img src="/" />
+        </div>
+        <div class="name">
+            <i>小白</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL%E6%B3%A8%E5%85%A5%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E5%8F%8A%E5%AF%BC%E5%87%BA"><span class="toc-text">SQL注入文件读写及导出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E5%BE%84%E8%8E%B7%E5%8F%96%E7%9A%84%E5%B8%B8%E8%A7%81%E6%96%B9%E6%B3%95"><span class="toc-text">路径获取的常见方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AD%94%E6%9C%AF%E5%BC%95%E5%8F%B7"><span class="toc-text">魔术引号</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AD%94%E6%9C%AF%E5%BC%95%E5%8F%B7%E7%9A%84%E7%BB%95%E8%BF%87%EF%BC%9A"><span class="toc-text">魔术引号的绕过：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B2%E6%B3%A8%E5%85%A5%E7%AD%96%E7%95%A5"><span class="toc-text">防注入策略</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        SQL注入-文件读写操作
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2022-02-01 12:55:10</span></span>
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="SQL注入文件读写及导出"><a href="#SQL注入文件读写及导出" class="headerlink" title="SQL注入文件读写及导出"></a>SQL注入文件读写及导出</h2><p>这里的load_file()和into outfile或into dumpfile函数都是Mysql数据库的内置函数。</p>
+<p>1、<strong>load_file():读取函数</strong>：</p>
+<p>以下代码实在数据库执行的源码进行文件读取：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select load_file(&#x27;D:/1.txt&#x27;);这里的D可以用小写d</span><br></pre></td></tr></table></figure>
+
+<p>这里的d:/1.txt文件路径中的斜杠要用 / ,由于在sql语句中 \n是换行符，所以为了避免，这里的读取路径要使用 / ；另一种可以通过\进行转义出  \ 。</p>
+<p>执行如下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=-1&#x27; union select 1,load_file(&#x27;D:/1.txt&#x27;),3 --+</span><br></pre></td></tr></table></figure>
+
+<p>可以看到已读取出1.txt文件的内容。</p>
+<p><img src="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201182045161.png" alt="image-20220201182045161"></p>
+<p>2、<strong>into outfile或into dumpfile:导出函数</strong>：</p>
+<p>源码执行语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select &#x27;CTF1&#x27; into outfile &#x27;D:/2.txt&#x27;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=-1&#x27; union select 1,2,&#x27;CTF1&#x27;  into outfile &#x27;D:/2.txt&#x27; --+</span><br></pre></td></tr></table></figure>
+
+<p>这里的写入语句，要写入的东西和路径都需要加 ‘’ 。</p>
+<p>可以看到页面返回异常，但返回D盘查看文件，已将CTF1写入文件2.txt</p>
+<p><img src="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201183145889.png" alt="image-20220201183145889"></p>
+<p><img src="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201183319837.png" alt="image-20220201183319837"></p>
+<p>SQL注入任意文件读取，这样的漏洞一旦出发，可以读取数据库管理员的账号密码，也可以通过写入操作将后门植入，提高权限。</p>
+<p><strong>文件读取操作必须要知道文件的具体路径。</strong></p>
+<hr>
+<h2 id="路径获取的常见方法"><a href="#路径获取的常见方法" class="headerlink" title="路径获取的常见方法"></a>路径获取的常见方法</h2><p>报错显示：通过扫描工具或手工探测报错网页，会爆出该网站的真实路径；</p>
+<p>遗留文件：例如 phpinfo.php文件，可以找到网站路径</p>
+<p>漏洞报错：在搜索引擎根据网站使用的什么程序去搜索网站所在的爆路径的漏洞</p>
+<p>平台配置文件：配置文件里会有网站的路径信息。</p>
+<p>​                          敏感文件文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30292843/article/details/99381669">https://blog.csdn.net/weixin_30292843/article/details/99381669</a></p>
+<p>爆破：很难找到路径信息，按照常规思路去爆破。这是由于搭建网站的时候会有常见的路径，</p>
+<p>​            例如：windows：                                              linux：</p>
+<p>​                                           d:/www/……                                     /var/www/……</p>
+<hr>
+<h2 id="魔术引号"><a href="#魔术引号" class="headerlink" title="魔术引号"></a>魔术引号</h2><p><strong>魔术引号开关：magic_quotes_gpc</strong>这个文件在php.ini目录下的文件</p>
+<p><strong>魔术引号是为了防止任意文件读取的SQL注入。</strong></p>
+<p>什么是魔术引号：当打开时，所有的 ‘（单引号），”（双引号），\（反斜线）和 NULL 字符都会被自动加上一个反斜线进行转义。这和 <a target="_blank" rel="noopener" href="https://www.jb51.net/shouce/php5/zh/function.addslashes.html"><strong>addslashes()</strong></a> 作用完全相同。一个自动将进入 PHP 脚本的数据进行转义的过程。最好在编码时不要转义而在运行时根据需要而转义。</p>
+<p><strong>魔术引号 【Warning：本特性已自 PHP 5.3.0 起废弃并将自 PHP 5.4.0 起移除。】</strong></p>
+<hr>
+<h3 id="魔术引号的绕过："><a href="#魔术引号的绕过：" class="headerlink" title="魔术引号的绕过："></a>魔术引号的绕过：</h3><p>利用编码或宽字节绕过。</p>
+<hr>
+<h2 id="防注入策略"><a href="#防注入策略" class="headerlink" title="防注入策略"></a>防注入策略</h2><p>1.自带防御：魔术引导</p>
+<p>2.内置函数;int等</p>
+<p>3.自定义关键字：select，会对select,and,or等关键字进行过滤。（大小写混合可以尝试绕过过滤）</p>
+<p>4.WAF防护软件：安全狗，宝塔等</p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>  Theme <a target="_blank" rel="noopener" href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.xml"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>

