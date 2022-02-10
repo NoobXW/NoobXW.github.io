@@ -64,6 +64,89 @@
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main">
   
+    <article id="post-系统及数据库" class="post-系统及数据库 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/">系统及数据库</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/" data-id="ckzgrjewd000vq8mafux444j5" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>除去搭建平台中间件，网站源码外，容易受到攻击的还有操作系统，数据库等，第三方软件平台等，其中此类攻击也能直接影响到WEB或 服务器的安全，导致网站或服务器权限的获取。</p>
+<p><img src="/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/image-20220127235003546.png" alt="image-20220127235003546"></p>
+<h3 id="操作系统层面"><a href="#操作系统层面" class="headerlink" title="操作系统层面"></a>操作系统层面</h3><p><strong>识别操作系统常见方法：</strong></p>
+<p>如过对方有网站，可以通过网站识别；如果没网站，就通过一些工具的扫描识别；</p>
+<p>从网站上判断：window系统一般情况不区分大小写；Linux系统区别大小写。</p>
+<p>通过TTL值判断：默认系统的TTL（不是很准确）</p>
+<p>  1、WINDOWS NT/2000  TTL：128</p>
+<p>  2、WINDOWS 95/98   TTL：32</p>
+<p>  3、UNIX        TTL：255</p>
+<p>  4、LINUX       TTL：64</p>
+<p>  5、WIN7      TTL：64</p>
+<p>通过Nmap判断操作系统：Nmap在探测操作系统使用-O选项可启用操作系统探测。</p>
+<p><strong>识别操作系统的意义：</strong></p>
+<p>windows和linux在某些漏洞执行方面会不同，测试时候可能会出现问题，因此需要判断是在什么系统上产生的漏洞。</p>
+<h3 id="数据库层面"><a href="#数据库层面" class="headerlink" title="数据库层面"></a>数据库层面</h3><p><strong>如何识别数据库类型：</strong></p>
+<p>1.通过网站识别数据库（脚本连接的数据库）：</p>
+<p>ASP+<strong>Access</strong>（只能在windows平台）</p>
+<p>PHP+mysql</p>
+<p>aspx+mssql / <strong>sql server</strong>（只能在windows平台）</p>
+<p>jsp+mssql / sql server / mysql / oracle</p>
+<p>python+mysql(少)/ PostgreSQL /oracle / MongDB</p>
+<p>……</p>
+<p>2.通过端口扫描判断数据库类型：</p>
+<p>Access端口：无端口</p>
+<p>mysql端口：3306</p>
+<p>mssql端口：1433</p>
+<p>oracle端口：1521</p>
+<p>MongDB端口：27017</p>
+<p>Redis默认端口：6379</p>
+<p>PostgreSQL默认端口：5432</p>
+<p>……</p>
+<p><strong>数据库类型识别意义：</strong> </p>
+<p>数据库不同，结构不同，产生的漏洞不同，不同的数据库攻击方法不同。</p>
+<p><strong>数据库常见攻击：</strong></p>
+<p>弱口令；漏洞</p>
+<p><strong>数据库层面漏洞影响：</strong></p>
+<p>获取到数据库权限；获取到网站权限。</p>
+<h3 id="第三方层面"><a href="#第三方层面" class="headerlink" title="第三方层面"></a>第三方层面</h3><p>常见第三方平台或软件见上图。</p>
+<p>漏洞类型及攻击：弱口令攻击；漏洞攻击等。</p>
+<p>第三方平台或软件安全测试危害：直接影响权限。</p>
+<p>###<strong>补充：</strong><br>除去常规WEB安全及APP安全测试外，类似服务器单一或复杂的其他服务(邮件、游戏、负载均衡等)也可以作为安全测试目标，此类目标测试原则只是少了WEB应用或其他安全问题。所以明确安全测试思路是很重要的！</p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/">
+    <time datetime="2022-01-26T11:09:57.000Z" class="entry-date">
+        2022-01-26
+    </time>
+</a>
+    
+    
+    </footer>
+</article>
+
+
+
+
+
+
+  
     <article id="post-WEB源码拓展" class="post-WEB源码拓展 post type-post status-publish format-standard hentry">
     <!---->
 
@@ -79,7 +162,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/" data-id="ckzgn980s000d5cma31lqfvto" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/" data-id="ckzgrjevy000fq8ma7uav476w" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -157,7 +240,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/" data-id="ckzgn980w000m5cma22ny6rgh" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/" data-id="ckzgrjew6000oq8ma3whbego1" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -215,7 +298,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/" data-id="ckzgn980u000i5cmabhqt1n5l" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%8A%95%E7%A5%A8%E7%B3%BB%E7%BB%9F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E7%BC%BA%E9%99%B7%E5%88%86%E6%9E%90/" data-id="ckzgrjew0000jq8ma9mpuhlrn" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -291,7 +374,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/" data-id="ckzgn980u000h5cmadgpwe391" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/" data-id="ckzgrjevz000iq8ma9r242l8y" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -394,7 +477,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/" data-id="ckzgn980v000k5cma4l11843f" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/" data-id="ckzgrjew1000lq8ma49404280" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -455,7 +538,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%9D%A5%E6%BA%90%E9%A1%B5%E4%BC%AA%E9%80%A0/" data-id="ckzgn980v000l5cma3plzeymr" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%9D%A5%E6%BA%90%E9%A1%B5%E4%BC%AA%E9%80%A0/" data-id="ckzgrjew0000kq8ma4u0xb08w" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -514,7 +597,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/23/%E6%95%B0%E6%8D%AE%E5%8C%85%E6%8B%93%E5%B1%95/" data-id="ckzgn9811000o5cmabqft14oq" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/23/%E6%95%B0%E6%8D%AE%E5%8C%85%E6%8B%93%E5%B1%95/" data-id="ckzgrjew7000pq8ma6j4g26xy" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -622,7 +705,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/22/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E6%A6%82%E5%BF%B5%E5%90%8D%E8%AF%8D/" data-id="ckzgn980t000g5cma9yz03oag" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/22/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E6%A6%82%E5%BF%B5%E5%90%8D%E8%AF%8D/" data-id="ckzgrjevy000gq8ma2fo93rm0" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -730,7 +813,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/22/%E5%B0%8F%E7%99%BD%E7%9A%84%E7%BD%91%E5%AE%89%E4%B9%8B%E8%B7%AF/" data-id="ckzgn980v000j5cma6fll7yag" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="http://noobxw.github.io/2022/01/22/%E5%B0%8F%E7%99%BD%E7%9A%84%E7%BD%91%E5%AE%89%E4%B9%8B%E8%B7%AF/" data-id="ckzgrjew5000nq8ma5yklb9zf" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -789,6 +872,10 @@
       <ul>
         
           <li>
+            <a href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/">SQL注入-宽字节注入</a>
+          </li>
+        
+          <li>
             <a href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/">SQL注入-HPP</a>
           </li>
         
@@ -802,10 +889,6 @@
         
           <li>
             <a href="/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/">SQL注入-Oracle等注入</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/">POST注入-HTTP头注入</a>
           </li>
         
       </ul>
