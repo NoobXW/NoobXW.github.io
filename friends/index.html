@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="friends, 小白">
-    <meta name="description" content="记录自己网安学习的日常">
+    <meta name="description" content="记录网安学习的日常">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -156,7 +156,7 @@
         <div class="logo-name">小白</div>
         <div class="logo-desc">
             
-            记录自己网安学习的日常
+            记录网安学习的日常
             
         </div>
     </div>
@@ -863,6 +863,14 @@ $(function () {
     
 
     <!-- 鼠标星星特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
     
 
      
