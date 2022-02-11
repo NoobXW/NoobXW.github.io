@@ -18,6 +18,12 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> SQL注入 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -36,6 +42,12 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> SQL注入 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -56,6 +68,14 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> SQL注入 </tag>
+            
+            <tag> 基础知识 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -74,6 +94,14 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> SQL注入 </tag>
+            
+            <tag> 基础知识 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -94,6 +122,12 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> SQL注入 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -108,10 +142,16 @@
       
       <categories>
           
-          <category> SQL注入 </category>
+          <category> 信息搜集 </category>
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 信息搜集 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -134,7 +174,7 @@
       
         <tags>
             
-            <tag> 网络安全 </tag>
+            <tag> SQL注入 </tag>
             
         </tags>
       
@@ -157,6 +197,12 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> SQL注入 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -176,6 +222,12 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> SQL注入 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -194,6 +246,14 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 靶场 </tag>
+            
+            <tag> SQL注入 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -241,6 +301,14 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> 靶场 </tag>
+            
+            <tag> SQL注入 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -259,6 +327,12 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> SQL注入 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -279,6 +353,12 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> SQL注入 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -297,6 +377,12 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> SQL注入 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -317,6 +403,12 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> SQL注入 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -335,6 +427,12 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> SQL注入 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -355,6 +453,12 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> 基础知识 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -373,6 +477,12 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 信息搜集 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -393,6 +503,14 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> 基础知识 </tag>
+            
+            <tag> 信息搜集 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -411,6 +529,12 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 基础知识 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -456,6 +580,12 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> 基础知识 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -474,6 +604,12 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 基础知识 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -519,6 +655,12 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> 靶场 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -538,6 +680,12 @@
       </categories>
       
       
+        <tags>
+            
+            <tag> 靶场 </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -556,6 +704,12 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 靶场 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -600,6 +754,12 @@
           
       </categories>
       
+      
+        <tags>
+            
+            <tag> 基础知识 </tag>
+            
+        </tags>
       
     </entry>
     

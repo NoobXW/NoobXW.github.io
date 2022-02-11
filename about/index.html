@@ -659,7 +659,7 @@
                 type: 'pie',
                 radius: '50%',
                 color: ['#6772e5', '#ff9e0f', '#fa755a', '#3ecf8e', '#82d3f4', '#ab47bc', '#525f7f', '#f51c47', '#26A69A'],
-                data: [{"name":"基础知识","value":8},{"name":"SQL注入","value":17},{"name":"靶场","value":4},{"name":"个人说明","value":1},{"name":"信息搜集","value":1}],
+                data: [{"name":"基础知识","value":8},{"name":"SQL注入","value":16},{"name":"靶场","value":4},{"name":"个人说明","value":1},{"name":"信息搜集","value":2}],
                 itemStyle: {
                     emphasis: {
                         shadowBlur: 10,
@@ -683,7 +683,7 @@
         xAxis: [
             {
                 type: 'category',
-                data: ["靶场","基础知识","网络安全","SQL注入","关于我"]
+                data: ["SQL注入","基础知识","靶场","信息搜集","关于我"]
             }
         ],
         yAxis: [
@@ -696,7 +696,7 @@
                 type: 'bar',
                 color: ['#82d3f4'],
                 barWidth : 18,
-                data: [2,2,1,1,1],
+                data: [16,10,7,3,1],
                 markPoint: {
                     symbolSize: 45,
                     data: [{
@@ -814,12 +814,6 @@
         <div class="tag-chips center-align">
             
             
-            <a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">
-                <span class="chip center-align waves-effect waves-light chip-default">网络安全</span>
-            </a>
-            
-            
-            
             <a href="/tags/%E9%9D%B6%E5%9C%BA/">
                 <span class="chip center-align waves-effect waves-light chip-default">靶场</span>
             </a>
@@ -840,6 +834,12 @@
             
             <a href="/tags/%E5%85%B3%E4%BA%8E%E6%88%91/">
                 <span class="chip center-align waves-effect waves-light chip-default">关于我</span>
+            </a>
+            
+            
+            
+            <a href="/tags/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/">
+                <span class="chip center-align waves-effect waves-light chip-default">信息搜集</span>
             </a>
             
             
