@@ -38,6 +38,16 @@ SQL注入：简称注入攻击、SQL注入，被广泛用于非法获取网站�
 
 
 
+   <style>
+    body{
+       background-image: url(https://cdn.jsdelivr.net/gh/Tokisaki-Galaxy/res/site/medias/background.jpg);
+       background-repeat:no-repeat;
+       background-size: 100% 100%;
+       background-attachment:fixed;
+    }
+</style>
+
+
 
 <body>
     <header class="navbar-fixed">
@@ -453,10 +463,20 @@ SQL注入：简称注入攻击、SQL注入，被广泛用于非法获取网站�
                 
 
                 
-
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
+                    1.5k
+                </div>
                 
 
                 
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
             </div>
         </div>
         <hr class="clearfix">
@@ -993,6 +1013,9 @@ SQL注入：简称注入攻击、SQL注入，被广泛用于非法获取网站�
             |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
             <br>
             
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;Total Words:&nbsp;<span
+                        class="white-color">30.1k</span>
+            
             
             
                 
@@ -1017,13 +1040,13 @@ SQL注入：简称注入攻击、SQL注入，被广泛用于非法获取网站�
             
         </div>
         <div class="col s12 m4 l4 social-link social-statis">
-    <a href="https://github.com/blinkfox" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+    <a href="http://NoobXW.github.io" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
         <i class="fab fa-github"></i>
     </a>
 
 
 
-    <a href="mailto:1181062873@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+    <a href="mailto:wangwei89677@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
         <i class="fas fa-envelope-open"></i>
     </a>
 
@@ -1033,7 +1056,7 @@ SQL注入：简称注入攻击、SQL注入，被广泛用于非法获取网站�
 
 
 
-    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1181062873" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1181062873" data-position="top" data-delay="50">
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=3012254368" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 3012254368" data-position="top" data-delay="50">
         <i class="fab fa-qq"></i>
     </a>
 
@@ -1178,6 +1201,14 @@ $(function () {
     
 
     <!-- 雪花特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>');
+            }
+        </script>
     
 
     <!-- 鼠标星星特效 -->
