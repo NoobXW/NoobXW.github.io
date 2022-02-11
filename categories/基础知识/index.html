@@ -4,9 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="WEB源码拓展, 小白">
-    <meta name="description" content="##前言
-​      WEB 源码在安全测试中是非常重要的信息来源，可以用来代码审 计漏洞也可以用来做信息突破口，其中 WEB 源码有很多技术需要简明分析。 比如：获取某 ASP 源码后可以采用默认数据库下载为突破，获取某其他脚本 源码漏">
+    <meta name="keywords" content="分类: 基础知识, 小白">
+    <meta name="description" content="记录网安学习的日常">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>WEB源码拓展 | 小白</title>
+    <title>分类: 基础知识 | 小白</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -316,566 +315,450 @@
 
 </header>
 
-    
+    <div class="bg-cover pd-header about-cover">
+    <div class="container">
+    <div class="row">
+    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
+        <div class="brand">
+            <div class="title center-align">
+                
+                世界很暗，但是你来了
+                
+            </div>
 
-
-
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
-    <div class="container" style="right: 0px;left: 0px;">
-        <div class="row">
-            <div class="col s12 m12 l12">
-                <div class="brand">
-                    <h1 class="description center-align post-title">WEB源码拓展</h1>
-                </div>
+            <div class="description center-align">
+                
+                <span id="subtitle"></span>
+                <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
+                <script>
+                    var typed = new Typed("#subtitle", {
+                        strings: [ 
+                            
+                                "从来没有真正的绝境, 只有心灵的迷途",
+                            
+                                "Never really desperate, only the lost of the soul",
+                            
+                        ],
+                        startDelay: 300,
+                        typeSpeed: 100,
+                        loop: true,
+                        backSpeed: 50,
+                        showCursor: true
+                    });
+                </script>
+                
             </div>
         </div>
     </div>
 </div>
 
 
+<script>
+    // 每天切换 banner 图.  Switch banner image every day.
+    var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
+    $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
+</script>
 
 
-<main class="post-container content">
+    </div>
+</div>
+
+<main class="content">
 
     
-    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
-<style>
-    #articleContent h1::before,
-    #articleContent h2::before,
-    #articleContent h3::before,
-    #articleContent h4::before,
-    #articleContent h5::before,
-    #articleContent h6::before {
-        display: block;
-        content: " ";
-        height: 100px;
-        margin-top: -100px;
-        visibility: hidden;
-    }
 
-    #articleContent :focus {
-        outline: none;
-    }
-
-    .toc-fixed {
-        position: fixed;
-        top: 64px;
-    }
-
-    .toc-widget {
-        width: 345px;
-        padding-left: 20px;
-    }
-
-    .toc-widget .toc-title {
-        padding: 35px 0 15px 17px;
-        font-size: 1.5rem;
-        font-weight: bold;
-        line-height: 1.5rem;
-    }
-
-    .toc-widget ol {
-        padding: 0;
-        list-style: none;
-    }
-
-    #toc-content {
-        padding-bottom: 30px;
-        overflow: auto;
-    }
-
-    #toc-content ol {
-        padding-left: 10px;
-    }
-
-    #toc-content ol li {
-        padding-left: 10px;
-    }
-
-    #toc-content .toc-link:hover {
-        color: #42b983;
-        font-weight: 700;
-        text-decoration: underline;
-    }
-
-    #toc-content .toc-link::before {
-        background-color: transparent;
-        max-height: 25px;
-
-        position: absolute;
-        right: 23.5vw;
-        display: block;
-    }
-
-    #toc-content .is-active-link {
-        color: #42b983;
-    }
-
-    #floating-toc-btn {
-        position: fixed;
-        right: 15px;
-        bottom: 76px;
-        padding-top: 15px;
-        margin-bottom: 0;
-        z-index: 998;
-    }
-
-    #floating-toc-btn .btn-floating {
-        width: 48px;
-        height: 48px;
-    }
-
-    #floating-toc-btn .btn-floating i {
-        line-height: 48px;
-        font-size: 1.4rem;
-    }
-</style>
-<div class="row">
-    <div id="main-content" class="col s12 m12 l9">
-        <!-- 文章内容详情 -->
-<div id="artDetail">
+<div id="category-cloud" class="container chip-container">
     <div class="card">
-        <div class="card-content article-info">
-            <div class="row tag-cate">
-                <div class="col s7">
-                    
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
-                    
-                </div>
-                <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-category">
-                                基础知识
-                            </a>
-                        
-                    </div>
-                    
-                </div>
+        <div class="card-content">
+            <div class="tag-title center-align">
+                <i class="fas fa-bookmark"></i>&nbsp;&nbsp;文章分类
             </div>
-
-            <div class="post-info">
+            <div class="tag-chips">
                 
-                <div class="post-date info-break-policy">
-                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-01-25
-                </div>
                 
-
                 
-
+                <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="基础知识: 8">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-active "
+                            style="background-color: #F9EBEA;">基础知识
+                        <span class="tag-length">8</span>
+                    </span>
+                </a>
                 
-                <div class="info-break-policy">
-                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    946
-                </div>
                 
-
+                <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" title="SQL注入: 17">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            style="background-color: #F5EEF8;">SQL注入
+                        <span class="tag-length">17</span>
+                    </span>
+                </a>
                 
-
                 
-                    <div id="busuanzi_container_page_pv" class="info-break-policy">
-                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
-                        <span id="busuanzi_value_page_pv"></span>
-                    </div>
-				
+                <a href="/categories/%E9%9D%B6%E5%9C%BA/" title="靶场: 4">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            style="background-color: #D5F5E3;">靶场
+                        <span class="tag-length">4</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/categories/%E4%B8%AA%E4%BA%BA%E8%AF%B4%E6%98%8E/" title="个人说明: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            style="background-color: #E8F8F5;">个人说明
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/categories/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/" title="信息搜集: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            style="background-color: #FEF9E7;">信息搜集
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
             </div>
         </div>
-        <hr class="clearfix">
-
-        
-
-        
-
-        <div class="card-content article-card-content">
-            <div id="articleContent">
-                <p>##前言</p>
-<p>​      WEB 源码在安全测试中是非常重要的信息来源，可以用来代码审 计漏洞也可以用来做信息突破口，其中 WEB 源码有很多技术需要简明分析。 比如：获取某 ASP 源码后可以采用默认数据库下载为突破，获取某其他脚本 源码漏洞可以进行代码审计挖掘或分析其业务逻辑等，总之源码的获取将为 后期的安全测试提供了更多的思路。</p>
-<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>关于 WEB 源码目录结构 ：后台目录，模版目录，数据库目录    </p>
-<p>关于 WEB 源码脚本类型 ：ASP,PHP,ASPX,JSP,JAVAWEB 等脚本类型源码安全问题</p>
-<p>关于 WEB 源码应用分类：社交，论坛，门户，第三方，博客等不同的代码机制对应漏洞</p>
-<p>关于 WEB 源码其他说明：开源，未开源问题，框架非框架问题，关于 CMS 识别问题及后续</p>
-<hr>
-<p><strong>框架非框架：</strong>             </p>
-<p>若对方网站采用框架开发的话，找框架漏洞，而不是找其代码漏洞；若是非框架的话，找其代码漏洞；</p>
-<p><strong>CMS识别：</strong></p>
-<p>如果找漏洞找不到，自己分析；若是已经找到的话就在网上找别人分析的漏洞进行攻击；</p>
-<p>CMS的开源或内部：<br>开源–直接找漏洞或审计</p>
-<p>内部–常规渗透测试</p>
-<p>由此，<strong>渗透常规思路</strong>：拿到一个网站的时候：</p>
-<p>1.判断是否是CMS</p>
-<p>2.CMS分开源和内部，开源的话自己挖漏洞或搜漏洞；内部的话，进行黑盒测试一步一步找漏洞</p>
-<p><strong>源码获取：</strong></p>
-<p>1.可以扫描其备份文件，网站为了防止东西遗失，一般都会将网站源码或数据库文件进行相关备份，有时候就能通过扫描工具进行探针到备份文件进行源码下载；</p>
-<p>2.通过CMS识别技术得到对方的名字在网上下载其源码；</p>
-<p>3.特定源码特定渠道，针对违法类的网站，这种网站不会采用网上公开的大众化的源码；这种情况只能按照特定的渠道获取其源码。</p>
-<p><strong>关于源码获取的相关途径：</strong>搜索，闲鱼淘宝，第三方源码站，各种行业对应</p>
-<p><strong>数据库配置文件 ：</strong></p>
-<p>若可以得到数据库配置文件，可知其网站连接数据库的账号密码，则可从数据库中得其管理员的账号密码，直接登录其后台，得到相应的数据。</p>
-<p><img src="/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/202106241707055.png"></p>
-<p>图片来源：<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_55227191/article/details/116804100">https://blog.csdn.net/m0_55227191/article/details/116804100</a></p>
-<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>关注应用分类及脚本类型估摸出可能存在的漏洞（其中框架类例外），在获取源码后可进行本地安全测试或代码审计，也可以分析其目录工作原理（数据库备份，bak 文件等），未获取到的源码采用各种方法想 办法获取！</p>
-<h2 id="ASP源码下的一些特点"><a href="#ASP源码下的一些特点" class="headerlink" title="ASP源码下的一些特点"></a>ASP源码下的一些特点</h2><p>ASP网站中特有的文件：xycms.mdb（mdb后缀，数据库文件）。</p>
-<p>​      ·根据其网站特性可以下载其数据库文件，再找到后台文件，然后访问后台。</p>
-<h2 id="简要目标从识别到源码获取"><a href="#简要目标从识别到源码获取" class="headerlink" title="简要目标从识别到源码获取"></a>简要目标从识别到源码获取</h2><p>1.人工爆框架-搜索特定 url-获取其他相符站点-漏洞测试 </p>
-<p>2.借助特定行业源码或咸鱼进行搜索获取-本地搭建-代码审计或其他</p>
-<h2 id="涉及学习网站"><a href="#涉及学习网站" class="headerlink" title="涉及学习网站"></a>涉及学习网站</h2><p>Web安全学习笔记：<a target="_blank" rel="noopener" href="https://websec.readthedocs.io/zh/latest/language/index.html">https://websec.readthedocs.io/zh/latest/language/index.html</a></p>
-<p>CMS识别网站：<a target="_blank" rel="noopener" href="http://whatweb.bugscaner.com/">http://whatweb.bugscaner.com/</a></p>
-<p>​                           <a target="_blank" rel="noopener" href="https://www.yunsee.cn/">https://www.yunsee.cn/</a></p>
-<p>CMS指纹库：<a target="_blank" rel="noopener" href="https://github.com/Lucifer1993/cmsprint">https://github.com/Lucifer1993/cmsprint</a></p>
-<p>雨苁Blog：<a target="_blank" rel="noopener" href="https://www.ddosi.org/">https://www.ddosi.org/</a></p>
-<p>Github监控器：<a target="_blank" rel="noopener" href="https://github.com/M4tir/Github-Monitor">https://github.com/M4tir/Github-Monitor</a></p>
-
-                
-            </div>
-            <hr/>
-
-            
-
-    <div class="reprint" id="reprint-statement">
-        
-            <div class="reprint__author">
-                <span class="reprint-meta" style="font-weight: bold;">
-                    <i class="fas fa-user">
-                        文章作者:
-                    </i>
-                </span>
-                <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">小白</a>
-                </span>
-            </div>
-            <div class="reprint__type">
-                <span class="reprint-meta" style="font-weight: bold;">
-                    <i class="fas fa-link">
-                        文章链接:
-                    </i>
-                </span>
-                <span class="reprint-info">
-                    <a href="http://NoobXW.github.io/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/">http://NoobXW.github.io/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/</a>
-                </span>
-            </div>
-            <div class="reprint__notice">
-                <span class="reprint-meta" style="font-weight: bold;">
-                    <i class="fas fa-copyright">
-                        版权声明:
-                    </i>
-                </span>
-                <span class="reprint-info">
-                    本博客所有文章除特別声明外，均采用
-                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
-                    许可协议。转载请注明来源
-                    <a href="/about" target="_blank">小白</a>
-                    !
-                </span>
-            </div>
-        
     </div>
-
-    <script async defer>
-      document.addEventListener("copy", function (e) {
-        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
-        M.toast({html: toastHTML})
-      });
-
-      function navToReprintStatement() {
-        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
-      }
-    </script>
-
-
-
-            <div class="tag_share" style="display: block;">
-                <div class="post-meta__tag-list" style="display: inline-block;">
-                    
-                        <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                        </div>
-                    
-                </div>
-                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
-                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
-<div id="article-share">
-
-    
-    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
-    <script src="/libs/share/js/social-share.min.js"></script>
-    
-
-    
-
 </div>
 
-                </div>
-            </div>
+
+    
+
+    <article id="articles" class="container articles">
+        <div class="row tags-posts">
             
-        </div>
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-<article id="prenext-posts" class="prev-next articles">
-    <div class="row article-row">
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
-            <div class="card">
-                <a href="/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="系统及数据库">
-                        
-                        <span class="card-title">系统及数据库</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/01/30/WEB%E6%BC%8F%E6%B4%9E%E7%9F%A5%E8%AF%86%E7%82%B9/">
+                        <div class="card-image tag-image">
                             
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>22-01-26
-                        </span>
-                        <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="WEB漏洞知识点">
                             
-                            <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-category">
+                            <span class="card-title">WEB漏洞知识点</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                ##前言
+WEB层面涉及的漏洞关系到渗透过程中的方方面面，漏洞的危害等级以及影响的范围等，要明白各个漏洞的形成原理，并且要明白如何去发现，如何去利用。
+
+常见漏洞原理
+SQL注入：简称注入攻击、SQL注入，被广泛用于非法获取网站控制权，是发
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-01-30
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-category">
                                     基础知识
                                 </a>
-                            
-                            
-                        </span>
+                                
+                                
+                            </span>
+                        </div>
                     </div>
+
+                    
                 </div>
-                
             </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="搭建安全拓展">
-                        
-                        <span class="card-title">搭建安全拓展</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/01/28/CDN%E7%BB%95%E8%BF%87%E6%8A%80%E6%9C%AF/">
+                        <div class="card-image tag-image">
                             
-                        
+                            
+                            <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="CDN绕过技术">
+                            
+                            <span class="card-title">CDN绕过技术</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                CDN绕过CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-01-28
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-category">
+                                    基础知识
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
                     </div>
-                    <div class="publish-info">
+
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/01/27/%E5%8A%A0%E5%AF%86%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%95/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="加密编码算法">
+                            
+                            <span class="card-title">加密编码算法</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                前言在渗透测试中，常见的密码等敏感信息会采用加密处理，其中作为安全测试人员必须要了解常见的加密方式，才能为后续的安全测试做好准备。
+###常见加密编码等算法
+MD5，SHA，ASC，进制，时间戳，URL，BASE64，Unescape，AE
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-01-27
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-category">
+                                    基础知识
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/01/26/%E7%B3%BB%E7%BB%9F%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%BA%93/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="系统及数据库">
+                            
+                            <span class="card-title">系统及数据库</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                前言除去搭建平台中间件，网站源码外，容易受到攻击的还有操作系统，数据库等，第三方软件平台等，其中此类攻击也能直接影响到WEB或 服务器的安全，导致网站或服务器权限的获取。
+
+操作系统层面识别操作系统常见方法：
+如过对方有网站，可以通过网站识
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-01-26
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-category">
+                                    基础知识
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/01/25/WEB%E6%BA%90%E7%A0%81%E6%8B%93%E5%B1%95/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="WEB源码拓展">
+                            
+                            <span class="card-title">WEB源码拓展</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                ##前言
+​      WEB 源码在安全测试中是非常重要的信息来源，可以用来代码审 计漏洞也可以用来做信息突破口，其中 WEB 源码有很多技术需要简明分析。 比如：获取某 ASP 源码后可以采用默认数据库下载为突破，获取某其他脚本 源码漏
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-01-25
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-category">
+                                    基础知识
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/01/24/%E6%90%AD%E5%BB%BA%E5%AE%89%E5%85%A8%E6%8B%93%E5%B1%95/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="搭建安全拓展">
+                            
+                            <span class="card-title">搭建安全拓展</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                知识点常见搭建平台脚本启用
+域名 IP 目录解析安全问题 
+常见文件后缀解析对应安全 
+常见安全测试中的安全防护 
+WEB 后门与用户及文件权限
+
+1.ASP,PHP,ASPX,JSP,PY,JAVAWEB 等环境 
+2.WEB 源码中敏感
+                            
+                        </div>
+                        <div class="publish-info">
                             <span class="publish-date">
                                 <i class="far fa-clock fa-fw icon-date"></i>22-01-24
                             </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-category">
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-category">
                                     基础知识
                                 </a>
-                            
-                            
-                        </span>
+                                
+                                
+                            </span>
+                        </div>
                     </div>
+
+                    
                 </div>
-                
             </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/01/23/%E6%95%B0%E6%8D%AE%E5%8C%85%E6%8B%93%E5%B1%95/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="数据包拓展">
+                            
+                            <span class="card-title">数据包拓展</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                代理当从浏览器访问时，使用代理(Proxy)可以抓取请求数据包(Request)进行分析，或者从Web Server返回数据包(Response)进行分析；BurpSuit其实就很典型，可以作为代理服务器，实现上述作用。
+Http和Http
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-01-23
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-category">
+                                    基础知识
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/01/22/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8-%E6%A6%82%E5%BF%B5%E5%90%8D%E8%AF%8D/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="基础入门-概念名词">
+                            
+                            <span class="card-title">基础入门-概念名词</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                域名一、域名定义：就好比个人的名字，网站基本都有域名，网站地址名称。通俗点其实就是URL。
+百度官方解释：
+域名（英语：Domain Name），又称网域，是由一串用点分隔的名字组成的Internet上某一台计算机或计算机组的名称，用于在数
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-01-22
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="post-category">
+                                    基础知识
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            
         </div>
-        
-    </div>
-</article>
-
-</div>
-
-
-<script>
-    $('#articleContent').on('copy', function (e) {
-        // IE8 or earlier browser is 'undefined'
-        if (typeof window.getSelection === 'undefined') return;
-
-        var selection = window.getSelection();
-        // if the selection is short let's not annoy our users.
-        if (('' + selection).length < Number.parseInt('120')) {
-            return;
-        }
-
-        // create a div outside of the visible area and fill it with the selected text.
-        var bodyElement = document.getElementsByTagName('body')[0];
-        var newdiv = document.createElement('div');
-        newdiv.style.position = 'absolute';
-        newdiv.style.left = '-99999px';
-        bodyElement.appendChild(newdiv);
-        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
-
-        // we need a <pre> tag workaround.
-        // otherwise the text inside "pre" loses all the line breaks!
-        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE' || selection.getRangeAt(0).commonAncestorContainer.nodeName === 'CODE') {
-            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
-        }
-
-        var url = document.location.href;
-        newdiv.innerHTML += '<br />'
-            + '来源: 小白<br />'
-            + '文章作者: 小白<br />'
-            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
-            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
-
-        selection.selectAllChildren(newdiv);
-        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
-    });
-</script>
-
-
-<!-- 代码块功能依赖 -->
-<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
-
-<!-- 代码语言 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
-
-
-<!-- 代码块复制 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
-
-
-<!-- 代码块收缩 -->
-
-<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
-
-
-    </div>
-    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget card" style="background-color: white;">
-            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
-            <div id="toc-content"></div>
-        </div>
-    </div>
-</div>
-
-<!-- TOC 悬浮按钮. -->
-
-<div id="floating-toc-btn" class="hide-on-med-and-down">
-    <a class="btn-floating btn-large bg-color">
-        <i class="fas fa-list-ul"></i>
-    </a>
-</div>
-
-
-<script src="/libs/tocbot/tocbot.min.js"></script>
-<script>
-    $(function () {
-        tocbot.init({
-            tocSelector: '#toc-content',
-            contentSelector: '#articleContent',
-            headingsOffset: -($(window).height() * 0.4 - 45),
-            collapseDepth: Number('0'),
-            headingSelector: 'h2, h3, h4'
-        });
-
-        // modify the toc link href to support Chinese.
-        let i = 0;
-        let tocHeading = 'toc-heading-';
-        $('#toc-content a').each(function () {
-            $(this).attr('href', '#' + tocHeading + (++i));
-        });
-
-        // modify the heading title id to support Chinese.
-        i = 0;
-        $('#articleContent').children('h2, h3, h4').each(function () {
-            $(this).attr('id', tocHeading + (++i));
-        });
-
-        // Set scroll toc fixed.
-        let tocHeight = parseInt($(window).height() * 0.4 - 64);
-        let $tocWidget = $('.toc-widget');
-        $(window).scroll(function () {
-            let scroll = $(window).scrollTop();
-            /* add post toc fixed. */
-            if (scroll > tocHeight) {
-                $tocWidget.addClass('toc-fixed');
-            } else {
-                $tocWidget.removeClass('toc-fixed');
-            }
-        });
-
-        
-        /* 修复文章卡片 div 的宽度. */
-        let fixPostCardWidth = function (srcId, targetId) {
-            let srcDiv = $('#' + srcId);
-            if (srcDiv.length === 0) {
-                return;
-            }
-
-            let w = srcDiv.width();
-            if (w >= 450) {
-                w = w + 21;
-            } else if (w >= 350 && w < 450) {
-                w = w + 18;
-            } else if (w >= 300 && w < 350) {
-                w = w + 16;
-            } else {
-                w = w + 14;
-            }
-            $('#' + targetId).width(w);
-        };
-
-        // 切换TOC目录展开收缩的相关操作.
-        const expandedClass = 'expanded';
-        let $tocAside = $('#toc-aside');
-        let $mainContent = $('#main-content');
-        $('#floating-toc-btn .btn-floating').click(function () {
-            if ($tocAside.hasClass(expandedClass)) {
-                $tocAside.removeClass(expandedClass).hide();
-                $mainContent.removeClass('l9');
-            } else {
-                $tocAside.addClass(expandedClass).show();
-                $mainContent.addClass('l9');
-            }
-            fixPostCardWidth('artDetail', 'prenext-posts');
-        });
-        
-    });
-</script>
-
-    
-
+    </article>
 </main>
 
 

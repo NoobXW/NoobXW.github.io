@@ -377,10 +377,46 @@
                 
                 
                 
-                <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" title="SQL注入: 1">
+                <a href="/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="基础知识: 8">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            style="background-color: #F9EBEA;">基础知识
+                        <span class="tag-length">8</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" title="SQL注入: 17">
                     <span class="chip center-align waves-effect waves-light
                              chip-active "
-                            style="background-color: #F9EBEA;">SQL注入
+                            style="background-color: #F5EEF8;">SQL注入
+                        <span class="tag-length">17</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/categories/%E9%9D%B6%E5%9C%BA/" title="靶场: 4">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            style="background-color: #D5F5E3;">靶场
+                        <span class="tag-length">4</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/categories/%E4%B8%AA%E4%BA%BA%E8%AF%B4%E6%98%8E/" title="个人说明: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            style="background-color: #E8F8F5;">个人说明
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/categories/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/" title="信息搜集: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            style="background-color: #FEF9E7;">信息搜集
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -396,6 +432,249 @@
 
     <article id="articles" class="container articles">
         <div class="row tags-posts">
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="SQL注入-堆叠注入">
+                            
+                            <span class="card-title">SQL注入-堆叠注入</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                堆叠注入原理在 SQL 中，分号（;）是用来表示一条 sql 语句的结束。试想一下我们在 ; 结束一个 sql 语句后继续构造下一条语句，会不会一起执行？因此这个想法也就造就了堆叠注入。而 union injection（联合注入）也是将两
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
+                                    SQL注入
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="SQL注入-宽字节注入">
+                            
+                            <span class="card-title">SQL注入-宽字节注入</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                宽字节注入原理原理：mysql 在使用 GBK 编码的时候，会认为两个字符为一个汉字，例如%aa%5c 就是一个 汉字（前一个 ascii 码大于 128 才能到汉字的范围）。我们在过滤 ’ 的时候，往往利用的思 路是将 ‘ 转换为 \’ 
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
+                                    SQL注入
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="SQL注入-HPP">
+                            
+                            <span class="card-title">SQL注入-HPP</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                ##服务器两层架构
+
+服务器端有两个部分：第一部分为 tomcat 为引擎的 jsp 型服务器，第二部分为 apache为引擎的 php 服务器，真正提供 web 服务的是 php 服务器。工作流程为：client 访问服务器， 能直接访问
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-10
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
+                                    SQL注入
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/02/09/POST%E6%B3%A8%E5%85%A5-%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="POST注入-二次注入">
+                            
+                            <span class="card-title">POST注入-二次注入</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                0x00二次注入原理：
+二次注入，主要分为两步；
+第一步：插入恶意数据
+​        第一次进行数据库插入数据的时候，仅仅只是使用了 addslashes 或者是借助 get_magic_quotes_gpc 对其中的特殊字符进行了转义
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-09
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
+                                    SQL注入
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/02/08/SQL%E6%B3%A8%E5%85%A5-%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4%E7%9A%84%E6%B3%A8%E5%85%A5/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="SQL注入-关键字过滤的注入">
+                            
+                            <span class="card-title">SQL注入-关键字过滤的注入</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                0x00Less-23—Less-28a（Less-24除外）都是基于关键字过滤的注入，源码当中将--，#，or，and等关键字都过滤掉了，在这样的基础上进行 SQL注入。
+0x01Less-23
+由源码可以看到，接收到的id值将被函数pr
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-08
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
+                                    SQL注入
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/02/07/SQL%E6%B3%A8%E5%85%A5-Oracle%E7%AD%89%E6%B3%A8%E5%85%A5/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="SQL注入-Oracle等注入">
+                            
+                            <span class="card-title">SQL注入-Oracle等注入</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                ##数据库注入
+除Access数据库之外，其他类型数据库注入流程：
+
+什么决定网站注入点的用户权限？
+SQL的配置文件用户名
+
+Access注入（特殊）####Access数据结构
+​               表名
+​         
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-07
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
+                                    SQL注入
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
@@ -436,9 +715,234 @@ $_SERVER详解1234567891011121314151617181920212223$_SERVER[&#x27;SCRIPT_NAME&#x
                 </div>
             </div>
             
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="POST注入--基于Password的注入">
+                            
+                            <span class="card-title">POST注入--基于Password的注入</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                0x00Less-17
+说实话，看到的时候挺吃惊的，没见过，试了很多payload，都注不进去，它还嘲讽我：
+
+0x01查了一下资料，又看了一下源码发现username已经不能被注入了，原因是源码将uname字段进行了检查，导致uname不
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-05
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
+                                    SQL注入
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="SQL注入-POST注入">
+                            
+                            <span class="card-title">SQL注入-POST注入</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                0x00POST注入，就是数据从客户端提交 到服务器端，例如我们在登录过程中，输入用户名和密码，用户名
+和密码以表单的形式提交， 提交到服务器后服务器再进行验证。这就是一次 post的过程。
+0x01以Less-11为例：
+当在输入框输入正
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-05
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
+                                    SQL注入
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="SQL注入-Less8-Less10">
+                            
+                            <span class="card-title">SQL注入-Less8-Less10</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                0x00记录一下Less-8—Less10盲注遇到的一些问题
+0x01首先8-10关最大特点就是没有报错回显，导致开始注入的时候都是利用报错注入，结果统统失败，后来查看源码发现，报错回显被注释掉了，那这几关报错盲注就不能用了，只能用布尔盲注
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-04
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
+                                    SQL注入
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="文件导入导出-SQL靶场">
+                            
+                            <span class="card-title">文件导入导出-SQL靶场</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                0x00Load_file(file_name):读取文件并返回该文件的内容作为一个字符串。
+ 使用条件：
+ A、必须有权限读取并且文件必须完全可读 
+​       and (select count(*) from mysql.user
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-03
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
+                                    SQL注入
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="盲注-SQL靶场">
+                            
+                            <span class="card-title">盲注-SQL靶场</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                0x00Less-5和Less-6关看了很多文章，总的下来就是布尔盲注，报错注入和时间盲注，通过各种函数进行注入，在这里记录以下。
+0x01（floor()报错）首先，开始注入的时候先是按照1-4关的注入方式探测了以下注入点，又看了一下源码
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-02
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
+                                    SQL注入
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+            
         </div>
     </article>
 </main>
+
+
+<div class="container paging">
+    <div class="row">
+        <div class="col s6 m4 l4">
+            
+            <a class="left btn-floating btn-large disabled">
+                <i class="fas fa-angle-left"></i>
+            </a>
+            
+        </div>
+        <div class="page-info col m4 l4 hide-on-small-only">
+            <div class="center-align b-text-gray">1 / 2</div>
+        </div>
+        <div class="col s6 m4 l4">
+            
+            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/page/2/"
+               class="right btn-floating btn-large waves-effect waves-light bg-color">
+                <i class="fas fa-angle-right"></i>
+            </a>
+            
+        </div>
+    </div>
+</div>
 
 
 
@@ -513,7 +1017,7 @@ $_SERVER详解1234567891011121314151617181920212223$_SERVER[&#x27;SCRIPT_NAME&#x
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">30.1k</span>
+                        class="white-color">30.3k</span>
             
             
             
