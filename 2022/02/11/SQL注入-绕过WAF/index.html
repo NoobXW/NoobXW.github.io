@@ -4,16 +4,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="墨者学院-浏览器信息伪造, 小白">
-    <meta name="description" content="0x00启动靶场后显示
-
-0x01点击”这是微信最好的状态：……”后
-
-提示使用苹果手机的2G网络进行访问
-0x02不管什么东西，先抓个包看看
-
-正是刚才提示的页面数据包
-0x03由于提示使用苹果手机访问，先利用BurpSuit修改iPon">
+    <meta name="keywords" content="SQL注入-绕过WAF, 小白">
+    <meta name="description" content="前言由于网站会部署WAF，例如安全狗，宝塔等，各自有各自的WAF策略规则，因此，绕过的方法也不同。了解其最基本的WAF规则便可进行对其绕过。
+WAF绕过姿势1、大小写/关键字的替换：
+id=1 UnIoN/**/SeLeCT 1,user(">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -25,7 +19,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>墨者学院-浏览器信息伪造 | 小白</title>
+    <title>SQL注入-绕过WAF | 小白</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -327,12 +321,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">墨者学院-浏览器信息伪造</h1>
+                    <h1 class="description center-align post-title">SQL注入-绕过WAF</h1>
                 </div>
             </div>
         </div>
@@ -448,8 +442,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E9%9D%B6%E5%9C%BA/">
-                                <span class="chip bg-color">靶场</span>
+                            <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
+                                <span class="chip bg-color">SQL注入</span>
+                            </a>
+                        
+                            <a href="/tags/Bypass-WAF/">
+                                <span class="chip bg-color">Bypass WAF</span>
                             </a>
                         
                     </div>
@@ -460,8 +458,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E9%9D%B6%E5%9C%BA/" class="post-category">
-                                靶场
+                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
+                                SQL注入
                             </a>
                         
                     </div>
@@ -473,7 +471,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-01-24
+                    2022-02-11
                 </div>
                 
 
@@ -482,7 +480,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    180
+                    1.1k
                 </div>
                 
 
@@ -504,25 +502,61 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>启动靶场后显示</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/image-20220124111930551.png" alt="image-20220124111930551"></p>
-<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>点击”这是微信最好的状态：……”后</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/image-20220124112135703.png" alt="image-20220124112135703"></p>
-<p>提示使用苹果手机的2G网络进行访问</p>
-<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>不管什么东西，先抓个包看看</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/image-20220124112354275.png" alt="image-20220124112354275"></p>
-<p>正是刚才提示的页面数据包</p>
-<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>由于提示使用苹果手机访问，先利用BurpSuit修改iPone访问的包，由于还得是2G网络，</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/image-20220124112742704.png" alt="image-20220124112742704"></p>
-<p>再接着分析解题方向还得有NetType，去网上找找这个字段</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/image-20220124112952217.png" alt="image-20220124112952217"></p>
-<p>在网上找到了浏览器类型并且附带NetType/2G的字段，直接复制粘贴可好</p>
-<h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>修改包的内容：</p>
-<p>将包里的User-Agent字段修改为以下内容：</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/image-20220124113517911.png" alt="image-20220124113517911"></p>
-<p>得到KEY。</p>
-<h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>至此，浏览器信息伪造完成</p>
-<p><img src="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/image-20220124113647750.png" alt="image-20220124113647750"></p>
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>由于网站会部署WAF，例如安全狗，宝塔等，各自有各自的WAF策略规则，因此，绕过的方法也不同。了解其最基本的WAF规则便可进行对其绕过。</p>
+<h2 id="WAF绕过姿势"><a href="#WAF绕过姿势" class="headerlink" title="WAF绕过姿势"></a>WAF绕过姿势</h2><p>1、大小写/关键字的替换：</p>
+<p>i<code>d=1 UnIoN/**/SeLeCT 1,user()</code></p>
+<p><code>Hex() bin() 等价于 ascii()</code> </p>
+<p><code>Sleep() 等价于 benchmark()</code> </p>
+<p><code>Mid()substring() 等价于 substr()</code> </p>
+<p><code>@@user 等价于 User()</code> </p>
+<p><code>@@Version 等价于 version()</code></p>
+<p>2、各种编码：</p>
+<p>url，utf-8，utf-16，utf-32，hex等</p>
+<p>3、双写绕过：</p>
+<p>ununionion，selselectect，oorr，aandnandd等</p>
+<p>4、HTTP参数污染（HPP）：</p>
+<p>?id=1&amp;id=2&amp;id=3</p>
+<p>5、编码的加密与解密：<br>hex，unlcode，base64等</p>
+<p>6、更改请求方式：</p>
+<p>GET，POST，COOKIE或数据包里的各种关键字等</p>
+<p>7、内联注释：</p>
+<p><code>/*!UnIon12345SelEcT*/ 1,user()</code> </p>
+<p><strong>8、FUZZ大法</strong></p>
+<p>9、<code>%20/*!44509union*/%23x%0aselect%201,2,3</code>只基于Mysql数据库的<strong>版本号绕过</strong></p>
+<h2 id="逻辑层的绕过"><a href="#逻辑层的绕过" class="headerlink" title="逻辑层的绕过"></a>逻辑层的绕过</h2><p>1、逻辑问题</p>
+<p>（1）云 waf 防护，一般我们会尝试通过查找站点的真实 IP，从而绕过 CDN 防护。 </p>
+<p>（2）当提交GET、POST同时请求时，进入POST逻辑，而忽略了GET请求的有害参数输</p>
+<p>​          入,可尝试Bypass。 </p>
+<p>（3）HTTP 和 HTTPS 同时开放服务，没有做 HTTP 到 HTTPS 的强制跳转，导致HTTPS     有 WAF 防护，HTTP 没有防护，直接访问 HTTP 站点绕过防护。 </p>
+<p>（4）特殊符号<code>%00</code>，部分 waf 遇到<code>%00</code> 截断，只能获取到前面的参数，无法获取到后面的有害参数 输 入 ， 从 而 导 致 Bypass 。 比 如 ： <code>id=1%00and 1=2 union select 1,2,column_name from information_schema.columns</code></p>
+<p>2、性能问题</p>
+<p><strong>猜想 1</strong>：在设计 WAF 系统时，考虑自身性能问题，当数据量达到一定层级，不检测这部分数据。只 要不断的填充数据，当数据达到一定数目之后，恶意代码就不会被检测了。</p>
+<p>例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> (<span class="keyword">select</span> <span class="number">1</span>)<span class="operator">=</span>(<span class="keyword">Select</span> <span class="number">0xA</span><span class="operator">*</span><span class="number">1000</span>)<span class="operator">+</span><span class="keyword">UnIoN</span><span class="operator">+</span><span class="keyword">SeLeCT</span><span class="operator">+</span><span class="number">1</span>,<span class="number">2</span>,version(),<span class="number">4</span>,<span class="number">5</span>,database(),<span class="keyword">user</span>(),<span class="number">8</span>,<span class="number">9</span></span><br></pre></td></tr></table></figure>
+
+<p> PS：0xA*1000 指 0xA 后面”A”重复 1000 次，一般来说对应用软件构成缓冲区溢出都需要较大的测试 长度，这里 1000 只做参考也许在有些情况下可能不需要这么长也能溢出。</p>
+<p><strong>猜想 2</strong>：不少 WAF 是 C 语言写的，而 C 语言自身没有缓冲区保护机制，因此如果 WAF 在处理测试向 量时超出了其缓冲区长度就会引发 bug，从而实现绕过。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?a0<span class="operator">=</span><span class="number">0</span><span class="operator">&amp;</span>a1<span class="operator">=</span><span class="number">1</span><span class="operator">&amp;</span>.....<span class="operator">&amp;</span>a100<span class="operator">=</span><span class="number">100</span><span class="operator">&amp;</span>id<span class="operator">=</span><span class="number">1</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,schema_name,<span class="number">3</span> <span class="keyword">from</span></span><br><span class="line">INFORMATION_SCHEMA.schemata</span><br></pre></td></tr></table></figure>
+
+<p>备注：获取请求参数，只获取前 100 个参数，第 101 个参数并没有获取到，导致 SQL 注入绕过。</p>
+<p>3、白名单</p>
+<p>方式一：IP 白名单 从网络层获取的 ip，这种一般伪造不来，如果是获取客户端的 IP，这样就可能存在伪造 IP 绕过的情 况。 </p>
+<p>测试方法：修改 http 的 header 来 bypass waf </p>
+<p>X-forwarded-for </p>
+<p>X-remote-IP </p>
+<p>X-originating-IP </p>
+<p>X-remote-addr </p>
+<p>X-Real-ip</p>
+<p>方式二：静态资源 </p>
+<p>特定的静态资源后缀请求，常见的静态文件(.js .jpg .swf .css 等等)，类似白名单机制，waf 为了检测效率，不去检测这样一些静态文件名后缀的请求。</p>
+<p> <a target="_blank" rel="noopener" href="http://x.x.x.x/sql.php/?id=1">http://x.x.x.x/sql.php/?id=1</a></p>
+<p> <a target="_blank" rel="noopener" href="http://x.x.x.x/sql.php/1.js?id=1">http://x.x.x.x/sql.php/1.js?id=1</a> </p>
+<p>备注：Aspx/php 只识别到前面的.aspx/.php 后面基本不识别</p>
+<p>方式三：url 白名单 为了防止误拦，部分 waf 内置默认的白名单列表，如 admin/manager/system 等管理后台。只要 url 中存在白名单的字符串，就作为白名单不进行检测。</p>
+<p>方式四：爬虫白名单</p>
+<p>部分WAF有提供爬虫白名单的功能，识别爬虫的技术一般有两种：<br>1、根据UserAgent                      2、通过行为来判断</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>对于安全狗来说，它在进行防护的时候会对关键字进行拦截，比如<code>union select</code>字段，它会把<code>union select</code>字段当成一个整体进行拦截，若对其从中间加干扰字符可进行对其绕过，对于<code>database()</code>字段，同样也是整体拦截，将<code>database</code>与<code>()</code>进行字符干扰等方法可将其绕过。</p>
+<p>其实最关键的是了解其拦截的方式，对其进行分析（抓包），针对其拦截的方式去写脚本进行注入（<strong>FUZZ大法</strong>）</p>
 
                 
             </div>
@@ -549,7 +583,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://NoobXW.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/">http://NoobXW.github.io/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BF%A1%E6%81%AF%E4%BC%AA%E9%80%A0/</a>
+                    <a href="http://NoobXW.github.io/2022/02/11/SQL%E6%B3%A8%E5%85%A5-%E7%BB%95%E8%BF%87WAF/">http://NoobXW.github.io/2022/02/11/SQL%E6%B3%A8%E5%85%A5-%E7%BB%95%E8%BF%87WAF/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -587,8 +621,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E9%9D%B6%E5%9C%BA/">
-                                    <span class="chip bg-color">靶场</span>
+                                <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
+                                    <span class="chip bg-color">SQL注入</span>
+                                </a>
+                            
+                                <a href="/tags/Bypass-WAF/">
+                                    <span class="chip bg-color">Bypass WAF</span>
                                 </a>
                             
                         </div>
@@ -636,17 +674,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-HTTP%E5%8A%A8%E4%BD%9C%E7%BB%83%E4%B9%A0/">
+                <a href="/2022/02/11/SQL%E6%B3%A8%E5%85%A5-%E7%BB%95%E8%BF%87WAF/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="墨者学院-HTTP动作练习">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="SQL注入-绕过WAF">
                         
-                        <span class="card-title">墨者学院-HTTP动作练习</span>
+                        <span class="card-title">SQL注入-绕过WAF</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -656,26 +695,31 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>22-01-24
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-11
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E9%9D%B6%E5%9C%BA/" class="post-category">
-                                    靶场
+                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
+                                    SQL注入
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E9%9D%B6%E5%9C%BA/">
-                        <span class="chip bg-color">靶场</span>
+                    <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
+                        <span class="chip bg-color">SQL注入</span>
+                    </a>
+                    
+                    <a href="/tags/Bypass-WAF/">
+                        <span class="chip bg-color">Bypass WAF</span>
                     </a>
                     
                 </div>
@@ -689,13 +733,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/01/24/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E6%9D%A5%E6%BA%90%E9%A1%B5%E4%BC%AA%E9%80%A0/">
+                <a href="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="墨者学院-来源页伪造">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="SQL注入-堆叠注入">
                         
-                        <span class="card-title">墨者学院-来源页伪造</span>
+                        <span class="card-title">SQL注入-堆叠注入</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -706,14 +750,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>22-01-24
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-10
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E9%9D%B6%E5%9C%BA/" class="post-category">
-                                    靶场
+                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
+                                    SQL注入
                                 </a>
                             
                             
@@ -723,8 +767,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E9%9D%B6%E5%9C%BA/">
-                        <span class="chip bg-color">靶场</span>
+                    <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
+                        <span class="chip bg-color">SQL注入</span>
                     </a>
                     
                 </div>
