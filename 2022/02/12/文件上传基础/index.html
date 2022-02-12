@@ -484,7 +484,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    382
+                    716
                 </div>
                 
 
@@ -527,6 +527,14 @@
 <h2 id="漏洞如何查找及"><a href="#漏洞如何查找及" class="headerlink" title="漏洞如何查找及"></a>漏洞如何查找及</h2><p>1、黑盒测试：未知网站源码，未知网站情况，扫描敏感文件测试文件上传漏洞</p>
 <p>2、白盒测试：分析源代码查找文件上传功能等</p>
 <p>3、网站中上传头像或者会员中心的上传功能可测试是否有文件上传漏洞</p>
+<p>##前端验证（原理）</p>
+<p>文件上传若是采用前端验证，通过修改前端代码（JS代码）<strong>注释掉或删除掉</strong>（推荐）验证部分可实现上传，或者在<strong>浏览器中禁用JS</strong>（不建议）进行绕过。</p>
+<p><strong>过程</strong>：</p>
+<p>1、将源代码复制到本地删除验证代码再上传</p>
+<p><strong>原理：</strong>由于前端验证就是在本地运行，<strong>但需要在源代码中添加指向上传的地址：<code>action</code>，表示提交给谁（在浏览器中查看原来的请求地址插入到复制的代码中）</strong>，这样就能是实现前端的绕过；</p>
+<p>2、浏览器禁用JS：可能会有其他JS代码控制上传功能，若是禁用JS可能会影响上传操作，因此不推荐使用。</p>
+<p>3、<strong>BP抓包（不怎么靠谱）</strong>：由于网页可能是由<code>JS+PHP</code>代码一起进行上传的功能，这种情况是可能会抓到包；但如果网页都是由<code>JS</code>代码实现提交功能则抓不到数据包，就上传不了服务器。<strong>因为BP是要上传到服务器使服务器进行解析文件，但是<code>JS/HTML</code>等的前端代码是在本地端运行的，根本抓不到数据包。</strong></p>
+<p><strong>（所谓前端验证就是本地验证）</strong></p>
 
                 
             </div>
@@ -974,7 +982,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">32.5k</span>
+                        class="white-color">32.8k</span>
             
             
             
