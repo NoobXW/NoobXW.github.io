@@ -479,7 +479,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    402
+                    409
                 </div>
                 
 
@@ -496,6 +496,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -506,7 +509,7 @@
 <p><img src="/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/image-20220204003814683.png" alt="image-20220204003814683"></p>
 <h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>其次就是注入点的问题，Less-8是单引号的布尔盲注，Less-9是单引号的时间盲注，Less-10是双引号的时间盲注，每次注入的时候探测注入很关键，这也是每次注入的时候我老是忽略的问题。</p>
 <h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>然后就是对于布尔盲注和时间盲注时，猜表名和猜列名遇到的问题；由于猜表名的时候根据以往的回显表示：子查询超过一行的报错，以至于这几关每次注入的时候老是缺少<code>limit</code>字段，而且又是盲注的无回显，导致每次出问题都不知道在哪里，仔细一看才知道没加<code>limit</code>字段。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-8/?id=1&#x27; and if(ascii(substr((select table_name from information_schema.tables where table_schema=&#x27;security&#x27; limit 1,1),1,1))=116,1,sleep(5)) --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-8&#x2F;?id&#x3D;1&#39; and if(ascii(substr((select table_name from information_schema.tables where table_schema&#x3D;&#39;security&#39; limit 1,1),1,1))&#x3D;116,1,sleep(5)) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
 
@@ -955,7 +958,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">31.4k</span>
+                        class="white-color">32.1k</span>
             
             
             

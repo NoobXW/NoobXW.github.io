@@ -492,6 +492,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -539,7 +542,11 @@
 <p><img src="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/image-20220202160832282.png" alt="image-20220202160832282"></p>
 <p>当正确的时候显示结果为 1，不正确的时候显示结果为0。</p>
 <p><strong>示例介绍：</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> I select * from users where id=1 and 1=(if((user() regexp &#x27;^r&#x27;),1,0)); </span><br><span class="line"></span><br><span class="line">II select * from users where id=1 and 1=(user() regexp&#x27;^ri&#x27;); 通过 if 语句的条件判断，返回一些条件句，比如 if 等构造一个判断。根据返回结果是否等 于 0 或者 1 进行判断。 </span><br><span class="line"></span><br><span class="line">III select * from users where id=1 and 1=(select 1 from information_schema.tables where table_schema=&#x27;security&#x27; and table_name regexp &#x27;^us[a-z]&#x27; limit 0,1); 这里利用 select 构造了一个判断语句。我们只需要更换 regexp 表达式即可 &#x27;^u[a-z]&#x27; -&gt; &#x27;^us[a-z]&#x27; -&gt; &#x27;^use[a-z]&#x27; -&gt; &#x27;^user[a-z]&#x27; -&gt; FALSE</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none"> I select * from users where id&#x3D;1 and 1&#x3D;(if((user() regexp &#39;^r&#39;),1,0)); 
+
+II select * from users where id&#x3D;1 and 1&#x3D;(user() regexp&#39;^ri&#39;); 通过 if 语句的条件判断，返回一些条件句，比如 if 等构造一个判断。根据返回结果是否等 于 0 或者 1 进行判断。 
+
+III select * from users where id&#x3D;1 and 1&#x3D;(select 1 from information_schema.tables where table_schema&#x3D;&#39;security&#39; and table_name regexp &#39;^us[a-z]&#39; limit 0,1); 这里利用 select 构造了一个判断语句。我们只需要更换 regexp 表达式即可 &#39;^u[a-z]&#39; -&gt; &#39;^us[a-z]&#39; -&gt; &#39;^use[a-z]&#39; -&gt; &#39;^user[a-z]&#39; -&gt; FALSE<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>正则注入介绍：<a target="_blank" rel="noopener" href="http://www.cnblogs.com/lcamry/articles/5717442.html">http://www.cnblogs.com/lcamry/articles/5717442.html</a></p>
 <p>11、like匹配注入：和上述的正则类似，mysql 在匹配的时候我们可以用 ike 进行匹配。</p>
@@ -1001,7 +1008,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">31.4k</span>
+                        class="white-color">32.1k</span>
             
             
             

