@@ -485,7 +485,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    898
+                    1.1k
                 </div>
                 
 
@@ -550,6 +550,19 @@
 <p>构造图片马绕过；</p>
 <p>绕过服务器扩展名检测上传；</p>
 <p>竞争条件上传绕过。</p>
+<p>##.htaccess文件上传漏洞原理</p>
+<p><strong>什么是.htaccess</strong>：</p>
+<p>.htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置，通过.htaccess文件可以实现网页301重定向、自定义404页面、改变文件扩展名、允许/阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能。</p>
+<p><strong>需要的代码如下：</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">&lt;FilesMatch &quot;cimer&quot;&gt;
+Sethandler application&#x2F;x-httpd-php
+&lt;&#x2F;FilesMatch &gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>原理：</strong></p>
+<p>若当前目录存在<code>.htaccess</code>后缀名的文件，目录中存在<strong>文件名</strong>中含有<code>cimer</code>，就把<code>application/x-httpd-php</code>当成<code>MIME</code>去执行，此<code>MIME</code>为<code>php</code>格式，此时这个文件就会被当作php文件执行。这时可用菜刀或蚁剑进行连接。</p>
+<p><strong>实战意义：</strong></p>
+<p>1、如果存在可以上传 .htaccess 文件，就可以直接利用此规则解析；</p>
+<p>2、如果存在修改文件权限，就直接修改解析规则；</p>
 
                 
             </div>
@@ -995,7 +1008,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">34.7k</span>
+                        class="white-color">34.9k</span>
             
             
             
