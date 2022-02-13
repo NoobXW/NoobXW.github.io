@@ -582,6 +582,7 @@ INFORMATION_SCHEMA<span class="token punctuation">.</span>schemata<span aria-hid
 <pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;0 union %23%0aall select 1,2,3 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><strong>这里最重要的还是原理，使用Fuzz大法成功几率会大大增加，改天试试Fuzz大法</strong></p>
+<p>附一篇博主的过狗文章：（主要学习思路和方法）<br>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43623271/article/details/122814962">https://blog.csdn.net/weixin_43623271/article/details/122814962</a></p>
 <h2 id="00截断原理"><a href="#00截断原理" class="headerlink" title="00截断原理"></a>00截断原理</h2><p>这里说明一下00截断原理：</p>
 <p>0x00是十六进制表示方法，是ascii码为0的字符，在有些函数处理时，会把这个字符当做结束符。系统在对文件名的读取时，如果遇到0x00，就会认为读取已结束。这个可以用在对文件类型名的绕过上。</p>
 <p>但要注意是文件的16进制内容里的00，而不是文件名中的00 ！！！就是说系统是按16进制读取文件（或者说二进制），</p>
@@ -1028,7 +1029,7 @@ INFORMATION_SCHEMA<span class="token punctuation">.</span>schemata<span aria-hid
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">33.3k</span>
+                        class="white-color">34.3k</span>
             
             
             
