@@ -5,9 +5,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="POST注入-HTTP头注入, 小白">
-    <meta name="description" content="0x00原理：HTTP头中的参数带入到数据库被执行，造成了HTTP头注入。
+    <meta name="description" content="[TOC]
+0x00原理：HTTP头中的参数带入到数据库被执行，造成了HTTP头注入。
 $_SERVER详解$_SERVER[&#39;SCRIPT_NAME&#39;]          //当前脚本的路径
-dirname($_SERVER[&#39;SCRIPT_NAME">
+dirname($_SERVER[&#39;SCRIP">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -501,7 +502,8 @@ dirname($_SERVER[&#39;SCRIPT_NAME">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><h5 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h5><p>HTTP头中的参数带入到数据库被执行，造成了HTTP头注入。</p>
+                <p>[TOC]</p>
+<h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><h5 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h5><p>HTTP头中的参数带入到数据库被执行，造成了HTTP头注入。</p>
 <h3 id="SERVER详解"><a href="#SERVER详解" class="headerlink" title="$_SERVER详解"></a>$_SERVER详解</h3><pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'SCRIPT_NAME'</span><span class="token punctuation">]</span>          <span class="token comment">//当前脚本的路径</span>
 <span class="token function">dirname</span><span class="token punctuation">(</span><span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'SCRIPT_NAME'</span><span class="token punctuation">]</span>  <span class="token comment">//dirname() 返回路径中的目录部分</span>
 <span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'SCRIPT_FILENAME'</span><span class="token punctuation">]</span>      <span class="token comment">//当前脚本执行的绝对路径</span>
@@ -1093,7 +1095,7 @@ dirname($_SERVER[&#39;SCRIPT_NAME">
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">34.5k</span>
+                        class="white-color">34.7k</span>
             
             
             

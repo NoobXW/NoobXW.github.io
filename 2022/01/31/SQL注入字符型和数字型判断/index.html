@@ -5,11 +5,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="SQL注入字符型和数字型判断, 小白">
-    <meta name="description" content="0x00在SQL注入中如何判断字符型注入还是数字型注入很重要，这里自己记录一下。
-0x01数字型判定
-1、and或者or
+    <meta name="description" content="[TOC]
+说明在SQL注入中如何判断字符型注入还是数字型注入很重要，这里自己记录一下。
+数字型判定1、and或者or
 假设数据库的执行语句是：select * from table where id=$id
-这里我以自己本地的sql靶场">
+这里我以自己本地的sql靶场为">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -503,9 +503,9 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>在SQL注入中如何判断字符型注入还是数字型注入很重要，这里自己记录一下。</p>
-<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p><strong>数字型判定</strong></p>
-<p>1、<strong>and或者or</strong></p>
+                <p>[TOC]</p>
+<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>在SQL注入中如何判断字符型注入还是数字型注入很重要，这里自己记录一下。</p>
+<h2 id="数字型判定"><a href="#数字型判定" class="headerlink" title="数字型判定"></a>数字型判定</h2><p>1、<strong>and或者or</strong></p>
 <p>假设数据库的执行语句是：select * from table where id=$id</p>
 <p>这里我以自己本地的sql靶场为例。</p>
 <p>此时执行语句为：</p>
@@ -542,8 +542,7 @@
 
 <p><strong>单引号不匹配</strong>，语句正确，页面返回错误。</p>
 <p><img src="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/image-20220201000053200.png" alt="image-20220201000053200"></p>
-<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p><strong>字符型判定</strong></p>
-<p>1、<strong>and或or</strong></p>
+<h2 id="字符型判定"><a href="#字符型判定" class="headerlink" title="字符型判定"></a>字符型判定</h2><p>1、<strong>and或or</strong></p>
 <p>假设数据库的执行语句是：</p>
 <pre class="line-numbers language-none"><code class="language-none">select * from table where id&#x3D;’$id’<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -1031,7 +1030,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">34.5k</span>
+                        class="white-color">34.7k</span>
             
             
             

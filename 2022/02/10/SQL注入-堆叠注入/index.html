@@ -5,7 +5,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="SQL注入-堆叠注入, 小白">
-    <meta name="description" content="堆叠注入原理在 SQL 中，分号（;）是用来表示一条 sql 语句的结束。试想一下我们在 ; 结束一个 sql 语句后继续构造下一条语句，会不会一起执行？因此这个想法也就造就了堆叠注入。而 union injection（联合注入）也是将两">
+    <meta name="description" content="[TOC]
+堆叠注入原理在 SQL 中，分号（;）是用来表示一条 sql 语句的结束。试想一下我们在 ; 结束一个 sql 语句后继续构造下一条语句，会不会一起执行？因此这个想法也就造就了堆叠注入。而 union injection（联合注">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -474,7 +475,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    212
+                    213
                 </div>
                 
 
@@ -499,7 +500,8 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="堆叠注入原理"><a href="#堆叠注入原理" class="headerlink" title="堆叠注入原理"></a>堆叠注入原理</h2><p>在 SQL 中，分号（;）是用来表示一条 sql 语句的结束。试想一下我们在 ; 结束一个 sql 语句后继续构造下一条语句，会不会一起执行？因此这个想法也就造就了堆叠注入。而 union injection（联合注入）也是将两条语句合并在一起，两者之间有什么区别么？区别就在于 union 或者 union all 执行的语句类型是有限的，可以用来执行查询语句，而堆叠注入可以执行的是 任意的语句。</p>
+                <p>[TOC]</p>
+<h2 id="堆叠注入原理"><a href="#堆叠注入原理" class="headerlink" title="堆叠注入原理"></a>堆叠注入原理</h2><p>在 SQL 中，分号（;）是用来表示一条 sql 语句的结束。试想一下我们在 ; 结束一个 sql 语句后继续构造下一条语句，会不会一起执行？因此这个想法也就造就了堆叠注入。而 union injection（联合注入）也是将两条语句合并在一起，两者之间有什么区别么？区别就在于 union 或者 union all 执行的语句类型是有限的，可以用来执行查询语句，而堆叠注入可以执行的是 任意的语句。</p>
 <p>如图：<br><img src="/2022/02/10/SQL%E6%B3%A8%E5%85%A5-%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5/image-20220210171014222.png" alt="image-20220210171014222"></p>
 <h2 id="场景举例"><a href="#场景举例" class="headerlink" title="场景举例"></a>场景举例</h2><p>堆叠注入场景之一：</p>
 <p>在获取管理员的后台和密码后，由于密码加密无法破解，可以使用对的注入进行插入新的管理员账号密码管理后台获取数据。</p>
@@ -940,7 +942,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">34.5k</span>
+                        class="white-color">34.7k</span>
             
             
             

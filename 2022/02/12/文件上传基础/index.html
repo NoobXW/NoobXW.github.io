@@ -5,13 +5,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="文件上传基础, 小白">
-    <meta name="description" content="前言相比于SQL注入等其他漏洞，文件上传漏洞风险更大，最直接的情况则是上传一个webshell拿权限。
+    <meta name="description" content="[TOC]
+前言相比于SQL注入等其他漏洞，文件上传漏洞风险更大，最直接的情况则是上传一个webshell拿权限。
 
 文件上传分类：
 
 了解到是文件上传漏洞时，要清楚是什么类型的文件上传漏洞，之后进行下一步操作。
 ##文件上传漏洞原理：
-网站Web应用">
+网">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -484,7 +485,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    773
+                    898
                 </div>
                 
 
@@ -509,7 +510,8 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>相比于SQL注入等其他漏洞，文件上传漏洞风险更大，最直接的情况则是上传一个webshell拿权限。</p>
+                <p>[TOC]</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>相比于SQL注入等其他漏洞，文件上传漏洞风险更大，最直接的情况则是上传一个webshell拿权限。</p>
 <p><img src="/2022/02/12/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%9F%BA%E7%A1%80/image-20220212230901606.png" alt="image-20220212230901606"></p>
 <p>文件上传分类：</p>
 <p><img src="/2022/02/12/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%9F%BA%E7%A1%80/image-20220212230917046.png" alt="image-20220212230917046"></p>
@@ -535,6 +537,14 @@
 <p>2、浏览器禁用JS：可能会有其他JS代码控制上传功能，若是禁用JS可能会影响上传操作，因此不推荐使用。</p>
 <p>3、<strong>BP抓包（不怎么靠谱）</strong>：由于网页可能是由<code>JS+PHP</code>代码一起进行上传的功能，这种情况是可能会抓到包；但如果网页都是由<code>JS</code>代码实现提交功能则抓不到数据包，就上传不了服务器。<strong>因为BP是要上传到服务器使服务器进行解析文件，但是<code>JS/HTML</code>等的前端代码是在本地端运行的，根本抓不到数据包。</strong></p>
 <p><strong>（所谓前端验证就是本地验证）</strong></p>
+<p>##文件上传常见验证</p>
+<p> <strong>后缀名，类型，文件头等</strong> </p>
+<p>1、后缀名：</p>
+<p>（1）黑名单（不允许上传的格式后缀）：asp，php，jsp，aspx，war</p>
+<p>​          黑名单缺陷：若限制后缀名不全，可以使用其他后缀名进行绕过，例如：php5，Phtml等</p>
+<p>（2）白名单（可允许上传的格式后缀）：jpg，png，zip，rar，gif，…</p>
+<p>2、文件类型：MIME 信息，通过类型猜测后缀名，可通过BP抓包伪造</p>
+<p>3、文件头：内容头信息</p>
 <h2 id="文件上传漏洞绕过方法"><a href="#文件上传漏洞绕过方法" class="headerlink" title="文件上传漏洞绕过方法"></a>文件上传漏洞绕过方法</h2><p>利用burp抓包改后缀名进行绕过；</p>
 <p>利用00截断上传webshell；</p>
 <p>构造图片马绕过；</p>
@@ -985,7 +995,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">34.5k</span>
+                        class="white-color">34.7k</span>
             
             
             

@@ -456,10 +456,11 @@
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                前言由于网站会部署WAF，例如安全狗，宝塔等，各自有各自的WAF策略规则，因此，绕过的方法也不同。了解其最基本的WAF规则便可进行对其绕过。
+                                [TOC]
+前言由于网站会部署WAF，例如安全狗，宝塔等，各自有各自的WAF策略规则，因此，绕过的方法也不同。了解其最基本的WAF规则便可进行对其绕过。
 
 WAF绕过姿势1、大小写/关键字的替换：
-id=1 UnIoN/**/SeLeCT 1,user
+id=1 UnIoN/**/SeLeCT 
                             
                         </div>
                         <div class="publish-info">
@@ -509,7 +510,8 @@ id=1 UnIoN/**/SeLeCT 1,user
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                堆叠注入原理在 SQL 中，分号（;）是用来表示一条 sql 语句的结束。试想一下我们在 ; 结束一个 sql 语句后继续构造下一条语句，会不会一起执行？因此这个想法也就造就了堆叠注入。而 union injection（联合注入）也是将两
+                                [TOC]
+堆叠注入原理在 SQL 中，分号（;）是用来表示一条 sql 语句的结束。试想一下我们在 ; 结束一个 sql 语句后继续构造下一条语句，会不会一起执行？因此这个想法也就造就了堆叠注入。而 union injection（联合注
                             
                         </div>
                         <div class="publish-info">
@@ -555,7 +557,8 @@ id=1 UnIoN/**/SeLeCT 1,user
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                宽字节注入原理原理：mysql 在使用 GBK 编码的时候，会认为两个字符为一个汉字，例如%aa%5c 就是一个 汉字（前一个 ascii 码大于 128 才能到汉字的范围）。我们在过滤 ’ 的时候，往往利用的思 路是将 ‘ 转换为 \’ 
+                                [TOC]
+宽字节注入原理原理：mysql 在使用 GBK 编码的时候，会认为两个字符为一个汉字，例如%aa%5c 就是一个 汉字（前一个 ascii 码大于 128 才能到汉字的范围）。我们在过滤 ’ 的时候，往往利用的思 路是将 ‘ 转
                             
                         </div>
                         <div class="publish-info">
@@ -601,9 +604,10 @@ id=1 UnIoN/**/SeLeCT 1,user
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                ##服务器两层架构
+                                [TOC]
+##服务器两层架构
 
-服务器端有两个部分：第一部分为 tomcat 为引擎的 jsp 型服务器，第二部分为 apache为引擎的 php 服务器，真正提供 web 服务的是 php 服务器。工作流程为：client 访问服务器， 能直接访问
+服务器端有两个部分：第一部分为 tomcat 为引擎的 jsp 型服务器，第二部分为 apache为引擎的 php 服务器，真正提供 web 服务的是 php 服务器。工作流程为：client 访问服务器，
                             
                         </div>
                         <div class="publish-info">
@@ -653,10 +657,11 @@ id=1 UnIoN/**/SeLeCT 1,user
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                0x00二次注入原理：
+                                [TOC]
+##二次注入原理
 二次注入，主要分为两步；
 第一步：插入恶意数据
-​        第一次进行数据库插入数据的时候，仅仅只是使用了 addslashes 或者是借助 get_magic_quotes_gpc 对其中的特殊字符进行了转义
+​        第一次进行数据库插入数据的时候，仅仅只是使用了 addslashes 或者是借助 get_magic_quotes_gpc 对其中的特殊字符进行
                             
                         </div>
                         <div class="publish-info">
@@ -706,9 +711,9 @@ id=1 UnIoN/**/SeLeCT 1,user
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                0x00Less-23—Less-28a（Less-24除外）都是基于关键字过滤的注入，源码当中将--，#，or，and等关键字都过滤掉了，在这样的基础上进行 SQL注入。
-0x01Less-23
-由源码可以看到，接收到的id值将被函数pr
+                                [TOC]
+关键字过滤的注入Less-23—Less-28a（Less-24除外）都是基于关键字过滤的注入，源码当中将--，#，or，and等关键字都过滤掉了，在这样的基础上进行 SQL注入。
+Less-23由源码可以看到，接收到的id值将
                             
                         </div>
                         <div class="publish-info">
@@ -754,9 +759,10 @@ id=1 UnIoN/**/SeLeCT 1,user
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                0x00原理：HTTP头中的参数带入到数据库被执行，造成了HTTP头注入。
+                                [TOC]
+0x00原理：HTTP头中的参数带入到数据库被执行，造成了HTTP头注入。
 $_SERVER详解$_SERVER['SCRIPT_NAME']          //当前脚本的路径
-dirname($_SERVER['SCRIPT_NAME
+dirname($_SERVER['SCRIP
                             
                         </div>
                         <div class="publish-info">
@@ -802,10 +808,10 @@ dirname($_SERVER['SCRIPT_NAME
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                0x00Less-17
-说实话，看到的时候挺吃惊的，没见过，试了很多payload，都注不进去，它还嘲讽我：
+                                [TOC]
+Less-17说实话，看到的时候挺吃惊的，没见过，试了很多payload，都注不进去，它还嘲讽我：
 
-0x01查了一下资料，又看了一下源码发现username已经不能被注入了，原因是源码将uname字段进行了检查，导致uname不
+0x01查了一下资料，又看了一下源码发现username已经不能被注入了，原因是源码将uname字段进行了检查，导致uname
                             
                         </div>
                         <div class="publish-info">
@@ -851,10 +857,10 @@ dirname($_SERVER['SCRIPT_NAME
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                0x00POST注入，就是数据从客户端提交 到服务器端，例如我们在登录过程中，输入用户名和密码，用户名
+                                [TOC]
+0x00POST注入，就是数据从客户端提交 到服务器端，例如我们在登录过程中，输入用户名和密码，用户名
 和密码以表单的形式提交， 提交到服务器后服务器再进行验证。这就是一次 post的过程。
-0x01以Less-11为例：
-当在输入框输入正
+Less-11当在输入框输入正确的用
                             
                         </div>
                         <div class="publish-info">
@@ -900,8 +906,9 @@ dirname($_SERVER['SCRIPT_NAME
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                0x00记录一下Less-8—Less10盲注遇到的一些问题
-0x01首先8-10关最大特点就是没有报错回显，导致开始注入的时候都是利用报错注入，结果统统失败，后来查看源码发现，报错回显被注释掉了，那这几关报错盲注就不能用了，只能用布尔盲注
+                                [TOC]
+0x00记录一下Less-8—Less10盲注遇到的一些问题
+0x01首先8-10关最大特点就是没有报错回显，导致开始注入的时候都是利用报错注入，结果统统失败，后来查看源码发现，报错回显被注释掉了，那这几关报错盲注就不能用了，只
                             
                         </div>
                         <div class="publish-info">
@@ -951,10 +958,11 @@ dirname($_SERVER['SCRIPT_NAME
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                0x00Load_file(file_name):读取文件并返回该文件的内容作为一个字符串。
+                                [TOC]
+0x00Load_file(file_name):读取文件并返回该文件的内容作为一个字符串。
  使用条件：
  A、必须有权限读取并且文件必须完全可读 
-​       and (select count(*) from mysql.user
+​       and (select count(*) from mysq
                             
                         </div>
                         <div class="publish-info">
@@ -1004,8 +1012,9 @@ dirname($_SERVER['SCRIPT_NAME
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                0x00Less-5和Less-6关看了很多文章，总的下来就是布尔盲注，报错注入和时间盲注，通过各种函数进行注入，在这里记录以下。
-0x01（floor()报错）首先，开始注入的时候先是按照1-4关的注入方式探测了以下注入点，又看了一下源码
+                                [TOC]
+0x00Less-5和Less-6关看了很多文章，总的下来就是布尔盲注，报错注入和时间盲注，通过各种函数进行注入，在这里记录以下。
+0x01（floor()报错）首先，开始注入的时候先是按照1-4关的注入方式探测了以下注入点，又
                             
                         </div>
                         <div class="publish-info">
@@ -1133,7 +1142,7 @@ dirname($_SERVER['SCRIPT_NAME
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">34.5k</span>
+                        class="white-color">34.7k</span>
             
             
             

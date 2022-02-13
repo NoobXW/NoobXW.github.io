@@ -503,10 +503,11 @@
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfile函数都是Mysql数据库的内置函数。
+                                [TOC]
+SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfile函数都是Mysql数据库的内置函数。
 1、load_file():读取函数：
 以下代码实在数据库执行的源码进行文件读取：
-select
+
                             
                         </div>
                         <div class="publish-info">
@@ -552,11 +553,11 @@ select
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                0x00在SQL注入中如何判断字符型注入还是数字型注入很重要，这里自己记录一下。
-0x01数字型判定
-1、and或者or
+                                [TOC]
+说明在SQL注入中如何判断字符型注入还是数字型注入很重要，这里自己记录一下。
+数字型判定1、and或者or
 假设数据库的执行语句是：select * from table where id=$id
-这里我以自己本地的sql靶场
+这里我以自己本地的sql靶场为
                             
                         </div>
                         <div class="publish-info">
@@ -602,7 +603,8 @@ select
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                ###Less-1（字符型注入）
+                                [TOC]
+###Less-1（字符型注入）
 0x00首先注入：
 ?id&#x3D;1
 
@@ -610,7 +612,7 @@ select
 
 由于要判断注入点，如图：
 
-添加 ‘ 报错，证明有注入点，字符型，id=1’报错是由于源码当中接收值的时候本身自己就是id=’’的闭合形式，但由于
+添加 ‘ 报错，证明有注入点，字符型，id=1’报错是由于源码当中接收值的时候本身自己就是id=’’的闭合
                             
                         </div>
                         <div class="publish-info">
@@ -656,9 +658,10 @@ select
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                前言SQL 注入漏洞将是重点部分，其中 SQL 注入 又非常复杂，区分各种数据库类型，提交方法，数据类型等注入等，此类漏洞是 WEB 安全中严重的安全漏洞，学习如何利用，挖掘，修复。
+                                [TOC]
+前言SQL 注入漏洞是重点部分，其中 SQL 注入 又非常复杂，区分各种数据库类型，提交方法，数据类型等注入等，此类漏洞是 WEB 安全中严重的安全漏洞，学习如何利用，挖掘，修复。
 SQL注入图解
-手工注入原理手工注入：构造不同的sql语
+手工注入原理手工注入：构造不同
                             
                         </div>
                         <div class="publish-info">
@@ -782,7 +785,7 @@ SQL注入图解
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">34.5k</span>
+                        class="white-color">34.7k</span>
             
             
             

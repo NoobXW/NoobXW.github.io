@@ -5,7 +5,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="SQL注入-宽字节注入, 小白">
-    <meta name="description" content="宽字节注入原理原理：mysql 在使用 GBK 编码的时候，会认为两个字符为一个汉字，例如%aa%5c 就是一个 汉字（前一个 ascii 码大于 128 才能到汉字的范围）。我们在过滤 ’ 的时候，往往利用的思 路是将 ‘ 转换为 \’ ">
+    <meta name="description" content="[TOC]
+宽字节注入原理原理：mysql 在使用 GBK 编码的时候，会认为两个字符为一个汉字，例如%aa%5c 就是一个 汉字（前一个 ascii 码大于 128 才能到汉字的范围）。我们在过滤 ’ 的时候，往往利用的思 路是将 ‘ 转">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -474,7 +475,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    874
+                    875
                 </div>
                 
 
@@ -499,7 +500,8 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="宽字节注入原理"><a href="#宽字节注入原理" class="headerlink" title="宽字节注入原理"></a>宽字节注入原理</h2><p><strong>原理</strong>：<strong>mysql 在使用 GBK 编码的时候，会认为两个字符为一个汉字，例如%aa%5c 就是一个 汉字（前一个 ascii 码大于 128 才能到汉字的范围）。</strong>我们在过滤 ’ 的时候，往往利用的思 路是将 ‘ 转换为 \’ 。 </p>
+                <p>[TOC]</p>
+<h2 id="宽字节注入原理"><a href="#宽字节注入原理" class="headerlink" title="宽字节注入原理"></a>宽字节注入原理</h2><p><strong>原理</strong>：<strong>mysql 在使用 GBK 编码的时候，会认为两个字符为一个汉字，例如%aa%5c 就是一个 汉字（前一个 ascii 码大于 128 才能到汉字的范围）。</strong>我们在过滤 ’ 的时候，往往利用的思 路是将 ‘ 转换为 \’ 。 </p>
 <h2 id="注入思路"><a href="#注入思路" class="headerlink" title="注入思路"></a>注入思路</h2><p><strong>思路一</strong>：由于单引号被过滤了，所以我们使用%df吃掉 \， 具体的原因是urlencode(&#39;) = %5c%27，我们在%5c%27前面添加%df，形成%df%5c%27，而上面提到的mysql在GBK编码方式的时候会将两个字节当做一个汉字，此事%df%5c就是一个汉字，%27则作为一个单独的符号在外面，同时也就达到了我们的目的。</p>
 <p><strong>思路二</strong>：将 &#39; 中的 \ 过滤掉，例如可以构造 %**%5c%5c%27的情况，后面的%5c会被前面的%5c给注释掉。</p>
 <hr>
@@ -1023,7 +1025,7 @@ http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-35&#x2F;?id&#x3D;-1 union select 1,2
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">34.5k</span>
+                        class="white-color">34.7k</span>
             
             
             
