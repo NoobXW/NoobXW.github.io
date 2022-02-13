@@ -481,7 +481,7 @@ id=1 UnIoN/**/SeLeCT 1,user">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    1.6k
                 </div>
                 
 
@@ -563,6 +563,30 @@ INFORMATION_SCHEMA<span class="token punctuation">.</span>schemata<span aria-hid
 <p>部分WAF有提供爬虫白名单的功能，识别爬虫的技术一般有两种：<br>1、根据UserAgent                      2、通过行为来判断</p>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>对于安全狗来说，它在进行防护的时候会对关键字进行拦截，比如<code>union select</code>字段，它会把<code>union select</code>字段当成一个整体进行拦截，若对其从中间加干扰字符可进行对其绕过，对于<code>database()</code>字段，同样也是整体拦截，将<code>database</code>与<code>()</code>进行字符干扰等方法可将其绕过。</p>
 <p>其实最关键的是了解其拦截的方式，对其进行分析（抓包），针对其拦截的方式去写脚本进行注入（<strong>FUZZ大法</strong>）</p>
+<h2 id="本地测试"><a href="#本地测试" class="headerlink" title="本地测试"></a>本地测试</h2><p>以网站安全狗为例：</p>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-2&#x2F;?id&#x3D;-1 union select 1,2,3 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>可以看到当进行联合注入的时候WAF对攻击进行了拦截</p>
+<p><img src="/2022/02/11/SQL%E6%B3%A8%E5%85%A5-%E7%BB%95%E8%BF%87WAF/image-20220213140044011.png" alt="image-20220213140044011"></p>
+<p><img src="/2022/02/11/SQL%E6%B3%A8%E5%85%A5-%E7%BB%95%E8%BF%87WAF/image-20220213140143847.png" alt="image-20220213140143847"></p>
+<p>而当只进行<code>union</code>或<code>select</code>单个字段进行查询时网站会报正常：</p>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-2&#x2F;?id&#x3D;-1 union&#x2F;select  1,2,3 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2022/02/11/SQL%E6%B3%A8%E5%85%A5-%E7%BB%95%E8%BF%87WAF/image-20220213140253672.png" alt="image-20220213140253672"></p>
+<p>说明安全狗只对<code>union select</code>两个字段在一起查询时才会拦截，这时只要将这两个字段进行干扰，使安全狗检测的时候认为它们不在一起便可进行成功注入。</p>
+<p>尝试注入很多payload，自己构造的，参考文章的，基本都试了一遍，都被现版本的安全狗拦截了，这里就放几个失败的payload的吧，记录一下失败的结果：</p>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;0 union &#x2F;*!distinctrow&#x2F;*!(select~1,2,3)*&#x2F; %23--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;0 &#x2F;*!UnIon12345SelEcT*&#x2F; 1,user() --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;0 union %23%0aall select 1,2,3 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>这里最重要的还是原理，使用Fuzz大法成功几率会大大增加，改天试试Fuzz大法</strong></p>
+<h2 id="00截断原理"><a href="#00截断原理" class="headerlink" title="00截断原理"></a>00截断原理</h2><p>这里说明一下00截断原理：</p>
+<p>0x00是十六进制表示方法，是ascii码为0的字符，在有些函数处理时，会把这个字符当做结束符。系统在对文件名的读取时，如果遇到0x00，就会认为读取已结束。这个可以用在对文件类型名的绕过上。</p>
+<p>但要注意是文件的16进制内容里的00，而不是文件名中的00 ！！！就是说系统是按16进制读取文件（或者说二进制），</p>
+<p>遇到ascii码为零的位置就停止，而这个ascii码为零的位置在16进制中是00，用0x开头表示16进制，也就是所说的0x00截断。</p>
+<p><strong>%00是被服务器解码为0x00发挥了截断作用。</strong></p>
 
                 
             </div>
@@ -1004,7 +1028,7 @@ INFORMATION_SCHEMA<span class="token punctuation">.</span>schemata<span aria-hid
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">32.8k</span>
+                        class="white-color">33.3k</span>
             
             
             
