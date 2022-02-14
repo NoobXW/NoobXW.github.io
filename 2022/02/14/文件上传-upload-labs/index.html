@@ -7,10 +7,10 @@
     <meta name="keywords" content="文件上传-upload-labs, 小白">
     <meta name="description" content="[TOC]
 #Pass-01
-首先分析一下源码：
+0x00首先分析一下源码：
 
 
-$_FILES：PHP中的$_FILES 是一个预定义的数组，用来获取通过 POST 方法上传文件的相关信息。如果为单个文件上传，那么 $_FILES 为二维数组；如果为多个文件上传，那">
+$_FILES：PHP中的$_FILES 是一个预定义的数组，用来获取通过 POST 方法上传文件的相关信息。如果为单个文件上传，那么 $_FILES 为二维数组；如果为多个文件">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -483,7 +483,7 @@ $_FILES：PHP中的$_FILES 是一个预定义的数组，用来获取通过 POST
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    997
+                    998
                 </div>
                 
 
@@ -510,7 +510,7 @@ $_FILES：PHP中的$_FILES 是一个预定义的数组，用来获取通过 POST
             <div id="articleContent">
                 <p>[TOC]</p>
 <p>#Pass-01</p>
-<p>首先分析一下源码：</p>
+<h3 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h3><p>首先分析一下源码：</p>
 <p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214141754993.png" alt="image-20220214141754993"></p>
 <p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214142036372.png" alt="image-20220214142036372"></p>
 <p><code>$_FILES</code>：PHP中的<code>$_FILES</code> 是一个预定义的数组，用来获取通过 POST 方法上传文件的相关信息。如果为单个文件上传，那么 <code>$_FILES</code> 为二维数组；如果为多个文件上传，那么 $_FILES 为三维数组。</p>
@@ -543,7 +543,7 @@ $_FILES：PHP中的$_FILES 是一个预定义的数组，用来获取通过 POST
 <h1 id="Pass-02"><a href="#Pass-02" class="headerlink" title="Pass-02"></a>Pass-02</h1><p>源码分析：</p>
 <p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214154048267.png" alt="image-20220214154048267"></p>
 <p>由于源码中有<code>type</code>字段，可见这关是常见验证中的文件类型验证，也就是验证MIME信息，因此，思路就是抓包将<code>Content-Type</code>修改为允许上传的类型（image/jpeg、image/png、image/gif）三选一。</p>
-<h3 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h3><p>将<code>application/octet-stream</code>字段修改为可允许通过的类型：</p>
+<h3 id="0x00-1"><a href="#0x00-1" class="headerlink" title="0x00"></a>0x00</h3><p>将<code>application/octet-stream</code>字段修改为可允许通过的类型：</p>
 <p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214154700738.png" alt="image-20220214154700738"></p>
 <p>###0x01</p>
 <p>这里选择jpg类型：image/jpeg</p>
@@ -552,7 +552,7 @@ $_FILES：PHP中的$_FILES 是一个预定义的数组，用来获取通过 POST
 <p>###0x02</p>
 <p>文件已上传：</p>
 <p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214155154137.png" alt="image-20220214155154137"></p>
-<h1 id="Pass-03"><a href="#Pass-03" class="headerlink" title="Pass-03"></a>Pass-03</h1><h3 id="0x00-1"><a href="#0x00-1" class="headerlink" title="0x00"></a>0x00</h3><p>看源码，黑名单验证：</p>
+<h1 id="Pass-03"><a href="#Pass-03" class="headerlink" title="Pass-03"></a>Pass-03</h1><h3 id="0x00-2"><a href="#0x00-2" class="headerlink" title="0x00"></a>0x00</h3><p>看源码，黑名单验证：</p>
 <p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214155726191.png" alt="image-20220214155726191"></p>
 <p>先了解下函数：</p>
 <p>$deny_ext：不允许通过的文件后缀</p>
@@ -571,7 +571,7 @@ $_FILES：PHP中的$_FILES 是一个预定义的数组，用来获取通过 POST
 
 
 
-<h1 id="Pass-04"><a href="#Pass-04" class="headerlink" title="Pass-04"></a>Pass-04</h1><h3 id="0x00-2"><a href="#0x00-2" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214165628833.png" alt="image-20220214165628833"></p>
+<h1 id="Pass-04"><a href="#Pass-04" class="headerlink" title="Pass-04"></a>Pass-04</h1><h3 id="0x00-3"><a href="#0x00-3" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214165628833.png" alt="image-20220214165628833"></p>
 <p>这关和上一关最大的区别 就是黑名单添加的更多了。这种情况，尝试上传一个<code>.htaccess</code>配置文件。创建.htaccess文件内容写：</p>
 <pre class="line-numbers language-none"><code class="language-none">&lt;FilesMatch &quot;2&quot;&gt;
 Sethandler application&#x2F;x-httpd-php
