@@ -483,7 +483,7 @@ $_FILES：PHP中的$_FILES 是一个预定义的数组，用来获取通过 POST
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    998
+                    1.6k
                 </div>
                 
 
@@ -565,8 +565,9 @@ $_FILES：PHP中的$_FILES 是一个预定义的数组，用来获取通过 POST
 <h3 id="0x01-1"><a href="#0x01-1" class="headerlink" title="0x01"></a>0x01</h3><p>这里将6.php修改为6.php5：</p>
 <p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214163208715.png" alt="image-20220214163208715"></p>
 <p>可以看到文件已上传：（这里上传上去文件名会改变）</p>
-<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214163237975.png" alt="image-20220214163237975"></p>
-<h3 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h3><p>这里如果要访问6.php5文件的话必须修改Apache配置文件，将一下注释符去掉：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215003319602.png" alt="image-20220215003319602"></p>
+<h3 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h3><p>访问文件：<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215003854950.png" alt="image-20220215003854950"></p>
+<p>这里如果要访问6.php5文件的话必须修改Apache配置文件，将一下注释符去掉：</p>
 <pre class="line-numbers language-none"><code class="language-none">AddType application&#x2F;x-httpd-php .php .phtml .phps .php5 .pht<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 
@@ -580,7 +581,66 @@ Sethandler application&#x2F;x-httpd-php
 <p>此时，访问2.jpg文件即可。</p>
 <p>可以看到上传成功：<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214170552577.png" alt="image-20220214170552577"></p>
 <h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>.htaccess文件不能起名字，它就是.htaccess文件，如果将它改为4.htaccess或者其他的什么名字是不可以的，无法解析。在实战中有可能上传上去这个文件会被自动重命名，被重命名了就不可以了。</p>
-
+<p>#Pass-05</p>
+<h3 id="0x00-4"><a href="#0x00-4" class="headerlink" title="0x00"></a>0x00</h3><p>源码分析，这关将<code>.htaccess</code>后缀名拉入了黑名单，而且源码中对于删除末尾的点和收尾去空的操作只进行了一次过滤。<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214223114234.png" alt="image-20220214223114234"></p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214223528242.png" alt="image-20220214223528242"></p>
+<p><strong>思路：</strong>因此将数据包中的<code>.php</code>改成<code>.php. .</code>，由于它会先检查文件名末尾的点，然后再去空，但只检查一次，还是会留下一个<code>.</code>形成<code>.php.</code>这时候就进行了绕过。</p>
+<p>（但如果这里使用循环的话，这个方法是不可行的）</p>
+<h3 id="0x01-2"><a href="#0x01-2" class="headerlink" title="0x01"></a>0x01</h3><p>抓包，将<code>6.php</code>改为<code>9.php. .</code>:<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214224343252.png" alt="image-20220214224343252"></p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214235003901.png" alt="image-20220214235003901"></p>
+<p>###0x02</p>
+<p>可以看到9.php文件已经被上传：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214235034287.png" alt="image-20220214235034287"></p>
+<p>###0x03</p>
+<p>访问9.php：<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214235517954.png" alt="image-20220214235517954"></p>
+<p>#Pass-06</p>
+<h3 id="0x00-5"><a href="#0x00-5" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220214235653409.png" alt="image-20220214235653409"></p>
+<p>源码中将大小写转换一行去掉了，也就是说没有进行大小写转换。</p>
+<p><strong>思路：</strong>那这里可以使用大写或者大小写混合进行绕过。</p>
+<h3 id="0x01-3"><a href="#0x01-3" class="headerlink" title="0x01"></a>0x01</h3><p>上传1.php，修改为大小写混合：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215000032391.png" alt="image-20220215000032391"></p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215000228486.png" alt="image-20220215000228486"></p>
+<p>###0x02</p>
+<p>可以看到已上传，这里文件名会被自动修改：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215000208080.png" alt="image-20220215000208080"></p>
+<h3 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h3><p>访问1.php：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215004739422.png" alt="image-20220215004739422"></p>
+<h1 id="Pass-07"><a href="#Pass-07" class="headerlink" title="Pass-07"></a>Pass-07</h1><p>源码可以看到，去空一行没有了，那这关抓包在后缀名后面添加空格即可。</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215001921553.png" alt="image-20220215001921553"></p>
+<h3 id="0x00-6"><a href="#0x00-6" class="headerlink" title="0x00"></a>0x00</h3><p>上传6.php文件，后缀名加空格：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215004927112.png" alt="image-20220215004927112"></p>
+<p>###0x01</p>
+<p>文件已上传：<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215005038895.png" alt="image-20220215005038895"></p>
+<h3 id="0x02-1"><a href="#0x02-1" class="headerlink" title="0x02"></a>0x02</h3><p>访问文件：<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215005250961.png" alt="image-20220215005250961"></p>
+<h1 id="Pass-08"><a href="#Pass-08" class="headerlink" title="Pass-08"></a>Pass-08</h1><p>源码将删除末尾的点一行去掉了，这关思路就是<strong>抓包加点</strong>：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215005448407.png" alt="image-20220215005448407"></p>
+<h3 id="0x00-7"><a href="#0x00-7" class="headerlink" title="0x00"></a>0x00</h3><p>改包：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215005709872.png" alt="image-20220215005709872"></p>
+<h3 id="0x01-4"><a href="#0x01-4" class="headerlink" title="0x01"></a>0x01</h3><p>文件已上传：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215005646852.png" alt="image-20220215005646852"></p>
+<h3 id="0x02-2"><a href="#0x02-2" class="headerlink" title="0x02"></a>0x02</h3><p>访问文件：<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215005813075.png" alt="image-20220215005813075"></p>
+<h1 id="Pass-09"><a href="#Pass-09" class="headerlink" title="Pass-09"></a>Pass-09</h1><h3 id="0x00-8"><a href="#0x00-8" class="headerlink" title="0x00"></a>0x00</h3><p>源码将<code>字符串::$DATA</code>一行去掉，这里直接加上<code>字符串::$DATA</code>上传。</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215010428901.png" alt="image-20220215010428901"></p>
+<h3 id="0x01-5"><a href="#0x01-5" class="headerlink" title="0x01"></a>0x01</h3><p>抓包改包：<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215010709048.png" alt="image-20220215010709048"></p>
+<h3 id="0x02-3"><a href="#0x02-3" class="headerlink" title="0x02"></a>0x02</h3><p>访问文件：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215010801698.png" alt="image-20220215010801698"></p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215010831109.png" alt="image-20220215010831109"></p>
+<h1 id="Pass-10"><a href="#Pass-10" class="headerlink" title="Pass-10"></a>Pass-10</h1><h3 id="0x00-9"><a href="#0x00-9" class="headerlink" title="0x00"></a>0x00</h3><p>和第5关相同</p>
+<h1 id="Pass-11"><a href="#Pass-11" class="headerlink" title="Pass-11"></a>Pass-11</h1><h3 id="0x00-10"><a href="#0x00-10" class="headerlink" title="0x00"></a>0x00</h3><p>看到源码把那几行过滤的代码都去掉了，就试着随便上传了一下：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215011433956.png" alt="image-20220215011433956"></p>
+<p>可以看到，直接把后缀名过滤了：<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215011549187.png" alt="image-20220215011549187"></p>
+<p>那这里应该就是不允许使用.php后缀的文件，直接双写绕过。</p>
+<h3 id="0x01-6"><a href="#0x01-6" class="headerlink" title="0x01"></a>0x01</h3><p>抓包改包：<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215011713862.png" alt="image-20220215011713862"></p>
+<h3 id="0x02-4"><a href="#0x02-4" class="headerlink" title="0x02"></a>0x02</h3><p>绕过成功：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215011739154.png" alt="image-20220215011739154"></p>
+<h3 id="0x03-1"><a href="#0x03-1" class="headerlink" title="0x03"></a>0x03</h3><p>访问文件：<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215011854229.png" alt="image-20220215011854229"></p>
+<h2 id="Pass-02–Pass-11总结"><a href="#Pass-02–Pass-11总结" class="headerlink" title="Pass-02–Pass-11总结"></a>Pass-02–Pass-11总结</h2><p>以上这几关都是黑名单绕过，而且过滤语句没有涉及循环，都是验证一次，理解每一关的思路，了解每一关方法是重点。</p>
+<h1 id="Pass-12"><a href="#Pass-12" class="headerlink" title="Pass-12"></a>Pass-12</h1><h3 id="0x00-11"><a href="#0x00-11" class="headerlink" title="0x00"></a>0x00</h3><p>白名单验证：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215012011212.png" alt="image-20220215012011212"></p>
+<p>涉及函数：<br>PHP strrpos() 函数：查找字符串在另一字符串中最后一次出现的位置。</p>
+<p>这里就是：查找<strong>文件名后缀</strong>在字符串中最后一次出现的位置</p>
+<p>显然这里将双写绕过过滤了。</p>
+<h3 id="0x01-7"><a href="#0x01-7" class="headerlink" title="0x01"></a>0x01</h3>
                 
             </div>
             <hr/>
@@ -1027,7 +1087,7 @@ Sethandler application&#x2F;x-httpd-php
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">35.9k</span>
+                        class="white-color">36.5k</span>
             
             
             
