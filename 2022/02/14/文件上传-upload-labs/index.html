@@ -483,7 +483,7 @@ $_FILES：PHP中的$_FILES 是一个预定义的数组，用来获取通过 POST
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.6k
+                    2.3k
                 </div>
                 
 
@@ -643,8 +643,49 @@ Sethandler application&#x2F;x-httpd-php
 <p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215012011212.png" alt="image-20220215012011212"></p>
 <p>涉及函数：<br>PHP strrpos() 函数：查找字符串在另一字符串中最后一次出现的位置。</p>
 <p>这里就是：查找<strong>文件名后缀</strong>在字符串中最后一次出现的位置</p>
-<p>显然这里将双写绕过过滤了。</p>
-<h3 id="0x01-7"><a href="#0x01-7" class="headerlink" title="0x01"></a>0x01</h3>
+<p>源码中可以看到文件路径是可以控制的，那这里通过<code>%00进行截断</code>上传文件。由于是<code>get方式</code>进行提交，所以直接填<code>%00</code>即可，因为<code>get方式</code>会自动编码，而<code>post方式</code>需要手动转换。</p>
+<p><strong>注意：%00只能用于php版本低于5.3的</strong></p>
+<h3 id="0x01-7"><a href="#0x01-7" class="headerlink" title="0x01"></a>0x01</h3><p>%00截断：<br>在<strong>url中%00表示ascll码中的0</strong> ，而ascii中0作为特殊字符保留，表示字符串结束，所以当url中出现%00时就会认为读取已结束。</p>
+<p>###0x02</p>
+<p>源码中post方式提交的路径是图片目录，这里直接提交<code>10.php%00</code>，可以看到上传的文件10.php。</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215163828205.png" alt="image-20220215163828205"></p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215163206878.png" alt="image-20220215163206878"></p>
+<p><strong>原因：这是由于文件名拼接目录名之后再进行php后缀的验证，而此时10.php文件后存在%00进行截断，就不会拼接后面的4.jpg文件，就认为是10.php文件，就完成了绕过。</strong></p>
+<h3 id="0x03-2"><a href="#0x03-2" class="headerlink" title="0x03"></a>0x03</h3><p>访问文件：<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215165244220.png" alt="image-20220215165244220"></p>
+<h1 id="Pass-13"><a href="#Pass-13" class="headerlink" title="Pass-13"></a>Pass-13</h1><h3 id="0x00-12"><a href="#0x00-12" class="headerlink" title="0x00"></a>0x00</h3><p>这关提交方式是post，那这里<code>%00</code>就需要手动编码。</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215170108170.png" alt="image-20220215170108170"></p>
+<h3 id="0x01-8"><a href="#0x01-8" class="headerlink" title="0x01"></a>0x01</h3><p>手动编码：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215170758285.png" alt="image-20220215170758285"></p>
+<h3 id="0x02-5"><a href="#0x02-5" class="headerlink" title="0x02"></a>0x02</h3><p>可以看到2.php文件已上传：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215170915245.png" alt="image-20220215170915245"></p>
+<h3 id="0x03-3"><a href="#0x03-3" class="headerlink" title="0x03"></a>0x03</h3><p>访问文件：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215171124398.png" alt="image-20220215171124398"></p>
+<h1 id="Pass-14"><a href="#Pass-14" class="headerlink" title="Pass-14"></a>Pass-14</h1><h3 id="0x00-13"><a href="#0x00-13" class="headerlink" title="0x00"></a>0x00</h3><p>源码分析：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215171312458.png" alt="image-20220215171312458"></p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215172941999.png" alt="image-20220215172941999"></p>
+<p><strong>getimagesize() 函数</strong>：将测定任何 GIF，JPG，PNG，SWF，SWC，PSD，TIFF，BMP，IFF，JP2，JPX，JB2，JPC，XBM 或 WBMP 图像文件的大小并返回图像的尺寸以及文件类型及图片高度与宽度。函数成功返回的就是一个数组，失败则返回 FALSE 并产生一条 E_WARNING 级的错误信息。</p>
+<p>根据源码和提示可知，这里应该是通过检查文件的头部信息去验证（读取判断上传文件的前两个字节）是否是<code>jpg，png</code>或<code>gif</code>格式的图片，页面也提示上传图片码。那这里的思路就是文件包含漏洞进行上传。</p>
+<p>补充知识：</p>
+<p>1.Png图片文件包括8字节：89 50 4E 47 0D 0A 1A 0A。即为 .PNG。<br>2.Jpg图片文件包括2字节：FF D8。<br>3.Gif图片文件包括6字节：47 49 46 38 39|37 61 。即为 GIF89(7)a。<br>4.Bmp图片文件包括2字节：42 4D。即为 BM。</p>
+<h3 id="0x01-9"><a href="#0x01-9" class="headerlink" title="0x01"></a>0x01</h3><p>将2.jpg图片以notepad++打开写入一句话上传：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215174727383.png" alt="image-20220215174727383"></p>
+<h3 id="0x02-6"><a href="#0x02-6" class="headerlink" title="0x02"></a>0x02</h3><p>然后需要在upload目录下新建include.php文件进行读取文件：<br>内容填写：（如果不定义include.php文件不能访问上传的文件）</p>
+<pre class="line-numbers language-none"><code class="language-none">&lt;?php
+$file &#x3D; $_GET[ &#39;page&#39; ] ;
+include ($file);
+?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>之后访问一下地址：</p>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;localhost&#x2F;upload&#x2F;include.php?page&#x3D;6620220215173309.jpg<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215174617909.png" alt="image-20220215174617909"></p>
+<h1 id="Pass-15"><a href="#Pass-15" class="headerlink" title="Pass-15"></a>Pass-15</h1><h3 id="0x00-14"><a href="#0x00-14" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215180129754.png" alt="image-20220215180129754"></p>
+<p><strong>image_type_to_extension()函数</strong>：（根据指定的图像类型返回对应的后缀名）会对目标文件的16进制去进行一个读取，去读取头几个字符串是不是符合图片的要求。</p>
+<p><strong>getimagesize()函数</strong>：取得图像大小</p>
+<h3 id="0x01-10"><a href="#0x01-10" class="headerlink" title="0x01"></a>0x01</h3><p>上传图片马：<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215180616334.png" alt="image-20220215180616334"></p>
+<h3 id="0x02-7"><a href="#0x02-7" class="headerlink" title="0x02"></a>0x02</h3><p>访问文件：</p>
+<p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215180539273.png" alt="image-20220215180539273"></p>
+
                 
             </div>
             <hr/>
@@ -1091,7 +1132,7 @@ Sethandler application&#x2F;x-httpd-php
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">36.5k</span>
+                        class="white-color">37.2k</span>
             
             
             
