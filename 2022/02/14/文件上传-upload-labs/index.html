@@ -483,7 +483,7 @@ $_FILES：PHP中的$_FILES 是一个预定义的数组，用来获取通过 POST
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.1k
+                    4.2k
                 </div>
                 
 
@@ -679,15 +679,15 @@ Sethandler application&#x2F;x-httpd-php
 <pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;localhost&#x2F;upload&#x2F;include.php?page&#x3D;6620220215173309.jpg<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215174617909.png" alt="image-20220215174617909"></p>
-<h1 id="Pass-15（突破exif-imagetype）"><a href="#Pass-15（突破exif-imagetype）" class="headerlink" title="Pass-15（突破exif_imagetype）"></a>Pass-15（突破exif_imagetype）</h1><h3 id="0x00-14"><a href="#0x00-14" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215180129754.png" alt="image-20220215180129754"></p>
+<h1 id="Pass-15（突破getimagesize）"><a href="#Pass-15（突破getimagesize）" class="headerlink" title="Pass-15（突破getimagesize）"></a>Pass-15（突破getimagesize）</h1><h3 id="0x00-14"><a href="#0x00-14" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215180129754.png" alt="image-20220215180129754"></p>
 <p><strong>image_type_to_extension()函数</strong>：（根据指定的图像类型返回对应的后缀名）会对目标文件的16进制去进行一个读取，去读取头几个字符串是不是符合图片的要求。</p>
-<p><strong>getimagesize()函数</strong>：取得图像大小</p>
+<p><strong>getimagesize()函数</strong>：取得图像大小。这个函数只接收图像格式信息，若是其他格式则函数返回为<strong>空</strong>，<strong>这样就直接限制了上传文件的类型。</strong></p>
 <h3 id="0x01-10"><a href="#0x01-10" class="headerlink" title="0x01"></a>0x01</h3><p>上传图片马：<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215180616334.png" alt="image-20220215180616334"></p>
 <h3 id="0x02-7"><a href="#0x02-7" class="headerlink" title="0x02"></a>0x02</h3><p>访问文件：</p>
 <p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215180539273.png" alt="image-20220215180539273"></p>
 <h1 id="Pass-16（突破exif-imagetype）"><a href="#Pass-16（突破exif-imagetype）" class="headerlink" title="Pass-16（突破exif_imagetype）"></a>Pass-16（突破exif_imagetype）</h1><h3 id="0x00-15"><a href="#0x00-15" class="headerlink" title="0x00"></a>0x00</h3><p>源码分析：</p>
 <p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215221647985.png" alt="image-20220215221647985"></p>
-<p><strong>exif_imagetype()</strong> 函数：读取一个图像的第一个字节并检查其签名。   </p>
+<p><strong>exif_imagetype()</strong> 函数：读取一个图像的第一个字节并检查其签名。   只接受图片信息，表示只能上传图片。</p>
 <p>了解函数功能后，这关基本和14，15关没什么区别。</p>
 <h3 id="0x01-11"><a href="#0x01-11" class="headerlink" title="0x01"></a>0x01</h3><p>第一张jpg图片，已上传：</p>
 <p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215222020168.png" alt="image-20220215222020168"></p>
@@ -695,7 +695,7 @@ Sethandler application&#x2F;x-httpd-php
 <h1 id="Pass-17（二次渲染）"><a href="#Pass-17（二次渲染）" class="headerlink" title="Pass-17（二次渲染）"></a>Pass-17（二次渲染）</h1><h3 id="0x00-16"><a href="#0x00-16" class="headerlink" title="0x00"></a>0x00</h3><p>源码分析：<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215223532933.png" alt="image-20220215223532933"></p>
 <p>三段关于jpg，png，gif的源码；</p>
 <p><code>imagecreatefromjpeg</code> — 由文件或 URL 创建一个新图象。</p>
-<p>看到这个函数，其实这关就是使用二次渲染绕过。</p>
+<p>看到这个函数，其实这关就是使用二次渲染的过滤。</p>
 <h3 id="0x01-12"><a href="#0x01-12" class="headerlink" title="0x01"></a>0x01</h3><p>先尝试上传图片马，上传成功，14361.jpg。<br><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215224106051.png" alt="image-20220215224106051"></p>
 <h3 id="0x02-9"><a href="#0x02-9" class="headerlink" title="0x02"></a>0x02</h3><p>尝试连接：</p>
 <p>可以看到访问上传的图片只是图片格式：</p>
@@ -716,7 +716,7 @@ Sethandler application&#x2F;x-httpd-php
 <p>**move_uploaded_file(file,newloc)**：把上传的文件移动到新位置。</p>
 <p>它先将图片上传到服务器，之后，如果临时文件移动到$upload_file，并且文件后缀在jpg，png，gif之间的话，进行重命名，若不在的三者之间就删除文件。</p>
 <h3 id="0x01-13"><a href="#0x01-13" class="headerlink" title="0x01"></a>0x01</h3><p>由于源码当中没有进行二次渲染，所以这里可以上传图片马。</p>
-<p>但作者的本意并非如此，这里主要是考察的是条件竞争；也就是上传的php文件在被删除之前访问就会成功上传文件。</p>
+<p>但作者的本意并非如此，这里主要是考察的是条件竞争；也就是上传的php文件在被删除之前访问就会成功上传文件。通过后门连接，文件就不会被删除。</p>
 <h3 id="0x02-10"><a href="#0x02-10" class="headerlink" title="0x02"></a>0x02</h3><p>先上传一个php文件，抓包，将数据包发送至intruder下，点击clear清除所有标记：</p>
 <p><img src="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/image-20220215235007296.png" alt="image-20220215235007296"></p>
 <p>设置为如图：</p>
@@ -1277,7 +1277,7 @@ if(!empty($_FILES[&#39;upload_file&#39;]))&#123;
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">39k</span>
+                        class="white-color">39.1k</span>
             
             
             
