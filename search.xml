@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>文件上传-解析漏洞</title>
+      <link href="/2022/02/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E/"/>
+      <url>/2022/02/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>由于中间件会出现解析漏洞，若配合文件上传会出现很大的安全危害。这里以Vulhub靶场进行漏洞复现，在这之前要了解一下中间件，服务器和Web服务器的区别。</p><h2 id="中间件，服务器和Web服务器的区别"><a href="#中间件，服务器和Web服务器的区别" class="headerlink" title="中间件，服务器和Web服务器的区别"></a>中间件，服务器和Web服务器的区别</h2><p><strong>一、服务器的定义：</strong></p><p>服务器指的是一个<strong>管理资源并为用户提供服务的计算机软件</strong>，通常分为文件服务器、数据库服务器和应用程序服务器。运行以上软件的计算机或计算机系统也被称为服务器。</p><p><strong>二、中间件</strong></p><p>中间件是服务器上负责解析http请求的一组应用程序，负责接收并解析http请求数据包，在服务器上找到数据包所请求的文件后，将其返回给客户端，如果http数据包所请求的是一个动态脚本文件，如php等，中间件就要靠CGI与脚本语言解析软件进行交互，处理好动态脚本文件后，再将处理后的文件其返回给浏览器。</p><p>说白了，中间件就是服务器上web端口（通常为80端口）的一个翻译官，负责告诉服务器用户要请求哪些文件，如果用户请求的是一个静态的html页面，就直接在服务器上找到对应文件并将其交给用户浏览器，如果用户请求的是一个动态页面如php，asp等，中间件在找到该文件后，将其交给对应的脚本语言解析程序，脚本语言解析程序将文件解析成html后，再把解析过的文件发送给浏览器。</p><p>所以，浏览器本身并不能渲染解析动态脚本文件，以php为例，浏览器解析的.php文件，实际上是经服务器php程序解析后的html文件。</p><p>再者，如果服务器上没有安装中间件，那么服务器就不能理解用户发来的http数据包是什么意思，当然也就无法对http请求包进行正确的响应。</p><p><strong>三、Web服务器</strong></p><p>web服务器就是安装了中间件的服务器，如装了Nginx、Apache服务等。</p><p>原文链接：</p><p><a href="https://www.cnblogs.com/greycdoer0/p/10484309.html">https://www.cnblogs.com/greycdoer0/p/10484309.html</a></p><h2 id="Tomcat-PUT方法任意写文件漏洞复现"><a href="#Tomcat-PUT方法任意写文件漏洞复现" class="headerlink" title="Tomcat PUT方法任意写文件漏洞复现"></a>Tomcat PUT方法任意写文件漏洞复现</h2><h3 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h3><p>漏洞原理：在 Windows 服务器下，Tomcat配置文件/conf/web.xml中，将 readonly 参数设置为 false 时，即可通过 PUT 方式创建一个 JSP 文件，并可以执行任意代码。</p><h3 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h3><p>漏洞环境：vulhub/tomcat/CVE-2017-12615</p><p>使用docker-compose build启动漏洞环境：</p><p><img src="/2022/02/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E/image-20220217222258093.png" alt="image-20220217222258093"></p><h3 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h3><p>首先访问一个不存在的文件1.jsp，可以看到404页面：</p><p><img src="/2022/02/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E/image-20220217224530062.png" alt="image-20220217224530062"></p><h3 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h3><p>根据漏洞原理，方式readonly为false时，使用PUT方式可对服务器写入文件；</p><p>利用PUT方式请求创建文件：</p><p><img src="/2022/02/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E/image-20220217225220471.png" alt="image-20220217225220471"></p><h3 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h3><p>再次请求1.jsp文件，访问成功；这里<code>shell</code>只是表达一个含义：可以写入JSP后门代码，最后使用后门工具进行控制。<br><img src="/2022/02/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E/image-20220217225352726.png" alt="image-20220217225352726"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 文件上传 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 靶场 </tag>
+            
+            <tag> 文件上传 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>文件上传-upload-labs</title>
       <link href="/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/"/>
       <url>/2022/02/14/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-upload-labs/</url>
