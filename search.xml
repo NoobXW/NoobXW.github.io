@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>文件上传-WAF绕过</title>
+      <link href="/2022/02/18/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-WAF%E7%BB%95%E8%BF%87/"/>
+      <url>/2022/02/18/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-WAF%E7%BB%95%E8%BF%87/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>由于在真实环境当中，网站会有相应的软件防护，通常发现文件上传漏洞后还要进行WAF绕过，而类似的防护软件有safedog，BT等，所以需要了解防护的规则并且绕过防护。</p><p>当然，这里的WAF绕过是广义上的，不单单是指防护软件，类似前后端源码的防护规则也需要进行WAF绕过。</p><h2 id="上传参数名解析"><a href="#上传参数名解析" class="headerlink" title="上传参数名解析"></a>上传参数名解析</h2><p>Content-Disposition：一般可更改 </p><p>name：表单参数值，不能更改（一般右键源码可以看到）</p><p>filename：文件名，可以更改 </p><p>Content-Type：文件 MIME，视情况更改</p><h2 id="常见绕过方法"><a href="#常见绕过方法" class="headerlink" title="常见绕过方法"></a>常见绕过方法</h2><p>1、数据溢出-防匹配：</p><p><strong>原理：</strong>有些主机WAF软件为了不影响web服务器的性能，会对校验的用户数据设置大小上限，比如1M。此种情况可以构造一个大文件，前面1M的内容为垃圾内容，后面才是真正的木马内容，便可以绕过WAF对文件内容的校验；</p><p><strong>注：</strong>要在<code>form-data;</code>和<code>neme=&quot;upload_file&quot;</code>;字段中间添加大量垃圾数据，垃圾数据最后一定要添加<code>;</code>，为了让检测时候误认为是数据包的字段；或者添加在<code>name</code>和<code>filename</code>字段中间也可以。</p><p>2、符号变异-防匹配（<code>&#39;</code> <code>&quot;</code> <code>;</code>）：</p><p><strong>原理：</strong>安全狗只匹配<code>&#39;</code>，<code>&quot;</code>之间的内容，就是单写一个<code>&#39;</code>或<code>&quot;</code>会绕过安全狗的检测，取最后一个<code>&#39;</code>或<code>&quot;</code>之前的内容安全狗才提取。大多都是多多测试，然后过狗；而<code>;</code>在语言当中是语句的结束，所以也可以绕过。</p><p>3、数据截断-防匹配(%00 ; 换行) ：</p><p>（%00截断在安全狗4.0不能绕过，旧版可以）</p><p>文件后缀回车绕过：若上传x.php文件，抓包进行后缀名会后，</p><p>安全狗检测时的原型是：x.p\nh\np，则实现绕过。</p><p>4、重复数据-防匹配(参数多次)：</p><p>重复<code>filename=&quot;&quot;;</code>字段等。</p><p>5、Fuzz大法</p><p>参考文章：</p><p><a href="http://www.cl4y.top/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0bypass%E5%AE%89%E5%85%A8%E7%8B%974-0/">http://www.cl4y.top/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0bypass%E5%AE%89%E5%85%A8%E7%8B%974-0/</a></p><p>Payload：</p><pre class="line-numbers language-none"><code class="language-none">filename&#x3D;&quot;Content-Type: image&#x2F;jpeg;x.php&quot;;filename&#x3D;&quot;Content-Disposition: from-data; name&#x3D;&quot;upload_file&quot;x.php&quot;;filename&#x3D;&quot;xxx&#x2F;x.jpg&quot;filename&#x3D;&quot;x.php&quot;总之，各种绕过安全狗的姿势需要多尝试，由于安全狗版本问题，可能有些payload已经被拦截。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 文件上传 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Bypass WAF </tag>
+            
+            <tag> 文件上传 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>文件上传-解析漏洞</title>
       <link href="/2022/02/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E/"/>
       <url>/2022/02/17/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E/</url>
