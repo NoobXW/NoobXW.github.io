@@ -8,9 +8,21 @@
       <link href="/2022/02/20/XSS%E5%9F%BA%E7%A1%80/"/>
       <url>/2022/02/20/XSS%E5%9F%BA%E7%A1%80/</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>XSS跨站脚本攻击：<br><img src="/2022/02/20/XSS%E5%9F%BA%E7%A1%80/image-20220220215531776.png" alt="image-20220220215531776"></p><h2 id="XSS原理"><a href="#XSS原理" class="headerlink" title="XSS原理"></a>XSS原理</h2><p>恶意攻击者在web页面中会插入一些恶意的script代码。当用户浏览该页面的时候，那么嵌入到web页面中script代码会执行，因此会达到恶意攻击用户的目的。属于前端漏洞。</p><p>（若有与对方交互的地方，就可能会有攻击点）</p><h2 id="XSS分类"><a href="#XSS分类" class="headerlink" title="XSS分类"></a>XSS分类</h2><p>1、反射型（非持久型）：通过在页面上植入恶意链接，诱使用户点击，执行js脚本，所谓反射型XSS就是将用户输入的数据（恶意用户输入的js脚本），“反射”到浏览器执行。</p><p>2、存储型（持久型）：此类XSS漏洞是指，用户输入的数据（恶意代码）可以“存储”在服务端，只要有人访问这个包含有存储型XSS代码的页面，XSS脚本就会在他们的浏览器中执行，这种XSS具有很强的稳定性。所以也被称做，“持久型XSS”。（后端代码处理XSS语句）</p><p>3、DOM型：类似于反射型XSS，但是，这种XSS攻击的实现是通过对DOM树的修改而实现的。（前端JS处理XSS语句）</p><h2 id="XSS常规攻击手法"><a href="#XSS常规攻击手法" class="headerlink" title="XSS常规攻击手法"></a>XSS常规攻击手法</h2><p>1、盗用cookie，获取敏感信息。</p><p>2、利用植入Flash，通过crossdomain权限设置进一步获取更高权限;或者利用Java等得到类似的操作。</p><p>3、利用iframe、frame、或上述Flash等方式，以用户的身份执行一些管理动作，或执行一些一般的如发微博、加好友、发私信等操作。</p><p>4、利用可被攻击的域受到其他域信任的特点，以受信任来源的身份请求一些平时不允许的操作，如进行不当的投票活动。</p><p>5、在访问量极大的一些页面上的XSS可以攻击一些小型网站，实现DDos攻击的效果。</p><p>例：</p><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span>“hey<span class="token operator">!</span>you are attacked”<span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h2 id="XSS常用场景"><a href="#XSS常用场景" class="headerlink" title="XSS常用场景"></a>XSS常用场景</h2><p>由于XSS漏洞只有通过触发脚本语句才会执行，并且XSS漏洞的限制很多，代码触发不了XSS漏洞也就利用不了。而运用最多的地方，<strong>例如：留言板，订单页面等等</strong>，管理员经常查看的页面才有很大的成功率会触发XSS漏洞。这也表示XSS漏洞的限制很大。</p>]]></content>
       
       
+      <categories>
+          
+          <category> XSS </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> XSS </tag>
+            
+        </tags>
       
     </entry>
     
