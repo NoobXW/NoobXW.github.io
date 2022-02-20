@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>XSS基础</title>
+      <link href="/2022/02/20/XSS%E5%9F%BA%E7%A1%80/"/>
+      <url>/2022/02/20/XSS%E5%9F%BA%E7%A1%80/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>文件上传-WAF绕过</title>
       <link href="/2022/02/18/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-WAF%E7%BB%95%E8%BF%87/"/>
       <url>/2022/02/18/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-WAF%E7%BB%95%E8%BF%87/</url>
