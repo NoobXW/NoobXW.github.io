@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>xss跨站-xss-labs</title>
+      <link href="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/"/>
+      <url>/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记录一下xss靶场，xss-labs通关过程。</p><h2 id="Level-1"><a href="#Level-1" class="headerlink" title="Level-1"></a>Level-1</h2><p>###0x00</p><p>可以看到给的提示是payload长度为4，地址栏中get方式的name=test与欢迎用户test相对应，试着改一下name的参数值。</p><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220221230054368.png" alt="image-20220221230054368"></p><h3 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h3><p>修改为test=ease访问，可以看到参数值变为了ease：</p><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220221230320497.png" alt="image-20220221230320497"></p><h3 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h3><p>插入以下语句执行：</p><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>可以看到，通关完成：</p><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220221230621283.png" alt="image-20220221230621283"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> xss </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 靶场 </tag>
+            
+            <tag> xss </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>XSS基础</title>
       <link href="/2022/02/20/XSS%E5%9F%BA%E7%A1%80/"/>
       <url>/2022/02/20/XSS%E5%9F%BA%E7%A1%80/</url>
@@ -13,14 +40,14 @@
       
       <categories>
           
-          <category> XSS </category>
+          <category> xss </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> XSS </tag>
+            <tag> xss </tag>
             
         </tags>
       

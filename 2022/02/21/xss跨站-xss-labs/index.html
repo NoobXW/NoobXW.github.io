@@ -4,12 +4,12 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="SQL注入-文件读写操作, 小白">
-    <meta name="description" content="[TOC]
-SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfile函数都是Mysql数据库的内置函数。
-1、load_file():读取函数：
-以下代码实在数据库执行的源码进行文件读取：
-">
+    <meta name="keywords" content="xss跨站-xss-labs, 小白">
+    <meta name="description" content="前言记录一下xss靶场，xss-labs通关过程。
+Level-1###0x00
+可以看到给的提示是payload长度为4，地址栏中get方式的name=test与欢迎用户test相对应，试着改一下name的参数值。
+
+0x01修改为tes">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -21,7 +21,7 @@ SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfil
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>SQL注入-文件读写操作 | 小白</title>
+    <title>xss跨站-xss-labs | 小白</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -323,12 +323,12 @@ SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfil
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">SQL注入-文件读写操作</h1>
+                    <h1 class="description center-align post-title">xss跨站-xss-labs</h1>
                 </div>
             </div>
         </div>
@@ -444,8 +444,12 @@ SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfil
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                                <span class="chip bg-color">SQL注入</span>
+                            <a href="/tags/%E9%9D%B6%E5%9C%BA/">
+                                <span class="chip bg-color">靶场</span>
+                            </a>
+                        
+                            <a href="/tags/xss/">
+                                <span class="chip bg-color">xss</span>
                             </a>
                         
                     </div>
@@ -456,8 +460,8 @@ SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfil
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
-                                SQL注入
+                            <a href="/categories/xss/" class="post-category">
+                                xss
                             </a>
                         
                     </div>
@@ -469,7 +473,7 @@ SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfil
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-02-01
+                    2022-02-21
                 </div>
                 
 
@@ -478,7 +482,7 @@ SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfil
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    765
+                    99
                 </div>
                 
 
@@ -503,51 +507,17 @@ SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfil
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>[TOC]</p>
-<h2 id="SQL注入文件读写及导出"><a href="#SQL注入文件读写及导出" class="headerlink" title="SQL注入文件读写及导出"></a>SQL注入文件读写及导出</h2><p>这里的load_file()和into outfile或into dumpfile函数都是Mysql数据库的内置函数。</p>
-<p>1、<strong>load_file():读取函数</strong>：</p>
-<p>以下代码实在数据库执行的源码进行文件读取：</p>
-<pre class="line-numbers language-none"><code class="language-none">select load_file(&#39;D:&#x2F;1.txt&#39;);这里的D可以用小写d<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记录一下xss靶场，xss-labs通关过程。</p>
+<h2 id="Level-1"><a href="#Level-1" class="headerlink" title="Level-1"></a>Level-1</h2><p>###0x00</p>
+<p>可以看到给的提示是payload长度为4，地址栏中get方式的name=test与欢迎用户test相对应，试着改一下name的参数值。</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220221230054368.png" alt="image-20220221230054368"></p>
+<h3 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h3><p>修改为test=ease访问，可以看到参数值变为了ease：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220221230320497.png" alt="image-20220221230320497"></p>
+<h3 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h3><p>插入以下语句执行：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>这里的d:/1.txt文件路径中的斜杠要用 / ,由于在sql语句中 \n是换行符，所以为了避免，这里的读取路径要使用 / ；另一种可以通过\进行转义出  \ 。</p>
-<p>执行如下代码：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;-1&#39; union select 1,load_file(&#39;D:&#x2F;1.txt&#39;),3 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>可以看到已读取出1.txt文件的内容。</p>
-<p><img src="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201182045161.png" alt="image-20220201182045161"></p>
-<p>2、<strong>into outfile或into dumpfile:导出函数</strong>：</p>
-<p>源码执行语句：</p>
-<pre class="line-numbers language-none"><code class="language-none">select &#39;CTF1&#39; into outfile &#39;D:&#x2F;2.txt&#39;;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;-1&#39; union select 1,2,&#39;CTF1&#39;  into outfile &#39;D:&#x2F;2.txt&#39; --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这里的写入语句，要写入的东西和路径都需要加 ‘’ 。</p>
-<p>可以看到页面返回异常，但返回D盘查看文件，已将CTF1写入文件2.txt</p>
-<p><img src="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201183145889.png" alt="image-20220201183145889"></p>
-<p><img src="/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/image-20220201183319837.png" alt="image-20220201183319837"></p>
-<p>SQL注入任意文件读取，这样的漏洞一旦出发，可以读取数据库管理员的账号密码，也可以通过写入操作将后门植入，提高权限。</p>
-<p><strong>文件读取操作必须要知道文件的具体路径。</strong></p>
-<hr>
-<h2 id="路径获取的常见方法"><a href="#路径获取的常见方法" class="headerlink" title="路径获取的常见方法"></a>路径获取的常见方法</h2><p>报错显示：通过扫描工具或手工探测报错网页，会爆出该网站的真实路径；</p>
-<p>遗留文件：例如 phpinfo.php文件，可以找到网站路径</p>
-<p>漏洞报错：在搜索引擎根据网站使用的什么程序去搜索网站所在的爆路径的漏洞</p>
-<p>平台配置文件：配置文件里会有网站的路径信息。</p>
-<p>​                          敏感文件文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30292843/article/details/99381669">https://blog.csdn.net/weixin_30292843/article/details/99381669</a></p>
-<p>爆破：很难找到路径信息，按照常规思路去爆破。这是由于搭建网站的时候会有常见的路径，</p>
-<p>​            例如：windows：                                              linux：</p>
-<p>​                                           d:/www/……                                     /var/www/……</p>
-<hr>
-<h2 id="魔术引号"><a href="#魔术引号" class="headerlink" title="魔术引号"></a>魔术引号</h2><p><strong>魔术引号开关：magic_quotes_gpc</strong>这个文件在php.ini目录下的文件</p>
-<p><strong>魔术引号是为了防止任意文件读取的SQL注入。</strong></p>
-<p>什么是魔术引号：当打开时，所有的 ‘（单引号），”（双引号），\（反斜线）和 NULL 字符都会被自动加上一个反斜线进行转义。这和 <a target="_blank" rel="noopener" href="https://www.jb51.net/shouce/php5/zh/function.addslashes.html"><strong>addslashes()</strong></a> 作用完全相同。一个自动将进入 PHP 脚本的数据进行转义的过程。最好在编码时不要转义而在运行时根据需要而转义。</p>
-<p><strong>魔术引号 【Warning：本特性已自 PHP 5.3.0 起废弃并将自 PHP 5.4.0 起移除。】</strong></p>
-<hr>
-<h3 id="魔术引号的绕过："><a href="#魔术引号的绕过：" class="headerlink" title="魔术引号的绕过："></a>魔术引号的绕过：</h3><p>利用编码或宽字节绕过。</p>
-<hr>
-<h2 id="防注入策略"><a href="#防注入策略" class="headerlink" title="防注入策略"></a>防注入策略</h2><p>1.自带防御：魔术引导</p>
-<p>2.内置函数;int等</p>
-<p>3.自定义关键字：select，会对select,and,or等关键字进行过滤。（大小写混合可以尝试绕过过滤）</p>
-<p>4.WAF防护软件：安全狗，宝塔等</p>
+<p>可以看到，通关完成：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220221230621283.png" alt="image-20220221230621283"></p>
 
                 
             </div>
@@ -574,7 +544,7 @@ SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfil
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://NoobXW.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/">http://NoobXW.github.io/2022/02/01/SQL%E6%B3%A8%E5%85%A5-%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C/</a>
+                    <a href="http://NoobXW.github.io/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/">http://NoobXW.github.io/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -612,8 +582,12 @@ SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfil
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                                    <span class="chip bg-color">SQL注入</span>
+                                <a href="/tags/%E9%9D%B6%E5%9C%BA/">
+                                    <span class="chip bg-color">靶场</span>
+                                </a>
+                            
+                                <a href="/tags/xss/">
+                                    <span class="chip bg-color">xss</span>
                                 </a>
                             
                         </div>
@@ -661,17 +635,18 @@ SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfil
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/02/02/SQL%E6%B3%A8%E5%85%A5-%E7%9B%B2%E6%B3%A8/">
+                <a href="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="SQL注入-盲注">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="xss跨站-xss-labs">
                         
-                        <span class="card-title">SQL注入-盲注</span>
+                        <span class="card-title">xss跨站-xss-labs</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -681,26 +656,31 @@ SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfil
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>22-02-02
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-21
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
-                                    SQL注入
+                            <a href="/categories/xss/" class="post-category">
+                                    xss
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                        <span class="chip bg-color">SQL注入</span>
+                    <a href="/tags/%E9%9D%B6%E5%9C%BA/">
+                        <span class="chip bg-color">靶场</span>
+                    </a>
+                    
+                    <a href="/tags/xss/">
+                        <span class="chip bg-color">xss</span>
                     </a>
                     
                 </div>
@@ -714,13 +694,13 @@ SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfil
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/">
+                <a href="/2022/02/20/XSS%E5%9F%BA%E7%A1%80/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="SQL注入字符型和数字型判断">
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="XSS基础">
                         
-                        <span class="card-title">SQL注入字符型和数字型判断</span>
+                        <span class="card-title">XSS基础</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -731,14 +711,14 @@ SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfil
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>22-01-31
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-20
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
-                                    SQL注入
+                            <a href="/categories/xss/" class="post-category">
+                                    xss
                                 </a>
                             
                             
@@ -748,8 +728,8 @@ SQL注入文件读写及导出这里的load_file()和into outfile或into dumpfil
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                        <span class="chip bg-color">SQL注入</span>
+                    <a href="/tags/xss/">
+                        <span class="chip bg-color">xss</span>
                     </a>
                     
                 </div>
