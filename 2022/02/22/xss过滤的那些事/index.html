@@ -4,12 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="xss跨站-xss-labs, 小白">
-    <meta name="description" content="前言记录一下xss靶场，xss-labs通关过程。
-Level-1###0x00
-可以看到给的提示是payload长度为4，地址栏中get方式的name=test与欢迎用户test相对应，试着改一下name的参数值。
-
-0x01修改为tes">
+    <meta name="keywords" content="xss过滤的那些事, 小白">
+    <meta name="description" content="前言由于实战当中避免不了拦截xss跨站攻击，由此需要了解过滤xss的方式有哪些，以及去如何绕过。
+Http OnlyHttpOnly是包含在http返回头Set-Cookie里面的一个附加的flag，所以它是后端服务器对cookie设置的一">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -21,7 +18,7 @@ Level-1###0x00
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>xss跨站-xss-labs | 小白</title>
+    <title>xss过滤的那些事 | 小白</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -323,12 +320,12 @@ Level-1###0x00
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">xss跨站-xss-labs</h1>
+                    <h1 class="description center-align post-title">xss过滤的那些事</h1>
                 </div>
             </div>
         </div>
@@ -444,12 +441,8 @@ Level-1###0x00
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E9%9D%B6%E5%9C%BA/">
-                                <span class="chip bg-color">靶场</span>
-                            </a>
-                        
-                            <a href="/tags/xss/">
-                                <span class="chip bg-color">xss</span>
+                            <a href="/tags/XSS/">
+                                <span class="chip bg-color">XSS</span>
                             </a>
                         
                     </div>
@@ -460,8 +453,8 @@ Level-1###0x00
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/xss/" class="post-category">
-                                xss
+                            <a href="/categories/XSS/" class="post-category">
+                                XSS
                             </a>
                         
                     </div>
@@ -473,7 +466,7 @@ Level-1###0x00
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-02-21
+                    2022-02-22
                 </div>
                 
 
@@ -482,7 +475,7 @@ Level-1###0x00
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    99
+                    1.2k
                 </div>
                 
 
@@ -507,17 +500,149 @@ Level-1###0x00
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记录一下xss靶场，xss-labs通关过程。</p>
-<h2 id="Level-1"><a href="#Level-1" class="headerlink" title="Level-1"></a>Level-1</h2><p>###0x00</p>
-<p>可以看到给的提示是payload长度为4，地址栏中get方式的name=test与欢迎用户test相对应，试着改一下name的参数值。</p>
-<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220221230054368.png" alt="image-20220221230054368"></p>
-<h3 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h3><p>修改为test=ease访问，可以看到参数值变为了ease：</p>
-<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220221230320497.png" alt="image-20220221230320497"></p>
-<h3 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h3><p>插入以下语句执行：</p>
-<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>由于实战当中避免不了拦截xss跨站攻击，由此需要了解过滤xss的方式有哪些，以及去如何绕过。</p>
+<h2 id="Http-Only"><a href="#Http-Only" class="headerlink" title="Http Only"></a>Http Only</h2><p><code>HttpOnly</code>是包含在http返回头<code>Set-Cookie</code>里面的一个附加的flag，所以它是后端服务器对cookie设置的一个附加的属性，在生成cookie时使用<code>HttpOnly</code>标志有助于减轻客户端脚本访问受保护cookie的风险（如果浏览器支持的话）。<br>通过js脚本将无法读取到cookie信息，这样能<strong>有效的防止XSS攻击</strong>。</p>
+<p>简单来说就是：如果在cookie中设置了HttpOnly属性，那么通过js脚本将无法读取到cookie信息。</p>
+<p><strong>注</strong>：这里要明确的一点是，Http Only是防止xss读取cookie，不阻止xss语句。</p>
+<h2 id="Http-Only绕过思路"><a href="#Http-Only绕过思路" class="headerlink" title="Http Only绕过思路"></a>Http Only绕过思路</h2><p>一般获取后台权限无非是通过获取cookie进入后台，或者是直接账号密码登录。由于网站启用<code>Http Only</code>无法获取cookie的情况下 ，只能通过获取账号密码进行登录。</p>
+<p>1、<strong>保存账号密码</strong>：网站管理员可能设置浏览器保存账号密码，这样的情况下可以通过xss获取保存的账号密码。</p>
+<p>2、<strong>未保存账号密码-表单劫持</strong>：后台管理员在输入账号密码的同时，触发<code>跨站语句</code>，账号密码既发送给服务端，又发送给攻击者。（一般是在登录框页面触发xss语句，若xss语句未在登录框触发，这种方式是不可行的）</p>
+<h2 id="代码过滤"><a href="#代码过滤" class="headerlink" title="代码过滤"></a>代码过滤</h2><p><strong>1、转义字符串：</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">&lt;INPUT type&#x3D;&quot;text&quot; value&#x3D;&#39;&lt;SCRIPT&gt;alert(&quot;XSS&quot;)&lt;&#x2F;SCRIPT&gt;&#39;&gt;
+&#39;&gt;&lt;SCRIPT&gt;alert(&quot;XSS&quot;)&lt;&#x2F;SCRIPT&gt; 闭合前单引号
+&#39;&gt;&lt;SCRIPT&gt;alert(&quot;XSS&quot;)&lt;&#x2F;SCRIPT&gt;&lt;xss a&#x3D;&#39; 闭合后单引号
+&lt;INPUT type&#x3D;&quot;text&quot; value&#x3D;&#39;&#39;&gt;&lt;SCRIPT&gt;alert(&quot;XSS&quot;)&lt;&#x2F;SCRIPT&gt;&lt;xss a&#x3D;&#39;&#39;&gt;
+绕过语句<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>可以看到，通关完成：</p>
-<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220221230621283.png" alt="image-20220221230621283"></p>
+<p><strong>2、绕过单引号过滤：字符实体</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center"><code>&amp;#34;</code></th>
+<th align="center"><code>&amp;quot;</code></th>
+<th align="center"><code>&quot;</code></th>
+<th align="center">双引号</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>&amp;#38;</code></td>
+<td align="center"><code>&amp;amp;</code></td>
+<td align="center"><code>&amp;</code></td>
+<td align="center">&amp;符号</td>
+</tr>
+<tr>
+<td align="center"><code>&amp;#60;</code></td>
+<td align="center"><code>&amp;lt;</code></td>
+<td align="center"><code>&lt;</code></td>
+<td align="center">小于号</td>
+</tr>
+<tr>
+<td align="center"><code>&amp;#62;</code></td>
+<td align="center"><code>&amp;gt;</code></td>
+<td align="center"><code>&gt;</code></td>
+<td align="center">大于号</td>
+</tr>
+</tbody></table>
+<p>使用<code>&amp;quot;</code>或者<code>&amp;#34;</code>来代替我们的双引号，有时候可以绕过过滤。</p>
+<p><strong>3、绕过<code>&lt;SCRIPT&gt;</code>过滤：</strong><br>有些过滤器会过滤到<code>&lt;script&gt;</code>标签，上面的例子就都废了。那就是用事件处理器进行插入语句，例：</p>
+<p><code>&lt;BODY onload=&quot;alert(&#39;XSS&#39;)&quot;&gt;</code></p>
+<p>在 html 里啊。这个 <code>Onload</code> 关键字就是一个事件，其他的所有标签都没有这个属性，但是 <code>Body</code>标签是有的。但是，有一定的局限性，如果 <code>onload事件</code>在你的代码之前已经被处理了。也可以使用其他处理器，根据情况而定。</p>
+<p><strong>4、使用 <code>IMG</code> 源</strong>：<br>Html 中最常用的两个标签 <code>img</code> 和 <code>&lt;a&gt;</code>的<code>href</code>属性 一般是不会过滤的，一个指定图片，一个指定超链接。最危险的是img 标签。例：</p>
+<p><code>&lt;IMG SRC=&quot;javascript:alert(&#39;XSS&#39;);&quot;&gt;</code></p>
+<p><strong>5、使用制表符, 换行符和回车符等符号</strong>：</p>
+<p>例：<code>&lt;IMG SRC=&quot;java&amp;#x9ascript:alert(&#39;XSS&#39;);&quot;&gt;</code>，为了漆面过滤器。</p>
+<table>
+<thead>
+<tr>
+<th align="center">Type</th>
+<th align="center">Horizontal Tab</th>
+<th align="center">New line</th>
+<th align="center">Carriage Return</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">URL</td>
+<td align="center"><code>%09</code></td>
+<td align="center"><code>%10</code></td>
+<td align="center"><code>%13</code></td>
+</tr>
+<tr>
+<td align="center">Minimal Sized Hex</td>
+<td align="center"><code>&amp;#x9</code></td>
+<td align="center"><code>&amp;#xA</code></td>
+<td align="center"><code>&amp;#xD</code></td>
+</tr>
+<tr>
+<td align="center">Maximum Sized Hex</td>
+<td align="center"><code>&amp;#x0000009;</code></td>
+<td align="center"><code>&amp;#x000000A;</code></td>
+<td align="center"><code>&amp;#x000000D;</code></td>
+</tr>
+<tr>
+<td align="center">Minimum Sized Decimal</td>
+<td align="center"><code>&amp;#9</code></td>
+<td align="center"><code>&amp;#10</code></td>
+<td align="center"><code>&amp;#13</code></td>
+</tr>
+<tr>
+<td align="center">Maximum Sized Decimal</td>
+<td align="center"><code>&amp;#x0000009;</code></td>
+<td align="center"><code>&amp;#x0000009;</code></td>
+<td align="center"><code>&amp;#x0000009;</code></td>
+</tr>
+</tbody></table>
+<p><strong>空字符</strong>：</p>
+<p><code>&lt;SCR%00IPT&gt;alert(&quot;XSS&quot;)&lt;/SCRIPT&gt;</code></p>
+<p>空字符 (%00) 使得过滤器不能看到完整的 <code>&lt;SCRIPT&gt;</code>,只在 IE 6.0, IE 7.0 可以。</p>
+<p><strong>6、双引号配对的bug</strong>：</p>
+<p>绕过这种过滤就是寻找闭合的标签，然后构造来突破：</p>
+<p>比如：<code>&lt;IMG &quot;&quot;&quot;&gt;&lt;SCRIPT&gt;alert(&#39;XSS&#39;)&lt;/SCRIPT&gt;&quot;&gt;</code></p>
+<p>通常我们认为，img 标签里。前两个引号被认为是一对，什么都不做，下一个引号和最后的匹配，但是事实不是这样。</p>
+<p>结果最终如下：</p>
+<p><code>&lt;img&gt;&lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;&quot;&amp;gt;</code></p>
+<p><strong>7、绕过CSS 过滤器</strong>：</p>
+<p>HTML 标签用来插入 javaScript 很有用，但是 CSS 也是可以。</p>
+<p>把吧XSS 代码放到 LINK 方式引用的 CSS 的 href 属性里面去：</p>
+<p><code>&lt;LINK REL=&quot;stylesheet&quot; HREF=&quot;javascript:alert(&#39;XSS&#39;);&quot;&gt;</code></p>
+<p><strong>8、编码</strong>：</p>
+<p>使用 utf-7 编码可以绕过：</p>
+<p>例：<code>&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;</code></p>
+<p>使用 UTF-7 编码后：</p>
+<p><code>+ADw-script+AD4-alert(+ACI-XSS+ACI-)+ADw-/script+AD4-</code></p>
+<p>然后所有的加号需要被改成<code>%2b</code>，否则会被浏览器识别为连接符：</p>
+<p><code>%2BADw-script%2BAD4-alert%281%29%2BADw-/script%2BAD4-</code></p>
+<table>
+<thead>
+<tr>
+<th align="center">字符</th>
+<th align="center">实体引用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">空格</td>
+<td align="center">%20</td>
+</tr>
+<tr>
+<td align="center">/</td>
+<td align="center">%2F</td>
+</tr>
+<tr>
+<td align="center">%</td>
+<td align="center">%22</td>
+</tr>
+<tr>
+<td align="center">?</td>
+<td align="center">%3F</td>
+</tr>
+<tr>
+<td align="center">+</td>
+<td align="center">%2B</td>
+</tr>
+</tbody></table>
+<h2 id="发现XSS漏洞"><a href="#发现XSS漏洞" class="headerlink" title="发现XSS漏洞"></a>发现XSS漏洞</h2><p>最常用的 XSS 漏洞测试代码：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token string">"XSS"</span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>当这个代码被注入到输入框或是 url 参数的时候，会成功也可能会失败，如果失败了。也不意味着网站就是安全的，需要继续渗透。</p>
 
                 
             </div>
@@ -544,7 +669,7 @@ Level-1###0x00
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://NoobXW.github.io/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/">http://NoobXW.github.io/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/</a>
+                    <a href="http://NoobXW.github.io/2022/02/22/xss%E8%BF%87%E6%BB%A4%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/">http://NoobXW.github.io/2022/02/22/xss%E8%BF%87%E6%BB%A4%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -582,12 +707,8 @@ Level-1###0x00
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E9%9D%B6%E5%9C%BA/">
-                                    <span class="chip bg-color">靶场</span>
-                                </a>
-                            
-                                <a href="/tags/xss/">
-                                    <span class="chip bg-color">xss</span>
+                                <a href="/tags/XSS/">
+                                    <span class="chip bg-color">XSS</span>
                                 </a>
                             
                         </div>
@@ -635,9 +756,10 @@ Level-1###0x00
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2022/02/22/xss%E8%BF%87%E6%BB%A4%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/">
                     <div class="card-image">
@@ -655,9 +777,9 @@ Level-1###0x00
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>22-02-22
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-22
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -670,6 +792,7 @@ Level-1###0x00
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -688,13 +811,13 @@ Level-1###0x00
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/02/20/XSS%E5%9F%BA%E7%A1%80/">
+                <a href="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="XSS基础">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="xss跨站-xss-labs">
                         
-                        <span class="card-title">XSS基础</span>
+                        <span class="card-title">xss跨站-xss-labs</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -705,7 +828,7 @@ Level-1###0x00
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>22-02-20
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-21
                             </span>
                         <span class="publish-author">
                             
@@ -721,6 +844,10 @@ Level-1###0x00
                 </div>
                 
                 <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E9%9D%B6%E5%9C%BA/">
+                        <span class="chip bg-color">靶场</span>
+                    </a>
                     
                     <a href="/tags/xss/">
                         <span class="chip bg-color">xss</span>
