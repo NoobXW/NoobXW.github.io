@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>xss跨站-WAF绕过及安全修复</title>
+      <link href="/2022/02/24/xss%E8%B7%A8%E7%AB%99-WAF%E7%BB%95%E8%BF%87%E5%8F%8A%E5%AE%89%E5%85%A8%E4%BF%AE%E5%A4%8D/"/>
+      <url>/2022/02/24/xss%E8%B7%A8%E7%AB%99-WAF%E7%BB%95%E8%BF%87%E5%8F%8A%E5%AE%89%E5%85%A8%E4%BF%AE%E5%A4%8D/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+      
+      
+      <categories>
+          
+          <category> XSS </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Bypass WAF </tag>
+            
+            <tag> XSS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>人生</title>
       <link href="/2022/02/24/%E4%BA%BA%E7%94%9F/"/>
       <url>/2022/02/24/%E4%BA%BA%E7%94%9F/</url>
@@ -90,14 +117,14 @@
       
       <categories>
           
-          <category> xss </category>
+          <category> XSS </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> xss </tag>
+            <tag> XSS </tag>
             
         </tags>
       
