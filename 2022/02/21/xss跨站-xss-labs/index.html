@@ -5,11 +5,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="xss跨站-xss-labs, 小白">
-    <meta name="description" content="前言记录一下xss靶场，xss-labs通关过程。
+    <meta name="description" content="[TOC]
+前言记录一下xss靶场，xss-labs通关过程。
 Level-1###0x00
 可以看到给的提示是payload长度为4，地址栏中get方式的name=test与欢迎用户test相对应，试着改一下name的参数值。
 
-0x01修改为tes">
+0x01">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -482,7 +483,7 @@ Level-1###0x00
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.9k
+                    2.2k
                 </div>
                 
 
@@ -507,7 +508,8 @@ Level-1###0x00
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记录一下xss靶场，xss-labs通关过程。</p>
+                <p>[TOC]</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记录一下xss靶场，xss-labs通关过程。</p>
 <h2 id="Level-1"><a href="#Level-1" class="headerlink" title="Level-1"></a>Level-1</h2><p>###0x00</p>
 <p>可以看到给的提示是payload长度为4，地址栏中get方式的name=test与欢迎用户test相对应，试着改一下name的参数值。</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220221230054368.png" alt="image-20220221230054368"></p>
@@ -712,6 +714,47 @@ javascript:alert(&#x2F;xss&#x2F;)
 <h3 id="0x05-1"><a href="#0x05-1" class="headerlink" title="0x05"></a>0x05</h3><p>分析下后端代码：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223235651965.png" alt="image-20220223235651965"></p>
 <p>可以看到是第三个字段<code>t_sort</code>接收参数值，之后将<code>&lt;</code>和<code>&gt;</code>替换为<code>空</code>，然后在<code>value</code>字段处接收处理过后的参数值输出。</p>
+<h2 id="Level-11"><a href="#Level-11" class="headerlink" title="Level-11"></a>Level-11</h2><h3 id="0x00-9"><a href="#0x00-9" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224105752344.png" alt="image-20220224105752344"></p>
+<h3 id="0x01-10"><a href="#0x01-10" class="headerlink" title="0x01"></a>0x01</h3><p>查看源码：<br><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224105817042.png" alt="image-20220224105817042"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224105844674.png" alt="image-20220224105844674"></p>
+<p>同样，和第10关大致相同，但这里出现了请求来源的函数；</p>
+<p><code>$_SERVER[&#39;HTTP_REFERER&#39;]</code>：链接到当前页面的前一页面的 URL 地址。</p>
+<p>这里应该是通过修改请求来源达到插入xss语句。</p>
+<h3 id="0x02-10"><a href="#0x02-10" class="headerlink" title="0x02"></a>0x02</h3><p>使用第10关的方式同样也过关了，但这关的本意应该不是在这里。</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224110352001.png" alt="image-20220224110352001"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224110339373.png" alt="image-20220224110339373"></p>
+<h3 id="0x03-8"><a href="#0x03-8" class="headerlink" title="0x03"></a>0x03</h3><p>抓个包，修改请求来源进行插入xss语句：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224110844783.png" alt="image-20220224110844783"></p>
+<h3 id="0x04-4"><a href="#0x04-4" class="headerlink" title="0x04"></a>0x04</h3><p>value接收到参数值后将<code>&lt;</code>和<code>&gt;</code>进行了替换为<code>空</code>：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224111147386.png" alt="image-20220224111147386"></p>
+<h3 id="0x05-2"><a href="#0x05-2" class="headerlink" title="0x05"></a>0x05</h3><p>构造事件标签进行绕过：</p>
+<pre class="line-numbers language-none"><code class="language-none">Referer: &quot;onclick&#x3D;&quot;alert(&#x2F;xss&#x2F;)&quot; type&#x3D;&quot;text&quot;&#x2F;&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224112434015.png" alt="image-20220224112434015"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224112219377.png" alt="image-20220224112219377"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224112202515.png" alt="image-20220224112202515"></p>
+<h2 id="Level-12"><a href="#Level-12" class="headerlink" title="Level-12"></a>Level-12</h2><h3 id="0x00-10"><a href="#0x00-10" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224112551614.png" alt="image-20220224112551614"></p>
+<h3 id="0x01-11"><a href="#0x01-11" class="headerlink" title="0x01"></a>0x01</h3><p>源代码这里可以看到有<code>User-Agent</code>字段，后端代码应该有获取这个字段的函数。</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224112539875.png" alt="image-20220224112539875"></p>
+<p>那这里的思路和第11关差不多。</p>
+<h3 id="0x02-11"><a href="#0x02-11" class="headerlink" title="0x02"></a>0x02</h3><p>抓包修改<code>User-Agent</code>的值：</p>
+<pre class="line-numbers language-none"><code class="language-none">User-Agent: &quot;onclick&#x3D;&quot;alert(&#x2F;xss&#x2F;)&quot; type&#x3D;&quot;text&quot;&#x2F;&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114037609.png" alt="image-20220224114037609"></p>
+<h3 id="0x03-9"><a href="#0x03-9" class="headerlink" title="0x03"></a>0x03</h3><p>点击输入框：<br><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114105012.png" alt="image-20220224114105012"></p>
+<h2 id="Level-13"><a href="#Level-13" class="headerlink" title="Level-13"></a>Level-13</h2><h3 id="0x00-11"><a href="#0x00-11" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114218153.png" alt="image-20220224114218153"></p>
+<p>###0x01</p>
+<p>查看源码：<br><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114205898.png" alt="image-20220224114205898"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114305388.png" alt="image-20220224114305388"></p>
+<p>后端源码中获取的是<code>cookie</code>值，在<code>t_cook</code>处进行输出；原理和前两关一样。</p>
+<h3 id="0x02-12"><a href="#0x02-12" class="headerlink" title="0x02"></a>0x02</h3><p>抓包修改<code>cookie</code>值：</p>
+<pre class="line-numbers language-none"><code class="language-none">Cookie: user&#x3D;&quot;onclick&#x3D;&quot;alert(&#x2F;xss&#x2F;)&quot; type&#x3D;&quot;text&quot;&#x2F;&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114826582.png" alt="image-20220224114826582"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114855684.png" alt="image-20220224114855684"></p>
+<h3 id="0x03-10"><a href="#0x03-10" class="headerlink" title="0x03"></a>0x03</h3><p>点击输入框：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114918848.png" alt="image-20220224114918848"></p>
+<h2 id="Level-14"><a href="#Level-14" class="headerlink" title="Level-14"></a>Level-14</h2><h3 id="0x00-12"><a href="#0x00-12" class="headerlink" title="0x00"></a>0x00</h3><p>本关因iframe调用的文件地址失效，无法进行测试。要考的应该是通过修改iframe调用的文件来实现xss注入。</p>
 
                 
             </div>
@@ -1149,7 +1192,7 @@ javascript:alert(&#x2F;xss&#x2F;)
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">44.9k</span>
+                        class="white-color">45.3k</span>
             
             
             
