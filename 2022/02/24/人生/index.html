@@ -4,11 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="POST注入--基于Password的注入, 小白">
-    <meta name="description" content="[TOC]
-Less-17说实话，看到的时候挺吃惊的，没见过，试了很多payload，都注不进去，它还嘲讽我：
-
-0x01查了一下资料，又看了一下源码发现username已经不能被注入了，原因是源码将uname字段进行了检查，导致uname">
+    <meta name="keywords" content="人生, 小白">
+    <meta name="description" content="随便说说吧有时候发现很多事情，很多东西其实并不是你想的那样，或许这个世界也不是我们想的那样，有人会把世界想的很好，有人会把世界想的很坏，可偏偏世界不好也不坏。曾经老是听别人说什么命运有一部分是掌握在自己手里的，这句话我不否认，也不肯定。这里">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +17,7 @@ Less-17说实话，看到的时候挺吃惊的，没见过，试了很多payload
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>POST注入--基于Password的注入 | 小白</title>
+    <title>人生 | 小白</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -322,12 +319,12 @@ Less-17说实话，看到的时候挺吃惊的，没见过，试了很多payload
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">POST注入--基于Password的注入</h1>
+                    <h1 class="description center-align post-title">人生</h1>
                 </div>
             </div>
         </div>
@@ -443,8 +440,8 @@ Less-17说实话，看到的时候挺吃惊的，没见过，试了很多payload
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                                <span class="chip bg-color">SQL注入</span>
+                            <a href="/tags/%E4%BA%BA%E7%94%9F%E6%84%9F%E6%82%9F/">
+                                <span class="chip bg-color">人生感悟</span>
                             </a>
                         
                     </div>
@@ -455,8 +452,8 @@ Less-17说实话，看到的时候挺吃惊的，没见过，试了很多payload
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
-                                SQL注入
+                            <a href="/categories/%E4%BA%BA%E7%94%9F%E6%84%9F%E6%82%9F/" class="post-category">
+                                人生感悟
                             </a>
                         
                     </div>
@@ -468,7 +465,7 @@ Less-17说实话，看到的时候挺吃惊的，没见过，试了很多payload
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-02-05
+                    2022-02-24
                 </div>
                 
 
@@ -477,7 +474,7 @@ Less-17说实话，看到的时候挺吃惊的，没见过，试了很多payload
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    344
+                    929
                 </div>
                 
 
@@ -502,49 +499,14 @@ Less-17说实话，看到的时候挺吃惊的，没见过，试了很多payload
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>[TOC]</p>
-<h2 id="Less-17"><a href="#Less-17" class="headerlink" title="Less-17"></a>Less-17</h2><p>说实话，看到的时候挺吃惊的，没见过，试了很多payload，都注不进去，它还嘲讽我：</p>
-<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220205134905162.png" alt="image-20220205134905162"></p>
-<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>查了一下资料，又看了一下源码发现<code>username</code>已经不能被注入了，原因是源码将<code>uname</code>字段进行了检查，导致<code>uname</code>不能够构造payload进行注入。</p>
-<p>（check_input()中，对 username 进行各种转义的处理）</p>
-<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220205135439584.png" alt="image-20220205135439584"></p>
-<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220205135454717.png" alt="image-20220205135454717"></p>
-<p>源码当中还遇到<code>update</code>进行了密码更新，以至于<code>passwd</code>字段可以进行构造payload：</p>
-<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220205140047399.png" alt="image-20220205140047399"></p>
-<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>而执行以下语句时报错：</p>
-<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin  &amp;passwd&#x3D;1&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220205140447561.png" alt="image-20220205140447561"></p>
-<p>探测注入点：</p>
-<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin  &amp;passwd&#x3D;1&#39; or 1&#x3D;1 #<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>登录成功。</p>
-<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220205140542450.png" alt="image-20220205140542450"></p>
-<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>在passwd处构造payload进行报错注入：</p>
-<pre class="line-numbers language-none"><code class="language-none">uname&#x3D;admin  &amp;passwd&#x3D;1&#39; or extractvalue(1,concat(0x7e,(select database()),0x7e)) #<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220205140826696.png" alt="image-20220205140826696"></p>
-<p>其他payload类似。</p>
-<h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>这里还需要注意其他几个函数：</p>
-<p>1、增加一行数据：<strong>Insert</strong></p>
-<p>例：insert into users values(‘15’,’xiaobai’,’xiaobai’);</p>
-<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220205142153374.png" alt="image-20220205142153374"></p>
-<p>2、<strong>delete</strong>：</p>
-<p>删除：</p>
-<p>删数据: </p>
-<p>delete from 表名; </p>
-<p>delete from 表名 where id=1; </p>
-<p>删除结构： </p>
-<p>删数据库：drop database 数据库名; </p>
-<p>删除表：drop table 表名; </p>
-<p>删除表中的列:alter table 表名 drop column列名;</p>
-<p>例：delete from users where id=15；</p>
-<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220205142551573.png" alt="image-20220205142551573"></p>
-<p><img src="/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/image-20220205142607603.png" alt="image-20220205142607603"></p>
-<p>3、<strong>update</strong>：修改</p>
-<p>修改所有：updata 表名 set 列名=’新的值，非数字加单引号’ ;</p>
-<p>带条件的修改：updata 表名 set 列名=’新的值，非数字加单引号’ where id=6</p>
-<p>例：update users set username=’tt’ where id=15;</p>
+                <h2 id="随便说说吧"><a href="#随便说说吧" class="headerlink" title="随便说说吧"></a>随便说说吧</h2><p>有时候发现很多事情，很多东西其实并不是你想的那样，或许这个世界也不是我们想的那样，有人会把世界想的很好，有人会把世界想的很坏，可偏偏世界不好也不坏。曾经老是听别人说什么命运有一部分是掌握在自己手里的，这句话我不否认，也不肯定。这里不得不说命运中含有运气的成分，假如所有人都会掌握好自己手里的那部分命运，但后来或许会发生一些事情，导致你会怀疑自己的命运的一部分真的是由自己掌控的吗？其实并不然，自己或许只能掌控10%左右，剩下的全看运气。有时会想，世上没有十全十美的人，应该和这个道理差不多吧。说到运气，又让我想起了玄学，不得不说，世间万物藕断丝连，可能会牵扯到一些神乎其玄的东西。有时可能你苦苦追寻的东西，到最后不过是竹篮打水一场空，反观那些无心插柳柳成荫的人可能才是最后的赢家。这就是命运吗，可能我是在为我自己的无能找的借口罢了。后来，再不相信什么任何东西任何人，只想自己安安静静的做一些事情，无论什么事情，只要自己随心就好，不争不抢，随心自由。人生的得失莫过于此。有时还会想，人活着到底为了什么，结婚生子？还是生老病死。虽然最后的结局都一样，化作一抔黄土，但人还是要坚持活着。其实，换个角度角度想想，我也只是个普通人，站在人群里一样是人群中的那一个，毫不起眼，我并非天选之子，何必苦苦追寻一些莫须有的东西，可转念一想，人生或许正是如此，一辈子什么也带不来，最后什么也带不走，途中只不过寻求一些在世上存在过的痕迹罢了。最近老是看到大厂员工因工作劳累导致抢救无效的帖子，就会想：大学辛辛苦苦的钻研计算机知识，他们好不容易凭借自己的努力进了大厂，到最后没走的人生的尽头，看风景的途中就化为一抔黄土。难道人生就是努力过后就得面对现实吗？想想自己的过往，身边的朋友，有那个人是真心为自己的，或许时代真的变了，那个年代的真情随着时间的流逝到现在已经不复存在，也许还存在，但不会在我这里存在。有时其实一个人挺好的，做些自己想做的事，抛开一些烦心的事去放空自己，远离喧嚣厌恶的世界，反观会清净不少。有时的我会产生厌世心理，或许这也是原因之一吧。厌世归厌世，但终究我是活在这个世界当中的一粒尘埃，耗不起起眼罢了。这个世界也不会因为我自己的厌世心理而改变什么，唯有能改变就是我自己的内心了。</p>
+<p>很喜欢纪伯伦的一句话：</p>
+<p>如果有一天，</p>
+<p>你不再寻找爱情，只是去爱；</p>
+<p>你不再渴望成功，只是去做；</p>
+<p>你不再追求空泛的成长，只是开始修养自己的性情；</p>
+<p>你的人生，才真正的开始。</p>
+<p>​                                           —纪伯伦</p>
 
                 
             </div>
@@ -571,7 +533,7 @@ Less-17说实话，看到的时候挺吃惊的，没见过，试了很多payload
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://NoobXW.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/">http://NoobXW.github.io/2022/02/05/POST%E6%B3%A8%E5%85%A5-%E5%9F%BA%E4%BA%8EPassword%E7%9A%84%E6%B3%A8%E5%85%A5/</a>
+                    <a href="http://NoobXW.github.io/2022/02/24/%E4%BA%BA%E7%94%9F/">http://NoobXW.github.io/2022/02/24/%E4%BA%BA%E7%94%9F/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -609,8 +571,8 @@ Less-17说实话，看到的时候挺吃惊的，没见过，试了很多payload
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                                    <span class="chip bg-color">SQL注入</span>
+                                <a href="/tags/%E4%BA%BA%E7%94%9F%E6%84%9F%E6%82%9F/">
+                                    <span class="chip bg-color">人生感悟</span>
                                 </a>
                             
                         </div>
@@ -658,17 +620,18 @@ Less-17说实话，看到的时候挺吃惊的，没见过，试了很多payload
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/02/05/POST%E6%B3%A8%E5%85%A5-HTTP%E5%A4%B4%E6%B3%A8%E5%85%A5/">
+                <a href="/2022/02/24/%E4%BA%BA%E7%94%9F/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="POST注入-HTTP头注入">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="人生">
                         
-                        <span class="card-title">POST注入-HTTP头注入</span>
+                        <span class="card-title">人生</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -678,26 +641,27 @@ Less-17说实话，看到的时候挺吃惊的，没见过，试了很多payload
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>22-02-05
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-24
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
-                                    SQL注入
+                            <a href="/categories/%E4%BA%BA%E7%94%9F%E6%84%9F%E6%82%9F/" class="post-category">
+                                    人生感悟
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                        <span class="chip bg-color">SQL注入</span>
+                    <a href="/tags/%E4%BA%BA%E7%94%9F%E6%84%9F%E6%82%9F/">
+                        <span class="chip bg-color">人生感悟</span>
                     </a>
                     
                 </div>
@@ -711,13 +675,13 @@ Less-17说实话，看到的时候挺吃惊的，没见过，试了很多payload
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/">
+                <a href="/2022/02/22/xss%E8%BF%87%E6%BB%A4%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="SQL注入-POST注入">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="xss过滤的那些事">
                         
-                        <span class="card-title">SQL注入-POST注入</span>
+                        <span class="card-title">xss过滤的那些事</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -728,14 +692,14 @@ Less-17说实话，看到的时候挺吃惊的，没见过，试了很多payload
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>22-02-05
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-22
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
-                                    SQL注入
+                            <a href="/categories/XSS/" class="post-category">
+                                    XSS
                                 </a>
                             
                             
@@ -745,8 +709,8 @@ Less-17说实话，看到的时候挺吃惊的，没见过，试了很多payload
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                        <span class="chip bg-color">SQL注入</span>
+                    <a href="/tags/XSS/">
+                        <span class="chip bg-color">XSS</span>
                     </a>
                     
                 </div>
