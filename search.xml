@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>CTF文件包含</title>
+      <link href="/2022/02/24/CTF%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/"/>
+      <url>/2022/02/24/CTF%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在CTF在线平台解题时遇到CTF形式的文件包含漏洞，记录一下解题思路。</p><h2 id="CTF文件包含"><a href="#CTF文件包含" class="headerlink" title="CTF文件包含"></a>CTF文件包含</h2><p>以BUUCTF一道题为例：[ACTF2020 新生赛]Include 1</p><p>###0x00</p><p>打开靶机环境提示：</p><p><img src="/2022/02/24/CTF%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/image-20220224184834459.png" alt="image-20220224184834459"></p><p>###0x01</p><p>点击tips：</p><p><img src="/2022/02/24/CTF%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/image-20220224184942041.png" alt="image-20220224184942041"></p><h3 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h3><p>可以看到有 ?file=flag.php，而这里文件包含需要读取文件源码，也就意味需要读取flag.php文件的源码，而这里显示的是文件内容。</p><p>因此，利用以下<code>payload</code>读取文件源码：</p><pre class="line-numbers language-php" data-language="php"><code class="language-php">php<span class="token punctuation">:</span><span class="token comment">//filter/read=convert.base64-encode/resource=xxx.php</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h3 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h3><p>构造payload：</p><pre class="line-numbers language-none"><code class="language-none">?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag.php<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/2022/02/24/CTF%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/image-20220224185406557.png" alt="image-20220224185406557"></p><p>可以看到出现Base64编码后的源码；</p><h3 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h3><p>解码得到flag：</p><p><img src="/2022/02/24/CTF%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/image-20220224185507006.png" alt="image-20220224185507006"></p><h3 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h3><p>最重要的就是<code>读取文件的payload</code>。</p><p>参考文章：</p><p><a href="https://blog.csdn.net/qq_42181428/article/details/87090539?utm_medium=distribute.pc_relevant_t0.none-task-blog-2~default~BlogCommendFromMachineLearnPai2~default-1.contr">https://blog.csdn.net/qq_42181428/article/details/87090539?utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.contr</a></p><p>这个博主对文件包含漏洞做出了总结，很详细。</p><h2 id="php-filter"><a href="#php-filter" class="headerlink" title="php://filter"></a>php://filter</h2><p><strong>php://filter</strong>可以获取指定文件源码。当它与包含函数结合时，<code>php://filter流</code>会被当作php文件执行。所以我们一般对其进行编码，让其不执行。从而导致任意文件读取。</p><p>php://filter用法参考文章：</p><p><a href="https://www.leavesongs.com/PENETRATION/php-filter-magic.html">https://www.leavesongs.com/PENETRATION/php-filter-magic.html</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> CTF </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> CTF </tag>
+            
+            <tag> 靶场 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>xss跨站-WAF绕过及安全修复</title>
       <link href="/2022/02/24/xss%E8%B7%A8%E7%AB%99-WAF%E7%BB%95%E8%BF%87%E5%8F%8A%E5%AE%89%E5%85%A8%E4%BF%AE%E5%A4%8D/"/>
       <url>/2022/02/24/xss%E8%B7%A8%E7%AB%99-WAF%E7%BB%95%E8%BF%87%E5%8F%8A%E5%AE%89%E5%85%A8%E4%BF%AE%E5%A4%8D/</url>
@@ -540,9 +567,9 @@
       
         <tags>
             
-            <tag> SQL注入 </tag>
-            
             <tag> 靶场 </tag>
+            
+            <tag> SQL注入 </tag>
             
         </tags>
       
@@ -567,9 +594,9 @@
       
         <tags>
             
-            <tag> SQL注入 </tag>
-            
             <tag> 靶场 </tag>
+            
+            <tag> SQL注入 </tag>
             
         </tags>
       
