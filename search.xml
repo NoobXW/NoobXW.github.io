@@ -8,12 +8,12 @@
       <link href="/2022/02/24/xss%E8%B7%A8%E7%AB%99-WAF%E7%BB%95%E8%BF%87%E5%8F%8A%E5%AE%89%E5%85%A8%E4%BF%AE%E5%A4%8D/"/>
       <url>/2022/02/24/xss%E8%B7%A8%E7%AB%99-WAF%E7%BB%95%E8%BF%87%E5%8F%8A%E5%AE%89%E5%85%A8%E4%BF%AE%E5%A4%8D/</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2>]]></content>
       
       
       <categories>
           
-          <category> XSS </category>
+          <category> xss </category>
           
       </categories>
       
@@ -22,7 +22,7 @@
             
             <tag> Bypass WAF </tag>
             
-            <tag> XSS </tag>
+            <tag> xss </tag>
             
         </tags>
       
@@ -65,14 +65,14 @@
       
       <categories>
           
-          <category> XSS </category>
+          <category> xss </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> XSS </tag>
+            <tag> xss </tag>
             
         </tags>
       
@@ -117,14 +117,14 @@
       
       <categories>
           
-          <category> XSS </category>
+          <category> xss </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> XSS </tag>
+            <tag> xss </tag>
             
         </tags>
       
