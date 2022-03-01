@@ -5,10 +5,10 @@
     
     <entry>
       <title>SSRF基础</title>
-      <link href="/2022/02/27/SSRF%E5%9F%BA%E7%A1%80/"/>
-      <url>/2022/02/27/SSRF%E5%9F%BA%E7%A1%80/</url>
+      <link href="/2022/02/28/SSRF%E5%9F%BA%E7%A1%80/"/>
+      <url>/2022/02/28/SSRF%E5%9F%BA%E7%A1%80/</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2>]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="SSRF漏洞概述"><a href="#SSRF漏洞概述" class="headerlink" title="SSRF漏洞概述"></a>SSRF漏洞概述</h2><p>SSRF，全称Server-Side Request Forgery，服务端请求伪造，是一种由攻击者构造形成由服务器发起请求的一个安全漏洞，<strong>SSRF的主要攻击目标为外网无法访问的内部系统</strong>。</p><p>以下为SSRF脑图：</p><p><img src="/2022/02/28/SSRF%E5%9F%BA%E7%A1%80/image-20220301211927969.png" alt="image-20220301211927969"></p><h2 id="SSRF漏洞原理"><a href="#SSRF漏洞原理" class="headerlink" title="SSRF漏洞原理"></a>SSRF漏洞原理</h2><p><strong>SSRF形成的原因</strong>是服务端提供了从其他服务器应用获取数据的功能，在用户可控的情况下，未对目标地址进行过滤与限制，导致了此漏洞的产生。</p><p>大多数web应用都提供了从其他的服务器上获取数据的功能。使用指定的URL，web应用便可以获取图片，下载文件，读取文件内容等。SSRF的实质是利用存在缺陷的web应用作为代理攻击远程和本地的服务器。</p><p><img src="/2022/02/28/SSRF%E5%9F%BA%E7%A1%80/image-20220301213738983.png" alt="image-20220301213738983"></p><h2 id="SSRF漏洞危害"><a href="#SSRF漏洞危害" class="headerlink" title="SSRF漏洞危害"></a>SSRF漏洞危害</h2><p>1.内外网的端口和服务扫描</p><p>2.攻击运行在内网或本地的应用程序</p><p>3.对内网web应用进行指纹识别，识别企业内部的资产信息</p><p>4.攻击内网的web应用，主要是使用GET参数就可以实现的攻击（比如Struts2漏洞利用，SQL注入等）</p><p>5.利用file协议读取本地敏感数据文件等</p><h2 id="SSRF漏洞攻击"><a href="#SSRF漏洞攻击" class="headerlink" title="SSRF漏洞攻击"></a>SSRF漏洞攻击</h2><p>1、获取web应用可达服务器服务的banner信息以及收集内网web应用的指纹识别， 如开放的端口，中间件版本信息等。 </p><p>2、攻击运行在内网的系统或应用程序，获取内网各系统弱口令进行内网漫游、对有 漏洞的内网web应用实施攻击获取webshell，如st2命令执行、discuz ssrf通过redis 实施getshell等。 </p><p>3、利用有脆弱性的组件结合**ftp://<strong>，</strong>file:///<strong>，</strong>gopher://<strong>，</strong>dict://**等协议实施攻击。如 FFmpeg任意文件读取，xxe攻击等。</p><p>漏洞攻击：端口扫描，指纹识别，漏洞利用，内网探针等。</p><p>各个协议调用探针：http,file,dict,ftp,gopher 等。</p><h2 id="SSRF防御策略"><a href="#SSRF防御策略" class="headerlink" title="SSRF防御策略"></a>SSRF防御策略</h2><p>1、过滤返回信息，验证远程服务器对请求的响应是比较容易的方法； </p><p>2、统一错误信息，避免用户可以根据错误信息来判断远端服务器的端口状态； </p><p>3、限制请求的端口为http常用的端口，比如，80,443,8080,8090； </p><p>4、黑名单内网ip。避免应用被用来获取获取内网数据，攻击内网； </p><p>5、禁用不需要的协议。仅允许http和https请求； </p><p>6、使用正则对参数进行效验，防止畸形请求绕过黑名单。</p><p>参考文章：<br><a href="https://www.t00ls.net/articles-41070.html">https://www.t00ls.net/articles-41070.html</a></p>]]></content>
       
       
       <categories>
