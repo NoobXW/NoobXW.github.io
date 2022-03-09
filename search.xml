@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>CSRF靶场</title>
+      <link href="/2022/03/08/CSRF%E9%9D%B6%E5%9C%BA/"/>
+      <url>/2022/03/08/CSRF%E9%9D%B6%E5%9C%BA/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><p>1、靶场环境：Pikachu-CSRF</p><p>2、攻击机：Win10</p><h2 id="CSRF（get）"><a href="#CSRF（get）" class="headerlink" title="CSRF（get）"></a>CSRF（get）</h2><h3 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h3><p>首先进行登录：<br><img src="/2022/03/08/CSRF%E9%9D%B6%E5%9C%BA/image-20220308111403863.png" alt="image-20220308111403863"></p><h3 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h3><p>抓包构造伪链接：</p><p><img src="/2022/03/08/CSRF%E9%9D%B6%E5%9C%BA/image-20220309105846745.png" alt="image-20220309105846745"></p><h3 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h3><p>构造url伪链接，将地址修改为china：</p><pre class="line-numbers language-none"><code class="language-none">pikachu-master&#x2F;vul&#x2F;csrf&#x2F;csrfget&#x2F;csrf_get_edit.php?sex&#x3D;boy&amp;phonenum&#x3D;15988767673&amp;add&#x3D;china&amp;email&#x3D;kobe@pikachu.com&amp;submit&#x3D;submit<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/2022/03/08/CSRF%E9%9D%B6%E5%9C%BA/image-20220309110323179.png" alt="image-20220309110323179"></p><p>伪造修改成功。</p><p><strong>注意：</strong>必须为用户登录状态。</p><p>##CSRF（post）</p><h3 id="0x00-1"><a href="#0x00-1" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/03/08/CSRF%E9%9D%B6%E5%9C%BA/image-20220309110611513.png" alt="image-20220309110611513"></p><h3 id="0x01-1"><a href="#0x01-1" class="headerlink" title="0x01"></a>0x01</h3><p>先抓个包</p><p><img src="/2022/03/08/CSRF%E9%9D%B6%E5%9C%BA/image-20220309110835618.png" alt="image-20220309110835618"></p><p>出现访问目录，url和提交的表单，由于是基于post，那这里伪造就需要伪造一个表单了进行后续的操作。</p><h3 id="0x02-1"><a href="#0x02-1" class="headerlink" title="0x02"></a>0x02</h3><p>利用burpsuit构造CSRF POC来伪造表单：</p><p><img src="/2022/03/08/CSRF%E9%9D%B6%E5%9C%BA/image-20220309111423015.png" alt="image-20220309111423015"></p><h3 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h3><p>修改地址为china</p><p><img src="/2022/03/08/CSRF%E9%9D%B6%E5%9C%BA/image-20220309111640705.png" alt="image-20220309111640705"></p><h3 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h3><p>生成攻击脚本</p><p><img src="/2022/03/08/CSRF%E9%9D%B6%E5%9C%BA/image-20220309111721787.png" alt="image-20220309111721787"></p><h3 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h3><p>访问伪造的url，点击submit request</p><p><img src="/2022/03/08/CSRF%E9%9D%B6%E5%9C%BA/image-20220309111838945.png" alt="image-20220309111838945"></p><h3 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h3><p>可以看到信息已经被修改</p><p><img src="/2022/03/08/CSRF%E9%9D%B6%E5%9C%BA/image-20220309111912870.png" alt="image-20220309111912870"></p><p><strong>注意：</strong>无论CSRF是基于GET方式或是基于POST方式，都需要在用户登录的情况下进行。</p><p>##CSRF（Taken）</p><h3 id="0x00-2"><a href="#0x00-2" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/03/08/CSRF%E9%9D%B6%E5%9C%BA/image-20220309112401590.png" alt="image-20220309112401590"></p><p>基于Taken的CSRF：敏感请求中加入了Token，从而不易进行伪造。在每次请求中，都会加入一个随机码，后台每次都会对提交请求中的Token值进行优先比较。</p><h3 id="0x01-2"><a href="#0x01-2" class="headerlink" title="0x01"></a>0x01</h3><p><strong>token防止跨站请求伪造的原理：</strong>在浏览器访问网站A时，网站A设置cookie会增加随机值token，这个值是随机的。返回给浏览器时，cookie会储存在浏览器，同时会把token传给表单里面的隐藏字段。所以当浏览器用自己的表单时会自带token，网站A取到这个值和cookie里的token一致就通过。而网站B里面的表单没有这个值，所以不能通过，这样就阻止了恶意攻击。非表单也是这样的原理。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> CSRF </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> CSRF </tag>
+            
+            <tag> 靶场 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>SSRF基础</title>
       <link href="/2022/02/28/SSRF%E5%9F%BA%E7%A1%80/"/>
       <url>/2022/02/28/SSRF%E5%9F%BA%E7%A1%80/</url>
@@ -70,9 +97,9 @@
       
         <tags>
             
-            <tag> CTF </tag>
-            
             <tag> 靶场 </tag>
+            
+            <tag> CTF </tag>
             
         </tags>
       
