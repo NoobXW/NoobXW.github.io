@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>墨者学院-命令执行</title>
+      <link href="/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/"/>
+      <url>/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>#命令执行注入</p><h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>启动靶场环境</p><p><img src="/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/image-20220313094027047.png" alt="image-20220313094027047"></p><h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>提示输入ip地址</p><p><img src="/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/image-20220313094214029.png" alt="image-20220313094214029"></p><p>先测试一下</p><p><img src="/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/image-20220313094257314.png" alt="image-20220313094257314"></p><p>可以看到成功ping的返回信息。</p><h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>接下来尝试使用管道符执行ls命令查看目录</p><p><img src="/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/image-20220313100436220.png" alt="image-20220313100436220"></p><p>这里判断的时候出现弹窗提示ip格式不对，先看下源码是不是前端验证</p><p><img src="/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/image-20220313094615030.png" alt="image-20220313094615030"></p><p>果然，那这里的话就需要绕过前端验证。</p><h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>抓包进行绕过</p><p><img src="/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/image-20220313100600741.png" alt="image-20220313100600741"></p><p>目录中有key文件</p><h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>使用cat命令打开key文件</p><p><img src="/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/image-20220313100912420.png" alt="image-20220313100912420"></p><p>无回显，因该是有过滤</p><h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>添加<code>&lt;</code>绕过过滤，成功得到key</p><p><img src="/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/image-20220313100958826.png" alt="image-20220313100958826"></p><h2 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h2><p>提交key，完成</p><p><img src="/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/image-20220313101132802.png" alt="image-20220313101132802"></p><h1 id="PHP代码分析溯源-第4题"><a href="#PHP代码分析溯源-第4题" class="headerlink" title="PHP代码分析溯源(第4题)"></a>PHP代码分析溯源(第4题)</h1><h2 id="0x00-1"><a href="#0x00-1" class="headerlink" title="0x00"></a>0x00</h2><p>启动靶场</p><p><img src="/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/image-20220313101314099.png" alt="image-20220313101314099"></p><h2 id="0x01-1"><a href="#0x01-1" class="headerlink" title="0x01"></a>0x01</h2><p>提示key在根目录，而且还有一段base64加密的php代码，先试着解密查看内容</p><p><img src="/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/image-20220313101401929.png" alt="image-20220313101401929"></p><h2 id="0x02-1"><a href="#0x02-1" class="headerlink" title="0x02"></a>0x02</h2><p>解密出来是REQUEST请求，a是参数，也是可控变量，那这里利用a做文章</p><p><img src="/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/image-20220313101922929.png" alt="image-20220313101922929"></p><h2 id="0x03-1"><a href="#0x03-1" class="headerlink" title="0x03"></a>0x03</h2><pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;124.70.71.251:42767&#x2F;f.php?a&#x3D;ls<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>得到目录，有key存在</p><p><img src="/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/image-20220313102142552.png" alt="image-20220313102142552"></p><h2 id="0x04-1"><a href="#0x04-1" class="headerlink" title="0x04"></a>0x04</h2><pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;124.70.71.251:42767&#x2F;f.php?a&#x3D;cat%20key_5986251809730.php<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>查看源码得到key</p><p><img src="/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/image-20220313102605832.png" alt="image-20220313102605832"></p><h2 id="0x05-1"><a href="#0x05-1" class="headerlink" title="0x05"></a>0x05</h2><p>提交key，完成</p><p><img src="/2022/03/13/%E5%A2%A8%E8%80%85%E5%AD%A6%E9%99%A2-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/image-20220313102721754.png" alt="image-20220313102721754"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> RCE </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 靶场 </tag>
+            
+            <tag> RCE </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>RCE代码及命令执行漏洞</title>
       <link href="/2022/03/12/RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/"/>
       <url>/2022/03/12/RCE%E4%BB%A3%E7%A0%81%E5%8F%8A%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/</url>
