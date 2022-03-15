@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>攻防世界-web-backup</title>
+      <link href="/2022/03/15/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-web-backup/"/>
+      <url>/2022/03/15/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-web-backup/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记录一下攻防世界新手区，web-backup这道题。关于index.php的备份文件。</p><h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>启动靶场，看到：你知道index.php的备份文件名吗？</p><p><img src="/2022/03/15/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-web-backup/image-20220315172147074.png" alt="image-20220315172147074"></p><h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>使用搜索引擎</p><p><img src="/2022/03/15/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-web-backup/image-20220315172357429.png" alt="image-20220315172357429"></p><h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>在地址栏输入：<code>index.php.bak</code>，可以看到备份文件下载完成</p><p><img src="/2022/03/15/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-web-backup/image-20220315172446621.png" alt="image-20220315172446621"></p><p><img src="/2022/03/15/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-web-backup/image-20220315172429110.png" alt="image-20220315172429110"></p><h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>打开备份文件，拿到flag</p><p><img src="/2022/03/15/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-web-backup/image-20220315172612851.png" alt="image-20220315172612851"></p><h2 id="0x04-总结"><a href="#0x04-总结" class="headerlink" title="0x04 总结"></a>0x04 总结</h2><p>主要记录一下index.php的备份文件是什么，以后遇到起码不陌生。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> CTF </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> CTF </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>php弱类型</title>
       <link href="/2022/03/15/php%E5%BC%B1%E7%B1%BB%E5%9E%8B/"/>
       <url>/2022/03/15/php%E5%BC%B1%E7%B1%BB%E5%9E%8B/</url>
@@ -99,9 +124,9 @@
       
         <tags>
             
-            <tag> CSRF </tag>
-            
             <tag> 靶场 </tag>
+            
+            <tag> CSRF </tag>
             
         </tags>
       
@@ -176,9 +201,9 @@
       
         <tags>
             
-            <tag> 靶场 </tag>
-            
             <tag> CTF </tag>
+            
+            <tag> 靶场 </tag>
             
         </tags>
       
