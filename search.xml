@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>BUU-UPLOAD联合RCE</title>
+      <link href="/2022/03/18/BUU-UPLOAD%E8%81%94%E5%90%88RCE/"/>
+      <url>/2022/03/18/BUU-UPLOAD%E8%81%94%E5%90%88RCE/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>BUU一道文件上传联合RCE的一道题。</p><h2 id="0x00-启动靶场"><a href="#0x00-启动靶场" class="headerlink" title="0x00 启动靶场"></a>0x00 启动靶场</h2><p>启动靶场提示上传文件，随便上传一个1.php文件，写入一句话，发现并没有做限制，可以任意文件上传，但上传之后会将文件名和后缀名修改为xxx.jpg的格式。</p><p><img src="/2022/03/18/BUU-UPLOAD%E8%81%94%E5%90%88RCE/image-20220318173443517.png" alt="image-20220318173443517"></p><p><img src="/2022/03/18/BUU-UPLOAD%E8%81%94%E5%90%88RCE/image-20220318173527061.png" alt="image-20220318173527061"></p><p>看到回显的路径。</p><p>试着访问，是空白页面，不知道是否能被执行。<br><img src="/2022/03/18/BUU-UPLOAD%E8%81%94%E5%90%88RCE/image-20220318173623676.png" alt="image-20220318173623676"></p><p>上传一个2.php，里面写入<code>Hello World!</code>看看效果</p><pre class="line-numbers language-none"><code class="language-none">&lt;?php echo &#39;Hello World!&#39;; ?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/2022/03/18/BUU-UPLOAD%E8%81%94%E5%90%88RCE/image-20220318173847728.png" alt="image-20220318173847728"></p><p>可以看到文件被执行成功了，那么1.php也可以被执行成功。</p><p><strong>（我们上传之后 不能直接访问xxx/uploads/xxxxx.jpg 那样只是预览这个文件 而起不到调用这个文件的作用）</strong></p><h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>但是使用蚁剑链接后可以连接成功，但是不能连接到文件目录</p><p><img src="/2022/03/18/BUU-UPLOAD%E8%81%94%E5%90%88RCE/image-20220318174008101.png" alt="image-20220318174008101"></p><h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>最后翻了几篇帖子，发现需要和RCE漏洞一起执行。</p><p>首先需要将一句话木马修改一下：</p><pre class="line-numbers language-none"><code class="language-none">&lt;?php @eval(system($_POST[&quot;x&quot;]));?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><strong>注：</strong>这里使用<code>system()</code>函数的原因：（这也是为什么会联合RCE一起的原因）</p><p><img src="/2022/03/18/BUU-UPLOAD%E8%81%94%E5%90%88RCE/image-20220318174359421.png" alt="image-20220318174359421"></p><h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>最后将修改的1.php文件上传并访问（这里同样访问后是空白），但经过上面的测试可以知道上传的文件已经被执行成功。</p><p><img src="/2022/03/18/BUU-UPLOAD%E8%81%94%E5%90%88RCE/image-20220318174629288.png" alt="image-20220318174629288"></p><h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>接着将url放入到Postman中访问，并把Body的值修改为<code>x:ls /</code>，可以得到网站目录</p><p><img src="/2022/03/18/BUU-UPLOAD%E8%81%94%E5%90%88RCE/image-20220318174901586.png" alt="image-20220318174901586"></p><p>再修改为<code>x:cat /flag</code>，得到flag</p><p><img src="/2022/03/18/BUU-UPLOAD%E8%81%94%E5%90%88RCE/image-20220318175147535.png" alt="image-20220318175147535"></p><h2 id="0x06-总结"><a href="#0x06-总结" class="headerlink" title="0x06 总结"></a>0x06 总结</h2><p>这道题最主要的就是要知道虽然可以进行任意文件上传，但上传后的文件名和后缀名都被会重新修改，导致菜刀或者蚁剑可以连接成功，但不能够访问网站目录；其次就是要知道直接访问xxx.jpg文件只是去预览这个文件，而不是去调用这个文件，导致一句话不能被执行而失去作用，这个时候使用工Postman修改Body中参数，加入命令找到flag。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 靶场 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 靶场 </tag>
+            
+            <tag> RCE </tag>
+            
+            <tag> 文件上传 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>BUU-BURP-X-Real-IP</title>
       <link href="/2022/03/18/BUU-BURP-X-Real-IP/"/>
       <url>/2022/03/18/BUU-BURP-X-Real-IP/</url>
@@ -45,9 +74,9 @@
       
         <tags>
             
-            <tag> SQL注入 </tag>
-            
             <tag> 靶场 </tag>
+            
+            <tag> SQL注入 </tag>
             
         </tags>
       
@@ -434,9 +463,9 @@
       
         <tags>
             
-            <tag> Bypass WAF </tag>
-            
             <tag> 文件上传 </tag>
+            
+            <tag> Bypass WAF </tag>
             
         </tags>
       
@@ -515,9 +544,9 @@
       
         <tags>
             
-            <tag> 基础知识 </tag>
-            
             <tag> 文件上传 </tag>
+            
+            <tag> 基础知识 </tag>
             
         </tags>
       
@@ -542,9 +571,9 @@
       
         <tags>
             
-            <tag> 基础知识 </tag>
-            
             <tag> 文件上传 </tag>
+            
+            <tag> 基础知识 </tag>
             
         </tags>
       
@@ -825,9 +854,9 @@
       
         <tags>
             
-            <tag> SQL注入 </tag>
-            
             <tag> 靶场 </tag>
+            
+            <tag> SQL注入 </tag>
             
         </tags>
       
@@ -852,9 +881,9 @@
       
         <tags>
             
-            <tag> SQL注入 </tag>
-            
             <tag> 靶场 </tag>
+            
+            <tag> SQL注入 </tag>
             
         </tags>
       
