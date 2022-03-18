@@ -4,10 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="SQL注入-Less8-Less10, 小白">
-    <meta name="description" content="[TOC]
-0x00记录一下Less-8—Less10盲注遇到的一些问题
-0x01首先8-10关最大特点就是没有报错回显，导致开始注入的时候都是利用报错注入，结果统统失败，后来查看源码发现，报错回显被注释掉了，那这几关报错盲注就不能用了，只">
+    <meta name="keywords" content="BUU-BURP-X-Real-IP, 小白">
+    <meta name="description" content="前言BUU一道BURP的题目，并记录一下X-Forwarded-For和X-Real-IP的区别。
+0x00 启动靶场看到只能本地访问，一般看到这句话的时候肯定首先想到的是X-Forwarded-For，但是数据包中加了X-Forwarde">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>SQL注入-Less8-Less10 | 小白</title>
+    <title>BUU-BURP-X-Real-IP | 小白</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -321,12 +320,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">SQL注入-Less8-Less10</h1>
+                    <h1 class="description center-align post-title">BUU-BURP-X-Real-IP</h1>
                 </div>
             </div>
         </div>
@@ -446,10 +445,6 @@
                                 <span class="chip bg-color">靶场</span>
                             </a>
                         
-                            <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                                <span class="chip bg-color">SQL注入</span>
-                            </a>
-                        
                     </div>
                     
                 </div>
@@ -458,8 +453,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
-                                SQL注入
+                            <a href="/categories/%E9%9D%B6%E5%9C%BA/" class="post-category">
+                                靶场
                             </a>
                         
                     </div>
@@ -471,7 +466,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-02-04
+                    2022-03-18
                 </div>
                 
 
@@ -480,7 +475,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    410
+                    296
                 </div>
                 
 
@@ -505,20 +500,15 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>[TOC]</p>
-<h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>记录一下Less-8—Less10盲注遇到的一些问题</p>
-<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>首先8-10关最大特点就是没有报错回显，导致开始注入的时候都是利用报错注入，结果统统失败，后来查看源码发现，报错回显被注释掉了，那这几关报错盲注就不能用了，只能用布尔盲注和时间盲注。</p>
-<p><img src="/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/image-20220204003814683.png" alt="image-20220204003814683"></p>
-<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>其次就是注入点的问题，Less-8是单引号的布尔盲注，Less-9是单引号的时间盲注，Less-10是双引号的时间盲注，每次注入的时候探测注入很关键，这也是每次注入的时候我老是忽略的问题。</p>
-<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>然后就是对于布尔盲注和时间盲注时，猜表名和猜列名遇到的问题；由于猜表名的时候根据以往的回显表示：子查询超过一行的报错，以至于这几关每次注入的时候老是缺少<code>limit</code>字段，而且又是盲注的无回显，导致每次出问题都不知道在哪里，仔细一看才知道没加<code>limit</code>字段。</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;sqli-labs-master&#x2F;Less-8&#x2F;?id&#x3D;1&#39; and if(ascii(substr((select table_name from information_schema.tables where table_schema&#x3D;&#39;security&#39; limit 1,1),1,1))&#x3D;116,1,sleep(5)) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-
-
-<h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>Less-9和Less-10最大的特点就是：时间盲注的时候，不管怎么注入都只出现You are in………..，但是浏览器会响应，如图：</p>
-<p><img src="/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/image-20220204005121825.png" alt="image-20220204005121825"></p>
-<p>看到等待sqli-labs-master的响应…才明白sleep()函数被执行了，但页面会保持不变。</p>
-<h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>sqli-labs的前十关都是基于GET方式的注入。</p>
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>BUU一道BURP的题目，并记录一下X-Forwarded-For和X-Real-IP的区别。</p>
+<h2 id="0x00-启动靶场"><a href="#0x00-启动靶场" class="headerlink" title="0x00 启动靶场"></a>0x00 启动靶场</h2><p>看到只能本地访问，一般看到这句话的时候肯定首先想到的是X-Forwarded-For，但是数据包中加了X-Forwarded-For也没什么作用，翻了几篇帖子看到需要用到X-Real-IP。</p>
+<p><img src="/2022/03/18/BUU-BURP-X-Real-IP/image-20220318161302112.png" alt="image-20220318161302112"></p>
+<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>在数据包中加入<code>X-Real-IP：127.0.0.1</code>，看到有登录页面：<br><img src="/2022/03/18/BUU-BURP-X-Real-IP/image-20220318161558537.png" alt="image-20220318161558537"></p>
+<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>接着点击登录即可获得flag：<br><img src="/2022/03/18/BUU-BURP-X-Real-IP/image-20220318161738452.png" alt="image-20220318161738452"></p>
+<p><img src="/2022/03/18/BUU-BURP-X-Real-IP/image-20220318161801491.png" alt="image-20220318161801491"></p>
+<h2 id="0x03-两者区别"><a href="#0x03-两者区别" class="headerlink" title="0x03 两者区别"></a>0x03 两者区别</h2><p>1、X-Forwarded-For：用于记录代理信息的，每经过一级代理(匿名代理除外)，代理服务器都会把这次请求的来源IP追加在X-Forwarded-For中</p>
+<p>2、X-Real-IP：一般只记录真实发出请求的客户端IP</p>
+<h2 id="0x04-总结"><a href="#0x04-总结" class="headerlink" title="0x04 总结"></a>0x04 总结</h2><p>了解<code>X-Forwarded-For</code>和<code>X-Real-IP</code>的区别；并且在本题中加入<code>X-Forwarded-For</code>同样也会把请求来源的IP追加在后面，导致请求的时候并不是使用<code>127.0.0.1</code>进行访问，这也是为什么<code>X-Forwarded-For</code>不能成功的原因，而使用<code>X-Real-IP</code>时，后台在检测的时候便是真实的127.0.0.1在访问。</p>
 
                 
             </div>
@@ -545,7 +535,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://NoobXW.github.io/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/">http://NoobXW.github.io/2022/02/04/SQL%E6%B3%A8%E5%85%A5-Less8-Less10/</a>
+                    <a href="http://NoobXW.github.io/2022/03/18/BUU-BURP-X-Real-IP/">http://NoobXW.github.io/2022/03/18/BUU-BURP-X-Real-IP/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -585,10 +575,6 @@
                             
                                 <a href="/tags/%E9%9D%B6%E5%9C%BA/">
                                     <span class="chip bg-color">靶场</span>
-                                </a>
-                            
-                                <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                                    <span class="chip bg-color">SQL注入</span>
                                 </a>
                             
                         </div>
@@ -636,17 +622,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/02/05/SQL%E6%B3%A8%E5%85%A5-POST%E6%B3%A8%E5%85%A5/">
+                <a href="/2022/03/18/BUU-BURP-X-Real-IP/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="SQL注入-POST注入">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="BUU-BURP-X-Real-IP">
                         
-                        <span class="card-title">SQL注入-POST注入</span>
+                        <span class="card-title">BUU-BURP-X-Real-IP</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -656,26 +643,27 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>22-02-05
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-03-18
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
-                                    SQL注入
+                            <a href="/categories/%E9%9D%B6%E5%9C%BA/" class="post-category">
+                                    靶场
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                        <span class="chip bg-color">SQL注入</span>
+                    <a href="/tags/%E9%9D%B6%E5%9C%BA/">
+                        <span class="chip bg-color">靶场</span>
                     </a>
                     
                 </div>
@@ -689,13 +677,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/02/02/%E7%9B%B2%E6%B3%A8-SQL%E9%9D%B6%E5%9C%BA/">
+                <a href="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="盲注-SQL靶场">
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="BUU-SQL注入-寻找注入点">
                         
-                        <span class="card-title">盲注-SQL靶场</span>
+                        <span class="card-title">BUU-SQL注入-寻找注入点</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -706,7 +694,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>22-02-02
+                                <i class="far fa-clock fa-fw icon-date"></i>22-03-18
                             </span>
                         <span class="publish-author">
                             
