@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>BUU-Crypto-看我回旋踢</title>
+      <link href="/2022/03/19/BUU-Crypto-%E7%9C%8B%E6%88%91%E5%9B%9E%E6%97%8B%E8%B8%A2/"/>
+      <url>/2022/03/19/BUU-Crypto-%E7%9C%8B%E6%88%91%E5%9B%9E%E6%97%8B%E8%B8%A2/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记一次BUU密码学的CTF题目：看我回旋踢。不是很擅长密码学这一个方向，简单记录一下，毕竟计算机最后都不分家嘛。</p><h2 id="0x00-启动靶场"><a href="#0x00-启动靶场" class="headerlink" title="0x00 启动靶场"></a>0x00 启动靶场</h2><p>启动靶场下载压缩包，解压得到一串字符串</p><p><img src="/2022/03/19/BUU-Crypto-%E7%9C%8B%E6%88%91%E5%9B%9E%E6%97%8B%E8%B8%A2/image-20220319221415074.png" alt="image-20220319221415074"></p><p><img src="/2022/03/19/BUU-Crypto-%E7%9C%8B%E6%88%91%E5%9B%9E%E6%97%8B%E8%B8%A2/image-20220319221443265.png" alt="image-20220319221443265"></p><h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p><code>synt&#123;5pq1004q-86n5-46q8-o720-oro5on0417r1&#125;</code></p><p>首先看到会很懵，不知道这是什么编码，直接使用搜索引擎搜索synt编码会出现<code>rot13</code>的字样，再去搜索<code>rot13</code>会发现这是<code>rot13编码</code>。</p><h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>使用在线解密工具：<br><a href="http://www.rot13.de/index.php">http://www.rot13.de/index.php</a></p><p><img src="/2022/03/19/BUU-Crypto-%E7%9C%8B%E6%88%91%E5%9B%9E%E6%97%8B%E8%B8%A2/image-20220319222311444.png" alt="image-20220319222311444"></p><p>将字符串解密得到flag。</p><h2 id="0x03-ROT13编码"><a href="#0x03-ROT13编码" class="headerlink" title="0x03 ROT13编码"></a>0x03 ROT13编码</h2><p><code>ROT13</code>（回转13位，rotate by 13 places，有时中间加了个连字符称作ROT-13）是一种简易的替换式密码。</p><p><code>ROT13</code>被描述成“杂志字谜上下颠倒解答的Usenet点对点体”。ROT13 也是过去在古罗马开发的凯撒加密的一种变体。</p><p><strong>特点：</strong></p><p>套用ROT13到一段文字上仅仅只需要检查字元字母顺序并取代它在13位之后的对应字母， 有需要超过时则重新绕回26英文字母开头即可。</p><pre class="line-numbers language-none"><code class="language-none">ROT13函数是它自己的逆反：ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzNOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 靶场 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Crypto </tag>
+            
+            <tag> 靶场 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>BUU-UPLOAD联合RCE</title>
       <link href="/2022/03/18/BUU-UPLOAD%E8%81%94%E5%90%88RCE/"/>
       <url>/2022/03/18/BUU-UPLOAD%E8%81%94%E5%90%88RCE/</url>
@@ -544,9 +571,9 @@
       
         <tags>
             
-            <tag> 文件上传 </tag>
-            
             <tag> 基础知识 </tag>
+            
+            <tag> 文件上传 </tag>
             
         </tags>
       
@@ -571,9 +598,9 @@
       
         <tags>
             
-            <tag> 文件上传 </tag>
-            
             <tag> 基础知识 </tag>
+            
+            <tag> 文件上传 </tag>
             
         </tags>
       
