@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>文件操作-文件包含漏洞</title>
+      <link href="/2022/03/20/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/"/>
+      <url>/2022/03/20/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>脑图：<br><img src="/2022/03/20/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-20220320180915280.png" alt="image-20220320180915280"></p><h2 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h2><p>服务器执行PHP文件时，可以通过文件包含函数加载另一个文件中的PHP代码，并且当PHP来执行，这会为开发者节省大量的时间。这意味着可以创建供所有网页引用的标准页眉或菜单文件。当页面需要更新时，只更新一个包含文件就可以了，或者向网站添加一张新页面时，仅仅需要修改一下菜单文件（而不是更新所有网页中的链接）。</p><h2 id="文件包含涉及函数"><a href="#文件包含涉及函数" class="headerlink" title="文件包含涉及函数"></a>文件包含涉及函数</h2><pre class="line-numbers language-none"><code class="language-none">require()函数：只要程序一运行就包含文件，找不到被包含的文件时会产生致命错误，并停止脚本include()函数：执行到include时才包含文件，找不到被包含文件时只会产生警告，脚本将继续执行include_once()函数：若文件中代码已被包含则不会再次包含require_once()函数：若文件中代码已被包含则不会再次包含<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h2><p>文件包含函数加载的参数没有经过过滤或者严格的定义，可以被用户控制，包含其他恶意文件，导致了执行了非预期的代码。</p><p>例：</p><pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>    <span class="token variable">$filename</span> <span class="token operator">=</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'file'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>    <span class="token keyword">include</span><span class="token punctuation">(</span><span class="token variable">$filename</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>假如网站中有phpinfo.php文件，攻击者可以构造<code>?file=phpinfo.php</code>的payload进行读取敏感文件。</p><h2 id="漏洞检测"><a href="#漏洞检测" class="headerlink" title="漏洞检测"></a>漏洞检测</h2><p>1、白盒：进行代码审计</p><p>2、黑盒：漏扫工具，公开漏洞，手工看参数值及功能点</p><h2 id="漏洞类型"><a href="#漏洞类型" class="headerlink" title="漏洞类型"></a>漏洞类型</h2><p>1、<strong>本地文件包含</strong>（读取本地的敏感文件）<br><code>file://C:\Windows\System32\drivers\etc\hosts</code> 本地DNS存在<br><code>file://D:\software\phpStudy\PHPTutorial\php\php-5.4.45\php.ini php</code>的配置文件<br><code>file://D:\software\phpStudy\PHPTutorial\Apache\conf\httpd.conf http</code>的配置文件<br><code>file://D:\software\phpStudy\PHPTutorial\MySQL\my.ini</code> 数据库的配置文件</p><p><strong>当本地包含有限制的情况下常用绕过姿势：</strong><br>1、%00截断：</p><p>条件：magic_quotes_gpc=Off，php版本&lt;5.3.4</p><p>filename=../../../xxx.txt</p><p>2、长度截断：</p><p>条件：windows，点号<code>（.）</code>需要长于256；linux长于4096</p><p>（相当于垃圾数据填充；由于命名过长会导致有限制的后缀名加不上来，导致绕过限制）</p><p>2、<strong>远程文件包含</strong><br>一般情况下，远程文件包含的都是TXT文件，可以直接使用远程文件包含包含一句话木马，或者利用文件包含写入一句话木马(单引号)<br>必须开启<code>php.ini</code>中的<code>allow_url_include</code>才能使用远程包含<code>http://IP地址/文件名</code></p><p><strong>远程包含有限制基本绕过姿势：</strong></p><p>1、加%20</p><p>2、加%23</p><p>3、？</p><p>4、……</p><h2 id="伪协议"><a href="#伪协议" class="headerlink" title="伪协议"></a>伪协议</h2><p><img src="/2022/03/20/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/image-20220320183939141.png" alt="image-20220320183939141"></p><p>参考文章：<br><a href="https://blog.csdn.net/DARKNOTES/article/details/118660183">https://blog.csdn.net/DARKNOTES/article/details/118660183</a></p><p><a href="https://www.cnblogs.com/endust/p/11804767.html">https://www.cnblogs.com/endust/p/11804767.html</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 文件包含 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 文件包含 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>BUU-Crypto-看我回旋踢</title>
       <link href="/2022/03/19/BUU-Crypto-%E7%9C%8B%E6%88%91%E5%9B%9E%E6%97%8B%E8%B8%A2/"/>
       <url>/2022/03/19/BUU-Crypto-%E7%9C%8B%E6%88%91%E5%9B%9E%E6%97%8B%E8%B8%A2/</url>
@@ -13,7 +38,7 @@
       
       <categories>
           
-          <category> 靶场 </category>
+          <category> CTF </category>
           
       </categories>
       
@@ -22,7 +47,7 @@
             
             <tag> Crypto </tag>
             
-            <tag> 靶场 </tag>
+            <tag> CTF </tag>
             
         </tags>
       
@@ -40,14 +65,14 @@
       
       <categories>
           
-          <category> 靶场 </category>
+          <category> CTF </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 靶场 </tag>
+            <tag> CTF </tag>
             
             <tag> RCE </tag>
             
@@ -69,14 +94,14 @@
       
       <categories>
           
-          <category> 靶场 </category>
+          <category> CTF </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 靶场 </tag>
+            <tag> CTF </tag>
             
         </tags>
       
@@ -101,7 +126,7 @@
       
         <tags>
             
-            <tag> 靶场 </tag>
+            <tag> CTF </tag>
             
             <tag> SQL注入 </tag>
             
@@ -205,9 +230,11 @@
       
         <tags>
             
-            <tag> 靶场 </tag>
+            <tag> CTF </tag>
             
             <tag> RCE </tag>
+            
+            <tag> 靶场 </tag>
             
         </tags>
       
@@ -257,9 +284,9 @@
       
         <tags>
             
-            <tag> 靶场 </tag>
-            
             <tag> CSRF </tag>
+            
+            <tag> 靶场 </tag>
             
         </tags>
       
@@ -334,9 +361,9 @@
       
         <tags>
             
-            <tag> 靶场 </tag>
-            
             <tag> CTF </tag>
+            
+            <tag> 靶场 </tag>
             
         </tags>
       
@@ -517,9 +544,9 @@
       
         <tags>
             
-            <tag> 靶场 </tag>
-            
             <tag> 文件上传 </tag>
+            
+            <tag> 靶场 </tag>
             
         </tags>
       
@@ -544,9 +571,9 @@
       
         <tags>
             
-            <tag> 靶场 </tag>
-            
             <tag> 文件上传 </tag>
+            
+            <tag> 靶场 </tag>
             
         </tags>
       
@@ -571,9 +598,9 @@
       
         <tags>
             
-            <tag> 基础知识 </tag>
-            
             <tag> 文件上传 </tag>
+            
+            <tag> 基础知识 </tag>
             
         </tags>
       
@@ -598,9 +625,9 @@
       
         <tags>
             
-            <tag> 基础知识 </tag>
-            
             <tag> 文件上传 </tag>
+            
+            <tag> 基础知识 </tag>
             
         </tags>
       
@@ -881,9 +908,9 @@
       
         <tags>
             
-            <tag> 靶场 </tag>
-            
             <tag> SQL注入 </tag>
+            
+            <tag> 靶场 </tag>
             
         </tags>
       
@@ -908,9 +935,9 @@
       
         <tags>
             
-            <tag> 靶场 </tag>
-            
             <tag> SQL注入 </tag>
+            
+            <tag> 靶场 </tag>
             
         </tags>
       
@@ -1237,6 +1264,8 @@
       
         <tags>
             
+            <tag> CTF </tag>
+            
             <tag> 靶场 </tag>
             
         </tags>
@@ -1261,6 +1290,8 @@
       
       
         <tags>
+            
+            <tag> CTF </tag>
             
             <tag> 靶场 </tag>
             
@@ -1287,6 +1318,8 @@
       
         <tags>
             
+            <tag> CTF </tag>
+            
             <tag> 靶场 </tag>
             
         </tags>
@@ -1311,6 +1344,8 @@
       
       
         <tags>
+            
+            <tag> CTF </tag>
             
             <tag> 靶场 </tag>
             
