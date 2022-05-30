@@ -5,7 +5,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="逻辑越权靶场, 小白">
-    <meta name="description" content="">
+    <meta name="description" content="0x00靶机：pikachu逻辑越权，墨者靶场-身份认证失效漏洞实战
+攻击机：windows10
+0x01 水平越权###0x00
+首先以普通用户登录：
+
+
+0x01抓包查看数据包信息：
+将username字段中的kobe修改为lucy：
+">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -438,12 +446,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83/">
+                                <span class="chip bg-color">逻辑越权</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83/" class="post-category">
+                                逻辑越权
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -461,7 +482,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    635
                 </div>
                 
 
@@ -486,7 +507,44 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>靶机：pikachu逻辑越权，墨者靶场-身份认证失效漏洞实战</p>
+<p>攻击机：windows10</p>
+<h2 id="0x01-水平越权"><a href="#0x01-水平越权" class="headerlink" title="0x01 水平越权"></a>0x01 水平越权</h2><p>###0x00</p>
+<p>首先以普通用户登录：</p>
+<p><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530225044980.png" alt="image-20220530225044980"></p>
+<p><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530225055831.png" alt="image-20220530225055831"></p>
+<h3 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h3><p>抓包查看数据包信息：<br><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530225258398.png" alt="image-20220530225258398"></p>
+<p>将<code>username</code>字段中的kobe修改为lucy：</p>
+<p><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530225549405.png" alt="image-20220530225549405"></p>
+<p>可以看到用户切换成功，实现了水平越权。</p>
+<h2 id="0x02-垂直越权"><a href="#0x02-垂直越权" class="headerlink" title="0x02 垂直越权"></a>0x02 垂直越权</h2><p>所谓垂直越权就是低权限访问高权限进行一系列操作。</p>
+<p>###0x00</p>
+<p>同样，先登录，但这里首先需要以管理员身份登录，之后再使用普通用户登录：<br><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530230156393.png" alt="image-20220530230156393"></p>
+<p>###0x01</p>
+<p>这里admin用户可以进行增加修改删除用户的操作，这里随便创建一个用户并抓取数据包：<br><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530230546904.png" alt="image-20220530230546904"></p>
+<h3 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h3><p>切换pikachu用户，只有读权限，没有其他权限：<br><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530230803662.png" alt="image-20220530230803662"></p>
+<h3 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h3><p>将抓到的管理员创建用户的数据包修改为用户名为asdf，密码7989之后，将浏览器中的cookie替换repeater中的cookie（图中为替换之后的cookie），再将数据包发送出去。</p>
+<p><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530231639181.png" alt="image-20220530231639181"></p>
+<p><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530231651693.png" alt="image-20220530231651693"></p>
+<h3 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h3><p>刷新页面可以看到多了一个用户asdf，以低权限进行了高权限操作，实现了垂直越权。</p>
+<p><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530232026563.png" alt="image-20220530232026563"></p>
+<p><strong>这个操作的条件必须要获取管理员创建用户的数据包。</strong></p>
+<p>pikachu的垂直越权漏洞通过游客的cookie进行创建了新用户，这是由于源文件中的adminedit.php文件（用于管理员添加用户的文件）只验证了是否登录，没有验证级别，导致存在了越权问题，最终普通用户也可以进行创建用户。</p>
+<h2 id="墨者靶场—身份认证失效漏洞实战"><a href="#墨者靶场—身份认证失效漏洞实战" class="headerlink" title="墨者靶场—身份认证失效漏洞实战"></a>墨者靶场—身份认证失效漏洞实战</h2><h3 id="0x00-1"><a href="#0x00-1" class="headerlink" title="0x00"></a>0x00</h3><p>打开靶场，看到有个测试账户，而且题目也说了下级代理想要查看上级代理，必定要进行越权访问的。</p>
+<p><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530233940567.png" alt="image-20220530233940567"></p>
+<p><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530234141567.png" alt="image-20220530234141567"></p>
+<h3 id="0x01-1"><a href="#0x01-1" class="headerlink" title="0x01"></a>0x01</h3><p>抓包分析：</p>
+<p><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530234550028.png" alt="image-20220530234550028"></p>
+<p><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530234559923.png" alt="image-20220530234559923"></p>
+<p>这里存在两个数据包，需要把第一个登录之后抓到的包放出去得到第二个<code>card_id</code>字段的包，这里<code>card_id</code>字段其实就是每个人的编号，那找到相应的编号即可，使用爆破模块进行爆破。</p>
+<h3 id="0x02-1"><a href="#0x02-1" class="headerlink" title="0x02"></a>0x02</h3><p>爆破模块爆破：<br><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530235504224.png" alt="image-20220530235504224"></p>
+<p>长度不一样的表示由用户，但需要找到对应的用户，而登录页面看到有马春生图片，打开查看器查找相关信息，可以找到其编号：<br><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530235817580.png" alt="image-20220530235817580"></p>
+<h3 id="0x03-1"><a href="#0x03-1" class="headerlink" title="0x03"></a>0x03</h3><p>将登录的数据包<code>card_id</code>值修改为<code>20128880316</code>进行登录：<br><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220530235944269.png" alt="image-20220530235944269"></p>
+<p>得到用户名和密码，密码值加密，看其特征应该是md5，直接解密：</p>
+<p><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220531000104555.png" alt="image-20220531000104555"></p>
+<h3 id="0x04-1"><a href="#0x04-1" class="headerlink" title="0x04"></a>0x04</h3><p>输入账号密码进行登录：<br><img src="/2022/05/30/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83%E9%9D%B6%E5%9C%BA/image-20220531000203716.png" alt="image-20220531000203716"></p>
+<p>得到key值。</p>
+
                 
             </div>
             <hr/>
@@ -549,7 +607,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83/">
+                                    <span class="chip bg-color">逻辑越权</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -621,13 +683,25 @@
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            小白
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83/" class="post-category">
+                                    逻辑越权
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E9%80%BB%E8%BE%91%E8%B6%8A%E6%9D%83/">
+                        <span class="chip bg-color">逻辑越权</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -905,7 +979,7 @@
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">61.2k</span>
+                        class="white-color">61.9k</span>
             
             
             
