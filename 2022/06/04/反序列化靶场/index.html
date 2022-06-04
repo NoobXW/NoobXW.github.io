@@ -689,7 +689,7 @@ new：实例化对象；将类实例化成对象非常容易，只需要使用ne
 <p><img src="/2022/06/04/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%9D%B6%E5%9C%BA/image-20220604224246443.png" alt="image-20220604224246443"></p>
 <p>查看源代码得到flag</p>
 <p><img src="/2022/06/04/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%9D%B6%E5%9C%BA/image-20220604224312500.png" alt="image-20220604224312500"></p>
-<h3 id="0x04-总结"><a href="#0x04-总结" class="headerlink" title="0x04 总结"></a>0x04 总结</h3><p>一道网鼎杯PHP反序列化题目，最重要的使代码审计，尤其还要注意<code>protected</code>在序列化之后会出现不可见字符，需要修改为<code>public</code>。</p>
+<h3 id="0x04-总结"><a href="#0x04-总结" class="headerlink" title="0x04 总结"></a>0x04 总结</h3><p>一道网鼎杯PHP反序列化题目，最重要的使代码审计，尤其还要注意<code>protected</code>在序列化之后会出现不可见字符，需要修改为<code>public</code>；像这样有类的反序列化需要将类实例化再序列化输出。</p>
 <p>如图：当使用<code>protected</code>时出现了不可见字符。</p>
 <p><img src="/2022/06/04/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%9D%B6%E5%9C%BA/image-20220604224956407.png" alt="image-20220604224956407"></p>
 
