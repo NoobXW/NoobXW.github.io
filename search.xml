@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>反序列化-JAVA</title>
+      <link href="/2022/06/05/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-JAVA/"/>
+      <url>/2022/06/05/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-JAVA/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>脑图：<br><img src="/2022/06/05/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-JAVA/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96.png" alt="Java反序列化"></p><h2 id="0x01-Java中的API实现"><a href="#0x01-Java中的API实现" class="headerlink" title="0x01 Java中的API实现"></a>0x01 Java中的API实现</h2><p>位置：Java.io.ObjectOutputStream             Java.io.ObjectInputStream</p><p><strong>序列化</strong>：ObjectOutputStream 类–&gt;writeObject()</p><p>​                <strong>注：</strong>该方法对参数指定的obj对象进行序列化，把字节序列写到一个目标输出流中按Java的标准约定是给文件一个.ser扩展名</p><p><strong>反序列化</strong>：ObjectInputStream–&gt;readObject()</p><p>​                  <strong>注：</strong>该方法从一个源输入流中读取字节序列，再把它们反序列化为一个对象，并将其返回。</p><h2 id="0x02-序列化和反序列化"><a href="#0x02-序列化和反序列化" class="headerlink" title="0x02 序列化和反序列化"></a>0x02 序列化和反序列化</h2><p>**序列化 (Serialization)**：将对象的状态信息转换为可以存储或传输的形式的过程。在序列化期间，对象将其当前状态写入到临时或持久性存储区。</p><p><strong>反序列化</strong>：从存储区中读取该数据，并将其还原为对象的过程，称为反序列化</p><h2 id="0x03-Java序列化标志参考"><a href="#0x03-Java序列化标志参考" class="headerlink" title="0x03 Java序列化标志参考"></a>0x03 Java序列化标志参考</h2><p>一段数据以“rO0AB”开头，那么它很可能是Java序列化base64加密的数据</p><p>一段数据以“aced”开头，那么它很可能是Java序列化的16进制</p><h2 id="0x04-涉及靶场及工具"><a href="#0x04-涉及靶场及工具" class="headerlink" title="0x04 涉及靶场及工具"></a>0x04 涉及靶场及工具</h2><p>1、Webgoat（Java靶场）：</p><p><a href="https://github.com/WebGoat/WebGoat/releases">https://github.com/WebGoat/WebGoat/releases</a></p><p>2、网鼎杯朱雀组-Web-think_java反序列化靶场</p><p>3、Java反序列化工具：</p><p><a href="https://github.com/NickstaDB/SerializationDumper">https://github.com/NickstaDB/SerializationDumper</a></p><p><a href="https://github.com/frohoff/ysoserial/releases">https://github.com/frohoff/ysoserial/releases</a></p><h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>没学过Java，看不懂，以后学完Java再补回来Java安全的内容吧。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 反序列化 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 反序列化 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>反序列化靶场</title>
       <link href="/2022/06/04/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%9D%B6%E5%9C%BA/"/>
       <url>/2022/06/04/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%9D%B6%E5%9C%BA/</url>
@@ -900,9 +925,9 @@
       
         <tags>
             
-            <tag> 文件上传 </tag>
-            
             <tag> 基础知识 </tag>
+            
+            <tag> 文件上传 </tag>
             
         </tags>
       
@@ -927,9 +952,9 @@
       
         <tags>
             
-            <tag> 文件上传 </tag>
-            
             <tag> 基础知识 </tag>
+            
+            <tag> 文件上传 </tag>
             
         </tags>
       

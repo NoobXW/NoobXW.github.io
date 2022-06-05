@@ -4,15 +4,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="文件上传基础, 小白">
-    <meta name="description" content="[TOC]
-前言相比于SQL注入等其他漏洞，文件上传漏洞风险更大，最直接的情况则是上传一个webshell拿权限。
-
-文件上传分类：
-
-了解到是文件上传漏洞时，要清楚是什么类型的文件上传漏洞，之后进行下一步操作。
-##文件上传漏洞原理：
-网">
+    <meta name="keywords" content="反序列化-JAVA, 小白">
+    <meta name="description" content="0x00脑图：
+0x01 Java中的API实现位置：Java.io.ObjectOutputStream             Java.io.ObjectInputStream
+序列化：ObjectOutputStream 类–&amp;gt">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -24,7 +19,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>文件上传基础 | 小白</title>
+    <title>反序列化-JAVA | 小白</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -326,12 +321,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">文件上传基础</h1>
+                    <h1 class="description center-align post-title">反序列化-JAVA</h1>
                 </div>
             </div>
         </div>
@@ -447,12 +442,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
-                                <span class="chip bg-color">基础知识</span>
-                            </a>
-                        
-                            <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">
-                                <span class="chip bg-color">文件上传</span>
+                            <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+                                <span class="chip bg-color">反序列化</span>
                             </a>
                         
                     </div>
@@ -463,8 +454,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" class="post-category">
-                                文件上传
+                            <a href="/categories/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="post-category">
+                                反序列化
                             </a>
                         
                     </div>
@@ -476,7 +467,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-02-12
+                    2022-06-05
                 </div>
                 
 
@@ -485,7 +476,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    341
                 </div>
                 
 
@@ -510,59 +501,23 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>[TOC]</p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>相比于SQL注入等其他漏洞，文件上传漏洞风险更大，最直接的情况则是上传一个webshell拿权限。</p>
-<p><img src="/2022/02/12/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%9F%BA%E7%A1%80/image-20220212230901606.png" alt="image-20220212230901606"></p>
-<p>文件上传分类：</p>
-<p><img src="/2022/02/12/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%9F%BA%E7%A1%80/image-20220212230917046.png" alt="image-20220212230917046"></p>
-<p>了解到是文件上传漏洞时，要清楚是什么类型的文件上传漏洞，之后进行下一步操作。</p>
-<p>##文件上传漏洞原理：</p>
-<p>网站Web应用都有一些文件上传功能，比如文档、图片、头像、视频上传，当上传功能的</p>
-<p>实现代码没有严格校验上传文件的后缀和文件类型，此时攻击者就可以上传一个webshell</p>
-<p>到一个Web可访问的目录上，并将恶意文件传递给如PHP解释器去执行，之后就可以在服</p>
-<p>务器上执行恶意代码，进行数据库执行、服务器文件管理，服务器命令执行等恶意操作。</p>
-<p>还有一部分是攻击者通过Web服务器的解析漏洞来突破Web应用程序的防护。</p>
-<h2 id="漏洞危害"><a href="#漏洞危害" class="headerlink" title="漏洞危害"></a>漏洞危害</h2><p>1、获取网站权限，控制网站</p>
-<p>2、获取后台账号密码</p>
-<p>3、服务器提权</p>
-<p>4、获取内网权限等</p>
-<h2 id="漏洞如何查找及"><a href="#漏洞如何查找及" class="headerlink" title="漏洞如何查找及"></a>漏洞如何查找及</h2><p>1、黑盒测试：未知网站源码，未知网站情况，扫描敏感文件测试文件上传漏洞</p>
-<p>2、白盒测试：分析源代码查找文件上传功能等</p>
-<p>3、网站中上传头像或者会员中心的上传功能可测试是否有文件上传漏洞</p>
-<p>##前端验证（原理）</p>
-<p>文件上传若是采用前端验证，通过修改前端代码（JS代码）<strong>注释掉或删除掉</strong>（推荐）验证部分可实现上传，或者在<strong>浏览器中禁用JS</strong>（不建议）进行绕过。</p>
-<p><strong>过程</strong>：</p>
-<p>1、将源代码复制到本地删除验证代码再上传</p>
-<p><strong>原理：</strong>由于前端验证就是在本地运行，<strong>但需要在源代码中添加指向上传的地址：<code>action</code>，表示提交给谁（在浏览器中查看原来的请求地址插入到复制的代码中）</strong>，这样就能是实现前端的绕过；</p>
-<p>2、浏览器禁用JS：可能会有其他JS代码控制上传功能，若是禁用JS可能会影响上传操作，因此不推荐使用。</p>
-<p>3、<strong>BP抓包（不怎么靠谱）</strong>：由于网页可能是由<code>JS+PHP</code>代码一起进行上传的功能，这种情况是可能会抓到包；但如果网页都是由<code>JS</code>代码实现提交功能则抓不到数据包，就上传不了服务器。<strong>因为BP是要上传到服务器使服务器进行解析文件，但是<code>JS/HTML</code>等的前端代码是在本地端运行的，根本抓不到数据包。</strong></p>
-<p><strong>（所谓前端验证就是本地验证）</strong></p>
-<p>##文件上传常见验证</p>
-<p> <strong>后缀名，类型，文件头等</strong> </p>
-<p>1、后缀名：</p>
-<p>（1）黑名单（不允许上传的格式后缀）：asp，php，jsp，aspx，war</p>
-<p>​          黑名单缺陷：若限制后缀名不全，可以使用其他后缀名进行绕过，例如：php5，Phtml等</p>
-<p>（2）白名单（可允许上传的格式后缀）：jpg，png，zip，rar，gif，…</p>
-<p>2、文件类型：MIME 信息，通过类型猜测后缀名，可通过BP抓包伪造</p>
-<p>3、文件头：内容头信息</p>
-<h2 id="文件上传漏洞绕过方法"><a href="#文件上传漏洞绕过方法" class="headerlink" title="文件上传漏洞绕过方法"></a>文件上传漏洞绕过方法</h2><p>利用burp抓包改后缀名进行绕过；</p>
-<p>利用00截断上传webshell；</p>
-<p>构造图片马绕过；</p>
-<p>绕过服务器扩展名检测上传；</p>
-<p>竞争条件上传绕过。</p>
-<p>##.htaccess文件上传漏洞原理</p>
-<p><strong>什么是.htaccess</strong>：</p>
-<p>.htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置，通过.htaccess文件可以实现网页301重定向、自定义404页面、改变文件扩展名、允许/阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能。</p>
-<p><strong>需要的代码如下：</strong></p>
-<pre class="line-numbers language-none"><code class="language-none">&lt;FilesMatch &quot;cimer&quot;&gt;
-Sethandler application&#x2F;x-httpd-php
-&lt;&#x2F;FilesMatch &gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p><strong>原理：</strong></p>
-<p>若当前目录存在<code>.htaccess</code>后缀名的文件，目录中存在<strong>文件名</strong>中含有<code>cimer</code>，就把<code>application/x-httpd-php</code>当成<code>MIME</code>去执行，此<code>MIME</code>为<code>php</code>格式，此时这个文件就会被当作php文件执行。这时可用菜刀或蚁剑进行连接。</p>
-<p><strong>实战意义：</strong></p>
-<p>1、如果存在可以上传 .htaccess 文件，就可以直接利用此规则解析；</p>
-<p>2、如果存在修改文件权限，就直接修改解析规则；</p>
+                <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>脑图：<br><img src="/2022/06/05/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-JAVA/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96.png" alt="Java反序列化"></p>
+<h2 id="0x01-Java中的API实现"><a href="#0x01-Java中的API实现" class="headerlink" title="0x01 Java中的API实现"></a>0x01 Java中的API实现</h2><p>位置：Java.io.ObjectOutputStream             Java.io.ObjectInputStream</p>
+<p><strong>序列化</strong>：ObjectOutputStream 类–&gt;writeObject()</p>
+<p>​                <strong>注：</strong>该方法对参数指定的obj对象进行序列化，把字节序列写到一个目标输出流中按Java的标准约定是给文件一个.ser扩展名</p>
+<p><strong>反序列化</strong>：ObjectInputStream–&gt;readObject()</p>
+<p>​                  <strong>注：</strong>该方法从一个源输入流中读取字节序列，再把它们反序列化为一个对象，并将其返回。</p>
+<h2 id="0x02-序列化和反序列化"><a href="#0x02-序列化和反序列化" class="headerlink" title="0x02 序列化和反序列化"></a>0x02 序列化和反序列化</h2><p>**序列化 (Serialization)**：将对象的状态信息转换为可以存储或传输的形式的过程。在序列化期间，对象将其当前状态写入到临时或持久性存储区。</p>
+<p><strong>反序列化</strong>：从存储区中读取该数据，并将其还原为对象的过程，称为反序列化</p>
+<h2 id="0x03-Java序列化标志参考"><a href="#0x03-Java序列化标志参考" class="headerlink" title="0x03 Java序列化标志参考"></a>0x03 Java序列化标志参考</h2><p>一段数据以“rO0AB”开头，那么它很可能是Java序列化base64加密的数据</p>
+<p>一段数据以“aced”开头，那么它很可能是Java序列化的16进制</p>
+<h2 id="0x04-涉及靶场及工具"><a href="#0x04-涉及靶场及工具" class="headerlink" title="0x04 涉及靶场及工具"></a>0x04 涉及靶场及工具</h2><p>1、Webgoat（Java靶场）：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/WebGoat/WebGoat/releases">https://github.com/WebGoat/WebGoat/releases</a></p>
+<p>2、网鼎杯朱雀组-Web-think_java反序列化靶场</p>
+<p>3、Java反序列化工具：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/NickstaDB/SerializationDumper">https://github.com/NickstaDB/SerializationDumper</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/frohoff/ysoserial/releases">https://github.com/frohoff/ysoserial/releases</a></p>
+<h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>没学过Java，看不懂，以后学完Java再补回来Java安全的内容吧。</p>
 
                 
             </div>
@@ -589,7 +544,7 @@ Sethandler application&#x2F;x-httpd-php
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://NoobXW.github.io/2022/02/12/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%9F%BA%E7%A1%80/">http://NoobXW.github.io/2022/02/12/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%9F%BA%E7%A1%80/</a>
+                    <a href="http://NoobXW.github.io/2022/06/05/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-JAVA/">http://NoobXW.github.io/2022/06/05/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-JAVA/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -627,12 +582,8 @@ Sethandler application&#x2F;x-httpd-php
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
-                                    <span class="chip bg-color">基础知识</span>
-                                </a>
-                            
-                                <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">
-                                    <span class="chip bg-color">文件上传</span>
+                                <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+                                    <span class="chip bg-color">反序列化</span>
                                 </a>
                             
                         </div>
@@ -680,17 +631,18 @@ Sethandler application&#x2F;x-httpd-php
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/02/13/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0-Webshell%E4%BB%8B%E7%BB%8D/">
+                <a href="/2022/06/05/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-JAVA/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="文件上传-Webshell介绍">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="反序列化-JAVA">
                         
-                        <span class="card-title">文件上传-Webshell介绍</span>
+                        <span class="card-title">反序列化-JAVA</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -700,30 +652,27 @@ Sethandler application&#x2F;x-httpd-php
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>22-02-13
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-06-05
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" class="post-category">
-                                    文件上传
+                            <a href="/categories/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="post-category">
+                                    反序列化
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
-                        <span class="chip bg-color">基础知识</span>
-                    </a>
-                    
-                    <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">
-                        <span class="chip bg-color">文件上传</span>
+                    <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+                        <span class="chip bg-color">反序列化</span>
                     </a>
                     
                 </div>
@@ -737,13 +686,13 @@ Sethandler application&#x2F;x-httpd-php
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/02/11/SQL%E6%B3%A8%E5%85%A5-%E7%BB%95%E8%BF%87WAF/">
+                <a href="/2022/06/04/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%9D%B6%E5%9C%BA/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="SQL注入-绕过WAF">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="反序列化靶场">
                         
-                        <span class="card-title">SQL注入-绕过WAF</span>
+                        <span class="card-title">反序列化靶场</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -754,14 +703,14 @@ Sethandler application&#x2F;x-httpd-php
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>22-02-11
+                                <i class="far fa-clock fa-fw icon-date"></i>22-06-04
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
-                                    SQL注入
+                            <a href="/categories/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="post-category">
+                                    反序列化
                                 </a>
                             
                             
@@ -771,12 +720,8 @@ Sethandler application&#x2F;x-httpd-php
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                        <span class="chip bg-color">SQL注入</span>
-                    </a>
-                    
-                    <a href="/tags/Bypass-WAF/">
-                        <span class="chip bg-color">Bypass WAF</span>
+                    <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+                        <span class="chip bg-color">反序列化</span>
                     </a>
                     
                 </div>
