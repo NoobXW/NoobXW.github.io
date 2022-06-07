@@ -4,23 +4,23 @@
   
     
     <entry>
-      <title>操作系统类漏洞</title>
-      <link href="/2022/06/06/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%B1%BB%E6%BC%8F%E6%B4%9E/"/>
-      <url>/2022/06/06/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%B1%BB%E6%BC%8F%E6%B4%9E/</url>
+      <title>漏洞发现-操作系统类漏洞</title>
+      <link href="/2022/06/07/%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%B1%BB%E6%BC%8F%E6%B4%9E/"/>
+      <url>/2022/06/07/%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%B1%BB%E6%BC%8F%E6%B4%9E/</url>
       
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>脑图</p><p><img src="/2022/06/06/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%B1%BB%E6%BC%8F%E6%B4%9E/%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F.png" alt="漏洞发现-操作系统"></p><h2 id="0x01-漏洞探针"><a href="#0x01-漏洞探针" class="headerlink" title="0x01 漏洞探针"></a>0x01 漏洞探针</h2><p>系统漏洞由于手工检测操作系统漏洞很复杂很麻烦，由此利用漏洞探针工具检测漏洞。</p><p>漏扫工具：<br>Goby,Nmap,Nessus</p><p>Nmap的一些第三方漏洞库：</p><p>Nmap –script=vuln 默认 nse 插件扫描</p><p>Nmap vulscan vulners 调用第三方库探针</p><p>参考文章：<br><a href="https://www.cnblogs.com/shwang/p/12623669.html">https://www.cnblogs.com/shwang/p/12623669.html</a></p><h2 id="0x02-漏洞类型"><a href="#0x02-漏洞类型" class="headerlink" title="0x02 漏洞类型"></a>0x02 漏洞类型</h2><p>1、远程执行</p><p>2、权限提升</p><p>3、缓冲区溢出</p><h2 id="0x03-漏洞利用"><a href="#0x03-漏洞利用" class="headerlink" title="0x03 漏洞利用"></a>0x03 漏洞利用</h2><p>1、漏洞利用框架：</p><p>Metasploit、Searchsploit</p><p>利用Searchsploit搜索漏洞，之后利用。</p><p>漏洞库网站：<br><a href="https://www.exploit-db.com/">https://www.exploit-db.com/</a></p><p><a href="https://www.cnvd.org.cn/">https://www.cnvd.org.cn</a></p><p><a href="https://www.seebug.org/">https://www.seebug.org</a></p><p>2、单点EXP</p><p>针对某个漏洞的脚本等等</p><p>3、复现文章</p><p>看各种文章。</p>]]></content>
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>脑图</p><p><img src="/2022/06/07/%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%B1%BB%E6%BC%8F%E6%B4%9E/%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F.png" alt="漏洞发现-操作系统"></p><h2 id="0x01-漏洞探针"><a href="#0x01-漏洞探针" class="headerlink" title="0x01 漏洞探针"></a>0x01 漏洞探针</h2><p>系统漏洞由于手工检测操作系统漏洞很复杂很麻烦，由此利用漏洞探针工具检测漏洞。</p><p>漏扫工具：<br>Goby,Nmap,Nessus</p><p>Nmap的一些第三方漏洞库：</p><p>Nmap –script=vuln 默认 nse 插件扫描</p><p>Nmap vulscan vulners 调用第三方库探针</p><p>参考文章：<br><a href="https://www.cnblogs.com/shwang/p/12623669.html">https://www.cnblogs.com/shwang/p/12623669.html</a></p><h2 id="0x02-漏洞类型"><a href="#0x02-漏洞类型" class="headerlink" title="0x02 漏洞类型"></a>0x02 漏洞类型</h2><p>1、远程执行</p><p>2、权限提升</p><p>3、缓冲区溢出</p><h2 id="0x03-漏洞利用"><a href="#0x03-漏洞利用" class="headerlink" title="0x03 漏洞利用"></a>0x03 漏洞利用</h2><p>1、漏洞利用框架：</p><p>Metasploit、Searchsploit</p><p>利用Searchsploit搜索漏洞，之后利用。</p><p>漏洞库网站：<br><a href="https://www.exploit-db.com/">https://www.exploit-db.com/</a></p><p><a href="https://www.cnvd.org.cn/">https://www.cnvd.org.cn</a></p><p><a href="https://www.seebug.org/">https://www.seebug.org</a></p><p>2、单点EXP</p><p>针对某个漏洞的脚本等等</p><p>3、复现文章</p><p>看各种文章。</p>]]></content>
       
       
       <categories>
           
-          <category> 操作系统 </category>
+          <category> 漏洞检测 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 操作系统 </tag>
+            <tag> 漏洞检测 </tag>
             
         </tags>
       
