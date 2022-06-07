@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>漏洞发现-Web应用类</title>
+      <link href="/2022/06/07/%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0-Web%E5%BA%94%E7%94%A8%E7%B1%BB/"/>
+      <url>/2022/06/07/%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0-Web%E5%BA%94%E7%94%A8%E7%B1%BB/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>脑图：</p><p><img src="/2022/06/07/%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0-Web%E5%BA%94%E7%94%A8%E7%B1%BB/%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0-Web%E5%BA%94%E7%94%A8.png" alt="漏洞发现-Web应用"></p><h2 id="0x01-已知CMS"><a href="#0x01-已知CMS" class="headerlink" title="0x01 已知CMS"></a>0x01 已知CMS</h2><p>例如常见的 dedecms.discuz,wordpress 等源码结构，这种一般采用非框架类开发，但也有少部分采用的是框架类开发，针对此类源码程序的安全检测，我们要利用公开的漏洞进行测试，如不存在可采用白盒代码审计自行挖掘。</p><p>已知CMS可以利用漏洞平台搜索关键字搜索相关程序的漏洞。</p><h2 id="0x02-开发框架"><a href="#0x02-开发框架" class="headerlink" title="0x02 开发框架"></a>0x02 开发框架</h2><p>例如常见的 thinkphp，spring,flask 等开发的源码程序，这种源码程序正常的安全测试思路：先获取对应的开发框架信息(名字，版本)，通过公开的框架类安全问题进行测试，如不存在可采用白盒代码审计自行挖掘。</p><p>可利用漏洞框架进行针对性扫描攻击，例如cmsscan，wpscan，TPscan等等针对某一种框架进行漏洞挖掘。</p><h2 id="0x03-未知CMS"><a href="#0x03-未知CMS" class="headerlink" title="0x03 未知CMS"></a>0x03 未知CMS</h2><p>如常见的企业或个人内部程序源码，也可以是某 CMS 二次开发的源码结构；</p><p>针对此类的源码程序测试思路：能识别二次开发就按已知 CMS 思路进行，不能确定二次开发的话可以采用常规综合类扫描工具或脚本进行探针，也可以采用人工探针（功能点，参数，盲猜），同样在有源码的情况下也可以进行代码审计自行挖掘。</p><p>可以利用xray，awvs，appscan等工具进行漏扫；</p><p>或者人工探测应用功能，URL参数，盲猜测试等进行漏洞挖掘。</p><h2 id="0x04-案例"><a href="#0x04-案例" class="headerlink" title="0x04 案例"></a>0x04 案例</h2><p>利用seebug可以搜索thikphp，可以看到会有相关漏洞，点击Thinkphp 5.0.x 远程代码执行漏洞还有相关补丁PoC等等</p><p><img src="/2022/06/07/%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0-Web%E5%BA%94%E7%94%A8%E7%B1%BB/image-20220607182347641.png" alt="image-20220607182347641"></p><p><img src="/2022/06/07/%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0-Web%E5%BA%94%E7%94%A8%E7%B1%BB/image-20220607182628352.png" alt="image-20220607182628352"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 漏洞检测 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 漏洞检测 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>漏洞发现-操作系统类漏洞</title>
       <link href="/2022/06/07/%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%B1%BB%E6%BC%8F%E6%B4%9E/"/>
       <url>/2022/06/07/%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%B1%BB%E6%BC%8F%E6%B4%9E/</url>
