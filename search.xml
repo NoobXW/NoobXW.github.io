@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>WAF绕过-信息搜集反爬虫延时代理池技术</title>
+      <link href="/2022/06/09/WAF%E7%BB%95%E8%BF%87-%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86%E5%8F%8D%E7%88%AC%E8%99%AB%E5%BB%B6%E6%97%B6%E4%BB%A3%E7%90%86%E6%B1%A0%E6%8A%80%E6%9C%AF/"/>
+      <url>/2022/06/09/WAF%E7%BB%95%E8%BF%87-%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86%E5%8F%8D%E7%88%AC%E8%99%AB%E5%BB%B6%E6%97%B6%E4%BB%A3%E7%90%86%E6%B1%A0%E6%8A%80%E6%9C%AF/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>脑图：</p><p><img src="/2022/06/09/WAF%E7%BB%95%E8%BF%87-%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86%E5%8F%8D%E7%88%AC%E8%99%AB%E5%BB%B6%E6%97%B6%E4%BB%A3%E7%90%86%E6%B1%A0%E6%8A%80%E6%9C%AF/WAF%E7%BB%95%E8%BF%87-%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86.png" alt="WAF绕过-信息搜集"></p><h2 id="0x01-绕过手法"><a href="#0x01-绕过手法" class="headerlink" title="0x01 绕过手法"></a>0x01 绕过手法</h2><p>1、请求方法：改变数据包的请求方法，如从Head改为更常见的Get</p><p>2、模拟用户：修改整个数据包，使它更像一般用户发送的数据</p><p>3、延时：两次访问间设置合适的时间间隔，以防触发拦截机制</p><p>4、代理池：使用代理访问，避开对单个IP的限制</p><p>5、爬虫引擎：为数据包添加搜索引擎的User-Agent，来模仿搜索引擎的爬虫</p><p>6、白名单机制：白名单不受任何拦截机制限制</p><h2 id="0x02-Safedog-默认拦截机制分析绕过-未开CC"><a href="#0x02-Safedog-默认拦截机制分析绕过-未开CC" class="headerlink" title="0x02 Safedog-默认拦截机制分析绕过-未开CC"></a>0x02 Safedog-默认拦截机制分析绕过-未开CC</h2><p>使用WebPathBrute扫描目录，所有地址的状态码都是200，与事实不符</p><p>将HTTP方法从“Head”改为“Get”即可绕过，Head方法快但会被拦截。</p><h2 id="0x03-Safedog-默认拦截机制分析绕过-开启CC"><a href="#0x03-Safedog-默认拦截机制分析绕过-开启CC" class="headerlink" title="0x03 Safedog-默认拦截机制分析绕过-开启CC"></a>0x03 Safedog-默认拦截机制分析绕过-开启CC</h2><p>CC攻击防护会设置单IP访问上限和代理访问上限，请求过于频繁会被拦截使用延迟扫描，设置合适的访问间隔用一般用户的数据包加搜索引擎的User-Agent，来模仿搜索引擎的爬虫使用代理访问，代理访问上限主要防备CC攻击，不一定会阻止目录扫描 。</p><p>修改数据包UA实现爬虫引擎：例：</p><pre class="line-numbers language-none"><code class="language-none">Mozilla&#x2F;5.0 (compatible; Baiduspider-render&#x2F;2.0; +http:&#x2F;&#x2F;www.baidu.com&#x2F;search&#x2F;spider.html)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>各大搜索引擎的User-Agent：</p><p><a href="https://www.cnblogs.com/iack/p/3557371.html">https://www.cnblogs.com/iack/p/3557371.html</a> </p><h2 id="0x04-Aliyun-os-默认拦截机制分析绕过"><a href="#0x04-Aliyun-os-默认拦截机制分析绕过" class="headerlink" title="0x04 Aliyun_os-默认拦截机制分析绕过"></a>0x04 Aliyun_os-默认拦截机制分析绕过</h2><p>无法修改，触发就会被封禁，只能通过延时或代理池绕过，无法通过爬虫引擎绕过。</p><p>##0x05 BT(防火墙插件)-默认拦截机制分析绕过</p><p>有CC攻击防护，还数据包内容过滤，可以通过延时或代理池绕过，绕过对特定关键词的检查，进一步使用延时或代理池，或对关键词变形。</p><h2 id="0x06-Python脚本搜索引擎爬虫模拟"><a href="#0x06-Python脚本搜索引擎爬虫模拟" class="headerlink" title="0x06 Python脚本搜索引擎爬虫模拟"></a>0x06 Python脚本搜索引擎爬虫模拟</h2><p>import requests</p><p>import time</p><p>headers={</p><p>‘Connection’: ‘keep-alive’,</p><p>‘Cache-Control’: ‘max-age=0’,</p><p>‘Upgrade-Insecure-Requests’: ‘1’,</p><p>模拟用户 Kit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36</p><p>模拟引擎 Mozilla/5.0 (compatible; Baiduspider-render/2.0; +<a href="http://www.baidu.com/search/spider.html">http://www.baidu.com/search/spider.html</a>)</p><p>‘User-Agent’: </p><p>‘Mozilla/5.0 </p><p>(compatible; </p><p>Baiduspider-render/2.0;+<a href="http://www.baidu.com/search/spider.html)&#39;">http://www.baidu.com/search/spider.html)&#39;</a>,</p><p>‘Sec-Fetch-Dest’: ‘document’,</p><p>‘Accept’:’text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,<em>/</em>;q=0.8,application/signed-exchange;v=b3;q=0.9’,</p><p>‘Sec-Fetch-Site’: ‘none’,</p><p>‘Sec-Fetch-Mode’: ‘navigate’,</p><p>‘Sec-Fetch-User’: ‘?1’,</p><p>‘Accept-Encoding’: ‘gzip, deflate, br’,</p><p>‘Accept-Language’: ‘zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7’,</p><p>‘Cookie’: ‘xxx’,#根据当前访问 cookie</p><p>}</p><p>for paths in open(‘php_b.txt’,encoding=’utf-8’):</p><p>url=’<a href="http://192.168.0.103:8081/&#39;">http://192.168.0.103:8081/&#39;</a></p><p>paths=paths.replace(‘\n’,’’)</p><p>urls=url+paths</p><p>如需测试加代理，或加入代理池需加代理</p><p>proxy = {</p><p>‘http’: ‘127.0.0.1:7777’}</p><p>try:</p><p>code=requests.get(urls,headers=headers,verify=False).status_code</p><p>print(urls+’|’+str(code))</p><p>if code==200 or code==403:</p><p>print(urls+’|’+str(code))</p><p>except Exception as err:</p><p>print(‘connecting error’)</p><p>time.sleep(3)  模拟用户需延时 引擎可用可不用（根据请求速度）</p><h2 id="0x07-代理池"><a href="#0x07-代理池" class="headerlink" title="0x07 代理池"></a>0x07 代理池</h2><p>使用代理池绕过WAF单个IP拦截，如下图：</p><p><img src="/2022/06/09/WAF%E7%BB%95%E8%BF%87-%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86%E5%8F%8D%E7%88%AC%E8%99%AB%E5%BB%B6%E6%97%B6%E4%BB%A3%E7%90%86%E6%B1%A0%E6%8A%80%E6%9C%AF/image-20220609174330424.png" alt="image-20220609174330424"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Bypass WAF </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>漏洞发现-API接口服务类</title>
       <link href="/2022/06/08/%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0-API%E6%8E%A5%E5%8F%A3%E6%9C%8D%E5%8A%A1%E7%B1%BB/"/>
       <url>/2022/06/08/%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0-API%E6%8E%A5%E5%8F%A3%E6%9C%8D%E5%8A%A1%E7%B1%BB/</url>
