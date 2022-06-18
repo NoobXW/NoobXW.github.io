@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>代码审计-TP5框架1</title>
+      <link href="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/"/>
+      <url>/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="0x00-Metinfo-无框架-变量覆盖-自动审计或搜索"><a href="#0x00-Metinfo-无框架-变量覆盖-自动审计或搜索" class="headerlink" title="0x00 Metinfo-无框架-变量覆盖-自动审计或搜索"></a>0x00 Metinfo-无框架-变量覆盖-自动审计或搜索</h2><h3 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h3><p>打开靶场：</p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618102033894.png" alt="image-20220618102033894"></p><h3 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h3><p>使用seay先进行自动审计：<br><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618102222723.png" alt="image-20220618102222723"></p><p>检测到可能存在变量覆盖漏洞：<br><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618102354770.png" alt="image-20220618102354770"></p><h3 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h3><p>打开其配置文件审计相关函数：</p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618102731712.png" alt="image-20220618102731712"></p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618102532401.png" alt="image-20220618102532401"></p><p>可以看到双$$符号。</p><p>foreach()函数，每次循环中，当前单元的值被赋给 $value 并且数组内部的指针向前移一步（因此下一次循环中将会得到下一个单元），这里相当于两个循环的for循环，第一个request分别循环三种传参方法；第二个循环，当前单元的键名也会在每次循环中被赋给变量 $key，之后$key又赋值给value，然后再将value的值过滤后赋值给$key，总之，就是通过get，post，cookie接受数据，进行变量覆盖 。</p><p>涉及函数：</p><p>foreach()函数：遍历给定的数组。每次循环中，当前单元的值被赋给 $value 并且数组内部的指针向前移一步（因此下一次循环中将会得到下一个单元）。</p><p> <code>php</code>中的<code>=&gt;</code>：一般用作数组键名与元素的连接符。简单来说就是使用=&gt;符号来分隔键和值，左侧表示键，右侧表示值。</p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618104255974.png" alt="image-20220618104255974"></p><h3 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h3><p>由于配置文件几乎全局包含，搜索相关包含其文件的文件：<br><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618104908470.png" alt="image-20220618104908470"></p><p>index.php包含其文件。</p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618104947665.png" alt="image-20220618104947665"></p><h3 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h3><p>由于common.inc.php文件可能存在变量覆盖漏洞，将index.php文件添加测试语句进行测试；由于现在打开的index.php文件不是网站首页文件：<br><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618105149180.png" alt="image-20220618105149180"></p><p>网站首页文件内在templates目录下：</p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618105310603.png" alt="image-20220618105310603"></p><p>在index.php文件中写入测试语句：<br><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618111728315.png" alt="image-20220618111728315"></p><p>接着在index.html文件中输出：<br><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618105745708.png" alt="image-20220618105745708"></p><p>网站首页看到test的数据：</p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618111712482.png" alt="image-20220618111712482"></p><p><strong>注意：在index.php文件中，test变量的赋值一定要在index.php文件中的包含文件common.inc.php的上方，不然test变量的值不会改变。</strong></p><h3 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h3><p>传参：test接收值123456，返回值123465，而不是asdas，实现了变量覆盖。<br><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618112341335.png" alt="image-20220618112341335"></p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618112420227.png" alt="image-20220618112420227"></p><h3 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h3><p>审计：<br>三种方式传参的值都可以接受，比如这里GET接收test</p><p>foreach($_GET as $_key=&gt;$_value)</p><p>get传参test=111,相当于数组{“test”:”111”}</p><p>那么$_key=test;$_value=111,而$_value的过滤类似魔术引号加//只对注入防范有用，这里对111不起作用</p><p>这里就会将$test=$_value=111 </p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618113103692.png" alt="image-20220618113103692"></p><h3 id="0x07-配合文件包含漏洞进行攻击"><a href="#0x07-配合文件包含漏洞进行攻击" class="headerlink" title="0x07 配合文件包含漏洞进行攻击"></a>0x07 配合文件包含漏洞进行攻击</h3><p>条件：</p><p>1、include($filename)</p><p>2、包含文件common.inc.php </p><p>先搜索文件包含漏洞关键函数：<br>include，include_once，require require_once 等：</p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618114032789.png" alt="image-20220618114032789"></p><p>发现有一个$moudle变量，打开文件查看：</p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618114140892.png" alt="image-20220618114140892"></p><p>没有包含common.inc.php变量覆盖文件，无法利用。</p><p>打开moudle.php文件，包含了common.inc.php变量覆盖文件：<br><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618114531482.png" alt="image-20220618114531482"></p><p>表示这个index.php文件间接包含了common.inc.php变量覆盖文件：<br><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618114729593.png" alt="image-20220618114729593"></p><p>require_once()函数：</p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618114922885.png" alt="image-20220618114922885"></p><h3 id="0x08"><a href="#0x08" class="headerlink" title="0x08"></a>0x08</h3><p>审计：</p><p>查看原来module的赋值条件，通过判断fmofule的值，当fmofule=7并且变量list为空时，module就等于<code>$modulefname[$mdle][$mdtp]</code>，这里我们只需要确定module有赋值，然后我们去覆盖就行，不用确定module的值。</p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618115434624.png" alt="image-20220618115434624"></p><h3 id="0x09"><a href="#0x09" class="headerlink" title="0x09"></a>0x09</h3><p>访问存在文件包含漏洞的目录about/index.php：</p><p>构造payload：</p><pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;metinfo&#x2F;about&#x2F;index.php?fmodule&#x3D;7&amp;module&#x3D;1.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618120347202.png" alt="image-20220618120347202"></p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618120354397.png" alt="image-20220618120354397"></p><p>成功打开1.txt文件，执行phpinfo()函数。</p><p>后续只需上传任意文件，只需更改<code>module</code>值，访问上传的文件地址进行getshell。    </p><h2 id="0x01-Thinkphp5框架"><a href="#0x01-Thinkphp5框架" class="headerlink" title="0x01 Thinkphp5框架"></a>0x01 Thinkphp5框架</h2><h3 id="0x00-1"><a href="#0x00-1" class="headerlink" title="0x00"></a>0x00</h3><p>打开网站：</p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618122740026.png" alt="image-20220618122740026"></p><p>其中的APPlication是应用的目录：</p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618122901748.png" alt="image-20220618122901748"></p><p>具体参考文章：</p><p><a href="https://www.kancloud.cn/thinkphp/thinkphp5-guide/90110">https://www.kancloud.cn/thinkphp/thinkphp5-guide/90110</a></p><h3 id="0x01-1"><a href="#0x01-1" class="headerlink" title="0x01"></a>0x01</h3><p>这段代码的作用就是定义应用目录APP_PATH和加载ThinkPHP框架的入口文件：</p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618123651593.png" alt="image-20220618123651593"></p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618124301371.png" alt="image-20220618124301371"></p><p>首页加载的文件实在APPlication目录下的：<img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618124039063.png" alt="image-20220618124039063"></p><p>具体解释：<br><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618124342433.png" alt="image-20220618124342433"></p><h3 id="0x02-测试"><a href="#0x02-测试" class="headerlink" title="0x02 测试"></a>0x02 测试</h3><p>class中写入test方法，浏览器按照格式访问，如图：</p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618130840780.png" alt="image-20220618130840780"></p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618130828858.png" alt="image-20220618130828858"></p><h3 id="0x03-Thinkphp版本查看"><a href="#0x03-Thinkphp版本查看" class="headerlink" title="0x03 Thinkphp版本查看"></a>0x03 Thinkphp版本查看</h3><p>1、通过url的报错查看：<br><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618124823617.png" alt="image-20220618124823617"></p><p>2、readme文件查看：<br><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618124905138.png" alt="image-20220618124905138"></p><h3 id="0x04-1"><a href="#0x04-1" class="headerlink" title="0x04"></a>0x04</h3><p>ThinkPHP网上的历史版本的漏洞：</p><p><img src="/2022/06/18/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-TP5%E6%A1%86%E6%9E%B61/image-20220618131214231.png" alt="image-20220618131214231"></p><p>ThinkPHP-Vuln：</p><p><a href="https://github.com/Mochazz/ThinkPHP-Vuln">https://github.com/Mochazz/ThinkPHP-Vuln</a></p><h3 id="0x05-总结"><a href="#0x05-总结" class="headerlink" title="0x05 总结"></a>0x05 总结</h3><p>如果发现thinkPHP框架，可能存在以下思路：</p><p>1、如果按照thinkPHP去写，就是thinkPHP的框架漏洞；</p><p>2、如果虽然存在thinkPHP框架，但是没有利用框架，就是常规的审计思路。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 代码审计 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 代码审计 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>代码审计-PHP框架MVC类上传断点调试挖掘</title>
       <link href="/2022/06/13/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-PHP%E6%A1%86%E6%9E%B6MVC%E7%B1%BB%E4%B8%8A%E4%BC%A0%E6%96%AD%E7%82%B9%E8%B0%83%E8%AF%95%E6%8C%96%E6%8E%98/"/>
       <url>/2022/06/13/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1-PHP%E6%A1%86%E6%9E%B6MVC%E7%B1%BB%E4%B8%8A%E4%BC%A0%E6%96%AD%E7%82%B9%E8%B0%83%E8%AF%95%E6%8C%96%E6%8E%98/</url>
@@ -575,9 +600,9 @@
       
         <tags>
             
-            <tag> SQL注入 </tag>
-            
             <tag> 文件上传 </tag>
+            
+            <tag> SQL注入 </tag>
             
         </tags>
       
@@ -941,9 +966,9 @@
       
         <tags>
             
-            <tag> 靶场 </tag>
-            
             <tag> CSRF </tag>
+            
+            <tag> 靶场 </tag>
             
         </tags>
       
