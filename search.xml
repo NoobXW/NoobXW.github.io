@@ -750,9 +750,9 @@
       
         <tags>
             
-            <tag> 文件上传 </tag>
-            
             <tag> SQL注入 </tag>
+            
+            <tag> 文件上传 </tag>
             
         </tags>
       
@@ -877,9 +877,9 @@
       
         <tags>
             
-            <tag> CTF </tag>
-            
             <tag> Crypto </tag>
+            
+            <tag> CTF </tag>
             
         </tags>
       
@@ -1116,9 +1116,9 @@
       
         <tags>
             
-            <tag> CSRF </tag>
-            
             <tag> 靶场 </tag>
+            
+            <tag> CSRF </tag>
             
         </tags>
       
@@ -1969,9 +1969,9 @@
       
         <tags>
             
-            <tag> 基础知识 </tag>
-            
             <tag> 信息搜集 </tag>
+            
+            <tag> 基础知识 </tag>
             
         </tags>
       
