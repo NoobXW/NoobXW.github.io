@@ -616,6 +616,7 @@ RECONFIGURE WITH OVERRIDE;<span aria-hidden="true" class="line-numbers-rows"><sp
 <h2 id="0x07-Oracle提权"><a href="#0x07-Oracle提权" class="headerlink" title="0x07 Oracle提权"></a>0x07 Oracle提权</h2><h3 id="0x00-1"><a href="#0x00-1" class="headerlink" title="0x00"></a>0x00</h3><p>Oracle数据库一般用于Java和jsp,如果jsp可以获取到后门的话，后门不需要提权，网站权限就是系统权限。</p>
 <h3 id="0x01-普通用户模式"><a href="#0x01-普通用户模式" class="headerlink" title="0x01 普通用户模式"></a>0x01 普通用户模式</h3><p>前提是拥有一个普通的Oracle连接账号。不需要DBA权限，可提权至DBA，并以Oracle实例运行的权限执行操作系统命令。</p>
 <h3 id="0x02-DBA用户模式"><a href="#0x02-DBA用户模式" class="headerlink" title="0x02 DBA用户模式"></a>0x02 DBA用户模式</h3><p>拥有DBA账号密码，可以省去自己手动创建存储过程的繁琐步骤，一键执行测试。（DBA账号是Oracle的最高权限） （使用自动化工具Oracleshellv1.0工具）</p>
+<p><img src="/2022/06/20/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%90%E6%9D%831/image-20220621084439714.png" alt="image-20220621084439714"></p>
 <h3 id="0x03-注入提升模式"><a href="#0x03-注入提升模式" class="headerlink" title="0x03 注入提升模式"></a>0x03 注入提升模式</h3><p>拥有一个Oracle注入点，可以通过注入点直接执行系统命令，此种模式没有实现回显，需要自己验证。（前提是要有注入点），再配合Oracleshell进行命令执行</p>
 <p>—SQLmap判断数据库是不是dba权限：</p>
 <pre class="line-numbers language-none"><code class="language-none">sqlmap.py -u http:&#x2F;&#x2F;192.168.131.142:8080&#x2F;sql.jsp?id-7698 --is-dba<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -733,18 +734,17 @@ RECONFIGURE WITH OVERRIDE;<span aria-hidden="true" class="line-numbers-rows"><sp
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/06/20/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%90%E6%9D%831/">
+                <a href="/2022/06/21/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8F%90%E6%9D%832/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="权限提升-数据库提权1">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="权限提升-数据库提权2">
                         
-                        <span class="card-title">权限提升-数据库提权1</span>
+                        <span class="card-title">权限提升-数据库提权2</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -754,9 +754,9 @@ RECONFIGURE WITH OVERRIDE;<span aria-hidden="true" class="line-numbers-rows"><sp
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>22-06-20
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>22-06-21
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -769,7 +769,6 @@ RECONFIGURE WITH OVERRIDE;<span aria-hidden="true" class="line-numbers-rows"><sp
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
@@ -1055,7 +1054,7 @@ RECONFIGURE WITH OVERRIDE;<span aria-hidden="true" class="line-numbers-rows"><sp
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">86.5k</span>
+                        class="white-color">92.2k</span>
             
             
             
