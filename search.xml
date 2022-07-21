@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>SSRF靶场</title>
+      <link href="/2022/07/21/SSRF%E9%9D%B6%E5%9C%BA/"/>
+      <url>/2022/07/21/SSRF%E9%9D%B6%E5%9C%BA/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="0x00-CTFHUB"><a href="#0x00-CTFHUB" class="headerlink" title="0x00 CTFHUB"></a>0x00 CTFHUB</h2><p>CTFHUB的SSRF题目。</p><h2 id="0x01-涉及协议及知识点"><a href="#0x01-涉及协议及知识点" class="headerlink" title="0x01 涉及协议及知识点"></a>0x01 涉及协议及知识点</h2><blockquote><p>http://：探测内网主机存活、端口开放情况，可以通过访问其它网站确定存活，如百度</p><p>gopher://：发送GET或POST请求(需要配合http协议二次url编码上传)；攻击内网应用，如FastCGI、Redis</p><p>dict://：泄露安装软件版本信息，查看端口，操作内网redis访问等</p><p>file://：读取本地文件，如/etc/passwd、/etc/hosts、web网站等等</p></blockquote><h2 id="0x02-内网访问"><a href="#0x02-内网访问" class="headerlink" title="0x02 内网访问"></a>0x02 内网访问</h2><p><img src="/2022/07/21/SSRF%E9%9D%B6%E5%9C%BA/image-20220721095051455.png" alt="image-20220721095051455"></p><p>题目直接提示访问127.0.0.1的flag.php</p><p>打开靶场以后空白页面，地址栏看到有url参数，根据题目内网访问，可以肯定是能够探测内网是否存在存活主机的：</p><p><img src="/2022/07/21/SSRF%E9%9D%B6%E5%9C%BA/image-20220721095313140.png" alt="image-20220721095313140"></p><p>探测一下http协议能否使用：</p><p><img src="/2022/07/21/SSRF%E9%9D%B6%E5%9C%BA/image-20220721095618298.png" alt="image-20220721095618298"></p><p>访问百度可以跳转页面，证明http协议是能够使用的；</p><p>题目给出直接访问flag.php文件：<br><img src="/2022/07/21/SSRF%E9%9D%B6%E5%9C%BA/image-20220721095813535.png" alt="image-20220721095813535"></p><p>得到flag。</p><h2 id="0x03-伪协议读取文件"><a href="#0x03-伪协议读取文件" class="headerlink" title="0x03 伪协议读取文件"></a>0x03 伪协议读取文件</h2><p>题目给出读取Web目录下的flag.php：</p><p><img src="/2022/07/21/SSRF%E9%9D%B6%E5%9C%BA/image-20220721095916568.png" alt="image-20220721095916568"></p><p>提示给出flag.php地址，那这里肯定就需要使用伪协议来读取文件。</p><p>直接读取：</p><p><img src="/2022/07/21/SSRF%E9%9D%B6%E5%9C%BA/image-20220721100339921.png" alt="image-20220721100339921"></p><p>查看源码：<br><img src="/2022/07/21/SSRF%E9%9D%B6%E5%9C%BA/image-20220721100354877.png" alt="image-20220721100354877"></p><h2 id="0x04-端口扫描"><a href="#0x04-端口扫描" class="headerlink" title="0x04 端口扫描"></a>0x04 端口扫描</h2><p>给出提示端口范围在8000-9000</p><p><img src="/2022/07/21/SSRF%E9%9D%B6%E5%9C%BA/image-20220721100553224.png" alt="image-20220721100553224"></p><p>根据提示，flag应该实在某一个端口下，因此就需要爆破每一个端口来探测，这里使用BP直接进行爆破：</p><p>这里利用<strong>dict协议</strong>探测端口加上<strong>burp</strong>爆破，也可以用<strong>http</strong>探测端口。</p><p><img src="/2022/07/21/SSRF%E9%9D%B6%E5%9C%BA/image-20220721101114833.png" alt="image-20220721101114833"></p><p><img src="/2022/07/21/SSRF%E9%9D%B6%E5%9C%BA/image-20220721101140417.png" alt="image-20220721101140417"></p><p>爆破完成，只有一个长度不同：</p><p><img src="/2022/07/21/SSRF%E9%9D%B6%E5%9C%BA/image-20220721101359755.png" alt="image-20220721101359755"></p><p>使用http协议访问：</p><p>​    <img src="/2022/07/21/SSRF%E9%9D%B6%E5%9C%BA/image-20220721101453963.png" alt="image-20220721101453963"></p><p>得到flag。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> SSRF </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> CTF </tag>
+            
+            <tag> SSRF </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>BUU-CODE-REVIEW</title>
       <link href="/2022/07/19/BUU-CODE-REVIEW/"/>
       <url>/2022/07/19/BUU-CODE-REVIEW/</url>
