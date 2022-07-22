@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Bugku-bp</title>
+      <link href="/2022/07/22/Bugku-bp/"/>
+      <url>/2022/07/22/Bugku-bp/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>Bugku一道弱口令爆破题目，比平时的爆破略微有些不同。</p><h2 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h2><p>打开靶场，提示使用弱口令top1000，而且应该是z开头的六位密码：</p><p><img src="/2022/07/22/Bugku-bp/image-20220722102240226.png" alt="image-20220722102240226"></p><p><img src="/2022/07/22/Bugku-bp/image-20220722102227793.png" alt="image-20220722102227793"></p><h2 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h2><p>从网上下载好top1000弱口令字典直接使用bp设置好参数进行爆破：<br><img src="/2022/07/22/Bugku-bp/image-20220722102553838.png" alt="image-20220722102553838"></p><p><img src="/2022/07/22/Bugku-bp/image-20220722102607162.png" alt="image-20220722102607162"></p><h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p><img src="/2022/07/22/Bugku-bp/image-20220722102708768.png" alt="image-20220722102708768"></p><p>观察长度都一样，没有任何一个不同，这就是与平时爆破不同的地方；</p><p>无非两种情况：<br>1、正确的密码不在字典当中；</p><p>2、正确的密码在已使用的密码字典中，但是不论输入的密码是否正确，Response的长度都是908</p><p>不管使用什么字典，都是908；</p><p>查看返回包看看有什么不同：<br><img src="/2022/07/22/Bugku-bp/image-20220722103101425.png" alt="image-20220722103101425"></p><p>每一条回应包都有一段这样的JS代码，提示密码错误，这里可以猜想，正确的回应包应该和现在的回应包有所不同。二者之间的差异应该就在这段JS代码当中。</p><p>JS代码中声明了<code>var r = &#123;code: &#39;bugku10000&#39;&#125;</code>这样一个变量，若是<code>r.code</code>等于<code>bugku10000</code>就返回密码错误，否则就返回正确。</p><p>既然报错返回包中会有<code>&#123;code: &#39;bugku10000&#39;&#125;</code>此字段，那就将此字段放入爆破模块进行匹配，返回不同结果则表示为正确的密码。</p><p>这时需要用到Intruder中的Grep-Match功能：</p><p><img src="/2022/07/22/Bugku-bp/image-20220722103745865.png" alt="image-20220722103745865"></p><p>该功能可以帮我们分析<strong>Response中是否含有给定字符串</strong>。</p><h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>继续爆破，不过此时就不是观察长度来判断，而是观察所加入的字段来判断：<br><img src="/2022/07/22/Bugku-bp/image-20220722104108241.png" alt="image-20220722104108241"></p><p>观察<code>&#123;code: &#39;bugku10000&#39;&#125;</code>字段，看到其他密码都被打了☑，只有最有一个没有，尝试登录：<br><img src="/2022/07/22/Bugku-bp/image-20220722104404323.png" alt="image-20220722104404323"></p><p>得到flag。</p><h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><p>再观察对应返回包：</p><p>正确返回包返回的是hacker1000</p><p><img src="/2022/07/22/Bugku-bp/image-20220722104453822.png" alt="image-20220722104453822"></p><p>错误返回包返回的还是bugku10000</p><p><img src="/2022/07/22/Bugku-bp/image-20220722104505096.png" alt="image-20220722104505096"></p><h2 id="0x06-总结"><a href="#0x06-总结" class="headerlink" title="0x06 总结"></a>0x06 总结</h2><p>与平时爆破不同的是这次观察的不是长度，这也说明，可能有时进行爆破密码正确也不一定能够直接观察出来，还需要查看回显数据包进行进一步检测，需要配合回显数据包的数据进行密码爆破。关注点有时可能并不是一个，而是多个。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> CTF </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> CTF </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>BUU-WarmUp</title>
       <link href="/2022/07/21/BUU-WarmUp/"/>
       <url>/2022/07/21/BUU-WarmUp/</url>
