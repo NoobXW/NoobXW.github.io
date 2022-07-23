@@ -452,6 +452,10 @@ CTF文件包含以BUUCTF一道题为例：[ACTF2020 新生赛]Include 1
                                 <span class="chip bg-color">CTF</span>
                             </a>
                         
+                            <a href="/tags/PHP/">
+                                <span class="chip bg-color">PHP</span>
+                            </a>
+                        
                             <a href="/tags/%E9%9D%B6%E5%9C%BA/">
                                 <span class="chip bg-color">靶场</span>
                             </a>
@@ -466,6 +470,10 @@ CTF文件包含以BUUCTF一道题为例：[ACTF2020 新生赛]Include 1
                         
                             <a href="/categories/CTF/" class="post-category">
                                 CTF
+                            </a>
+                        
+                            <a href="/categories/CTF/PHP/" class="post-category">
+                                PHP
                             </a>
                         
                     </div>
@@ -486,7 +494,7 @@ CTF文件包含以BUUCTF一道题为例：[ACTF2020 新生赛]Include 1
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    303
+                    624
                 </div>
                 
 
@@ -535,10 +543,46 @@ CTF文件包含以BUUCTF一道题为例：[ACTF2020 新生赛]Include 1
 <h3 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h3><p>最重要的就是<code>读取文件的payload</code>。</p>
 <p>参考文章：</p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42181428/article/details/87090539?utm_medium=distribute.pc_relevant_t0.none-task-blog-2~default~BlogCommendFromMachineLearnPai2~default-1.contr">https://blog.csdn.net/qq_42181428/article/details/87090539?utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.contr</a></p>
-<p>这个博主对文件包含漏洞做出了总结，很详细。</p>
-<h2 id="php-filter"><a href="#php-filter" class="headerlink" title="php://filter"></a>php://filter</h2><p><strong>php://filter</strong>可以获取指定文件源码。当它与包含函数结合时，<code>php://filter流</code>会被当作php文件执行。所以我们一般对其进行编码，让其不执行。从而导致任意文件读取。</p>
-<p>php://filter用法参考文章：</p>
+<h2 id="常见PHP为协议"><a href="#常见PHP为协议" class="headerlink" title="常见PHP为协议"></a>常见PHP为协议</h2><h3 id="0x00-file"><a href="#0x00-file" class="headerlink" title="0x00 file://"></a>0x00 file://</h3><p>作用：</p>
+<blockquote>
+<p>用于访问文件（绝对路径、相对路径、网络路径）</p>
+</blockquote>
+<p>示例：</p>
+<blockquote>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;www.xx.com?file&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;passswd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</blockquote>
+<h3 id="0x01-php"><a href="#0x01-php" class="headerlink" title="0x01 php://"></a>0x01 php://</h3><p>作用：访问输入输出流</p>
+<p>1、<strong>php://filter</strong>可以获取指定文件源码。当它与包含函数结合时，<code>php://filter流</code>会被当作php文件执行。所以我们一般对其进行编码，让其不执行。从而导致任意文件读取。</p>
+<p>payload：</p>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;xxx.xxx.xxx.xxx:端口号&#x2F;secr3t.php?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag.php<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>参数：</p>
+<blockquote>
+<p>resource=&lt;要过滤的数据流&gt; 这个参数是必须的。它指定了你要筛选过滤的数据流<br>read=&lt;读链的筛选列表&gt; 该参数可选。可以设定一个或多个过滤器名称，以管道符（|）分隔。<br>write=&lt;写链的筛选列表&gt; 该参数可选。可以设定一个或多个过滤器名称，以管道符（|）分隔。<br>&lt;；两个链的筛选列表&gt; 任何没有以 read= 或 write= 作前缀 的筛选器列表会视情况应用于读或写链。</p>
+</blockquote>
 <p><a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/php-filter-magic.html">https://www.leavesongs.com/PENETRATION/php-filter-magic.html</a></p>
+<p>2、<strong>php://input</strong></p>
+<p>作用：</p>
+<blockquote>
+<p>执行POST数据中的php代码</p>
+</blockquote>
+<p>payload:</p>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;xxx.x.x.x&#x2F;cmd.php?cmd&#x3D;php:&#x2F;&#x2F;input<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<blockquote>
+<p>POST数据：**<code>&lt;?php phpinfo()?&gt;</code>**</p>
+</blockquote>
+<p>注意：</p>
+<blockquote>
+<p><strong><code>enctype=&quot;multipart/form-data&quot;</code></strong> 的时候 <strong><code>php://input</code></strong> 是无效的</p>
+</blockquote>
+<h3 id="0x02-data"><a href="#0x02-data" class="headerlink" title="0x02 data://"></a>0x02 data://</h3><p>作用：</p>
+<blockquote>
+<p>data://数据流封装器，以传递相应格式的数据。通常可以用来执行PHP代码。一般需要用到**<code>base64编码</code>**传输</p>
+</blockquote>
+<p>payload:</p>
+<pre class="line-numbers language-none"><code class="language-none">http:&#x2F;&#x2F;xxx.x.x.x&#x2F;include.php?file&#x3D;data:&#x2F;&#x2F;text&#x2F;plain;base64,PD9waHAgcGhwaW5mbygpOz8%2b<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
 
                 
             </div>
@@ -605,6 +649,10 @@ CTF文件包含以BUUCTF一道题为例：[ACTF2020 新生赛]Include 1
                             
                                 <a href="/tags/CTF/">
                                     <span class="chip bg-color">CTF</span>
+                                </a>
+                            
+                                <a href="/tags/PHP/">
+                                    <span class="chip bg-color">PHP</span>
                                 </a>
                             
                                 <a href="/tags/%E9%9D%B6%E5%9C%BA/">
@@ -980,7 +1028,7 @@ CTF文件包含以BUUCTF一道题为例：[ACTF2020 新生赛]Include 1
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">111.6k</span>
+                        class="white-color">112k</span>
             
             
             
