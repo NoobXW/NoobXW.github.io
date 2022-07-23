@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="分类: SSRF, 小白">
+    <meta name="keywords" content="分类: CTF, 小白">
     <meta name="description" content="记录网安学习的日常">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>分类: SSRF | 小白</title>
+    <title>分类: CTF | 小白</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -379,7 +379,7 @@
                 
                 <a href="/categories/CTF/" title="CTF: 7">
                     <span class="chip center-align waves-effect waves-light
-                             chip-default "
+                             chip-active "
                             style="background-color: #F9EBEA;">CTF
                         <span class="tag-length">7</span>
                     </span>
@@ -469,7 +469,7 @@
                 
                 <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/CTF/" title="CTF: 1">
                     <span class="chip center-align waves-effect waves-light
-                             chip-default "
+                             chip-active "
                             style="background-color: #F8C471;">CTF
                         <span class="tag-length">1</span>
                     </span>
@@ -478,7 +478,7 @@
                 
                 <a href="/categories/SSRF/" title="SSRF: 2">
                     <span class="chip center-align waves-effect waves-light
-                             chip-active "
+                             chip-default "
                             style="background-color: #F9E79F;">SSRF
                         <span class="tag-length">2</span>
                     </span>
@@ -631,7 +631,7 @@
                 
                 <a href="/categories/PHP/CTF/" title="CTF: 1">
                     <span class="chip center-align waves-effect waves-light
-                             chip-default "
+                             chip-active "
                             style="background-color: #D7BDE2;">CTF
                         <span class="tag-length">1</span>
                     </span>
@@ -651,34 +651,42 @@
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2022/07/21/SSRF%E9%9D%B6%E5%9C%BA/">
+                    <a href="/2022/03/15/php%E5%BC%B1%E7%B1%BB%E5%9E%8B/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="SSRF靶场">
+                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="php弱类型">
                             
-                            <span class="card-title">SSRF靶场</span>
+                            <span class="card-title">php弱类型</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                0x00 CTFHUBCTFHUB的SSRF题目。
-0x01 涉及协议及知识点
-http://：探测内网主机存活、端口开放情况，可以通过访问其它网站确定存活，如百度
-gopher://：发送GET或POST请求(需要配合http协议二次ur
+                                前言在CTF平台做题时，遇到很多php弱类型的题目，也看了很多php弱类型的文章，在这里总结一下。
+0x00php中有两种比较的符号 == 与 ===
+1 &lt;?php
+2 $a = $b ;
+3 $a===$b ;
+4 ?>
+
+===
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>22-07-21
+                                <i class="far fa-clock fa-fw icon-date"></i>22-03-15
                             </span>
                             <span class="publish-author">
                                 
                                 <i class="fas fa-bookmark fa-fw icon-category"></i>
                                 
-                                <a href="/categories/SSRF/" class="post-category">
-                                    SSRF
+                                <a href="/categories/PHP/" class="post-category">
+                                    PHP
+                                </a>
+                                
+                                <a href="/categories/PHP/CTF/" class="post-category">
+                                    CTF
                                 </a>
                                 
                                 
@@ -693,57 +701,8 @@ gopher://：发送GET或POST请求(需要配合http协议二次ur
                             <span class="chip bg-color">CTF</span>
                         </a>
                         
-                        <a href="/tags/SSRF/">
-                            <span class="chip bg-color">SSRF</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2022/02/28/SSRF%E5%9F%BA%E7%A1%80/">
-                        <div class="card-image tag-image">
-                            
-                            
-                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="SSRF基础">
-                            
-                            <span class="card-title">SSRF基础</span>
-                        </div>
-                    </a>
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                SSRF漏洞概述SSRF，全称Server-Side Request Forgery，服务端请求伪造，是一种由攻击者构造形成由服务器发起请求的一个安全漏洞，SSRF的主要攻击目标为外网无法访问的内部系统。
-以下为SSRF脑图：
-
-SSRF漏
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>22-02-28
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/SSRF/" class="post-category">
-                                    SSRF
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/SSRF/">
-                            <span class="chip bg-color">SSRF</span>
+                        <a href="/tags/PHP/">
+                            <span class="chip bg-color">PHP</span>
                         </a>
                         
                     </div>
