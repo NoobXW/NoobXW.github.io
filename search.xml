@@ -621,8 +621,6 @@
           
           <category> 代码审计 </category>
           
-          <category> SQL注入 </category>
-          
       </categories>
       
       
@@ -1409,8 +1407,6 @@
       
       <categories>
           
-          <category> PHP </category>
-          
           <category> CTF </category>
           
       </categories>
@@ -1570,8 +1566,6 @@
       <categories>
           
           <category> CTF </category>
-          
-          <category> PHP </category>
           
       </categories>
       
