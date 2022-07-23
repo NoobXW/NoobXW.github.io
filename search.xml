@@ -84,13 +84,7 @@
       
       <categories>
           
-          <category> 代码审计 </category>
-          
-          <category> CTF </category>
-          
-          <category> 文件包含 </category>
-          
-          <category> PHP </category>
+          <category> 代码审计 CTF 文件包含 PHP </category>
           
       </categories>
       
