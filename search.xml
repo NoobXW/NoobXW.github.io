@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>BUU-[RoarCTF2019]Easy-Calc</title>
+      <link href="/2022/07/24/BUU-RoarCTF2019-Easy-Calc/"/>
+      <url>/2022/07/24/BUU-RoarCTF2019-Easy-Calc/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>BUU一道PHP解析特性题目。</p><h2 id="0x01-原理"><a href="#0x01-原理" class="headerlink" title="0x01 原理"></a>0x01 原理</h2><p><strong>原理1：利用PHP的字符串解析特性</strong></p><p>参考文章：<br><a href="https://www.freebuf.com/articles/web/213359.html">https://www.freebuf.com/articles/web/213359.html</a></p><blockquote><p>PHP将查询字符串（在URL或正文中）转换为内部<code>$_GET</code>或关联数组<code>$_POST</code>。值得注意的是，查询字符串在解析的过程中会将某些字符删除或用下划线代替。<br>例如：<br>/?foo=bar变成Array([foo]=&gt; “bar”)。<br>/? foo=bar变成Array([foo]=&gt; “bar”)。 //?号后有一个空格<br>/?+foo=bar变成Array([foo]=&gt; “bar”)。 //?号后有一个+号</p></blockquote><p><img src="/2022/07/24/BUU-RoarCTF2019-Easy-Calc/image-20220724095523999.png" alt="image-20220724095523999"></p><p><strong>原理2：利用scandir()列出目录和文件,var_dump()用于输出</strong></p><blockquote><p><code>scandir()函数返回指定目录中的文件和目录的数组。</code><br><code>scandir(/)相当于ls /</code><br><code>var_dump()相当于echo</code></p></blockquote><p><strong>原理3：利用file_get_contents()读取并输出文件内容</strong></p><blockquote><p><code>file_get_contents(/flag.php)</code>，读取<code>/flag.php</code>的代码</p></blockquote><h2 id="0x02-访问靶场"><a href="#0x02-访问靶场" class="headerlink" title="0x02 访问靶场"></a>0x02 访问靶场</h2><p>给出一个计算器，随便测试一下看源码：</p><p><img src="/2022/07/24/BUU-RoarCTF2019-Easy-Calc/image-20220724095741669.png" alt="image-20220724095741669"></p><p><img src="/2022/07/24/BUU-RoarCTF2019-Easy-Calc/image-20220724095811917.png" alt="image-20220724095811917"></p><p><img src="/2022/07/24/BUU-RoarCTF2019-Easy-Calc/image-20220724095831395.png" alt="image-20220724095831395"></p><p>告诉设置了一个WAF来确保安全，并且给了calc.php文件。</p><h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>先访问calc.php文件：<br><img src="/2022/07/24/BUU-RoarCTF2019-Easy-Calc/image-20220724100017460.png" alt="image-20220724100017460"></p><p>给出了源码；大概意思就算是使用GET方式传入一个num，并且对num的进行黑名单过滤，最后eval()执行。</p><h2 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h2><p>num传入字符：</p><p><img src="/2022/07/24/BUU-RoarCTF2019-Easy-Calc/image-20220724100218781.png" alt="image-20220724100218781"></p><p>看到直接被禁止访问，说明第一个源码给的WAf起作用了。</p><p>传入数字：<br><img src="/2022/07/24/BUU-RoarCTF2019-Easy-Calc/image-20220724100751914.png" alt="image-20220724100751914"></p><h2 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h2><blockquote><p>说明在解析calc.php?num=xxx时会检测num的值是否是数字，那这里利用<strong>原理1</strong>：PHP的字符串解析特性：在num前加入干扰字符，使WAF检测时候检测不到num值即可绕过WAF，但是php在解析时会去掉干扰字符，继续正常执行，最终达到上传非法字符的目的。</p></blockquote><p>在<code>?</code>和<code>num</code>之间加入空格，上传字符a，成功执行：</p><p><img src="/2022/07/24/BUU-RoarCTF2019-Easy-Calc/image-20220724101148165.png" alt="image-20220724101148165"></p><p>接下来利用<strong>原理2</strong>读取目录：</p><pre class="line-numbers language-none"><code class="language-none">? num&#x3D;var_dump(scandir(chr(47)))相当于? num&#x3D;system(ls &#x2F;) #chr(47)&#x3D;&quot; &#x2F; &quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/2022/07/24/BUU-RoarCTF2019-Easy-Calc/image-20220724101431358.png" alt="image-20220724101431358"></p><p><img src="/2022/07/24/BUU-RoarCTF2019-Easy-Calc/image-20220724101424603.png" alt="image-20220724101424603"></p><p>找到flag所在文件名，利用<code>原理3</code>读文件内容：</p><pre class="line-numbers language-none"><code class="language-none">? num&#x3D;file_get_contents(chr(47).chr(102).chr(49).chr(97).chr(103).chr(103))&#x3D;&#x3D;&gt;&gt;file_get_contents(&#x2F;f1agg)相当于? num&#x3D;system(cat &#x2F;f1agg)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><blockquote><p>这里/=chr(47)，f=chr(102)，l=chr(49)，a=chr(97)，g=chr(103)，g=chr(103)来进行绕过</p></blockquote><p><img src="/2022/07/24/BUU-RoarCTF2019-Easy-Calc/image-20220724101710457.png" alt="image-20220724101710457"></p><p><img src="/2022/07/24/BUU-RoarCTF2019-Easy-Calc/image-20220724101716646.png" alt="image-20220724101716646"></p><p>拿到flag。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> CTF </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> CTF </tag>
+            
+            <tag> 代码审计 </tag>
+            
+            <tag> PHP </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>BUU-[极客大挑战2019]PHP</title>
       <link href="/2022/07/23/BUU-%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%982019-PHP/"/>
       <url>/2022/07/23/BUU-%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%982019-PHP/</url>
