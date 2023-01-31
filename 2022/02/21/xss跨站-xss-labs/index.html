@@ -1,0 +1,1536 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="xss跨站-xss-labs, 小白">
+    <meta name="description" content="[TOC]
+前言记录一下xss靶场，xss-labs通关过程。
+##Level-1（无过滤）
+###0x00
+可以看到给的提示是payload长度为4，地址栏中get方式的name=test与欢迎用户test相对应，试着改一下name的参数">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>xss跨站-xss-labs | 小白</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+
+   <style>
+    body{
+       background-image: url(https://cdn.jsdelivr.net/gh/Tokisaki-Galaxy/res/site/medias/background.jpg);
+       background-repeat:no-repeat;
+       background-size: 100% 100%;
+       background-attachment:fixed;
+    }
+</style>
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">小白</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">小白</div>
+        <div class="logo-desc">
+            
+            记录网安学习的日常
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">xss跨站-xss-labs</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E9%9D%B6%E5%9C%BA/">
+                                <span class="chip bg-color">靶场</span>
+                            </a>
+                        
+                            <a href="/tags/xss/">
+                                <span class="chip bg-color">xss</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/xss/" class="post-category">
+                                xss
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-02-21
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    3.2k
+                </div>
+                
+
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>[TOC]</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记录一下xss靶场，xss-labs通关过程。</p>
+<p>##Level-1（无过滤）</p>
+<p>###0x00</p>
+<p>可以看到给的提示是payload长度为4，地址栏中get方式的name=test与欢迎用户test相对应，试着改一下name的参数值。</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220221230054368.png" alt="image-20220221230054368"></p>
+<h3 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h3><p>修改为test=ease访问，可以看到参数值变为了ease：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220221230320497.png" alt="image-20220221230320497"></p>
+<h3 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h3><p>插入以下语句执行：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>可以看到，通关完成：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220221230621283.png" alt="image-20220221230621283"></p>
+<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>源码分析：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223203512972.png" alt="image-20220223203512972"></p>
+<p>可以看到get接收name参数值，之后输出name参数值，这里没有进行任何的过滤，直接插入跨站语句即可。</p>
+<p>##Level-2（闭合标签）</p>
+<h3 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h3><p> 第二关有了输入框，尝试xss语句看看效果，原样输出：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223204602632.png" alt="image-20220223204602632"></p>
+<h3 id="0x01-1"><a href="#0x01-1" class="headerlink" title="0x01"></a>0x01</h3><p>分析下代码：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223205308671.png" alt="image-20220223205308671"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223205604474.png" alt="image-20220223205604474"></p>
+<p>可以看到其中<code>&lt;</code>和<code>&gt;</code>都被编码成了html字符实体，<code>value</code>字段中插入的<code>xss语句</code>加了双引号，由于在代码中，双引号中的内容被当作字符串去输出，那这里的思路就是去闭合前后双引号绕过过滤。</p>
+<p><strong>htmlspecialchars()</strong> 函数：把预定义的字符 <code>&quot;&lt;&quot; （小于）和 &quot;&gt;&quot; （大于）</code>转换为 HTML 实体。</p>
+<h3 id="0x02-1"><a href="#0x02-1" class="headerlink" title="0x02"></a>0x02</h3><p>插入以下xss语句：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token string">">&lt;script>alert(/xss/)&lt;/script>&lt;"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223205027837.png" alt="image-20220223205027837"></p>
+<p>可以看到，绕过成功。</p>
+<h2 id="Level-3（单引号闭合-htmlspecialchar-函数）"><a href="#Level-3（单引号闭合-htmlspecialchar-函数）" class="headerlink" title="Level-3（单引号闭合+htmlspecialchar()函数）"></a>Level-3（单引号闭合+htmlspecialchar()函数）</h2><h3 id="0x00-1"><a href="#0x00-1" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223210254667.png" alt="image-20220223210254667"></p>
+<h3 id="0x01-2"><a href="#0x01-2" class="headerlink" title="0x01"></a>0x01</h3><p>尝试注入：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223210326112.png" alt="image-20220223210326112"></p>
+<h3 id="0x02-2"><a href="#0x02-2" class="headerlink" title="0x02"></a>0x02</h3><p>注入：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token string">">&lt;script>alert(/xss/)&lt;/script>&lt;"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>查看源码，这次是单引号，将双引号改为单引号注入尝试。</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223210434299.png" alt="image-20220223210434299"></p>
+<p>这里<code>value</code>字段也被编码为了html实体，源码中应该在<code>value</code>字段处也使用了<code>htmlspecialchars()</code>函数。</p>
+<h3 id="0x03-1"><a href="#0x03-1" class="headerlink" title="0x03"></a>0x03</h3><p>注入以下语句：</p>
+<pre class="line-numbers language-none"><code class="language-none">&#39;&gt;&lt;script&gt;alert(&#x2F;xss&#x2F;)&lt;&#x2F;script&gt;&lt;&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>原样输出：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223210703668.png" alt="image-20220223210703668"></p>
+<h3 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h3><p>查看源代码：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223210741765.png" alt="image-20220223210741765"></p>
+<p>这里还是使用了<code>htmlspecialchars()</code>函数，而且还是两次。</p>
+<h3 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h3><p>构造标签事件进行过滤，返回值实在input标签中，尝试构造onclick事件触发xss。点击输入框后，触发onclick事件，响应onclick中的javascript代码。</p>
+<p>payload:</p>
+<pre class="line-numbers language-none"><code class="language-none">&#39;onclick&#x3D;&#39;alert(&#x2F;xss&#x2F;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>执行结果后的源码，如图：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223212446455.png" alt="image-20220223212446455"></p>
+<p><code>onclick</code>前单引号为了闭合<code>value</code>字段的单引号，<code>=</code>后面的单引号为了使原有的后单引号将语句闭合。</p>
+<p><strong>或者</strong>：</p>
+<p>构造事件onmouseover，事件成功执行javascript:伪协议：</p>
+<p><strong>onmouseover 事件</strong>：会在鼠标指针移动到指定的元素上时发生。</p>
+<pre class="line-numbers language-none"><code class="language-none">&#39;onmouseover&#x3D;&#39;javascript:alert(&#x2F;xss&#x2F;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>将鼠标指针移动到输入框时，触发onmouseover 事件，进而<strong>触发xss语句</strong>。</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223213840193.png" alt="image-20220223213840193"></p>
+<h3 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h3><p>点击输入框，过关：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223212718299.png" alt="image-20220223212718299"></p>
+<h2 id="Level-4（双引号闭合-添加事件）"><a href="#Level-4（双引号闭合-添加事件）" class="headerlink" title="Level-4（双引号闭合+添加事件）"></a>Level-4（双引号闭合+添加事件）</h2><h3 id="0x00-2"><a href="#0x00-2" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223212821307.png" alt="image-20220223212821307"></p>
+<h3 id="0x01-3"><a href="#0x01-3" class="headerlink" title="0x01"></a>0x01</h3><p>尝试注入：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>看源码：<br><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223212940369.png" alt="image-20220223212940369"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223213013160.png" alt="image-20220223213013160"></p>
+<p>可以看到，源码中将<code>&lt;</code>和<code>&gt;</code>过滤掉了。</p>
+<h3 id="0x02-3"><a href="#0x02-3" class="headerlink" title="0x02"></a>0x02</h3><p>查看后端源码：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223213443286.png" alt="image-20220223213443286"></p>
+<p>源码将<code>&lt;</code>和<code>&gt;</code>都替换为空。</p>
+<h3 id="0x03-2"><a href="#0x03-2" class="headerlink" title="0x03"></a>0x03</h3><p>尝试使用<code>&#39;onclick=&#39;alert(/xss/)</code>注入，原样输出：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223214243971.png" alt="image-20220223214243971"></p>
+<h3 id="0x04-1"><a href="#0x04-1" class="headerlink" title="0x04"></a>0x04</h3><p>查看源码：<br><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223214349139.png" alt="image-20220223214349139"></p>
+<p>双引号闭合；</p>
+<p>改为双引号继续注入：</p>
+<pre class="line-numbers language-none"><code class="language-none">&quot;onclick&#x3D;&quot;alert(&#x2F;xss&#x2F;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>点击输入框：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223214604593.png" alt="image-20220223214604593"></p>
+<h2 id="Level-5（-javascript伪协议）"><a href="#Level-5（-javascript伪协议）" class="headerlink" title="Level-5（ javascript伪协议）"></a>Level-5（ javascript伪协议）</h2><p>###0x00</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223214833255.png" alt="image-20220223214833255"></p>
+<h3 id="0x01-4"><a href="#0x01-4" class="headerlink" title="0x01"></a>0x01</h3><p>尝试注入：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223215057564.png" alt="image-20220223215057564"></p>
+<p>查看源码：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223215024469.png" alt="image-20220223215024469"></p>
+<p>这里将<code>script</code>进行了转化。</p>
+<h3 id="0x02-4"><a href="#0x02-4" class="headerlink" title="0x02"></a>0x02</h3><p>查看后端源码：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223215249518.png" alt="image-20220223215249518"></p>
+<p>将<code>&lt;script</code>替换为了<code>&lt;scr_ipt</code>导致浏览器无法解析JS代码；还将<code>on</code>替换为了<code>o_n</code>，这意味着构造标签事件就不能用了。</p>
+<h3 id="0x03-3"><a href="#0x03-3" class="headerlink" title="0x03"></a>0x03</h3><p>试着改变大小写是否能绕过：</p>
+<pre class="line-numbers language-none"><code class="language-none">&quot;Onclick&#x3D;&quot;alert(&#x2F;xss&#x2F;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>点击输入框后无反应，绕过失败。</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223220126030.png" alt="image-20220223220126030"></p>
+<p>由于源码中将输入的参数值都进行了小写转换，导致绕过失败。</p>
+<h3 id="0x04-2"><a href="#0x04-2" class="headerlink" title="0x04"></a>0x04</h3><p>既然无法通过<code>&lt;script&gt;</code>标签或触发事件来执行js代码的话，那么可以换一个标</p>
+<p>签来执行js代码。</p>
+<p>构造以下payload：</p>
+<pre class="line-numbers language-none"><code class="language-none">&quot;&gt;&lt;a href&#x3D;&#39;javascript:alert(1)&#39;&gt;&lt;&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>点击<code>&lt;&quot;&quot;&gt;</code>，过关：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223220613689.png" alt="image-20220223220613689"></p>
+<h2 id="Level-6（大小写混合绕过）"><a href="#Level-6（大小写混合绕过）" class="headerlink" title="Level-6（大小写混合绕过）"></a>Level-6（大小写混合绕过）</h2><h3 id="0x00-3"><a href="#0x00-3" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223220911051.png" alt="image-20220223220911051"></p>
+<h3 id="0x01-5"><a href="#0x01-5" class="headerlink" title="0x01"></a>0x01</h3><p>尝试注入：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里还是对<code>script</code>进行了处理：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223221104984.png" alt="image-20220223221104984"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223221051582.png" alt="image-20220223221051582"></p>
+<h3 id="0x02-5"><a href="#0x02-5" class="headerlink" title="0x02"></a>0x02</h3><p>查看后端代码：<br><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223221243867.png" alt="image-20220223221243867"></p>
+<p>可以看到，这里过滤了<code>src</code>，<code>data</code>和<code>href</code>等标签。</p>
+<p>源码中<code>src</code>主要是<code>&lt;img&gt;</code>标签的属性：</p>
+<p>正常的引用图 片就是将待引用图片的地址赋值给src属性。但是在js中如果src属性的值不正常或者无法 访问到时就可以触发一个<code>onerror</code>事件来执行js代码。</p>
+<p><code>&lt;img&gt;</code>标签代码：</p>
+<pre class="line-numbers language-none"><code class="language-none">&lt;img src&#x3D;111 onerror&#x3D;alert(&#39;xss&#39;)&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+<h3 id="0x03-4"><a href="#0x03-4" class="headerlink" title="0x03"></a>0x03</h3><p>源码中只是将标签进行了转化，转换的是小写字符，那这里试试大小写混合是否能绕过：</p>
+<pre class="line-numbers language-none"><code class="language-none">&quot;&gt;&lt;a HrEf&#x3D;javascript:alert(&#x2F;xss&#x2F;)&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>点击<code>&quot;&gt;</code>，可以看到绕过成功：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223222324576.png" alt="image-20220223222324576"></p>
+<h2 id="Level-7（双写绕过）"><a href="#Level-7（双写绕过）" class="headerlink" title="Level-7（双写绕过）"></a>Level-7（双写绕过）</h2><h3 id="0x00-4"><a href="#0x00-4" class="headerlink" title="0x00"></a>0x00</h3><p>尝试注入：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里直接将<code>script</code>替换为空：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223222915968.png" alt="image-20220223222915968"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223222902480.png" alt="image-20220223222902480"></p>
+<h3 id="0x01-6"><a href="#0x01-6" class="headerlink" title="0x01"></a>0x01</h3><p>尝试：</p>
+<pre class="line-numbers language-none"><code class="language-none">&quot;&gt;&lt;a HrEf&#x3D;javascript:alert(&#x2F;xss&#x2F;)&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>herf被过滤，大小写混合失败，应该是对大写字母进行了强制转换。</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223223336761.png" alt="image-20220223223336761"></p>
+<h3 id="0x02-6"><a href="#0x02-6" class="headerlink" title="0x02"></a>0x02</h3><p>查看源码：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223223513738.png" alt="image-20220223223513738"></p>
+<p>强制转化为小写字母，过滤了<code>script</code>等标签。</p>
+<h3 id="0x03-5"><a href="#0x03-5" class="headerlink" title="0x03"></a>0x03</h3><p>由于对<code>script</code>等标签只过滤了一次，双写<code>herf</code>和<code>script</code>进行绕过尝试：</p>
+<pre class="line-numbers language-none"><code class="language-none">&quot;&gt;&lt;a hrhrefef&#x3D;javasscriptcript:alert(&#x2F;xss&#x2F;)&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>点击<code>&quot;&gt;</code>进行绕过：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223224256542.png" alt="image-20220223224256542"></p>
+<h2 id="Level-8（编码绕过）"><a href="#Level-8（编码绕过）" class="headerlink" title="Level-8（编码绕过）"></a>Level-8（编码绕过）</h2><h3 id="0x00-5"><a href="#0x00-5" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223224406222.png" alt="image-20220223224406222"></p>
+<h3 id="0x01-7"><a href="#0x01-7" class="headerlink" title="0x01"></a>0x01</h3><p>注入：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>点击友情链接后：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223224742388.png" alt="image-20220223224742388"></p>
+<h3 id="0x02-7"><a href="#0x02-7" class="headerlink" title="0x02"></a>0x02</h3><p>查看源码：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223224821203.png" alt="image-20220223224821203"></p>
+<p>发现<code>script</code>被替换了，导致访问不了。</p>
+<p>查看后端代码：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223225010067.png" alt="image-20220223225010067"></p>
+<p>强制转换了小写，过滤了<code>script</code>等标签，还将<code>&quot;</code>替换为<code>&amp;quot</code>。</p>
+<h3 id="0x03-6"><a href="#0x03-6" class="headerlink" title="0x03"></a>0x03</h3><p>尝试编码绕过：</p>
+<pre class="line-numbers language-none"><code class="language-none">编码前：
+javascript:alert(&#x2F;xss&#x2F;)
+
+编码后：
+&amp;#106;&amp;#97;&amp;#118;&amp;#97;&amp;#115;&amp;#99;&amp;#114;&amp;#105;&amp;#112;&amp;#116;&amp;#58;&amp;#97;&amp;#108;&amp;#101;&amp;#114;&amp;#116;&amp;#40;&amp;#47;&amp;#120;&amp;#115;&amp;#115;&amp;#47;&amp;#41;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<p>点击<code>友情链接</code>：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223230847318.png" alt="image-20220223230847318"></p>
+<h2 id="Level-9（检测关键字）"><a href="#Level-9（检测关键字）" class="headerlink" title="Level-9（检测关键字）"></a>Level-9（检测关键字）</h2><h3 id="0x00-6"><a href="#0x00-6" class="headerlink" title="0x00"></a>0x00</h3><p>尝试注入：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>源码显示链接不合法，这里可以猜测后端代码对链接进行了检查。</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223231257625.png" alt="image-20220223231257625"></p>
+<h3 id="0x01-8"><a href="#0x01-8" class="headerlink" title="0x01"></a>0x01</h3><p>查看源代码：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223231530383.png" alt="image-20220223231530383"></p>
+<p><strong>strpos() 函数</strong>：查找字符串在另一字符串中第一次出现的位置。</p>
+<p>源码中过滤完各种关键字后会对链接使用<code>strpos()</code>函数检查是否含有<code>http://</code>字段，若没有则输出链接不合法。那这里的思路就是：在注入的语句中加入<code>http://</code>字段即可。</p>
+<h3 id="0x02-8"><a href="#0x02-8" class="headerlink" title="0x02"></a>0x02</h3><p>这里使用<code>编码+//http://baidu.com</code>进行绕过：</p>
+<pre class="line-numbers language-none"><code class="language-none">&amp;#106;&amp;#97;&amp;#118;&amp;#97;&amp;#115;&amp;#99;&amp;#114;&amp;#105;&amp;#112;&amp;#116;&amp;#58;&amp;#97;&amp;#108;&amp;#101;&amp;#114;&amp;#116;&amp;#40;&amp;#47;&amp;#120;&amp;#115;&amp;#115;&amp;#47;&amp;#41;&#x2F;&#x2F;http:&#x2F;&#x2F;baidu.com<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223232734645.png" alt="image-20220223232734645"></p>
+<p>payload解析：</p>
+<p>由于需要触发JS代码，编码后需要加入<code>//</code>注释符注释掉后面的链接地址，若不加<code>//</code>则会导致触发JS代码失败，而源码中的<code>strpod()</code>函数只是检查字符串中是否带有<code>http://</code>字段。</p>
+<h2 id="Level-10（隐藏信息）"><a href="#Level-10（隐藏信息）" class="headerlink" title="Level-10（隐藏信息）"></a>Level-10（隐藏信息）</h2><h3 id="0x00-7"><a href="#0x00-7" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223233518335.png" alt="image-20220223233518335"></p>
+<p>可以看到这里与上面几关不同的是：没有输入框。</p>
+<h3 id="0x01-9"><a href="#0x01-9" class="headerlink" title="0x01"></a>0x01</h3><p>右键查看源代码得知，有三个隐藏的表单：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223233938586.png" alt="image-20220223233938586"></p>
+<h3 id="0x02-9"><a href="#0x02-9" class="headerlink" title="0x02"></a>0x02</h3><p>首先测试以下看看效果：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223234131443.png" alt="image-20220223234131443"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223234439823.png" alt="image-20220223234439823"></p>
+<p>只是接收的参数值改变了。</p>
+<p>但这里有三个<code>&lt;input&gt;标</code>签的话，也就意味着是三个参数。</p>
+<p>试试修改<code>type</code>类型试试。</p>
+<h3 id="0x03-7"><a href="#0x03-7" class="headerlink" title="0x03"></a>0x03</h3><p>这里随便将三个hidden字段中的其中一个改为text即可，都可出现输入框：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223234641082.png" alt="image-20220223234641082"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223234705362.png" alt="image-20220223234705362"></p>
+<h3 id="0x04-3"><a href="#0x04-3" class="headerlink" title="0x04"></a>0x04</h3><p>由于没有提交表单的按钮，这里只能通过构造标签事件来进行触发JS代码：</p>
+<p>payload：</p>
+<pre class="line-numbers language-none"><code class="language-none">type&#x3D;&quot;text&quot; onclick&#x3D;&quot;alert(&#x2F;xss&#x2F;)&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223235457699.png" alt="image-20220223235457699"></p>
+<p>点击输入框：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223235449192.png" alt="image-20220223235449192"></p>
+<h3 id="0x05-1"><a href="#0x05-1" class="headerlink" title="0x05"></a>0x05</h3><p>分析下后端代码：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223235651965.png" alt="image-20220223235651965"></p>
+<p>可以看到是第三个字段<code>t_sort</code>接收参数值，之后将<code>&lt;</code>和<code>&gt;</code>替换为<code>空</code>，然后在<code>value</code>字段处接收处理过后的参数值输出。</p>
+<h2 id="Level-11（Referer）"><a href="#Level-11（Referer）" class="headerlink" title="Level-11（Referer）"></a>Level-11（Referer）</h2><h3 id="0x00-8"><a href="#0x00-8" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224105752344.png" alt="image-20220224105752344"></p>
+<h3 id="0x01-10"><a href="#0x01-10" class="headerlink" title="0x01"></a>0x01</h3><p>查看源码：<br><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224105817042.png" alt="image-20220224105817042"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224105844674.png" alt="image-20220224105844674"></p>
+<p>同样，和第10关大致相同，但这里出现了请求来源的函数；</p>
+<p><code>$_SERVER[&#39;HTTP_REFERER&#39;]</code>：链接到当前页面的前一页面的 URL 地址。</p>
+<p>这里应该是通过修改请求来源达到插入xss语句。</p>
+<h3 id="0x02-10"><a href="#0x02-10" class="headerlink" title="0x02"></a>0x02</h3><p>使用第10关的方式同样也过关了，但这关的本意应该不是在这里。</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224110352001.png" alt="image-20220224110352001"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224110339373.png" alt="image-20220224110339373"></p>
+<h3 id="0x03-8"><a href="#0x03-8" class="headerlink" title="0x03"></a>0x03</h3><p>抓个包，修改请求来源进行插入xss语句：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224110844783.png" alt="image-20220224110844783"></p>
+<h3 id="0x04-4"><a href="#0x04-4" class="headerlink" title="0x04"></a>0x04</h3><p>value接收到参数值后将<code>&lt;</code>和<code>&gt;</code>进行了替换为<code>空</code>：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224111147386.png" alt="image-20220224111147386"></p>
+<h3 id="0x05-2"><a href="#0x05-2" class="headerlink" title="0x05"></a>0x05</h3><p>构造事件标签进行绕过：</p>
+<pre class="line-numbers language-none"><code class="language-none">Referer: &quot;onclick&#x3D;&quot;alert(&#x2F;xss&#x2F;)&quot; type&#x3D;&quot;text&quot;&#x2F;&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224112434015.png" alt="image-20220224112434015"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224112219377.png" alt="image-20220224112219377"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224112202515.png" alt="image-20220224112202515"></p>
+<h2 id="Level-12（User-agent）"><a href="#Level-12（User-agent）" class="headerlink" title="Level-12（User-agent）"></a>Level-12（User-agent）</h2><h3 id="0x00-9"><a href="#0x00-9" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224112551614.png" alt="image-20220224112551614"></p>
+<h3 id="0x01-11"><a href="#0x01-11" class="headerlink" title="0x01"></a>0x01</h3><p>源代码这里可以看到有<code>User-Agent</code>字段，后端代码应该有获取这个字段的函数。</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224112539875.png" alt="image-20220224112539875"></p>
+<p>那这里的思路和第11关差不多。</p>
+<h3 id="0x02-11"><a href="#0x02-11" class="headerlink" title="0x02"></a>0x02</h3><p>抓包修改<code>User-Agent</code>的值：</p>
+<pre class="line-numbers language-none"><code class="language-none">User-Agent: &quot;onclick&#x3D;&quot;alert(&#x2F;xss&#x2F;)&quot; type&#x3D;&quot;text&quot;&#x2F;&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114037609.png" alt="image-20220224114037609"></p>
+<h3 id="0x03-9"><a href="#0x03-9" class="headerlink" title="0x03"></a>0x03</h3><p>点击输入框：<br><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114105012.png" alt="image-20220224114105012"></p>
+<h2 id="Level-13（Cookie）"><a href="#Level-13（Cookie）" class="headerlink" title="Level-13（Cookie）"></a>Level-13（Cookie）</h2><h3 id="0x00-10"><a href="#0x00-10" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114218153.png" alt="image-20220224114218153"></p>
+<p>###0x01</p>
+<p>查看源码：<br><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114205898.png" alt="image-20220224114205898"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114305388.png" alt="image-20220224114305388"></p>
+<p>后端源码中获取的是<code>cookie</code>值，在<code>t_cook</code>处进行输出；原理和前两关一样。</p>
+<h3 id="0x02-12"><a href="#0x02-12" class="headerlink" title="0x02"></a>0x02</h3><p>抓包修改<code>cookie</code>值：</p>
+<pre class="line-numbers language-none"><code class="language-none">Cookie: user&#x3D;&quot;onclick&#x3D;&quot;alert(&#x2F;xss&#x2F;)&quot; type&#x3D;&quot;text&quot;&#x2F;&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114826582.png" alt="image-20220224114826582"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114855684.png" alt="image-20220224114855684"></p>
+<h3 id="0x03-10"><a href="#0x03-10" class="headerlink" title="0x03"></a>0x03</h3><p>点击输入框：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114918848.png" alt="image-20220224114918848"></p>
+<h2 id="Level-14"><a href="#Level-14" class="headerlink" title="Level-14"></a>Level-14</h2><h3 id="0x00-11"><a href="#0x00-11" class="headerlink" title="0x00"></a>0x00</h3><p>本关因iframe调用的文件地址失效，无法进行测试。要考的应该是通过修改iframe调用的文件来实现xss注入。</p>
+<h2 id="Level-15（ng-include）"><a href="#Level-15（ng-include）" class="headerlink" title="Level-15（ng-include）"></a>Level-15（ng-include）</h2><h3 id="0x00-12"><a href="#0x00-12" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226180941907.png" alt="image-20220226180941907"></p>
+<h3 id="0x01-12"><a href="#0x01-12" class="headerlink" title="0x01"></a>0x01</h3><p>查看下源码，发现有JS文件和一个<code>ng-include:</code>字符串：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226181109598.png" alt="image-20220226181109598"></p>
+<p>后端源码中参数是通过get方式获取src进行传递：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226181403441.png" alt="image-20220226181403441"></p>
+<pre class="line-numbers language-none"><code class="language-none">AngularJS： 是一个 **JavaScript 框架**。它可通过 &#96;&lt;script&gt;&#96; 标签添加到 HTML 页面。
+
+AngularJS指令 是以 **ng** 作为前缀的 HTML 属性。
+
+AngularJS ng-include 指令：用于包含外部的 HTML 文件；包含的内容将作为指定元素的子节点；ng-include属性的值可以是一个表达式，返回一个文件名。
+默认情况下，包含的文件需要包含在同一个域名下。
+值得注意的是：
+    ng-include,如果单纯指定地址，必须要加引号
+
+    ng-include,加载外部html，script标签中的内容不执行
+
+    ng-include,加载外部html中含有style标签样式可以识别<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>具体用法参考：</p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/angularjs/angularjs-reference.html">https://www.runoob.com/angularjs/angularjs-reference.html</a></p>
+<p>通俗点来说：<code>ng-include</code>其作用相当于php的include函数。那这关的思路就是通过传入包含xss漏洞的文件进行触发xss。</p>
+<h3 id="0x02-13"><a href="#0x02-13" class="headerlink" title="0x02"></a>0x02</h3><p>那这里利用这两点： </p>
+<p>1、ng-include,如果单纯指定地址，必须要加引号</p>
+<p>2、包含外部的 HTML 文件</p>
+<p>进行攻击；既然可以包含外部的html文件，将前面几关的其中一个文件包含进来进行触发xss漏洞。</p>
+<p>构造payload：</p>
+<pre class="line-numbers language-none"><code class="language-none">&#39;level1.php?name&#x3D;&lt;a href&#x3D;&quot;javascript:alert(&#x2F;xss&#x2F;)&quot;&gt;&#39;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226183606798.png" alt="image-20220226183606798"></p>
+<h3 id="0x03-11"><a href="#0x03-11" class="headerlink" title="0x03"></a>0x03</h3><p>点击<code>payload的长度:34</code>：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226183712065.png" alt="image-20220226183712065"></p>
+<h2 id="Level-16（空格实体转义）"><a href="#Level-16（空格实体转义）" class="headerlink" title="Level-16（空格实体转义）"></a>Level-16（空格实体转义）</h2><h3 id="0x00-13"><a href="#0x00-13" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226183853226.png" alt="image-20220226183853226"></p>
+<h3 id="0x01-13"><a href="#0x01-13" class="headerlink" title="0x01"></a>0x01</h3><p>先修改下参数值看看，参数值改变：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226183919093.png" alt="image-20220226183919093"></p>
+<h3 id="0x02-14"><a href="#0x02-14" class="headerlink" title="0x02"></a>0x02</h3><p>看下源码：<br><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226184025078.png" alt="image-20220226184025078"></p>
+<p>可以看到将<code>script，/，空格</code>进行了过滤，其中空格进行了两次过滤。</p>
+<h3 id="0x03-12"><a href="#0x03-12" class="headerlink" title="0x03"></a>0x03</h3><p>使用事件型注入+替换空格进行尝试：</p>
+<pre class="line-numbers language-none"><code class="language-none">&lt;img%0Asrc&#x3D;?%0Aonerror&#x3D;alert(&#39;xss&#39;)&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>由于在html里，回车（%0A）是可以代替空格的</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226185747219.png" alt="image-20220226185747219"></p>
+<h3 id="0x04-5"><a href="#0x04-5" class="headerlink" title="0x04"></a>0x04</h3><p>为什么不使用这个payload：</p>
+<pre class="line-numbers language-none"><code class="language-none">&lt;a href&#x3D;onclick&#x3D;&quot;alert(1)&quot;&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+<h1 id="Level-17（参数拼接）"><a href="#Level-17（参数拼接）" class="headerlink" title="Level-17（参数拼接）"></a>Level-17（参数拼接）</h1><h3 id="0x00-14"><a href="#0x00-14" class="headerlink" title="0x00"></a>0x00</h3><p>可以看到地址栏参数有些略微不同，应该是由arg01和arg02这两个字段传参：</p>
+<p>（这里由于不支持swf文件格式，文件无法显示）</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226192406157.png" alt="image-20220226192406157"></p>
+<h3 id="0x01-14"><a href="#0x01-14" class="headerlink" title="0x01"></a>0x01</h3><p>先随便传个参试试：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226191816389.png" alt="image-20220226191816389"></p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226191749683.png" alt="image-20220226191749683"></p>
+<p>源代码中接收参数的src发生了变化，这里<code>xsf01.swf</code>需要值得注意。</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226192720196.png" alt="image-20220226192720196"></p>
+<p><strong>swf</strong>：swf文件通常也被称为Flash文件。SWF格式文件广泛用于创建吸引人的应用程序，它们包含丰富的视频、声音、图形和动画。</p>
+<h3 id="0x02-15"><a href="#0x02-15" class="headerlink" title="0x02"></a>0x02</h3><p>这里根据源码使用<code>事件型</code>进行注入：</p>
+<pre class="line-numbers language-none"><code class="language-none">onclick&#x3D;&quot;alert(&#39;xss&#39;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226193655774.png" alt="image-20220226193655774"></p>
+<p>源码中成功插入xss语句，由于插件原因，不能够进行点击执行。</p>
+<h2 id="Level-18（参数拼接）"><a href="#Level-18（参数拼接）" class="headerlink" title="Level-18（参数拼接）"></a>Level-18（参数拼接）</h2><h3 id="0x00-15"><a href="#0x00-15" class="headerlink" title="0x00"></a>0x00</h3><p>与第17关一样，环境有问题，思路也一样。</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226195342043.png" alt="image-20220226195342043"></p>
+<h3 id="0x01-15"><a href="#0x01-15" class="headerlink" title="0x01"></a>0x01</h3><p>patload：</p>
+<pre class="line-numbers language-none"><code class="language-none">onmouse&#x3D;alert(&#x2F;xss&#x2F;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226195545905.png" alt="image-20220226195545905"></p>
+<h2 id="Level-19-20（Flash-XSS）"><a href="#Level-19-20（Flash-XSS）" class="headerlink" title="Level-19-20（Flash XSS）"></a>Level-19-20（Flash XSS）</h2><h3 id="0x00-16"><a href="#0x00-16" class="headerlink" title="0x00"></a>0x00</h3><p>基于Flash的xss漏洞。</p>
+<p>19关查看源码得知这里src的值使用双引号进行了包含</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226195807293.png" alt="image-20220226195807293"></p>
+<h3 id="0x01-16"><a href="#0x01-16" class="headerlink" title="0x01"></a>0x01</h3><p>后端代码：</p>
+<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226200202047.png" alt="image-20220226200202047"></p>
+<p>一般思路有双引号肯定要进行闭合，最后触发js代码，但这里有<code>htmlspecialchars()</code>函数进行过滤，显然闭合是行不通的。</p>
+<p>flash xss先告一段落，有时间再深入研究。</p>
+<h3 id="Flash产生的xss问题主要有两种方式："><a href="#Flash产生的xss问题主要有两种方式：" class="headerlink" title="Flash产生的xss问题主要有两种方式："></a>Flash产生的xss问题主要有两种方式：</h3><p>1、加载第三方资源</p>
+<p>2、与javascript通信引发XSS。</p>
+<p>常见的可触发xss的危险函数有：</p>
+<p><code>getURL</code> <code>navigateToURL</code> <code>ExternalInterface.call</code> <code>htmlText loadMovie</code>等</p>
+<p>要想知道这一关的是不是属于flash xss，只需要对引用的swf文件</p>
+<p>进行反编译然后进行源码分析。</p>
+<p>这里我说使用的对此类文件进行反编译的工具是<code>jpexs-decompiler</code>。</p>
+<p>项目地址:<a target="_blank" rel="noopener" href="https://github.com/jindrapetrik/jpexs-decompiler">https://github.com/jindrapetrik/jpexs-decompiler</a></p>
+<p>Flash XSS参考文章：<a target="_blank" rel="noopener" href="https://baynk.blog.csdn.net/article/details/103213877">https://baynk.blog.csdn.net/article/details/103213877</a></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">小白</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://NoobXW.github.io/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/">http://NoobXW.github.io/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">小白</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E9%9D%B6%E5%9C%BA/">
+                                    <span class="chip bg-color">靶场</span>
+                                </a>
+                            
+                                <a href="/tags/xss/">
+                                    <span class="chip bg-color">xss</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/02/22/xss%E8%BF%87%E6%BB%A4%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/20.jpg" class="responsive-img" alt="xss过滤的那些事">
+                        
+                        <span class="card-title">xss过滤的那些事</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>22-02-22
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/xss/" class="post-category">
+                                    xss
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/xss/">
+                        <span class="chip bg-color">xss</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/02/20/XSS%E5%9F%BA%E7%A1%80/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="XSS基础">
+                        
+                        <span class="card-title">XSS基础</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-02-20
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/xss/" class="post-category">
+                                    xss
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/xss/">
+                        <span class="chip bg-color">xss</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE' || selection.getRangeAt(0).commonAncestorContainer.nodeName === 'CODE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 小白<br />'
+            + '文章作者: 小白<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="7286865560"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
+            <a href="/about" target="_blank">小白</a>
+            |&nbsp;Powered by&nbsp;梦想
+            |&nbsp;About&nbsp;我的博客
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                        class="white-color">175.8k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="http://NoobXW.github.io" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:wangwei89677@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=3012254368" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 3012254368" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>');
+            }
+        </script>
+    
+
+    <!-- 鼠标星星特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
