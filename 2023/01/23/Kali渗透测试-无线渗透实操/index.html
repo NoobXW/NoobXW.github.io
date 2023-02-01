@@ -1,0 +1,1661 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Kali渗透测试-无线渗透实操, 小白">
+    <meta name="description" content="AIRCRACK-NG基础
+
+无线渗透和审计神器   
+
+包含各种功能的工具套件 
+
+网络检测
+嗅探抓包
+包注入
+密码破解
+
+
+
+无论是有线或者无线，进入内网之后的攻击方式是相同的并且攻击方式是多样的
+
+AIRMON-NG检查网卡驱动
+ai">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Kali渗透测试-无线渗透实操 | 小白</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+
+   <style>
+    body{
+       background-image: url(https://cdn.jsdelivr.net/gh/Tokisaki-Galaxy/res/site/medias/background.jpg);
+       background-repeat:no-repeat;
+       background-size: 100% 100%;
+       background-attachment:fixed;
+    }
+</style>
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">小白</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">小白</div>
+        <div class="logo-desc">
+            
+            记录网安学习的日常
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Kali渗透测试-无线渗透实操</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Kali/">
+                                <span class="chip bg-color">Kali</span>
+                            </a>
+                        
+                            <a href="/tags/%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F/">
+                                <span class="chip bg-color">无线渗透</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F/" class="post-category">
+                                无线渗透
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-01-23
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.7k
+                </div>
+                
+
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="AIRCRACK-NG基础"><a href="#AIRCRACK-NG基础" class="headerlink" title="AIRCRACK-NG基础"></a>AIRCRACK-NG基础</h2><blockquote>
+<ul>
+<li><p>无线渗透和审计神器   </p>
+</li>
+<li><p>包含各种功能的工具套件 </p>
+<ul>
+<li>网络检测</li>
+<li>嗅探抓包</li>
+<li>包注入</li>
+<li>密码破解</li>
+</ul>
+</li>
+</ul>
+<p>无论是有线或者无线，进入内网之后的攻击方式是相同的并且攻击方式是多样的</p>
+</blockquote>
+<h2 id="AIRMON-NG"><a href="#AIRMON-NG" class="headerlink" title="AIRMON-NG"></a>AIRMON-NG</h2><h4 id="检查网卡驱动"><a href="#检查网卡驱动" class="headerlink" title="检查网卡驱动"></a>检查网卡驱动</h4><ul>
+<li>airmon-ng</li>
+</ul>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/image-20230123124607375.png" alt="image-20230123124607375"></p>
+<blockquote>
+<p>airmon-ng列出网卡信息，Driver为驱动信息；若是驱动有问题，会出现很多难以解决的问题；Chipset为芯片型号</p>
+</blockquote>
+<ul>
+<li>airmon-ng check</li>
+</ul>
+<blockquote>
+<p>检查AIRCRACK套件的使用与当前系统可能存在冲突的进程，可使用 airmon-ng check kill 将其关闭。</p>
+</blockquote>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/image-20230123124926833.png" alt="image-20230123124926833"></p>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/image-20230123125538644.png" alt="image-20230123125538644"></p>
+<h4 id="开启和停止无线侦听"><a href="#开启和停止无线侦听" class="headerlink" title="开启和停止无线侦听"></a>开启和停止无线侦听</h4><ul>
+<li>airmon-ng start wlan0</li>
+</ul>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/image-20230123130107038.png" alt="image-20230123130107038"></p>
+<h4 id="查看当前工作信道"><a href="#查看当前工作信道" class="headerlink" title="查看当前工作信道"></a>查看当前工作信道</h4><ul>
+<li>iwlist wlan0mon channel</li>
+</ul>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/image-20230123130141384.png" alt="image-20230123130141384"></p>
+<blockquote>
+<p>图中显示当前工作在10信道；可以使用”airmon-ng start wlan0 1&#x2F;2&#x2F;3……”修改工作的信道</p>
+</blockquote>
+<h2 id="Airodump-ng"><a href="#Airodump-ng" class="headerlink" title="Airodump-ng"></a>Airodump-ng</h2><blockquote>
+<p>airodump-ng无线抓包套件之一</p>
+</blockquote>
+<ul>
+<li>airodump-ng wlan0mon</li>
+</ul>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/image-20230123131118294.png" alt="image-20230123131118294"></p>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/image-20230123131146747.png" alt="image-20230123131146747"></p>
+<blockquote>
+<p>使用airodump-ng抓包的话，此时无线网卡工作在所有信道中进行轮询，每个信道进行监听发现是否存在AP</p>
+</blockquote>
+<ul>
+<li><p>airodump-ng wlan0mon -c 1</p>
+<blockquote>
+<p>指定信道进行侦听</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/image-20230123131819870.png" alt="image-20230123131819870"></p>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/image-20230123131850972.png" alt="image-20230123131850972"></p>
+<blockquote>
+<p>信道是交叉的重叠的，依旧可能会抓到其它信道的</p>
+</blockquote>
+<blockquote>
+<p>airodump-ng wlan0mon -c 6 –bssid 54:75:95:2E:B3:6B       #指定要抓的具体ssid<br>airodump-ng wlan0mon -c 6 –bssid 54:75:95:2E:B3:6B -w &#x2F;home&#x2F;kali&#x2F;Desktop&#x2F;test.cap     #抓包结果写入test.cap<br>airodump-ng wlan0mon -c 6 –bssid 54:75:95:2E:B3:6B -w &#x2F;home&#x2F;kali&#x2F;Desktop&#x2F;test.cap –ivs      #只抓取WEP包含ivs的信息</p>
+<p><code>与airodump-ng wlan0mon -c 1命令类似</code></p>
+</blockquote>
+<h4 id="抓包结果分析"><a href="#抓包结果分析" class="headerlink" title="抓包结果分析"></a>抓包结果分析</h4><blockquote>
+<ul>
+<li><p><strong>BSSID：</strong>AP的MAC地址</p>
+</li>
+<li><p><strong>PWR：</strong>网卡接收到的信号强度，距离越近信号越强（如上图中PWR字段）</p>
+<ul>
+<li>-1：驱动不支持信号强度、STA距离超出信号接受范围</li>
+</ul>
+</li>
+<li><p><strong>RXQ：</strong>最近10秒成功接收的数据帧的百分比(数据帧、管理帧)，只有固定信道时才会出现</p>
+</li>
+<li><p><strong>Beacons：</strong>接收到此AP发送的beacon帧数量</p>
+</li>
+<li><p><strong>#Data：</strong>抓到的数据帧数量(WEP表示IV数量)，包含广播数据帧</p>
+</li>
+<li><p><strong>#&#x2F;s：</strong>最近10秒内，每秒平均抓到的帧的数量</p>
+</li>
+<li><p><strong>CH：</strong>信道好(从beacon帧中获得)，信道重叠时可能发现其他信道</p>
+</li>
+<li><p><strong>MB：</strong>AP支持的最大速率</p>
+</li>
+<li><p><strong>ENC：</strong>采用的无线安全技术WEP、WPA、WPA2、OPEN</p>
+</li>
+<li><p><strong>CIPHER：</strong>采用的加密套件CCMP、TKIP、WEP40、WEP104</p>
+</li>
+<li><p><strong>AUTH：</strong>身份验证方法MGT（企业）、PSK（个人）、SKA（WEP）、OPEN</p>
+</li>
+<li><p><strong>ESSID：</strong>无线网络名称，隐藏AP此值可能为空，airodump从probe和association request帧中发现隐藏AP</p>
+</li>
+<li><p><strong>STATION：</strong>STA的MAC地址，连接AP的MAC地址</p>
+</li>
+<li><p><strong>Lost：</strong>通过sequence number判断最近10秒STA发送丢失的数据包数量(管理帧、数据帧)</p>
+<ul>
+<li>干扰、距离</li>
+<li>发包不能收，收包不能发</li>
+</ul>
+</li>
+<li><p><strong>Packets（Frames）：</strong>STA发送的数据包数量</p>
+</li>
+<li><p><strong>Probes：</strong>STA探测的ESSID</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><blockquote>
+<ul>
+<li><p>不显示任何AP和STA信息</p>
+<ul>
+<li>物理机场景下使用笔记本内置无线网卡时，确保BIOS中已经启动无线网卡</li>
+<li>确认无线网卡在<code>managed</code>模式下可以正常工作</li>
+<li>尝试禁用<code>network-manager</code>服务</li>
+<li>尝试卸载<code>rmmod</code>和重新加载<code>modprobe</code>驱动</li>
+</ul>
+</li>
+<li><p>工作一段时间后airodump-ng无法继续抓包</p>
+<ul>
+<li>airmon-ng check kill</li>
+<li>确认wpa_supplicant进程已停止</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h2 id="AIREPLAY-NG（注入包）"><a href="#AIREPLAY-NG（注入包）" class="headerlink" title="AIREPLAY-NG（注入包）"></a>AIREPLAY-NG（注入包）</h2><blockquote>
+<ul>
+<li>产生或者加速无线通信流量<ul>
+<li>向无线网络中注入数据包<ul>
+<li>伪造身份验证</li>
+<li>强制重新身份验证</li>
+<li>抓包重放</li>
+</ul>
+</li>
+<li>用于后续WEP和WPA密码破解</li>
+<li>支持10种包注入</li>
+</ul>
+</li>
+<li>获取包的两种途径<ul>
+<li>指定接口(-i)</li>
+<li>抓包文件pcap(-r)</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/image-20230123194200605.png" alt="image-20230123194200605"></p>
+<blockquote>
+<p>过滤数据包的选项：</p>
+<p>-b：指定AP的MAC地址</p>
+<p>-d：目标地址的MAC地址</p>
+<p>-s：源MAC地址</p>
+<p>-m：最小的包长度</p>
+<p>-n：最大的包长度</p>
+<p>-u：帧类型</p>
+<p>-v：帧的子类型</p>
+<p>-t&#x2F;-f&#x2F;-w：802.11无线包头帧控部分字段的定义</p>
+</blockquote>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/image-20230123194740241.png" alt="image-20230123194740241"></p>
+<blockquote>
+<p>重放选项：</p>
+<p>-c：目标MAC地址</p>
+<p>-h：源MAC地址</p>
+</blockquote>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/image-20230123193840461.png" alt="image-20230123193840461"></p>
+<blockquote>
+<p>攻击模块</p>
+</blockquote>
+<h4 id="AIREPLAY-NG排错"><a href="#AIREPLAY-NG排错" class="headerlink" title="AIREPLAY-NG排错"></a>AIREPLAY-NG排错</h4><blockquote>
+<ul>
+<li><p>Aireplay-ng命令挂起没有任何输出</p>
+<ul>
+<li>无线网卡与AP工作在不同信道</li>
+</ul>
+</li>
+<li><p>报错”write failed: Cannot allocate memory wi_write():illegal seek”</p>
+<ul>
+<li>无线网卡使用Broadcom芯片（bcm43xx)，替换为b43驱动可解决</li>
+</ul>
+</li>
+<li><p>可注入但速度很慢，并提示内核消息”rtc:lost some interrupts at 1024Hz”</p>
+<ul>
+<li>没有修正方法，此时可以启动多个aireplay-ng命令提高速度</li>
+</ul>
+</li>
+<li><p>使用-h参数指定注入MAC地址与网卡MAC地址不一致报错</p>
+<ul>
+<li>建议保持一致 (macchange命令修改mac地址)</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>修改MAC地址：</p>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/2379545-20220418115031346-1692097645.png" alt="img"></p>
+<h4 id="AIREPLAY-NG包注入测试"><a href="#AIREPLAY-NG包注入测试" class="headerlink" title="AIREPLAY-NG包注入测试"></a>AIREPLAY-NG包注入测试</h4><blockquote>
+<ul>
+<li><p>检测网卡是否可以注入包</p>
+</li>
+<li><p>检测AP的响应时间</p>
+<ul>
+<li>回包率反应链路质量</li>
+</ul>
+</li>
+<li><p>如果有两个无线网卡，可以检测具体可以注入哪种攻击（一个网卡也可以）</p>
+</li>
+<li><p>基本测试检测AP对probe广播的响应</p>
+<ul>
+<li>向每AP发30包</li>
+<li>网卡成功发送并可接收包的能力</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h5 id="基本测试"><a href="#基本测试" class="headerlink" title="基本测试"></a>基本测试</h5><blockquote>
+<p>直接发probe包</p>
+</blockquote>
+<ul>
+<li>aireplay-ng -9 wlan0mon</li>
+</ul>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/image-20230123201833484.png" alt="image-20230123201833484"></p>
+<blockquote>
+<p>当出现<code>Injection is working!</code>字段表示无线网卡满足向网络中注入数据包的功能性的要求；</p>
+<p>Power字段在<code>0至-50</code>之间可以认为信号强度强</p>
+</blockquote>
+<h5 id="向隐藏AP-x2F-指定SSID注入"><a href="#向隐藏AP-x2F-指定SSID注入" class="headerlink" title="向隐藏AP&#x2F;指定SSID注入"></a>向隐藏AP&#x2F;指定SSID注入</h5><ul>
+<li>aireplay-ng -9 wlan0mon -e H3C_C9DFED -a 90:5D:7C:C9:DF:EF</li>
+</ul>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/2379545-20220418120642692-620222619.png" alt="img"></p>
+<blockquote>
+<p>图片来源：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/z9m8r8/articles/16157071.html">https://www.cnblogs.com/z9m8r8/articles/16157071.html</a></p>
+<p>由于附近没有AP可用，附一张网上的图片</p>
+</blockquote>
+<h5 id="card-to-card注入测试（两块无线网卡都是monitor模式）"><a href="#card-to-card注入测试（两块无线网卡都是monitor模式）" class="headerlink" title="card to card注入测试（两块无线网卡都是monitor模式）"></a>card to card注入测试（两块无线网卡都是monitor模式）</h5><blockquote>
+<ul>
+<li><p>具体攻击方式</p>
+</li>
+<li><p>-i 指定作为AP的网卡</p>
+</li>
+</ul>
+<p>结果有 Failed，”可能” 是注入MAC和真正MAC不相同导致</p>
+</blockquote>
+<ul>
+<li><p>添加一个新端口进行测试</p>
+<ul>
+<li>iw dev wlan0 interface add wlan1mon type monitor</li>
+</ul>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/image-20230123204010165.png" alt="image-20230123204010165"></p>
+<ul>
+<li>aireplay-ng -9 -i wlan0mon wlan1mon</li>
+</ul>
+</li>
+</ul>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/image-20230123204417777.png" alt="image-20230123204417777"></p>
+<blockquote>
+<p>在进行card to card之前会进行一个基本测试探测周围附近的AP，之后进行card to card注入；注入0号攻击包OK，1号攻击包OK并且分为open和psk两种方式；2&#x2F;3&#x2F;4&#x2F;6攻击包OK；5&#x2F;7攻击包OK（这两个包有时候会失败若是Faile，则是注入MAC（-h参数指定的MAC地址）和真正MAC不相同导致）</p>
+</blockquote>
+<h2 id="MAC地址绑定攻击"><a href="#MAC地址绑定攻击" class="headerlink" title="MAC地址绑定攻击"></a>MAC地址绑定攻击</h2><blockquote>
+<ul>
+<li><p>管理员误以为MAC绑定是一种安全机制</p>
+</li>
+<li><p>限制可以关联的客户端MAC地址</p>
+</li>
+<li><p>准备AP</p>
+<ul>
+<li>AP基本配置</li>
+<li>开启无线过滤</li>
+</ul>
+</li>
+<li><p>修改MAC地址绕过过滤</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="路由器配置MAC地址绑定"><a href="#路由器配置MAC地址绑定" class="headerlink" title="路由器配置MAC地址绑定"></a>路由器配置MAC地址绑定</h4><p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/20150603091850_4456.png" alt="img"></p>
+<h4 id="网卡修改MAC并接入WiFi"><a href="#网卡修改MAC并接入WiFi" class="headerlink" title="网卡修改MAC并接入WiFi"></a>网卡修改MAC并接入WiFi</h4><ul>
+<li>思路<ul>
+<li>使用<code>airodump-ng wlan0mon</code>侦听允许连接的MAC地址</li>
+<li>使用<code>macchanger -m [MAC地址]  [网卡名称]</code>进行软改MAC地址</li>
+<li>最终可正常连接WiFi</li>
+</ul>
+</li>
+</ul>
+<h2 id="WEP攻击"><a href="#WEP攻击" class="headerlink" title="WEP攻击"></a>WEP攻击</h2><h3 id="WEP共享密钥破解"><a href="#WEP共享密钥破解" class="headerlink" title="WEP共享密钥破解"></a>WEP共享密钥破解</h3><blockquote>
+<ul>
+<li>WEP密码破解原理<ul>
+<li>IV并非完全随机</li>
+<li>每224个包可能出现一次IV重用</li>
+<li>收集大量IV之后找到相同IV及其对应密码文，分析得出共享密码</li>
+</ul>
+</li>
+<li>ARP回包中包含IV</li>
+<li>IV足够多的情况下，任何复杂程度的wep密码都可以被破解</li>
+<li><strong>思路</strong><ul>
+<li><strong>启动monitor模式</strong></li>
+<li><strong>启动抓包并保存抓包</strong></li>
+<li><strong>Deauthentication抓包XOR文件</strong><ul>
+<li>使用Deauthentication打掉合法客户端，使其重连抓取challenge进行异或计算</li>
+</ul>
+</li>
+<li><strong>利用XOR文件与AP建立关联</strong></li>
+<li><strong>执行ARP重放</strong><ul>
+<li>获取大量IV值</li>
+</ul>
+</li>
+<li><strong>Deauthenticiation触发ARP数据包</strong></li>
+<li><strong>收集足够DATA之后破解密码</strong></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h4 id="WEP-FAKE-AUTHENTICATION"><a href="#WEP-FAKE-AUTHENTICATION" class="headerlink" title="WEP-FAKE AUTHENTICATION"></a>WEP-FAKE AUTHENTICATION</h4><blockquote>
+<p><strong>WEP破解全部需要首先伪造认证,以便与AP进行正常通信</strong></p>
+<p>不产生arp数据包</p>
+<p><strong>aireplay-ng -1 0 -e kifi <AP mac> -h <YOUR mac> <INTERFACE></INTERFACE></YOUR></AP></strong></p>
+<p><strong>aireplay-ng -1 60 -o 1 -q 10 -e <ESSID> -a <AP mac> -h <YOUR mac> <INTERFACE></INTERFACE></YOUR></AP></ESSID></strong></p>
+<ul>
+<li>每6000秒能发送reauthentication(默认是发送三次)</li>
+<li>-o 1 每次身份认证只发一组认证数据包</li>
+<li>-q 10 每10秒发keep-live帧</li>
+</ul>
+</blockquote>
+<h4 id="FAKE-AUTHENTICATION-排错"><a href="#FAKE-AUTHENTICATION-排错" class="headerlink" title="FAKE AUTHENTICATION 排错"></a>FAKE AUTHENTICATION 排错</h4><blockquote>
+<ul>
+<li>某些AP验证客户端MAC地址OUI（前三个字节）</li>
+<li>MAC地址可能存在过滤</li>
+<li>出现Denied(code 1) is WPA in use：<ul>
+<li>WPA&#x2F;WPA2不支持Fake authentication</li>
+</ul>
+</li>
+<li>需要使用真实MAC地址</li>
+<li>物理上需要靠近AP</li>
+<li>侦听信道正确</li>
+</ul>
+</blockquote>
+<h4 id="DEAUTHENTICATION攻击"><a href="#DEAUTHENTICATION攻击" class="headerlink" title="DEAUTHENTICATION攻击"></a>DEAUTHENTICATION攻击</h4><blockquote>
+<ul>
+<li><p>用于强制客户端与AP断开连接</p>
+<ul>
+<li><p>重连生成ARP请求,AP回包包含IV</p>
+</li>
+<li><p>WPA重连过程中抓取四步握手过程</p>
+</li>
+<li><p>无客户端情况下此攻击无效</p>
+</li>
+</ul>
+</li>
+<li><p><strong>aireplay-ng -0 0 -a <AP mac> -c <Client mac> <interface name></interface></Client></AP></strong></p>
+<ul>
+<li>不指定-c 参数时候，以广播包攻击所有客户端</li>
+<li>每攻击发送128个包，64个给AP，64个给客户端</li>
+<li>物理足够接近被攻击者</li>
+<li>-0 0(一直发送数据包)</li>
+<li>需要物理足够接近被攻击者，同时与被攻击者使用相同的无线标准b、n、g</li>
+<li>客户端可能拒绝广播帧，建议指定客户端</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h4 id="ARP重放（用于获取大量的IV值）"><a href="#ARP重放（用于获取大量的IV值）" class="headerlink" title="ARP重放（用于获取大量的IV值）"></a>ARP重放（用于获取大量的IV值）</h4><blockquote>
+<ul>
+<li><p>侦听正常的ARP包并重放给AP</p>
+</li>
+<li><p>AP的回包中包含大量弱IV，可以用于WEP密码破解</p>
+</li>
+<li><p><strong>aireplay-ng -3 -b <AP mac> -h <attacker mac> <interface name></interface></attacker></AP></strong></p>
+<ul>
+<li>-h 合法客户端&#x2F;供给者mac</li>
+</ul>
+</li>
+<li><p>Airodump-ng data字段</p>
+<ul>
+<li><p>64bit密钥：建议25万data</p>
+</li>
+<li><p>128bit密钥：建议150万data</p>
+</li>
+</ul>
+</li>
+<li><p>Airecrack-ng wep.cap  # 将侦听到的无线数据保存下来，用于wep密钥破解</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="WEP-PRE-SHARE-KEY"><a href="#WEP-PRE-SHARE-KEY" class="headerlink" title="WEP-PRE SHARE KEY"></a>WEP-PRE SHARE KEY</h4><blockquote>
+<ul>
+<li><p>WEP密码破解原理</p>
+<ul>
+<li>WEP使用的IV值并非完全随机，每224个包就可能存在一次IV重用（但是并非一定出现）</li>
+<li>收集大量IV值之后，找出相同IV及其对应的密文，分析得出密码</li>
+</ul>
+</li>
+<li><p>ARP回包中存在大量IV值</p>
+</li>
+<li><p>IV值足够多的情况下，任何复杂程度的WEP密码都可以破解</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="实验环境："><a href="#实验环境：" class="headerlink" title="实验环境："></a>实验环境：</h4><h5 id="具有基本配置的AP"><a href="#具有基本配置的AP" class="headerlink" title="具有基本配置的AP"></a>具有基本配置的AP</h5><p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/20180312011914511.png" alt="img"></p>
+<h5 id="开始侦听无线网络"><a href="#开始侦听无线网络" class="headerlink" title="开始侦听无线网络"></a>开始侦听无线网络</h5><p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/20180312011941995.png" alt="img"></p>
+<h5 id="用户进行登录，密钥流被抓获"><a href="#用户进行登录，密钥流被抓获" class="headerlink" title="用户进行登录，密钥流被抓获"></a>用户进行登录，密钥流被抓获</h5><blockquote>
+<p>（预设的共享密钥与IV值进行计算所得出的密文）</p>
+</blockquote>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/20180312012044225.png" alt="img"></p>
+<h5 id="目录下查找保存有xor结尾的密文文件"><a href="#目录下查找保存有xor结尾的密文文件" class="headerlink" title="目录下查找保存有xor结尾的密文文件"></a>目录下查找保存有xor结尾的密文文件</h5><p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/20180312012136838.png" alt="img"></p>
+<h5 id="使用fake-authentication进行关联"><a href="#使用fake-authentication进行关联" class="headerlink" title="使用fake authentication进行关联"></a>使用fake authentication进行关联</h5><p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/20180312012305195.png" alt="img"></p>
+<blockquote>
+<p>-1表示第一种包的攻击注入方式；每60秒重新身份认证，-e为要关联的目标的essid；-y上一个步骤抓取的密钥流，-a为AP的MAC地址，-h为无线网卡的MAC地址，再加自己的无线设备名称</p>
+</blockquote>
+<h5 id="认证成功，获得ID为1的连接关系ID"><a href="#认证成功，获得ID为1的连接关系ID" class="headerlink" title="认证成功，获得ID为1的连接关系ID"></a>认证成功，获得ID为1的连接关系ID</h5><p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/20180312012342782.png" alt="img"></p>
+<h5 id="此时在AP上已经可以看到已经连上了目标AP"><a href="#此时在AP上已经可以看到已经连上了目标AP" class="headerlink" title="此时在AP上已经可以看到已经连上了目标AP"></a>此时在AP上已经可以看到已经连上了目标AP</h5><p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/20180312012435955.png" alt="img"></p>
+<h5 id="若是没有抓到密钥流"><a href="#若是没有抓到密钥流" class="headerlink" title="若是没有抓到密钥流"></a>若是没有抓到密钥流</h5><blockquote>
+<p>可以发送deauthentication使客户端与AP解除关联，客户端重连的时候再次通过抓取challenge信息与cipher来计算key-stream</p>
+</blockquote>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/20180312012623799.png" alt="img"></p>
+<blockquote>
+<p>发送-0攻击包；1表示发送一次；-a表示要打掉哪一个AP；-c表示打掉哪一个连接的客户端；再加上相应的网卡</p>
+</blockquote>
+<h5 id="正常情况如下"><a href="#正常情况如下" class="headerlink" title="正常情况如下"></a>正常情况如下</h5><p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/20180312012704877.png" alt="img"></p>
+<h5 id="进行了deauthentication后"><a href="#进行了deauthentication后" class="headerlink" title="进行了deauthentication后"></a>进行了deauthentication后</h5><blockquote>
+<p>PWR信号强度将会变为0，等用户重连时可再次抓取密钥流</p>
+</blockquote>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/20180312012757830.png" alt="img"></p>
+<h5 id="使用ARP重放促使AP发送大量IV值"><a href="#使用ARP重放促使AP发送大量IV值" class="headerlink" title="使用ARP重放促使AP发送大量IV值"></a>使用ARP重放促使AP发送大量IV值</h5><p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/20180312012847278.png" alt="img"></p>
+<blockquote>
+<p>-h参数用来指定侦听网卡的mac，这里没有获取到ARP，那么再次使用deauthentication让client重连</p>
+</blockquote>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/20180312012926479.png" alt="img"></p>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/20180312013015466.png" alt="img"></p>
+<h5 id="尝试使用抓到的IV值进行破解"><a href="#尝试使用抓到的IV值进行破解" class="headerlink" title="尝试使用抓到的IV值进行破解"></a>尝试使用抓到的IV值进行破解</h5><blockquote>
+<p>可以一边抓一边解</p>
+</blockquote>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/20180312013132764.png" alt="img"></p>
+<h5 id="1秒计算完成，WEP密码破解成功"><a href="#1秒计算完成，WEP密码破解成功" class="headerlink" title="1秒计算完成，WEP密码破解成功"></a>1秒计算完成，WEP密码破解成功</h5><blockquote>
+<p>任何复杂度的密码都可以破解出来</p>
+</blockquote>
+<p><img src="/post/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D.htm/20180312013215307.png" alt="img"></p>
+<p><strong>WEP攻击原文链接</strong>：<a target="_blank" rel="noopener" href="https://blog.csdn.net/SyntaxE/article/details/79522187">https://blog.csdn.net/SyntaxE/article/details/79522187</a></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">小白</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://NoobXW.github.io/2023/01/23/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D/">http://NoobXW.github.io/2023/01/23/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F%E5%AE%9E%E6%93%8D/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">小白</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Kali/">
+                                    <span class="chip bg-color">Kali</span>
+                                </a>
+                            
+                                <a href="/tags/%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F/">
+                                    <span class="chip bg-color">无线渗透</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/01/24/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-WPA%E6%94%BB%E5%87%BB/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Kali渗透测试-WPA攻击">
+                        
+                        <span class="card-title">Kali渗透测试-WPA攻击</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>23-01-24
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F/" class="post-category">
+                                    无线渗透
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Kali/">
+                        <span class="chip bg-color">Kali</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F/">
+                        <span class="chip bg-color">无线渗透</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/01/09/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-WPA%E5%AE%89%E5%85%A8%E7%B3%BB%E7%BB%9F/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Kali渗透测试-WPA安全系统">
+                        
+                        <span class="card-title">Kali渗透测试-WPA安全系统</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>23-01-09
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F/" class="post-category">
+                                    无线渗透
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Kali/">
+                        <span class="chip bg-color">Kali</span>
+                    </a>
+                    
+                    <a href="/tags/%E6%97%A0%E7%BA%BF%E6%B8%97%E9%80%8F/">
+                        <span class="chip bg-color">无线渗透</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE' || selection.getRangeAt(0).commonAncestorContainer.nodeName === 'CODE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 小白<br />'
+            + '文章作者: 小白<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="7286865560"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
+            <a href="/about" target="_blank">小白</a>
+            |&nbsp;Powered by&nbsp;梦想
+            |&nbsp;About&nbsp;我的博客
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                        class="white-color">176.9k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="http://NoobXW.github.io" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:wangwei89677@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=3012254368" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 3012254368" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>');
+            }
+        </script>
+    
+
+    <!-- 鼠标星星特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
