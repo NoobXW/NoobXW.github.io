@@ -5,11 +5,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="xss跨站-xss-labs, 无心">
-    <meta name="description" content="[TOC]
-前言记录一下xss靶场，xss-labs通关过程。
-##Level-1（无过滤）
-###0x00
-可以看到给的提示是payload长度为4，地址栏中get方式的name&amp;#x3D;test与欢迎用户test相对应，试着改一下na">
+    <meta name="description" content="前言记录一下xss靶场，xss-labs通关过程。
+Level-1（无过滤）0x00可以看到给的提示是payload长度为4，地址栏中get方式的name&amp;#x3D;test与欢迎用户test相对应，试着改一下name的参数值。
+
+0x01">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -507,11 +506,8 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>[TOC]</p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记录一下xss靶场，xss-labs通关过程。</p>
-<p>##Level-1（无过滤）</p>
-<p>###0x00</p>
-<p>可以看到给的提示是payload长度为4，地址栏中get方式的name&#x3D;test与欢迎用户test相对应，试着改一下name的参数值。</p>
+                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记录一下xss靶场，xss-labs通关过程。</p>
+<h2 id="Level-1（无过滤）"><a href="#Level-1（无过滤）" class="headerlink" title="Level-1（无过滤）"></a>Level-1（无过滤）</h2><h3 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h3><p>可以看到给的提示是payload长度为4，地址栏中get方式的name&#x3D;test与欢迎用户test相对应，试着改一下name的参数值。</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220221230054368.png" alt="image-20220221230054368"></p>
 <h3 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h3><p>修改为test&#x3D;ease访问，可以看到参数值变为了ease：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220221230320497.png" alt="image-20220221230320497"></p>
@@ -520,11 +516,10 @@
 
 <p>可以看到，通关完成：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220221230621283.png" alt="image-20220221230621283"></p>
-<h2 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h2><p>源码分析：</p>
+<h3 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h3><p>源码分析：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223203512972.png" alt="image-20220223203512972"></p>
 <p>可以看到get接收name参数值，之后输出name参数值，这里没有进行任何的过滤，直接插入跨站语句即可。</p>
-<p>##Level-2（闭合标签）</p>
-<h3 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h3><p> 第二关有了输入框，尝试xss语句看看效果，原样输出：</p>
+<h2 id="Level-2（闭合标签）"><a href="#Level-2（闭合标签）" class="headerlink" title="Level-2（闭合标签）"></a>Level-2（闭合标签）</h2><h3 id="0x00-1"><a href="#0x00-1" class="headerlink" title="0x00"></a>0x00</h3><p> 第二关有了输入框，尝试xss语句看看效果，原样输出：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223204602632.png" alt="image-20220223204602632"></p>
 <h3 id="0x01-1"><a href="#0x01-1" class="headerlink" title="0x01"></a>0x01</h3><p>分析下代码：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223205308671.png" alt="image-20220223205308671"></p>
@@ -536,7 +531,7 @@
 
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223205027837.png" alt="image-20220223205027837"></p>
 <p>可以看到，绕过成功。</p>
-<h2 id="Level-3（单引号闭合-htmlspecialchar-函数）"><a href="#Level-3（单引号闭合-htmlspecialchar-函数）" class="headerlink" title="Level-3（单引号闭合+htmlspecialchar()函数）"></a>Level-3（单引号闭合+htmlspecialchar()函数）</h2><h3 id="0x00-1"><a href="#0x00-1" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223210254667.png" alt="image-20220223210254667"></p>
+<h2 id="Level-3（单引号闭合-htmlspecialchar-函数）"><a href="#Level-3（单引号闭合-htmlspecialchar-函数）" class="headerlink" title="Level-3（单引号闭合+htmlspecialchar()函数）"></a>Level-3（单引号闭合+htmlspecialchar()函数）</h2><h3 id="0x00-2"><a href="#0x00-2" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223210254667.png" alt="image-20220223210254667"></p>
 <h3 id="0x01-2"><a href="#0x01-2" class="headerlink" title="0x01"></a>0x01</h3><p>尝试注入：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223210326112.png" alt="image-20220223210326112"></p>
 <h3 id="0x02-2"><a href="#0x02-2" class="headerlink" title="0x02"></a>0x02</h3><p>注入：</p>
@@ -569,7 +564,7 @@
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223213840193.png" alt="image-20220223213840193"></p>
 <h3 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h3><p>点击输入框，过关：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223212718299.png" alt="image-20220223212718299"></p>
-<h2 id="Level-4（双引号闭合-添加事件）"><a href="#Level-4（双引号闭合-添加事件）" class="headerlink" title="Level-4（双引号闭合+添加事件）"></a>Level-4（双引号闭合+添加事件）</h2><h3 id="0x00-2"><a href="#0x00-2" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223212821307.png" alt="image-20220223212821307"></p>
+<h2 id="Level-4（双引号闭合-添加事件）"><a href="#Level-4（双引号闭合-添加事件）" class="headerlink" title="Level-4（双引号闭合+添加事件）"></a>Level-4（双引号闭合+添加事件）</h2><h3 id="0x00-3"><a href="#0x00-3" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223212821307.png" alt="image-20220223212821307"></p>
 <h3 id="0x01-3"><a href="#0x01-3" class="headerlink" title="0x01"></a>0x01</h3><p>尝试注入：</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -588,8 +583,7 @@
 
 <p>点击输入框：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223214604593.png" alt="image-20220223214604593"></p>
-<h2 id="Level-5（-javascript伪协议）"><a href="#Level-5（-javascript伪协议）" class="headerlink" title="Level-5（ javascript伪协议）"></a>Level-5（ javascript伪协议）</h2><p>###0x00</p>
-<p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223214833255.png" alt="image-20220223214833255"></p>
+<h2 id="Level-5（-javascript伪协议）"><a href="#Level-5（-javascript伪协议）" class="headerlink" title="Level-5（ javascript伪协议）"></a>Level-5（ javascript伪协议）</h2><h3 id="0x00-4"><a href="#0x00-4" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223214833255.png" alt="image-20220223214833255"></p>
 <h3 id="0x01-4"><a href="#0x01-4" class="headerlink" title="0x01"></a>0x01</h3><p>尝试注入：</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -613,7 +607,7 @@
 
 <p>点击<code>&lt;&quot;&quot;&gt;</code>，过关：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223220613689.png" alt="image-20220223220613689"></p>
-<h2 id="Level-6（大小写混合绕过）"><a href="#Level-6（大小写混合绕过）" class="headerlink" title="Level-6（大小写混合绕过）"></a>Level-6（大小写混合绕过）</h2><h3 id="0x00-3"><a href="#0x00-3" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223220911051.png" alt="image-20220223220911051"></p>
+<h2 id="Level-6（大小写混合绕过）"><a href="#Level-6（大小写混合绕过）" class="headerlink" title="Level-6（大小写混合绕过）"></a>Level-6（大小写混合绕过）</h2><h3 id="0x00-5"><a href="#0x00-5" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223220911051.png" alt="image-20220223220911051"></p>
 <h3 id="0x01-5"><a href="#0x01-5" class="headerlink" title="0x01"></a>0x01</h3><p>尝试注入：</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -634,7 +628,7 @@
 
 <p>点击<code>&quot;&gt;</code>，可以看到绕过成功：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223222324576.png" alt="image-20220223222324576"></p>
-<h2 id="Level-7（双写绕过）"><a href="#Level-7（双写绕过）" class="headerlink" title="Level-7（双写绕过）"></a>Level-7（双写绕过）</h2><h3 id="0x00-4"><a href="#0x00-4" class="headerlink" title="0x00"></a>0x00</h3><p>尝试注入：</p>
+<h2 id="Level-7（双写绕过）"><a href="#Level-7（双写绕过）" class="headerlink" title="Level-7（双写绕过）"></a>Level-7（双写绕过）</h2><h3 id="0x00-6"><a href="#0x00-6" class="headerlink" title="0x00"></a>0x00</h3><p>尝试注入：</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这里直接将<code>script</code>替换为空：</p>
@@ -653,7 +647,7 @@
 
 <p>点击<code>&quot;&gt;</code>进行绕过：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223224256542.png" alt="image-20220223224256542"></p>
-<h2 id="Level-8（编码绕过）"><a href="#Level-8（编码绕过）" class="headerlink" title="Level-8（编码绕过）"></a>Level-8（编码绕过）</h2><h3 id="0x00-5"><a href="#0x00-5" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223224406222.png" alt="image-20220223224406222"></p>
+<h2 id="Level-8（编码绕过）"><a href="#Level-8（编码绕过）" class="headerlink" title="Level-8（编码绕过）"></a>Level-8（编码绕过）</h2><h3 id="0x00-7"><a href="#0x00-7" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223224406222.png" alt="image-20220223224406222"></p>
 <h3 id="0x01-7"><a href="#0x01-7" class="headerlink" title="0x01"></a>0x01</h3><p>注入：</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
@@ -676,7 +670,7 @@ javascript:alert(&#x2F;xss&#x2F;)
 
 <p>点击<code>友情链接</code>：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223230847318.png" alt="image-20220223230847318"></p>
-<h2 id="Level-9（检测关键字）"><a href="#Level-9（检测关键字）" class="headerlink" title="Level-9（检测关键字）"></a>Level-9（检测关键字）</h2><h3 id="0x00-6"><a href="#0x00-6" class="headerlink" title="0x00"></a>0x00</h3><p>尝试注入：</p>
+<h2 id="Level-9（检测关键字）"><a href="#Level-9（检测关键字）" class="headerlink" title="Level-9（检测关键字）"></a>Level-9（检测关键字）</h2><h3 id="0x00-8"><a href="#0x00-8" class="headerlink" title="0x00"></a>0x00</h3><p>尝试注入：</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token operator">&lt;</span>script<span class="token operator">></span><span class="token function">alert</span><span class="token punctuation">(</span><span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">xss</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>源码显示链接不合法，这里可以猜测后端代码对链接进行了检查。</p>
@@ -691,7 +685,7 @@ javascript:alert(&#x2F;xss&#x2F;)
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223232734645.png" alt="image-20220223232734645"></p>
 <p>payload解析：</p>
 <p>由于需要触发JS代码，编码后需要加入<code>//</code>注释符注释掉后面的链接地址，若不加<code>//</code>则会导致触发JS代码失败，而源码中的<code>strpod()</code>函数只是检查字符串中是否带有<code>http://</code>字段。</p>
-<h2 id="Level-10（隐藏信息）"><a href="#Level-10（隐藏信息）" class="headerlink" title="Level-10（隐藏信息）"></a>Level-10（隐藏信息）</h2><h3 id="0x00-7"><a href="#0x00-7" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223233518335.png" alt="image-20220223233518335"></p>
+<h2 id="Level-10（隐藏信息）"><a href="#Level-10（隐藏信息）" class="headerlink" title="Level-10（隐藏信息）"></a>Level-10（隐藏信息）</h2><h3 id="0x00-9"><a href="#0x00-9" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223233518335.png" alt="image-20220223233518335"></p>
 <p>可以看到这里与上面几关不同的是：没有输入框。</p>
 <h3 id="0x01-9"><a href="#0x01-9" class="headerlink" title="0x01"></a>0x01</h3><p>右键查看源代码得知，有三个隐藏的表单：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223233938586.png" alt="image-20220223233938586"></p>
@@ -716,7 +710,7 @@ javascript:alert(&#x2F;xss&#x2F;)
 <h3 id="0x05-1"><a href="#0x05-1" class="headerlink" title="0x05"></a>0x05</h3><p>分析下后端代码：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220223235651965.png" alt="image-20220223235651965"></p>
 <p>可以看到是第三个字段<code>t_sort</code>接收参数值，之后将<code>&lt;</code>和<code>&gt;</code>替换为<code>空</code>，然后在<code>value</code>字段处接收处理过后的参数值输出。</p>
-<h2 id="Level-11（Referer）"><a href="#Level-11（Referer）" class="headerlink" title="Level-11（Referer）"></a>Level-11（Referer）</h2><h3 id="0x00-8"><a href="#0x00-8" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224105752344.png" alt="image-20220224105752344"></p>
+<h2 id="Level-11（Referer）"><a href="#Level-11（Referer）" class="headerlink" title="Level-11（Referer）"></a>Level-11（Referer）</h2><h3 id="0x00-10"><a href="#0x00-10" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224105752344.png" alt="image-20220224105752344"></p>
 <h3 id="0x01-10"><a href="#0x01-10" class="headerlink" title="0x01"></a>0x01</h3><p>查看源码：<br><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224105817042.png" alt="image-20220224105817042"></p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224105844674.png" alt="image-20220224105844674"></p>
 <p>同样，和第10关大致相同，但这里出现了请求来源的函数；</p>
@@ -735,7 +729,7 @@ javascript:alert(&#x2F;xss&#x2F;)
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224112434015.png" alt="image-20220224112434015"></p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224112219377.png" alt="image-20220224112219377"></p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224112202515.png" alt="image-20220224112202515"></p>
-<h2 id="Level-12（User-agent）"><a href="#Level-12（User-agent）" class="headerlink" title="Level-12（User-agent）"></a>Level-12（User-agent）</h2><h3 id="0x00-9"><a href="#0x00-9" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224112551614.png" alt="image-20220224112551614"></p>
+<h2 id="Level-12（User-agent）"><a href="#Level-12（User-agent）" class="headerlink" title="Level-12（User-agent）"></a>Level-12（User-agent）</h2><h3 id="0x00-11"><a href="#0x00-11" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224112551614.png" alt="image-20220224112551614"></p>
 <h3 id="0x01-11"><a href="#0x01-11" class="headerlink" title="0x01"></a>0x01</h3><p>源代码这里可以看到有<code>User-Agent</code>字段，后端代码应该有获取这个字段的函数。</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224112539875.png" alt="image-20220224112539875"></p>
 <p>那这里的思路和第11关差不多。</p>
@@ -744,9 +738,8 @@ javascript:alert(&#x2F;xss&#x2F;)
 
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114037609.png" alt="image-20220224114037609"></p>
 <h3 id="0x03-9"><a href="#0x03-9" class="headerlink" title="0x03"></a>0x03</h3><p>点击输入框：<br><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114105012.png" alt="image-20220224114105012"></p>
-<h2 id="Level-13（Cookie）"><a href="#Level-13（Cookie）" class="headerlink" title="Level-13（Cookie）"></a>Level-13（Cookie）</h2><h3 id="0x00-10"><a href="#0x00-10" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114218153.png" alt="image-20220224114218153"></p>
-<p>###0x01</p>
-<p>查看源码：<br><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114205898.png" alt="image-20220224114205898"></p>
+<h2 id="Level-13（Cookie）"><a href="#Level-13（Cookie）" class="headerlink" title="Level-13（Cookie）"></a>Level-13（Cookie）</h2><h3 id="0x00-12"><a href="#0x00-12" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114218153.png" alt="image-20220224114218153"></p>
+<h3 id="0x01-12"><a href="#0x01-12" class="headerlink" title="0x01"></a>0x01</h3><p>查看源码：<br><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114205898.png" alt="image-20220224114205898"></p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114305388.png" alt="image-20220224114305388"></p>
 <p>后端源码中获取的是<code>cookie</code>值，在<code>t_cook</code>处进行输出；原理和前两关一样。</p>
 <h3 id="0x02-12"><a href="#0x02-12" class="headerlink" title="0x02"></a>0x02</h3><p>抓包修改<code>cookie</code>值：</p>
@@ -756,9 +749,9 @@ javascript:alert(&#x2F;xss&#x2F;)
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114855684.png" alt="image-20220224114855684"></p>
 <h3 id="0x03-10"><a href="#0x03-10" class="headerlink" title="0x03"></a>0x03</h3><p>点击输入框：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220224114918848.png" alt="image-20220224114918848"></p>
-<h2 id="Level-14"><a href="#Level-14" class="headerlink" title="Level-14"></a>Level-14</h2><h3 id="0x00-11"><a href="#0x00-11" class="headerlink" title="0x00"></a>0x00</h3><p>本关因iframe调用的文件地址失效，无法进行测试。要考的应该是通过修改iframe调用的文件来实现xss注入。</p>
-<h2 id="Level-15（ng-include）"><a href="#Level-15（ng-include）" class="headerlink" title="Level-15（ng-include）"></a>Level-15（ng-include）</h2><h3 id="0x00-12"><a href="#0x00-12" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226180941907.png" alt="image-20220226180941907"></p>
-<h3 id="0x01-12"><a href="#0x01-12" class="headerlink" title="0x01"></a>0x01</h3><p>查看下源码，发现有JS文件和一个<code>ng-include:</code>字符串：</p>
+<h2 id="Level-14"><a href="#Level-14" class="headerlink" title="Level-14"></a>Level-14</h2><h3 id="0x00-13"><a href="#0x00-13" class="headerlink" title="0x00"></a>0x00</h3><p>本关因iframe调用的文件地址失效，无法进行测试。要考的应该是通过修改iframe调用的文件来实现xss注入。</p>
+<h2 id="Level-15（ng-include）"><a href="#Level-15（ng-include）" class="headerlink" title="Level-15（ng-include）"></a>Level-15（ng-include）</h2><h3 id="0x00-14"><a href="#0x00-14" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226180941907.png" alt="image-20220226180941907"></p>
+<h3 id="0x01-13"><a href="#0x01-13" class="headerlink" title="0x01"></a>0x01</h3><p>查看下源码，发现有JS文件和一个<code>ng-include:</code>字符串：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226181109598.png" alt="image-20220226181109598"></p>
 <p>后端源码中参数是通过get方式获取src进行传递：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226181403441.png" alt="image-20220226181403441"></p>
@@ -788,8 +781,8 @@ AngularJS ng-include 指令：用于包含外部的 HTML 文件；包含的内�
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226183606798.png" alt="image-20220226183606798"></p>
 <h3 id="0x03-11"><a href="#0x03-11" class="headerlink" title="0x03"></a>0x03</h3><p>点击<code>payload的长度:34</code>：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226183712065.png" alt="image-20220226183712065"></p>
-<h2 id="Level-16（空格实体转义）"><a href="#Level-16（空格实体转义）" class="headerlink" title="Level-16（空格实体转义）"></a>Level-16（空格实体转义）</h2><h3 id="0x00-13"><a href="#0x00-13" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226183853226.png" alt="image-20220226183853226"></p>
-<h3 id="0x01-13"><a href="#0x01-13" class="headerlink" title="0x01"></a>0x01</h3><p>先修改下参数值看看，参数值改变：</p>
+<h2 id="Level-16（空格实体转义）"><a href="#Level-16（空格实体转义）" class="headerlink" title="Level-16（空格实体转义）"></a>Level-16（空格实体转义）</h2><h3 id="0x00-15"><a href="#0x00-15" class="headerlink" title="0x00"></a>0x00</h3><p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226183853226.png" alt="image-20220226183853226"></p>
+<h3 id="0x01-14"><a href="#0x01-14" class="headerlink" title="0x01"></a>0x01</h3><p>先修改下参数值看看，参数值改变：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226183919093.png" alt="image-20220226183919093"></p>
 <h3 id="0x02-14"><a href="#0x02-14" class="headerlink" title="0x02"></a>0x02</h3><p>看下源码：<br><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226184025078.png" alt="image-20220226184025078"></p>
 <p>可以看到将<code>script，/，空格</code>进行了过滤，其中空格进行了两次过滤。</p>
@@ -803,10 +796,10 @@ AngularJS ng-include 指令：用于包含外部的 HTML 文件；包含的内�
 
 
 
-<h1 id="Level-17（参数拼接）"><a href="#Level-17（参数拼接）" class="headerlink" title="Level-17（参数拼接）"></a>Level-17（参数拼接）</h1><h3 id="0x00-14"><a href="#0x00-14" class="headerlink" title="0x00"></a>0x00</h3><p>可以看到地址栏参数有些略微不同，应该是由arg01和arg02这两个字段传参：</p>
+<h2 id="Level-17（参数拼接）"><a href="#Level-17（参数拼接）" class="headerlink" title="Level-17（参数拼接）"></a>Level-17（参数拼接）</h2><h3 id="0x00-16"><a href="#0x00-16" class="headerlink" title="0x00"></a>0x00</h3><p>可以看到地址栏参数有些略微不同，应该是由arg01和arg02这两个字段传参：</p>
 <p>（这里由于不支持swf文件格式，文件无法显示）</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226192406157.png" alt="image-20220226192406157"></p>
-<h3 id="0x01-14"><a href="#0x01-14" class="headerlink" title="0x01"></a>0x01</h3><p>先随便传个参试试：</p>
+<h3 id="0x01-15"><a href="#0x01-15" class="headerlink" title="0x01"></a>0x01</h3><p>先随便传个参试试：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226191816389.png" alt="image-20220226191816389"></p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226191749683.png" alt="image-20220226191749683"></p>
 <p>源代码中接收参数的src发生了变化，这里<code>xsf01.swf</code>需要值得注意。</p>
@@ -817,16 +810,16 @@ AngularJS ng-include 指令：用于包含外部的 HTML 文件；包含的内�
 
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226193655774.png" alt="image-20220226193655774"></p>
 <p>源码中成功插入xss语句，由于插件原因，不能够进行点击执行。</p>
-<h2 id="Level-18（参数拼接）"><a href="#Level-18（参数拼接）" class="headerlink" title="Level-18（参数拼接）"></a>Level-18（参数拼接）</h2><h3 id="0x00-15"><a href="#0x00-15" class="headerlink" title="0x00"></a>0x00</h3><p>与第17关一样，环境有问题，思路也一样。</p>
+<h2 id="Level-18（参数拼接）"><a href="#Level-18（参数拼接）" class="headerlink" title="Level-18（参数拼接）"></a>Level-18（参数拼接）</h2><h3 id="0x00-17"><a href="#0x00-17" class="headerlink" title="0x00"></a>0x00</h3><p>与第17关一样，环境有问题，思路也一样。</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226195342043.png" alt="image-20220226195342043"></p>
-<h3 id="0x01-15"><a href="#0x01-15" class="headerlink" title="0x01"></a>0x01</h3><p>patload：</p>
+<h3 id="0x01-16"><a href="#0x01-16" class="headerlink" title="0x01"></a>0x01</h3><p>patload：</p>
 <pre class="line-numbers language-none"><code class="language-none">onmouse&#x3D;alert(&#x2F;xss&#x2F;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226195545905.png" alt="image-20220226195545905"></p>
-<h2 id="Level-19-20（Flash-XSS）"><a href="#Level-19-20（Flash-XSS）" class="headerlink" title="Level-19-20（Flash XSS）"></a>Level-19-20（Flash XSS）</h2><h3 id="0x00-16"><a href="#0x00-16" class="headerlink" title="0x00"></a>0x00</h3><p>基于Flash的xss漏洞。</p>
+<h2 id="Level-19-20（Flash-XSS）"><a href="#Level-19-20（Flash-XSS）" class="headerlink" title="Level-19-20（Flash XSS）"></a>Level-19-20（Flash XSS）</h2><h3 id="0x00-18"><a href="#0x00-18" class="headerlink" title="0x00"></a>0x00</h3><p>基于Flash的xss漏洞。</p>
 <p>19关查看源码得知这里src的值使用双引号进行了包含</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226195807293.png" alt="image-20220226195807293"></p>
-<h3 id="0x01-16"><a href="#0x01-16" class="headerlink" title="0x01"></a>0x01</h3><p>后端代码：</p>
+<h3 id="0x01-17"><a href="#0x01-17" class="headerlink" title="0x01"></a>0x01</h3><p>后端代码：</p>
 <p><img src="/2022/02/21/xss%E8%B7%A8%E7%AB%99-xss-labs/image-20220226200202047.png" alt="image-20220226200202047"></p>
 <p>一般思路有双引号肯定要进行闭合，最后触发js代码，但这里有<code>htmlspecialchars()</code>函数进行过滤，显然闭合是行不通的。</p>
 <p>flash xss先告一段落，有时间再深入研究。</p>
@@ -1276,7 +1269,7 @@ AngularJS ng-include 指令：用于包含外部的 HTML 文件；包含的内�
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">225.3k</span>
+                        class="white-color">226.6k</span>
             
             
             
