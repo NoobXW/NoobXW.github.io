@@ -4,33 +4,6 @@
   
     
     <entry>
-      <title>SRC【信息收集】</title>
-      <link href="/2023/04/28/SRC%E3%80%90%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E3%80%91/"/>
-      <url>/2023/04/28/SRC%E3%80%90%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E3%80%91/</url>
-      
-        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="\assets\js\Meting.min.js"></script><h2 id="信息收集的方式"><a href="#信息收集的方式" class="headerlink" title="信息收集的方式"></a>信息收集的方式</h2><p>一般市面上的SRC挖掘收集子域名，边缘资产等，而现在的信息收集需要收集功能点，数据包的收集情况，若对于一些功能点收集的越齐全的话出货可能性就越大。</p><p>当确定要挖某个src的时候，不是想着上手直接冲，挖src是要带着思维去挖掘的，个人建议的步骤是：</p><p>1、心中清除自己的掌握的技能</p><p>比如你十分了解top10漏洞，那你在挖掘过程中，对top10漏洞肯定情有独钟，一看功能点就知道是否存在漏洞了。</p><p>2、列出某src的全部资产，然后进行业务分类</p><p>比如视频播放站点，电商站点，对这些业务站点归类，便于自己后期的挖掘</p><p>3、分类后，进行功能点分析</p><p>比如视频播放站点，这样的业务里面的功能点肯定有付费视频，登录，注册等功能点，挖掘的时候，你就应该注重挖掘这些。</p><h2 id="官网与fofa的收集"><a href="#官网与fofa的收集" class="headerlink" title="官网与fofa的收集"></a>官网与fofa的收集</h2><p>比如想挖掘补天平台的src时，这时候我们可以登录进入官网后，选择一个相应的厂商来挖掘，这时候你只需要点入对应的商家，均可以在官网找到资产。</p><p>fofa、鹰图等：</p><p>domian&#x3D;”baidu.com”&amp;&amp;country&#x3D;”CN”&amp;&amp;region&#x3D;”Beijing”</p><p>1、百度图片加载图片，抓包发现调用外部image给这个参数这就是ssrf的标志</p><p>2、好看视频功能点：下载客户端、创作中心各种功能点找出来抓包分析；视频也要想到付费视频不安全资源调用。视频的上传作品抓包查看是否存在id等参数信息，测试是否有越权，认证功能抓包测试是否能够绕过认证。视频评论区操作点：越权删除，越权评论，点赞并发各种关注按钮等功能点。（多观察每一个站点和页面的功能点）（不止于好看视频，爱奇艺等视频播放器，都可以达到免费观看）</p><p>3、百度云站点：每购买一个服务都在数据库中存储对应的某些id，而数据包中就带有这些参数信息，最终测试达到是否可以拼接构造达到使用1元购买别的服务，1元购买1k和1w的服务，大站点多人开发。</p><p><strong>不定期的返回看资产，各种节日活动（双11，过年等）会更新代码，只要业务代码会更新就可能产生新的漏洞。（资产分开提交，修复建议留一手，用于后续继续提交）</strong></p><p>4、Google结合语雀一起信息收集：敏感信息泄露，内部员工账号或者内部文件通过语雀直接上传</p><p>5、小米应用商店app资产收集：搜索各种厂商的产品，进行app挖掘测试</p><p>6、微信小程序资产：小程序右上角<strong>三个点</strong>看到各种核心资产，一个一个进去挖</p><blockquote><p><strong>思路教学：</strong></p><p><strong>当在Web层面挖到接口，可以顺带查看app和小程序上的接口是否一样。比如说：在Web层面发现功能点所有付费资源免费看，web层面的接口为A，此时的思路就要马上去app查看付费资源接口B，但两个接口泄露的东西一样，那就是两个漏洞；接下来可以接着看小程序，小程序是C接口，那就是三个漏洞，而小程序又分为百度小程序和微信小程序等各种小程序，去查看其中接口是否相同，若又不相同则是D接口又一个漏洞</strong></p></blockquote><h2 id="小蓝本与各种企业查"><a href="#小蓝本与各种企业查" class="headerlink" title="小蓝本与各种企业查"></a>小蓝本与各种企业查</h2><h3 id="小蓝本"><a href="#小蓝本" class="headerlink" title="小蓝本"></a>小蓝本</h3><h4 id="众测方面重点："><a href="#众测方面重点：" class="headerlink" title="众测方面重点："></a>众测方面重点：</h4><p>与src不同，给定范围，比别人快一步，就要使用小蓝本将所有企业的资产都列出来，不管有没有偏，只要小蓝本上有的东西都提交上去。</p><h4 id="业务："><a href="#业务：" class="headerlink" title="业务："></a>业务：</h4><p>1、厂商明确给出了测试范围</p><p>2、厂商没给出业务测试范围</p><p>①厂商业务调整案例：</p><p>腾讯收购了哪家公司</p><p>搜狗</p><p>②厂商业务收集</p><p>主营业务：百度百科&#x2F;新闻上就能搜索到的，大部分都是主营业务&#x2F;核心业务</p><p>非核心业务：企查查，爱企查，微信小程序，公众号</p><p>资产证明只需要将小蓝本上的资产信息截图标明提交即可，众测一般都会收</p><h3 id="360威胁情报中心"><a href="#360威胁情报中心" class="headerlink" title="360威胁情报中心"></a>360威胁情报中心</h3><p>收集子域等其他信息</p><h2 id="子域名工具与灯塔"><a href="#子域名工具与灯塔" class="headerlink" title="子域名工具与灯塔"></a>子域名工具与灯塔</h2><p>打众测三件套：Packer Fuzzer、ffufs、ShuiZe（半自动化挖掘）</p><h2 id="证书证明与SAN"><a href="#证书证明与SAN" class="headerlink" title="证书证明与SAN"></a>证书证明与SAN</h2><p>使用比较简单，直接搜索主域名即可。因为这种方法的原理是根据日志信息收集，只增不减，所以可能会出现一些失效的子域名。</p><p>1、fofa的证书语法收集（边缘资产的打法）：<br>cert&#x3D;”baidu”&amp;&amp;status_code&#x3D;”200”&amp;&amp;country&#x3D;”CN”&amp;&amp;region&#x3D;”Beijing”</p><p>IP资产没有上WAF，容易注入</p><p>2、零零信安平台</p><p>3、查看证书信息：</p><p>点击安全连接小锁，点击更多信息查看证书，查看DNS名称。</p><p>以上用来资产收集</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 信息收集 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> SRC </tag>
-            
-            <tag> 信息收集 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Kali渗透测试-MSF【后渗透】</title>
       <link href="/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/"/>
       <url>/2023/02/22/Kali%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-MSF%E3%80%90%E5%90%8E%E6%B8%97%E9%80%8F%E3%80%91/</url>
